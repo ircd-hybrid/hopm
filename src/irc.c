@@ -564,7 +564,7 @@ static void irc_parse(void)
    time(&IRC_LAST);
 
    /* Store a copy of IRC_RAW for the handlers (for functions that need PROOF) */
-   strcpy(msg, IRC_RAW);
+   strlcpy(msg, IRC_RAW, sizeof(msg));
 
    /* parv[0] is always the source */
    if(IRC_RAW[0] == ':')
