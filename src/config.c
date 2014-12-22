@@ -120,7 +120,6 @@ void config_setup()
 {
 
    /* Setup IRC Block Defaults */
-   IRCItem->away = DupString("I'm a bot. Your messages will be ignored.");
    IRCItem->mode = DupString("+cs");
    IRCItem->nick = DupString("hopm");
    IRCItem->nickserv = DupString("");
