@@ -145,6 +145,6 @@ void config_setup()
 
 void yyerror(const char *str)
 {
-   log_printf("CONFIG -> %s: line %d", str, linenum);
+   log_printf("CONFIG -> %s: line %d, buf: %s", str, linenum,);
    exit(EXIT_FAILURE);
 }
