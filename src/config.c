@@ -90,17 +90,14 @@ void config_init()
 {
    /* Init IRC block */
    IRCItem = MyMalloc(sizeof *IRCItem);
-   memset(IRCItem, 0, sizeof *IRCItem);
    IRCItem->channels = list_create();
    IRCItem->performs = list_create();
 
    /* Init Options block */
    OptionsItem = MyMalloc(sizeof *OptionsItem);
-   memset(OptionsItem, 0, sizeof *OptionsItem);
 
    /* Init OPM block */
    OpmItem = MyMalloc(sizeof *OpmItem);
-   memset(OpmItem, 0, sizeof *OpmItem);
    OpmItem->blacklists = list_create();
 
    /* Init list of User blocks */
