@@ -100,7 +100,7 @@ AC_ARG_WITH(werror,
     [use -Werror to abort compilation on any warning]),
     [CFLAGS="$CFLAGS -Werror"])
 
-AC_OUTPUT(Makefile src/Makefile)
+AC_OUTPUT(Makefile doc/Makefile src/Makefile)
 
 
 echo "##############################################################################"
