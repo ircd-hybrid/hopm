@@ -6,18 +6,18 @@ Make
     1. ./configure
     2. make
     3. make install
-    4. cd $HOME/bopm
-    5. edit $HOME/bopm/etc/bopm.conf to suit
-    6. $HOME/bopm/bin/bopm
+    4. cd $HOME/hopm
+    5. edit $HOME/hopm/etc/hopm.conf to suit
+    6. $HOME/hopm/bin/hopm
 
     In detail:
 
     ./configure has a few options which you might need:
 
-    --prefix            Sets the root of BOPM's install.  By default this
-                        is $HOME/bopm, with binaries going in
-			$HOME/bopm/bin, config in $HOME/bopm/etc and logs
-			in $HOME/bopm/var.
+    --prefix            Sets the root of HOPM's install.  By default this
+                        is $HOME/hopm, with binaries going in
+			$HOME/hopm/bin, config in $HOME/hopm/etc and logs
+			in $HOME/hopm/var.
 
     --bindir            Specify the place to install binaries.  By default
                         this is $PREFIX/bin. (see --prefix, above)
@@ -33,25 +33,25 @@ Make
     configure at some point.  If you think you need to change these then we
     assume you've read the code and know why.
 
-    Compilation of BOPM requires GNU Make (usually 'gmake' on BSD systems).
+    Compilation of HOPM requires GNU Make (usually 'gmake' on BSD systems).
 
 Configuration
 -------------
 
-    Edit bopm.conf as needed.  Most options are self explanatory and
+    Edit hopm.conf as needed.  Most options are self explanatory and
     contain a short description.
 
     Please take note of the target_string, this is new in version 2 onward and may be
     different for your ircd.  Because we now check that we really have
-    connected back onto IRC, BOPM needs to be told what your ircd says during
+    connected back onto IRC, HOPM needs to be told what your ircd says during
     the first part of a connection.  If you're not sure, the best thing to do
     is telnet to your ircd from your shell, e.g.:
 
-      [andy@fullers bopm]$ telnet porkscratchings.someserver.org 6667
+      [andy@fullers hopm]$ telnet porkscratchings.someserver.org 6667
       Trying 207.8.219.202...
       Connected to porkscratchings.someserver.org.
       Escape character is '^]'.
-      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Looking up your hostname...
+      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Looking up your hostname
       :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Checking Ident
       :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Got Ident response
       :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Found your hostname
@@ -81,18 +81,18 @@ Configuration
 Execution
 ---------
 
-    You can run BOPM from any directory, the path to its config file is
+    You can run HOPM from any directory, the path to its config file is
     compiled into it.  The bot will fork and connect to the IRC server
     immediately.  Any errors and debug information can be found in
-    $PREFIX/var/bopm.log.
+    $PREFIX/var/hopm.log.
 
-    You can tell BOPM to use a different config file with the -c argument,
+    You can tell HOPM to use a different config file with the -c argument,
     this works the same way that wgmon's -c argument does, just give the name
     of the config file not including the ".conf".  This also affects the log
-    and PID files i.e. ./bopm -c myserver will read from myserver.conf, log to
+    and PID files i.e. ./hopm -c myserver will read from myserver.conf, log to
     myserver.log and write PID to myserver.pid.  If you do not use -c, the
-    files bopm.conf, bopm.log and bopm.pid will be used by default.  This can
-    be altered in options.h.  This is useful for running multiple BOPM on
+    files hopm.conf, hopm.log and hopm.pid will be used by default.  This can
+    be altered in options.h.  This is useful for running multiple HOPM on
     the same host.
 
     Further debugging can be enabled by using one or more -d switches.  One or
