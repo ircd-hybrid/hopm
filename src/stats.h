@@ -8,7 +8,7 @@ struct StatsHash
 {
    int type;
    unsigned int count;
-   char *name;
+   const char *name;
 };
 
 extern void stats_init(void);

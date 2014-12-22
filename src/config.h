@@ -5,8 +5,6 @@
 #include "list.h"
 #include "libopm/src/opm_types.h"
 
-int yylex(void);
-
 extern char linebuf[512];
 extern int  linenum;
 

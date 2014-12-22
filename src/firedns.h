@@ -94,6 +94,6 @@ struct in_addr *firedns_resolveip4(const char * const name);
 struct in6_addr *firedns_resolveip6(const char * const name);
 
 void firedns_cycle(void);
-char *firedns_strerror(int);
+extern const char *firedns_strerror(int);
 
 #endif

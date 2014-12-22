@@ -34,7 +34,7 @@ typedef void (*oper_command) (char *, char*, struct ChannelConf *);
 
 struct OperCommandHash
 {
-   char       *command;
+   const char *command;
    oper_command handler;
 };
 

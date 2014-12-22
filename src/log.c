@@ -77,7 +77,7 @@ void scanlog_close(void)
       fclose(scanlogfile);
 }
 
-void log_printf(char *data, ...)
+void log_printf(const char *data, ...)
 {
    char data2[513];
    char buf_present[25];

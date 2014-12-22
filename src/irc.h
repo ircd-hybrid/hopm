@@ -30,13 +30,13 @@ typedef void (*irc_command) (char **, unsigned int, char *, struct UserInfo *);
 
 struct CommandHash
 {
-   char       *command;
+   const char *command;
    irc_command handler;
 };
 
 
-extern void irc_send(char *, ...);
-extern void irc_send_channels(char *, ...);
+extern void irc_send(const char *, ...);
+extern void irc_send_channels(const char *, ...);
 extern void irc_cycle(void);
 extern void irc_timer(void);
 

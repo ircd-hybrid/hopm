@@ -28,6 +28,8 @@
 #include "malloc.h"
 #include "config.h"
 
+int yylex(void);
+
 int yydebug=0;
 void *tmp;        /* Variable to temporarily hold nodes before insertion to list */
 

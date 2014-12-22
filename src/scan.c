@@ -89,7 +89,7 @@ struct cnode *nc_head;
 
 struct scan_struct *scan_create(char **, char *);
 void scan_free(struct scan_struct *);
-static void scan_irckline(struct scan_struct *, char *, char *);
+static void scan_irckline(struct scan_struct *, const char *, const char *);
 static void scan_negative(struct scan_struct *);
 static void scan_log(OPM_REMOTE_T *);
 
@@ -169,10 +169,10 @@ void scan_timer(void)
  *
  */
 
-char *scan_gettype(int protocol)
+const char *scan_gettype(int protocol)
 {
    unsigned int i;
-   static char *undef = "undefined";
+   static const char *undef = "undefined";
 
    static struct protocol_assoc protocols[] =
       {
@@ -572,7 +572,7 @@ void scan_checkfinished(struct scan_struct *ss)
  *
  */
 
-void scan_positive(struct scan_struct *ss, char *kline, char *type)
+void scan_positive(struct scan_struct *ss, const char *kline, const char *type)
 {
    node_t *node;
    OPM_T *scanner;
@@ -674,7 +674,7 @@ void scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
 void scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote,
       int notused, void *data)
 {
-   struct scan_struct *ss;
+//   struct scan_struct *ss;
    struct scanner_struct *scs;
 
    USE_VAR(scanner);
@@ -684,7 +684,7 @@ void scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote,
    scan_log(remote);
 
    scs = (struct scanner_struct *) data;
-   ss = (struct scan_struct *) remote->data;
+//   ss = (struct scan_struct *) remote->data;
 
    if(OPT_DEBUG)
    {
@@ -720,7 +720,7 @@ void scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote,
 static void scan_timeout(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
       void *data)
 {
-   struct scan_struct *ss;
+//   struct scan_struct *ss;
    struct scanner_struct *scs;
 
    USE_VAR(scanner);
@@ -730,7 +730,7 @@ static void scan_timeout(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
    scan_log(remote);
 
    scs = (struct scanner_struct *) data;
-   ss = (struct scan_struct *) remote->data;
+//   ss = (struct scan_struct *) remote->data;
 
    if(OPT_DEBUG)
    {
@@ -899,7 +899,7 @@ static void scan_negative(struct scan_struct *ss)
  *
  */
 
-static void scan_irckline(struct scan_struct *ss, char *format, char *type)
+static void scan_irckline(struct scan_struct *ss, const char *format, const char *type)
 {
 
    char message[MSGLENMAX];  /* OUTPUT */
@@ -956,14 +956,14 @@ static void scan_irckline(struct scan_struct *ss, char *format, char *type)
                   {
                      case FORMATTYPE_STRING:
 
-                        size = strlen( (char *) table[i].data);
+                        size = strlen(table[i].data);
 
                         /* Check if the new string can fit! */
                         if( (size + len) > (MSGLENMAX - 1) )
                            break;
                         else
                         {
-                           strcat(message, (char *) table[i].data);
+                           strcat(message, table[i].data);
                            len += size;
                         }
 
@@ -1141,7 +1141,7 @@ int scan_checkexempt(char *mask, char *ipmask)
 
    LIST_FOREACH(node, ExemptItem->masks->head)
    {
-      exempt_mask = (char *) node->data;
+      exempt_mask = node->data;
       if(match(exempt_mask, mask) || match(exempt_mask, ipmask))
          return 1;
    }

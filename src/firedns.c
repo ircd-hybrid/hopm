@@ -78,7 +78,7 @@ static list_t *CONNECTIONS = NULL;
  * List of errors, in order of values used in FDNS_ERR_*, returned by
  * firedns_strerror
  */
-static char *errors[] = {
+static const char *errors[] = {
    "Success",
    "Format error",
    "Server failure",
@@ -167,7 +167,7 @@ void firedns_init(void)
    int i;
    struct in_addr addr4;
    char buf[1024];
-   char *file;
+   const char *file;
 #ifdef IPV6
 
    struct in6_addr addr6;
@@ -278,7 +278,7 @@ struct in6_addr *firedns_resolveip6(const char * const name)
 
 char *firedns_resolveip(int type, const char * const name)
 { /* resolve a query of a given type */
-   int fd, t, i;
+   int fd, t;
    struct firedns_result *result;
    struct timeval tv;
    fd_set s;
@@ -293,7 +293,7 @@ char *firedns_resolveip(int type, const char * const name)
       tv.tv_usec = 0;
       FD_ZERO(&s);
       FD_SET(fd, &s);
-      i = select(fd + 1, &s, NULL, NULL, &tv);
+      select(fd + 1, &s, NULL, NULL, &tv);
 
       result = firedns_getresult(fd);
       
@@ -815,7 +815,7 @@ void firedns_cycle(void)
    }
 }
 
-char *firedns_strerror(int error)
+const char *firedns_strerror(int error)
 {
    if(error == FDNS_ERR_NETWORK)
       return strerror(errno);

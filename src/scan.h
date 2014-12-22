@@ -30,23 +30,23 @@ struct scanner_struct
 struct protocol_assoc
 {
    int type;
-   char *name;
+   const char *name;
 };
 
 extern void scan_init(void);
-extern char *scan_gettype(int);
+extern const char *scan_gettype(int);
 extern void scan_cycle(void);
 extern void scan_connect(char **, char *);
 extern void scan_checkfinished(struct scan_struct *);
 extern void scan_manual(char *, struct ChannelConf *);
 extern int scan_checkexempt(char *, char *);
 extern void scan_timer(void);
-extern void scan_positive(struct scan_struct *, char *, char *);
+extern void scan_positive(struct scan_struct *, const char *, const char *);
 
 struct kline_format_assoc
 {
    char key;
-   void *data;
+   const void *data;
    int type;
 };
 

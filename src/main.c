@@ -65,8 +65,8 @@ int REOPEN  = 0;             /* Flagged to reopen log files on next cycle */
 unsigned int OPT_DEBUG = 0;  /* Debug level */
 
 char *CONFNAME = DEFAULTNAME;
-char *CONFDIR = HOPM_ETCDIR;
-char *LOGDIR = HOPM_LOGDIR;
+static const char *CONFDIR = HOPM_ETCDIR;
+static const char *LOGDIR = HOPM_LOGDIR;
 char *CONFFILE, *LOGFILE;
 
 struct sigaction ALARMACTION;
@@ -78,12 +78,10 @@ int main(int argc, char **argv)
    char spid[16];
    pid_t pid;
    int c;
-   size_t lenc, lenl, lenp;
-   unsigned int nc_counter, i;
+   size_t lenc, lenl;
+   unsigned int i;
    FILE *pidout;
    struct rlimit rlim;
-
-   nc_counter = 0;
 
    while (1)
    {
@@ -109,7 +107,6 @@ int main(int argc, char **argv)
 
    lenc = strlen(CONFDIR) + strlen(CONFNAME) + strlen(CONFEXT) + 3;
    lenl = strlen(LOGDIR) + strlen(CONFNAME) + strlen(LOGEXT) + 3;
-   lenp = strlen(LOGDIR) + strlen(CONFNAME) + strlen(PIDEXT) + 3;
 
    CONFFILE = MyMalloc(lenc * sizeof *CONFFILE);
    LOGFILE = MyMalloc(lenl * sizeof *LOGFILE);

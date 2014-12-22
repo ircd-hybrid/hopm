@@ -329,7 +329,7 @@ static void irc_init(void)
  */
 
 
-void irc_send(char *data, ...)
+void irc_send(const char *data, ...)
 {
    va_list arglist;
    char    data2[MSGLENMAX];
@@ -363,7 +363,7 @@ void irc_send(char *data, ...)
  * Return: NONE
  */
 
-void irc_send_channels(char *data, ...)
+void irc_send_channels(const char *data, ...)
 {
    va_list arglist;
    char    data2[MSGLENMAX];
