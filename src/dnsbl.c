@@ -45,6 +45,7 @@ along with this program; if not, write to the Free Software
 #include "list.h"
 #include "log.h"
 #include "malloc.h"
+#include "match.h"
 #include "scan.h"
 #include "irc.h"
 #include "stats.h"
@@ -240,7 +241,7 @@ void dnsbl_report(struct scan_struct *ss)
    if(ss->ip == NULL)
       return;
 
-   if(strlen(OpmItem->dnsbl_to) == 0 || strlen(OpmItem->dnsbl_from) == 0 || strlen(OpmItem->sendmail) == 0)
+   if (EmptyString(OpmItem->dnsbl_to) || EmptyString(OpmItem->dnsbl_from) || EmptyString(OpmItem->sendmail))
       return;
 
 

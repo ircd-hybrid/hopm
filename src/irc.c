@@ -272,7 +272,7 @@ static void irc_init(void)
    }
 
    /* Bind */
-   if (strlen(IRCItem->vhost) > 0)
+   if (!EmptyString(IRCItem->vhost))
    {
       int bindret = 0;
       if (!inet_pton(AF_INET, IRCItem->vhost, &(IRC_LOCAL.in4.s_addr)))
@@ -430,7 +430,7 @@ static void irc_connect(void)
 
    irc_send("NICK %s", IRCItem->nick);
 
-   if(strlen(IRCItem->password) > 0)
+   if (!EmptyString(IRCItem->password))
       irc_send("PASS %s", IRCItem->password);
 
    irc_send("USER %s %s %s :%s",
@@ -804,7 +804,7 @@ static void m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo
    log_printf("IRC -> Connected to %s:%d", IRCItem->server, IRCItem->port);
 
    /* Identify to nickserv if needed */
-   if(strlen(IRCItem->nickserv))
+   if (!EmptyString(IRCItem->nickserv))
       irc_send("%s", IRCItem->nickserv);
 
    /* Oper */
@@ -825,10 +825,10 @@ static void m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo
    {
       channel = (struct ChannelConf *) node->data;
 
-      if(strlen(channel->name) == 0)
+      if (EmptyString(channel->name))
          continue;
 
-      if(strlen(channel->key) > 0)
+      if (!EmptyString(channel->key))
          irc_send("JOIN %s %s", channel->name, channel->key);
       else
          irc_send("JOIN %s", channel->name);
@@ -1117,7 +1117,7 @@ static void m_cannot_join(char **parv, unsigned int parc, char *msg,
    if((channel = get_channel(parv[3])) == NULL)
       return;
 
-   if(strlen(channel->invite) == 0)
+   if (EmptyString(channel->invite))
       return;
 
    irc_send("%s", channel->invite);
