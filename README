@@ -1,0 +1,173 @@
+Introduction
+------------
+
+BOPM (Blitzed Open Proxy Monitor) is an open proxy monitoring bot designed for
+Bahamut and Hybrid based ircds.  The bot is designed to monitor an individual 
+server (all servers on the network have to run their own bot) with a local o: 
+line and monitor connections.  When a client connects to the server, BOPM will 
+scan the connection for insecure proxies.  Insecure proxies are determined by 
+attempting to connect the proxy back to another host (usually the IRC server in 
+question).
+
+BOPM is written ground-up in C language, concept derived from wgmon.  It
+improves on wgmon with HTTP support, faster scanning (it can scan clients
+simultaneously), better layout (scalability), and dnsbl support.
+
+
+Requirements
+------------
+
+o An IRCd which presents connection notices in a format which BOPM
+  recognises (see below).
+
+o A host with full connectivity for all the ports you wish to scan.  i.e. is
+  NOT transparently proxied -- many domestic internet connections have port 80
+  transparently proxied and this produces completely unpredictable results,
+  sometimes as severe as 100% of clients being K:lined!
+
+o A unix OS with GNU Make, an ANSI C compiler, etc..  BOPM probably does
+  compile and work on win32 under cygwin, but we won't support it.
+
+o Permission from your users to portscan them for open proxies.
+
+
+Compatibility
+-------------
+
+Bahamut (tested with 1.4.28 -> 1.4.34)
+Hybrid (tested with 2.8/hybrid-5.3p8, ircd-hybrid-6.3 and ircd-hybrid-7)
+Unreal (tested with 3.1.2 and 3.2)
+Dancer (tested with 1.0.31)
+Ultimate IRCD (tested with UltimateIRCd(Tsunami)-3.0(00).a22) - please
+note, earlier versions of Ultimate IRCD are *not* supported
+
+BOPM is designed for the Bahamut and Hybrid IRCds.   It is easily
+suitable for any other ircd with little modification (connregex in bopm.conf).
+However, if an ircd does not send IP's in a connection notice (bahamut sends
+[IP]), BOPM will not be effective because the time it takes to resolve a
+hostname would be a significant factor to BOPM's efficiency.
+
+If you want to use BOPM but you don't think your ircd supports it then please
+contact us.  As long as source is available for your ircd then we can almost
+certainly make BOPM work with it.
+
+Any questions regarding compatibility should be sent to the developers. If
+feasible we might be able to add compatibility to multiple ircd types to the
+project in the future.
+
+
+Command Line Options
+--------------------
+
+-c <name>	Config name.  By default BOPM reads bopm.conf, "-c foo"
+		will cause BOPM to read foo.conf.  The primary use for
+		this is to run multiple BOPMs from one directory.
+
+-d		Debug mode.  BOPM will not fork, and will write logs to stderr.
+		Multiple -d increase debug level.
+
+
+Operator Channel Commands
+-------------------------
+
+botnick check <host> [scanner]  -- Manually scan host for insecure proxies and output all errors.
+                                   If scanner is not given, bopm will scan on all scanners.
+                                   NOTE: this will NOT add a kline (or whatever) if it finds a
+                                   proxy.  This is a change from 2.x.
+
+botnick stats                   -- Output scan stats, uptime and client connection count.
+
+botnick fdstat                  -- Output some into about file descriptors in use.
+
+Also if several BOPMs are present in one channel they will all respond to !all,
+for example !all stats (fixed in BOPM 3.1.0).
+
+
+Rehashing BOPM 
+--------------
+
+A /kill to bopm will cause the process to restart, rehashing the configuration file
+and ending all queued scans.
+
+
+Logging
+-------
+
+Once started, BOPM logs all significant events to a file called "bopm.log"
+which by default can be found at $HOME/bopm/var/bopm.log.  There is also a
+config option to log all proxy scans initiated, which can be quite useful if
+you receive an abuse report related to portscanning.
+
+These log files, especially the scan log, can grow quite large.  It is
+suggested that you arrange for these files to be rotated periodically.  An
+example shell script is provided in the contrib/logrotate directory.  If you
+prefer to use the log rotation facilities of your operating system then you
+should send a USR1 signal to BOPM after moving its logfiles - this will cause
+BOPM to reopen those files.
+
+
+Support
+-------
+
+BOPM has a mailing list for general discussion and announcements.  CVS
+commit emails are also sent there and that is also the place to mail your
+patches (unless they are massive, in which case just post a URL).  You can
+subscribe to this list from:
+
+  http://lists.blitzed.org/listinfo/bopm
+
+Also check if your question is answered on the BOPM FAQ:
+
+  http://blitzed.org/bopm/faq.phtml
+
+No IRC support currently exists for BOPM.  If you would like to run such a
+support channel, please let us know so that we can list it here.
+
+
+Compatibility Notes
+-------------------
+
+o Unreal Ircd
+
+  For *older* versions of Unreal to work,  patches to fix the HCN connect 
+  notices (found at http://www.blitzed.org/files/) must be applied.
+
+  Unreal 3.1.3 seems to require opers to be global if they are to see
+  connection notices.
+    -- prince@avalon.zirc.org
+
+  Later versions of Unreal require different user modes to be set on BOPM for
+  it to see connection notices.  You will need to use
+
+      mode = "+sc";
+
+  in your bopm.conf.  Also later versions of Unreal no longer require patching
+  as described above.
+   -- prince@avalon.zirc.org
+
+o IRCu
+
+  IRCu does not present a banner to clients when they connect, so
+  target_string, target_ip and target_port must use some other service besides
+  ircd.  For those with root access to their servers, the following inetd.conf
+  example is an easy fix for this:
+
+  # BOPM proxy check string
+  16667 stream  tcp nowait nobody /bin/echo echo Open Proxy Check
+
+  target_string can then be set to "Open Proxy Check", and target_ip/target_port
+  set to your IP and port 16667.
+
+  If you don't want to do the above, you could use any other service on
+  your machine that presents a banner.  We would recommend against using
+  port 25 because it is common for providers to transparently proxy port
+  25.
+
+  Also, to see connect notices, your bopm should set itself umode "+s +16384".
+  There is a config file item for setting umodes.
+
+
+Credits
+-------
+
+Please see the CREDITS file.

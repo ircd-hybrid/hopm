@@ -1,0 +1,260 @@
+/*
+ * BOPM sample configuration for Blitzed Admins.  For explanations of what all
+ * the directives do, please see bopm.conf.sample.
+ *
+ * Most of this stuff is just suggestions.  Any setting that is required will
+ * be noted as such.
+ *
+ */
+
+options {
+   pidfile = "/some/path/bopm.pid";
+   dns_fdlimit = 64;
+   
+   /*
+    * You can use this to log ALL port scans that are done.  This is
+    * optional and may be useful if you ever have to deal with abuse
+    * reports.
+    */
+#  scanlog = "/some/path/scan.log";
+};
+
+
+IRC {
+#  vhost = "0.0.0.0";
+
+   /* You're required to keep to this naming scheme! */
+   nick = "servernameBOPM";
+
+   realname = "Blitzed Open Proxy Monitor";
+   username = "bopm";
+   server = "servername.blitzed.org";
+
+   /* It makes sense to put the nick password here so it ID's quicker. */
+#  password = "secret";
+   port = 6667;
+
+   /*
+    * Your BOPM will need a registered nick and be identified to it, to get
+    * into #wg. (see below)
+    */
+   nickserv = "nickserv :identify bopm-nick-password";
+   oper = "bopm operpass";
+
+   /* Please use these modes, they're the only ones that make sense. */
+   mode = "+Fc-h";
+   away = "I'm a bot.  Your messages will be ignored.";
+
+   channel {
+      /*
+       * This is where all of Blitzed's BOPMs are.  The name "#wg" is left over
+       * from the days of dalnet's wgmon.
+       */
+      name = "#wg";
+
+      /*
+       * Make sure your BOPM is set to ID to its nick, and that it has access
+       * enough in #wg to use the chanserv invite command.  Anyone opped in #wg
+       * can add this access for you.
+       */
+      invite = "chanserv :invite #wg";
+   };
+
+   /* Hybrid / Bahamut / Unreal (in HCN mode) */
+   connregex = "\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*";
+
+   /*
+    * "kline" controls the command used when an open proxy is confirmed.
+    *
+    *  %n     User's nick
+    *  %u     User's username
+    *  %h     User's irc hostname
+    *  %i     User's IP address
+    *
+    * You're required to use the following kline_command:
+    */
+   kline = "PRIVMSG OperServ :BOPMAKILL ADD +4h *@%h Open Proxy found on your host. Please visit http://www.blitzed.org/proxy?ip=%i";
+};
+
+
+OPM {
+   /* DroneBL (see http://www.dronebl.org/howtouse.do for details) */
+   blacklist {
+      name = "dnsbl.dronebl.org";
+      type = "A record reply";
+      ban_unknown = no;
+		
+      reply {
+         2 = "Sample"; 
+         3 = "IRC Drone"; 
+         5 = "Bottler"; 
+         6 = "Unknown spambot or drone";
+         7 = "DDOS Drone"; 
+         8 = "SOCKS Proxy"; 
+         9 = "HTTP Proxy"; 
+         10 = "ProxyChain"; 
+         255 = "Unknown"; 
+      };
+      kline = "OperServ :BOPMAKILL ADD +4h *@%h Host listed in the DroneBL. For more information visit http://dronebl.org/lookup.do?ip=%i";
+   };
+
+   /* rbl.efnet.org - http://rbl.efnet.org/ */
+   blacklist {
+      name = "rbl.efnet.org";
+      type = "A record reply";
+      reply {
+         1 = "Open proxy";
+         2 = "Trojan spreader";
+         3 = "Trojan infected client";
+         5 = "Drones / Flooding";
+      };
+      ban_unknown = no;
+      kline = "OperServ :BOPMAKILL ADD +4h *@%h Listed in rbl.efnet.org. See http://rbl.efnet.org/?i=%i";
+   };
+
+   /* You must use a real email address below (that you actually read). */
+   dnsbl_from = "yournick@blitzed.org";
+
+   /* Don't change this, it's already the correct address. */
+   dnsbl_to = "bopm-report@dronebl.org";
+
+   /* This is usually correct. */
+   sendmail = "/usr/sbin/sendmail";
+};
+
+scanner {
+   name = "default";
+
+   /*
+    * Any user will get scanned on these protocols.  This is the top 10 list of
+    * protocol/ports found in our blacklist and you're required to test at
+    * least these.
+    *
+    * If you want to add more, ask the OPM people for some sensible
+    * suggestions.
+    */
+   protocol = HTTP:80;
+   protocol = HTTP:3128;
+   protocol = HTTP:4480;
+   protocol = HTTP:6588;
+   protocol = HTTP:8080;
+   protocol = HTTP:2282;
+   protocol = HTTP:3802;
+   protocol = HTTP:7441;
+   protocol = HTTP:3332;
+   protocol = HTTP:65506;
+
+   protocol = SOCKS4:1080;
+   protocol = SOCKS5:1080;
+
+   protocol = HTTPPOST:80;
+   protocol = HTTPPOST:3128;
+   protocol = HTTPPOST:8080;
+   protocol = HTTPPOST:808;
+
+   protocol = WINGATE:23;
+
+   /*
+    * If your ircd is running from a machine with more than one interface,
+    * you'll need to specify the IP to scan from here.  Particularly important
+    * if you're running on a shell server.
+    */
+#  vhost = "127.0.0.1";
+
+   /* Don't bother changing these unless you know what they do. */
+   fd = 512;
+   max_read = 4096;
+   timeout = 30;
+
+   /* Don't forget to change this to the public IP of your server! */
+   target_ip     = "127.0.0.1";
+
+   /* This needs to be a port that is available to normal clients. */
+   target_port   = 6667;
+
+   /* Don't forget to change this to have your FULL server name here! */
+   target_string = ":somese.rv.er.blitzed.org NOTICE AUTH :*** Looking up your hostname...";
+};
+
+scanner {
+   /*
+    * Here's a bunch more tests to do on "suspicious-looking" clients.  Again,
+    * these are the most popular ports/protocols found in our blacklist, but
+    * feel free to add/remove some if you know what you're doing.
+    */
+   name = "extra";
+
+   protocol = WINGATE:1181;
+
+   protocol = HTTP:81;
+   protocol = HTTP:8000;
+   protocol = HTTP:8001;
+   protocol = HTTP:8081;
+   protocol = HTTP:5748;
+   protocol = HTTP:443;
+
+   protocol = HTTPPOST:81;
+   protocol = HTTPPOST:6588;
+   protocol = HTTPPOST:8000;
+   protocol = HTTPPOST:8001;
+   protocol = HTTPPOST:8081;
+
+   protocol = SOCKS5:1978;
+   protocol = SOCKS5:10001;
+   protocol = SOCKS5:30021;
+   protocol = SOCKS5:30022;
+   protocol = SOCKS5:38994;
+   protocol = SOCKS5:15859;
+   protocol = SOCKS5:1027;
+   protocol = SOCKS5:2425;
+
+   protocol = SOCKS4:559;
+   protocol = SOCKS4:29992;
+   protocol = SOCKS4:38884;
+   protocol = SOCKS4:18844;
+   protocol = SOCKS4:17771;
+   protocol = SOCKS4:31121;
+   protocol = SOCKS4:1182;
+
+   protocol = ROUTER:23;
+
+   /* Less fds are given to this scanner */
+   fd = 400;
+};
+
+user {
+   scanner = "default";
+   mask = "*!*@*";
+};
+
+user {
+   scanner = "extra";
+   /*
+    * If the user matches any of these masks they will get the extra scans
+    * too.
+    *
+    * Connections without ident will match on a vast number of connections;
+    * very few proxies run ident though.
+    */
+   mask = "*!~*@*";
+   mask = "*!squid@*";
+   mask = "*!nobody@*";
+   mask = "*!www-data@*";
+   mask = "*!cache@*";
+   mask = "*!CacheFlowS@*";
+   mask = "*!*@*www*";
+   mask = "*!*@*proxy*";
+   mask = "*!*@*cache*";
+};
+
+/*
+ * You can use exempts to deliberately allow certain insecure proxies onto the
+ * network, but this should never be necessary!  Please consult BOPM people
+ * before using this.  If you think you have found a false positive then they
+ * really need to know.
+ */
+/*
+exempt {
+	mask = "*!*@127.0.0.1";
+};
+*/

@@ -1,0 +1,3534 @@
+2007-05-15 20:34  dg
+
+	* Makefile.in, aclocal.m4, bopm.conf.blitzed, bopm.conf.sample,
+	  configure, configure.in, src/Makefile.in: Remove references to
+	  OPM from the config files (and add some to dronebl..).  Up the
+	  version to 3.1.3
+
+2005-10-06 22:57  dg
+
+	* network-bopm/network-bopm.pl: Add back the ! which appears to
+	  have got lost at some point..
+
+2005-06-03 13:58  dg
+
+	* src/firedns.c: Fix unknown error when it exists but there isn't a
+	  record of the type we expect.
+
+2004-12-07 11:56  grifferz
+
+	* bopm.conf.blitzed, bopm.conf.sample: Obviously don't need port
+	  1080 again.
+
+2004-12-07 11:54  grifferz
+
+	* bopm.conf.blitzed, bopm.conf.sample: Extra SOCKS4 ports from
+	  Keith Dunnett, apparently more common than port 1080.
+
+2004-10-25 06:21  strtok
+
+	* src/opercmd.c:
+	  Fixed bug in userhost parsing where BOPM would not clear the
+	  queue of commands from non-opered clients.
+
+2004-08-26 13:15  phil
+
+	* configure, configure.in: * Added the DNS name of the IRC server
+	  to the information needed by the   OPM team to add the reporter.
+	  * Regenerated configure with autoconf.
+
+2004-08-23 23:43  dg
+
+	* src/scan.c: Of course it would help if I could type
+
+2004-08-23 23:34  dg
+
+	* src/scan.c: scan.c: null pointer deref fix from glen at delfi.ee
+
+2004-01-28 21:03  mark
+
+	* bopm.conf.blitzed: Kudos to strtok :P (syntax error)
+
+2004-01-28 20:37  mark
+
+	* bopm.conf.blitzed: - Updated kline command to using BOPMAKILL -
+	  Removed NJABL DNSBL config - Updated protocol/port pairs
+
+2004-01-17 23:17  grifferz
+
+	* configure, src/Makefile.in: Something odd going on with the
+	  autotools.
+
+2004-01-17 22:53  strtok
+
+	* ChangeLog, src/Makefile.in:
+	  Updated ChangeLog
+
+2004-01-17 21:49  grifferz
+
+	* configure, configure.in: Update version and autoconf again.
+
+2004-01-17 14:12  grifferz
+
+	* configure, configure.in: Chnage some versions strings for this
+	  one-off non-release mumble mumble please ignore.
+
+2004-01-15 23:12  dg
+
+	* src/dnsbl.c: Add X- header to BOPM reports for version, patch
+	  from mark.
+
+2004-01-12 18:12  dg
+
+	* src/firedns.c: Fix the ID/Unknown error bug (finally), this needs
+	  testing..
+
+2003-11-29 19:56  strtok
+
+	* src/irc.c:
+	  irc.c: Added extra irc_read debug logging.
+
+2003-11-29 17:46  dgl
+
+	* src/irc.c: Set IRC_LAST on connect.
+
+2003-11-15 13:29  andy
+
+	* ChangeLog: Requested obfuscation.
+
+2003-09-03 17:22  andy
+
+	* bopm.conf.sample, configure, configure.in: New address to use to
+	  contact us about enabling bopm reporting.
+
+2003-07-06 07:48  andy
+
+	* bopm.conf.blitzed: 07:47:12 <@Silencer> grifferz 07:47:17
+	  <@Silencer> line 61 of bopm.conf.blitzed 07:47:30 <@Silencer> add
+	  3 whitespace :D 07:48:19 <@grifferz> sigh..
+
+2003-06-29 11:43  andy
+
+	* bopm.conf.blitzed: WG should be WINGATE, spotted by phil.
+
+2003-06-28 21:25  andy
+
+	* bopm.conf.blitzed: The latest agreed changes.
+
+2003-06-28 05:55  andy
+
+	* configure, configure.in, src/setup.h.in: Remove the --with-select
+	  and --with-unreal ./configure options, as they are no longer
+	  relevant.
+
+	  Add a quick check for SIZEOF_SHORT=2, which we think is the case
+	  everywhere but will break firedns in strange ways if it turns out
+	  to not be the case.
+
+2003-06-27 21:52  dgl
+
+	* configure, configure.in: Update version number
+
+2003-06-27 21:48  dgl
+
+	* network-bopm/network-bopm.pl: Simplified network-bopm a lot as
+	  there's no need for IO::Select anymore.
+
+2003-06-27 20:15  dgl
+
+	* bopm.conf.sample: *cough*
+
+2003-06-26 21:35  strtok
+
+	* network-bopm/network-bopm.pl:
+	  INET isn't even used anymore
+
+2003-06-25 23:22  strtok
+
+	* ChangeLog:
+	  Updated ChangeLog
+
+2003-06-25 23:16  dgl
+
+	* README: 3.0.4 -> 3.1.0
+
+2003-06-23 18:43  strtok
+
+	* network-bopm/network-bopm.pl:
+	  Cleanup
+
+2003-06-23 18:41  strtok
+
+	* network-bopm/network-bopm.pl:
+	  PROTOCOL{NICK} is no longer required.
+
+2003-06-23 18:30  strtok
+
+	* network-bopm/network-bopm.pl:
+	  Do TS delta check to see if nick is new enough to be scanned
+
+2003-06-22 22:02  strtok
+
+	* network-bopm/network-bopm.pl:
+	  Removed listening code, service now sends a NOTICE to a bopm nick
+	  , which means the bopm can be connected to any server.
+
+2003-06-22 19:03  andy
+
+	* src/dnsbl.c: I am calling it a very big typo, OK?
+
+2003-06-22 18:05  strtok
+
+	* src/scan.c:
+	  Don't spam channel with negotiation timeout/failures on manual
+	  scan (mofo@efnet)
+
+2003-06-22 15:19  andy
+
+	* .cvsignore: Ignore libtool.
+
+2003-06-22 15:18  andy
+
+	* libtool: These shouldn't be in CVS.
+
+2003-06-22 14:55  andy
+
+	* src/dnsbl.c: ...the effect is that bopm will use the else clause
+	  (destined for manual scans) for every but the first positive
+	  result... -> Segfault :)  -- mark AT nedworks.org
+
+2003-06-22 14:19  andy
+
+	* src/: config-parser.y, defs.h, firedns.c, irc.c, list.c, main.c,
+	  negcache.c, opercmd.c: Mostly pedantry.
+
+2003-06-21 23:25  strtok
+
+	* network-bopm/network-bopm.pl:
+	  Relay /KILLs that pertain to bopm Do not QUIT on /kill
+
+2003-06-21 23:04  strtok
+
+	* network-bopm/network-bopm.pl:
+	  Catch/relay USERHOST reply (302)
+
+2003-06-21 22:52  strtok
+
+	* network-bopm/network-bopm.pl:
+	  Fixed parser Relay PRIVMSG
+
+2003-06-21 22:34  strtok
+
+	* network-bopm/network-bopm.pl:
+	  IO::Socket reuse => 1 (from dg)
+
+2003-06-21 22:25  strtok
+
+	* network-bopm/network-bopm.pl:
+	  Require PASS Remove USE Event
+
+2003-06-21 22:02  strtok
+
+	* libtool, network-bopm/network-bopm.pl:
+	  Added initial network-bopm perl script.
+
+2003-06-21 15:33  andy
+
+	* src/stats.c: As newfd has become an unsigned int it can no longer
+	  contain error return values from dup(). A slight oversight, I
+	  think :) -- mark AT nedworks.org
+
+2003-06-21 06:11  andy
+
+	* README: A bit about logging.
+
+2003-06-21 05:31  andy
+
+	* .cvsignore, contrib/logrotate/.cvsignore,
+	  contrib/logrotate/logrotate.sh, src/main.c: Reopen logfiles on
+	  receipt of SIGUSR1.  An example contrib log rotation script which
+	  uses this.
+
+2003-06-21 01:57  dgl
+
+	* src/: config.h, dnsbl.c, stats.c, stats.h: Made the dnsbl stats
+	  into per dnsbl stats.
+
+2003-06-21 01:27  dgl
+
+	* src/dnsbl.c: Only print DNSBL results if no scan has had a
+	  positive match already.
+
+2003-06-20 05:55  andy
+
+	* src/: irc.c, opercmd.c, scan.c: Fix a gcc3-ism.
+
+2003-06-20 05:18  andy
+
+	* libtool, src/config.c, src/config.h, src/dnsbl.c, src/firedns.c,
+	  src/inet.c, src/irc.c, src/main.c, src/misc.c, src/misc.h,
+	  src/negcache.c, src/negcache.h, src/opercmd.c, src/opercmd.h,
+	  src/scan.c, src/scan.h, src/stats.c: LOTS of tidying up to
+	  compile with no warnings.
+
+2003-06-20 05:12  andy
+
+	* configure, configure.in: Tidy up fascist CFLAGS again.
+
+2003-06-20 00:21  strtok
+
+	* src/list.c:
+	  No more need for node_t *p
+
+2003-06-20 00:14  strtok
+
+	* src/list.c:
+	  Make sure we elements-- before returning.
+
+2003-06-20 00:11  strtok
+
+	* src/list.c:
+	  list_remove no longer checks for the existance of the node in the
+	  list
+
+2003-06-20 00:07  strtok
+
+	* bopm.conf.blitzed, bopm.conf.sample, src/config-lexer.l:
+	  Added ON/OFF and YES/NO as bool type and changed default to
+	  YES/NO in conf
+
+2003-06-20 00:03  strtok
+
+	* bopm.conf.blitzed, bopm.conf.sample, src/config-lexer.l:
+	  Use true/false instead of 1/0 in config files/parser
+
+2003-06-19 17:34  andy
+
+	* configure, configure.in: Tidy up the fascist CFLAGS and add an
+	  option for -Werror.
+
+2003-06-19 17:19  dgl
+
+	* libtool, src/Makefile.am, src/Makefile.in, src/scanwarn.c,
+	  src/scanwarn.h: Remove scanwarn.{c,h} as nothing uses them (they
+	  were just empty functions..).
+
+2003-06-19 17:12  dgl
+
+	* src/: config.c, config.h, dnsbl.c, firedns.c, firedns.h, main.c,
+	  scan.c: Changed a load of (struct something *) MyMalloc casts to
+	  just MyMalloc to keep Andy happy, same with sizeof..	A few
+	  little warning fixes (with ./configure --extra-fascism), mostly
+	  for firedns.
+
+2003-06-19 16:30  dgl
+
+	* src/: dnsbl.c, firedns.c, firedns.h: Reorganisation of the DNS
+	  code so it's a bit easier to read, and several bugs fixed: the
+	  lookup is aborted if it can't send the lookup and the fd limit is
+	  also correctly dealt with.  Several API changes and a new error
+	  for fd limit reached.
+
+2003-06-17 20:10  dgl
+
+	* src/firedns.c: firedns_getip{4,6} are meant to return an fd..
+
+2003-06-17 20:02  dgl
+
+	* src/firedns.c: bad dg. free -> MyFree.
+
+2003-06-17 19:56  dgl
+
+	* src/firedns.c: Add stuff to the list only if we don't get -1
+	  return from the firedns setup
+
+2003-06-17 19:34  dgl
+
+	* src/: dnsbl.c, firedns.c: Two little cleanups..
+
+2003-06-17 14:31  dgl
+
+	* README: Add a comment about !all
+
+2003-06-17 14:23  dgl
+
+	* src/irc.c: Make !all work properly.
+
+2003-06-17 13:49  dgl
+
+	* src/irc.c: Check all the characters of the nickname provided (not
+	  just the first 3), also means that < 3 character nicknames will
+	  work..
+
+2003-06-17 13:47  andy
+
+	* bopm.conf.sample: Better keep it commented out.
+
+2003-06-17 13:32  andy
+
+	* bopm.conf.sample: New connregex line for StarIrcd/SorIrcd.
+
+2003-06-12 06:51  andy
+
+	* CREDITS: [no log message]
+
+2003-06-12 06:51  andy
+
+	* src/: dlclist.c, dnsbl.c, malloc.c, malloc.h, scan.c: As per
+	  patch supplied by Christopher Bongaarts:
+
+	  http://lists.blitzed.org/pipermail/bopm/2003-June/001282.html
+
+	  Portability fixes for Sun Forte compiler:
+
+	  - No C++ comments - No inline - Don't initialize values of an
+	  auto variable from members of a struct   passed via pointer
+
+	  NOTE: I have not added in any of the firedns parts yet - we need
+	  to think about that some more.
+
+2003-06-03 17:31  andy
+
+	* CREDITS: Thanks, Joshua.
+
+2003-06-03 00:54  dgl
+
+	* src/: config.c, dnsbl.c, firedns.c, irc.c, log.c, main.c,
+	  config.h, firedns.h, log.h, main.h, negcache.c, opercmd.c,
+	  opercmd.h, scan.c, scan.h, stats.c, stats.h: log -> log_printf to
+	  fix namespace collision, various other fixes for compile warnings
+	  from gcc 3 (mostly signed/unsigned and prototypes).
+
+2003-04-30 16:28  dgl
+
+	* bopm.conf.sample, src/config-parser.y, src/dnsbl.c,
+	  src/firedns.c: - Cleaned up bopm.conf.sample (it was a mess of
+	  tabs and not tabs..) - Made firedns_resolveip4 accept IP as input
+	  (firedns really is getting messy) - Added missing target_port to
+	  scanner block stuff (now documented too) - DNSBL lookups no
+	  longer print timeout error to the channel
+
+2003-04-29 20:51  dgl
+
+	* bopm.conf.blitzed, bopm.conf.sample, src/config-lexer.l,
+	  src/config-parser.y, src/config.h, src/dnsbl.c, src/dnsbl.h,
+	  src/firedns.c, src/firedns.h, src/inet.c, src/inet.h, src/irc.c,
+	  src/main.c, src/scan.c, src/stats.c: Lots of mostly DNS related
+	  changes
+
+	  dnsbl.{c,h}: - Many changes to accomdate configurable output from
+	  blacklists - Return values from DNSBLs must now be set in the
+	  configuration file,	they are not hardcoded - It is possible to
+	  ignore some of the results returned from DNSBLs - Lookup errors
+	  are now sent to channels as errors as well as to the log - The
+	  void pointer passed to firedns is now a dnsbl_scan struct
+	  (contains   a pointer to the blacklist and to the scan_struct).
+
+	  firedns.{c,h}: - firedns.conf is now read from the BOPM
+	  configuration dir   (etc/firedns.conf) not the system wide /etc.
+	    (firedns.conf is just a list of IP addresses, one on each line)
+	   - Fixes to make firedns.conf work in a sane way - Better errors
+	  when problems occur reading configuration files -
+	  firedns_resolveip4 fixed to actually work - new error: Network
+	  error, for errors receiving from the dns server
+
+	  inet.{c,h}, irc.c, scan.c, main.c: - bopm_gethostbyname removed,
+	  code uses firedns_resolveip4 now - DNS lookup code adjusted to
+	  use firedns
+
+	  scan.c: - %t in kline format strings - the type of proxy found on
+	  the host   works for both DNSBL results and proxies found by BOPM
+
+	  configuation: - Added new blacklist directives (this breaks old
+	  config files).  - scanner blocks now inherit settings from _the
+	  one above them_,   this saves multiple definitions of the same
+	  thing in different   scanner blocks (this affects vhost, fd,
+	  target_ip, target_port,   timeout, max_read and target_strning in
+	  scanner blocks).
+
+2003-04-07 23:51  strtok
+
+	* src/config-lexer.l:
+	  Ignore ^M in config file.
+
+2003-03-07 00:43  andy
+
+	* Makefile.in, aclocal.m4, configure, configure.in, libtool,
+	  src/Makefile.in, src/firedns.c, src/setup.h.in: Add checks for
+	  size of int/long.  Work out what type to use for a 32-bit int.
+	  Regenerate autotools.
+
+2003-03-07 00:37  dgl
+
+	* src/firedns.c: Of course, you need an extra header file for that
+	  to work..  so changing int32_t to int.  (I blame vim's syntax
+	  hilighting for lulling me into a false sense of security, but
+	  probably testing stuff with the exact code you commit is also a
+	  good idea).
+
+2003-03-06 23:59  dgl
+
+	* src/firedns.c: Fix for a weird bug exposed by running on alpha -
+	  the returned record would only have 2 bytes, so it appeared that
+	  the proxy had no type.
+
+	  This happens because firedns assumes that long = 4 bytes, so the
+	  temp. fix changes long -> int32_t.
+
+	  Thanks to Chainsaw for trusting the BOPM developers with a shell
+	  account on his machine ;-).
+
+2003-02-19 00:49  strtok
+
+	* ChangeLog, Makefile.in, aclocal.m4, configure, configure.in,
+	  src/Makefile.am, src/Makefile.in, src/opercmd.c:
+	  Updated ChangeLog Commented out OP command Version is now 3.0.3
+
+2003-02-17 14:17  dgl
+
+	* contrib/opm-xml/op.php: - Updated to use new opm.blitzed.org URL
+	  - Added port information
+
+2003-02-12 17:31  andy
+
+	* README: Fix <check> typo, add a bit about fdstat.
+
+2003-02-12 16:15  andy
+
+	* README: Note about it not adding klines on manual scan.
+
+2003-02-10 13:16  andy
+
+	* bopm.conf.blitzed, bopm.conf.sample: A couple more SOCKS4 weird
+	  ports seen in the wild.
+
+2003-02-02 22:59  andy
+
+	* configure, configure.in, ltmain.sh: Remove goat/faldo.
+	  Regenerate autotools.
+
+2003-02-02 22:46  strtok
+
+	* src/scan.c: scan_handle_error: Fixed use of NULL pointer where
+	  libopm returned back a file descriptor allocation error and
+	  manual_target was NULL
+
+2003-02-02 00:44  andy
+
+	* src/opercmd.c: Make sure that the param string is at least null
+	  terminated when there is no parameter (this caused segfault on
+	  any oper command for implementations whose strlen() can't handle
+	  null pointers, e.g. sparc-sun-solaris2.8).
+
+2003-02-01 21:22  strtok
+
+	* src/opercmd.c: opercmd: Added requested (Alien88@efnet) op
+	  command
+
+2003-01-30 02:04  andy
+
+	* bopm.conf.sample: Updated Ultimate IRCD connregex example that
+	  actually works, thanks to "Baltazar" <baltazar.pinto AT
+	  mail.telepac.pt>
+
+2003-01-29 18:03  dgl
+
+	* contrib/crontab/bopmchk: update paths for bopm 3.0!
+
+2003-01-28 03:05  andy
+
+	* INSTALL, README, bopm.conf.sample, src/.cvsignore: Removed some
+	  blitzedisms to try to cut down on abuse from morons.
+
+2003-01-20 02:36  andy
+
+	* bopm.conf.sample: Missing */!  This caused confusion for a number
+	  of people who did not spot it.
+
+2003-01-20 02:30  andy
+
+	* libtool: Apparently we need this now too.  One day someone will
+	  explain autotools to me.
+
+2003-01-20 02:12  andy
+
+	* Makefile.in, aclocal.m4, acsite.m4, config.guess, config.sub,
+	  configure, configure.in, src/Makefile.am, src/Makefile.in,
+	  src/scan.c, src/setup.h.in: Better socket libs check from Warren
+	  Young <warren@etr-usa.com>.  Header reorganisation for benefit of
+	  some solaris machines..
+
+2003-01-18 20:22  andy
+
+	* src/stats.c: Use the dup() method of FD counting instead of the
+	  fcntl() method - fcntl() only seems to count established tcp
+	  connections.
+
+	  Reorganise some headers.
+
+2003-01-17 17:40  andy
+
+	* contrib/opm-xml/op.php: A PHP/XML client for the opm.blitzed.org
+	  dnsbl for use if you wish to allow people to check if they are in
+	  the DNSBL without them ever going outside your website.
+
+	  Contributed by codemastr/CaliMonk/Axenet.
+
+2003-01-17 01:18  andy
+
+	* src/stats.c: Fixes for FreeBSD.
+
+2003-01-15 22:05  andy
+
+	* README: Typo.
+
+2003-01-15 22:01  andy
+
+	* README: The boneheadedness becomes too much. :(
+
+2003-01-14 02:43  strtok
+
+	* src/stats.c: Check ret != -1 in total fd use count
+
+2003-01-13 00:56  dgl
+
+	* src/: dnsbl.c, firedns.c, firedns.h: Make firedns/dnsbl print
+	  nicer error messages
+
+2003-01-12 22:53  strtok
+
+	* src/stats.c: Show open fd limit in fdstat
+
+2003-01-12 22:37  dgl
+
+	* src/firedns.c: Remove lastcreate close code from firedns
+
+2003-01-12 22:22  strtok
+
+	* src/: config.c, opercmd.c, stats.c, stats.h: Added code to
+	  config.c to close the config file.  Added start of 'fdstat'
+	  command. Right now it counts the tototal open fds the process has
+
+2003-01-11 06:28  andy
+
+	* aclocal.m4, configure, configure.in, src/Makefile.am,
+	  src/Makefile.in, src/compat.c, src/compat.h, src/dnsbl.c,
+	  src/firedns.c, src/inet.c, src/inet.h, src/log.c, src/main.c,
+	  src/misc.c, src/scan.c, src/snprintf.c, src/snprintf.h:
+	  src/snprintf.[ch]:	  Added Mark Martinec's (v)snprintf
+	  replacement from	http://www.ijs.si/software/snprintf/ for
+	  sstems with missing or	 broken (v)snprintf.
+
+	  src/compat.c:   Replace inet_aton() with bopm_inet_aton() to
+	  prevent clashes.
+
+	  src/compat.h:   Systems without inet_aton() should use
+	  bopm_inet_aton() (compat.c).
+
+		  Systems without (v)snprintf should use bopm_snprintf()
+		  (snprintf.c).
+
+		  Systems without inet_pton() should use bopm_inet_pton()
+	  (inet.c).
+
+	  src/dnsbl.c: src/firedns.c: src/log.c: src/main.c: src/misc.c:
+	  src/scan.c:	   Needs to include compat.h if it wants to compile
+	  on Solaris.
+
+	  src/inet.c:	  For now made inetntoa() static as it is used
+	  nowhere but this   file.  Later we need to either remove this and
+	  use bopm_inet_ntoa()	   from compat.c, or else remove that one
+	  and rename this one.
+
+		  Commented out inetntop() -- nothing seems to be using it
+	  currently?
+
+		  Renamed inet_pton() to bopm_inet_pton() to avoid clashes.
+
+2003-01-10 19:33  strtok
+
+	* src/: dnsbl.c, scan.c: scan_positive only klines if ss->positive
+	  is true
+
+2003-01-09 17:30  andy
+
+	* acsite.m4, configure, configure.in, src/setup.h.in: Chekc for
+	  working snprintf (but do nothing about it yet).  This macro came
+	  from http://www.gnu.org/software/ac-archive/ac_func_snprintf.html
+	  and is copyright Rüdiger Kuhlmann <info@ruediger-kuhlmann.de>.
+
+2003-01-08 03:16  strtok
+
+	* ChangeLog, configure, configure.in: Version is now 3.0.2 Updated
+	  ChangeLog
+
+2003-01-08 03:08  strtok
+
+	* src/: dnsbl.c, irc.c: Fix to only ss->scans-- when we know for
+	  sure we're not using ss anymore.
+
+2003-01-08 03:08  andy
+
+	* .gdbinit: This helps when using gdb with bopm.
+
+2003-01-06 21:01  strtok
+
+	* ChangeLog: Updated ChangeLog
+
+2003-01-06 20:58  strtok
+
+	* configure, configure.in, src/irc.c: Version should be 3.0.1 not
+	  3.01
+
+2003-01-06 19:26  dgl
+
+	* src/dnsbl.c: Send proxy port in dnsbl reports so BOPMs will be
+	  reporting them when dnsbl starts to accept them.
+
+2003-01-06 14:27  andy
+
+	* src/scan.c: Typo. :)
+
+2003-01-05 20:05  strtok
+
+	* ChangeLog: Updated ChangeLog
+
+2003-01-05 02:37  strtok
+
+	* src/firedns.c: Added more verbose error when firedns can't find
+	  any nameservers
+
+2003-01-04 04:30  andy
+
+	* bopm.conf.blitzed, bopm.conf.sample: A whole lot of extra socks5
+	  ports identified by Gael Martinez. :(
+
+2003-01-04 04:13  strtok
+
+	* ChangeLog, configure, configure.in: Version is now 3.01 Updated
+	  ChangeLog
+
+2003-01-03 07:09  strtok
+
+	* src/scan.c: Fixed it so it doesn't pass the address of the
+	  pointer of sc->vhost to the scanner config (tsk tsk dg and strtok
+	  are both bug demons)
+
+2003-01-01 20:01  dgl
+
+	* src/scan.c: Added missing BIND_IP for libopm vhost setting
+
+2002-12-31 10:04  andy
+
+	* bopm.conf.blitzed, bopm.conf.sample: Update sample confs for the
+	  new exempt {} behaviour.
+
+	  Make the case of BOPM consistent. :)
+
+2002-12-31 08:56  strtok
+
+	* src/: scan.c, scan.h: Added nick!user@ip exempt checking
+
+2002-12-31 08:22  andy
+
+	* INSTALL: Er, really remove the --with-unreal stuff like I said in
+	  the last commit.
+
+2002-12-31 08:17  andy
+
+	* CREDITS, README: Corrected typo.  Moved credits to CREDITS.
+
+2002-12-31 08:12  andy
+
+	* INSTALL: --with-unreal is no longer needed (the "PROTOCTL HCN"
+	  stuff goes in the bopm.conf now).
+
+	  libopm only supports poll() for now.
+
+2002-12-31 08:04  andy
+
+	* src/main.c: Complain and die if we can't write the pidfile.
+
+2002-12-29 21:38  strtok
+
+	* README: Added FAQ to README
+
+2002-12-29 21:30  strtok
+
+	* README, TODO: Updated README and TODO for release
+
+2002-12-29 21:24  strtok
+
+	* ChangeLog: Updated changelog
+
+2002-12-29 21:19  strtok
+
+	* bopm.conf.sample: Added ultimate ircd sample connregex
+
+2002-12-29 21:03  strtok
+
+	* src/: dnsbl.c, scan.c: Prevented memory leaks where ss wasn't
+	  freed if all scanners returned !OPM_SUCCESS and there were no
+	  dnsbl checks.
+
+	  Added verbosity to failed dnsbl checks on manual scan Added
+	  scan_checkfinished if dnsbl check was last test to finish and it
+	  failed (memory leak)
+
+2002-12-29 19:58  strtok
+
+	* src/: dnsbl.c, scan.c: Polished up manual check verbosity.  Added
+	  gethostbyname for manual scan hosts
+
+2002-12-27 03:17  strtok
+
+	* bopm.conf.blitzed, bopm.conf.sample: Added left out IRC{password}
+	  example to sample confs
+
+2002-12-24 03:14  strtok
+
+	* bopm.conf.sample: Added target_string example for bahamut
+
+2002-12-24 03:09  strtok
+
+	* src/: dnsbl.c, scan.c: Fix for log() null strings during manual
+	  lookups Fix for not showing results of dnsbl on manual scans
+
+2002-12-23 23:16  strtok
+
+	* bopm.conf.sample: Updated bopm.conf.sample with dg's scanner/user
+	  from bopm.conf.blitzed
+
+2002-12-23 21:10  strtok
+
+	* src/scan.c: Removed scan_end verbosity
+
+2002-12-23 17:47  andy
+
+	* src/scan.c: Log ircd connect notice into the scanlog also. ("Why
+	  have you postscanned me!?"  "One of your users connected to our
+	  IRC network, look...");
+
+2002-12-23 17:38  andy
+
+	* src/.cvsignore: How did that happen?
+
+2002-12-23 17:29  andy
+
+	* src/.cvsignore: Ignore bison-generated files.
+
+2002-12-23 02:06  strtok
+
+	* src/scan.c: scan_positive now uses opm_end, instead of
+	  opm_endscan. opm_end ends ALL scans, opm_endscan only ends active
+	  ones
+
+2002-12-23 02:02  strtok
+
+	* src/scan.c: Always log file descriptor/bind errors with libopm
+
+2002-12-22 23:59  strtok
+
+	* bopm.conf.sample: Added more (commented out) HTTP protocols to
+	  bopm.conf.sample
+
+2002-12-22 23:37  strtok
+
+	* src/main.c: Changed RESTART code to die if OPT_DEBUG, otherwise
+	  close fd 0-limit
+
+2002-12-22 23:33  strtok
+
+	* README, configure: Put rehash explanation back in README
+
+2002-12-22 23:30  strtok
+
+	* src/main.c: Fixed error message in main.c (restart).
+
+2002-12-22 23:24  strtok
+
+	* src/: irc.c, log.c, main.c, main.h: Added main_restart function
+	  to restart bopm process.  Call main_restart on m_kill
+
+2002-12-22 21:08  strtok
+
+	* src/: irc.c, options.h: Reconnect on disconnection fix.  Only try
+	  reconnecting every 30 seconds (limit CPU by sleep)
+
+2002-12-22 19:57  dgl
+
+	* bopm.conf.blitzed: Updated so we don't scan as many ports for
+	  users running an identd.
+
+2002-12-22 19:13  strtok
+
+	* src/config-parser.y: Allow empty options{}, exempt{} and OPM {}
+
+2002-12-22 14:49  dgl
+
+	* src/config-parser.y: Missing semi-colon (the version of bison on
+	  FreeBSD seems to care about this)
+
+2002-12-22 08:49  strtok
+
+	* src/config-parser.y: Fixed missing ; in config-parser.y Added /*
+	  empty */ | to options{}, exempt{} and opm{} (shift errors?)
+
+2002-12-22 08:32  andy
+
+	* bopm.conf.blitzed: Tends to work better if you close the comment.
+
+2002-12-22 08:20  andy
+
+	* bopm.conf.blitzed: Can't have empty sections {}.
+
+2002-12-22 08:09  andy
+
+	* bopm.conf.sample: <strtok> andy: might want to show that you can
+	  stack channel {}
+
+2002-12-22 08:06  andy
+
+	* bopm.conf.sample: Negative caching no longer really presents a
+	  performance problem.
+
+2002-12-22 07:29  andy
+
+	* ChangeLog, INSTALL, Makefile.in, README, TODO, aclocal.m4,
+	  bopm.conf.blitzed, bopm.conf.sample, configure, configure.in,
+	  src/Makefile.am, src/Makefile.in, src/bopchecker.c,
+	  src/bopchecker.h, src/compat.c, src/config-lexer.l,
+	  src/config-parser.y, src/config.c, src/config.h, src/dlclist.c,
+	  src/dlclist.h, src/dnsbl.c, src/dnsbl.h, src/extern.h,
+	  src/firedns.c, src/firedns.h, src/inet.c, src/inet.h, src/irc.c,
+	  src/irc.h, src/list.c, src/list.h, src/log.c, src/log.h,
+	  src/main.c, src/malloc.c, src/malloc.h, src/match.c, src/match.h,
+	  src/misc.c, src/negcache.c, src/negcache.h, src/opercmd.c,
+	  src/opercmd.h, src/options.h, src/scan.c, src/scan.h,
+	  src/scanwarn.c, src/scanwarn.h, src/setup.h.in, src/stats.c,
+	  src/stats.h: Merge LIBOPM branch to main. (fun!)
+
+2002-12-22 07:22  andy
+
+	* src/: config-lexer.l, config-parser.y, config.c, config.h, irc.c,
+	  log.c, log.h, main.c, scan.c: Added "scanlog" config directive,
+	  to log all scans to a specific file.
+
+2002-12-22 07:19  andy
+
+	* bopm.conf.blitzed: A example config suited to Blitzed admins.
+
+2002-12-22 07:19  andy
+
+	* bopm.conf.sample: Lots more comments taken mostly from the old
+	  bopm.conf.sample.
+
+2002-12-21 19:41  andy
+
+	* src/scan.c: Make sure they give some parameters on a manual scan.
+	  Patch from W. Campbell <wcampbel@botbay.net>
+
+2002-12-21 17:30  dgl
+
+	* src/irc.c: Fix joining keyed channels (thanks to W. Campbell and
+	  Jan Chrillesen)
+
+2002-12-19 20:15  strtok
+
+	* src/irc.c: Check for NULL get_channel in m_cannot_join
+
+2002-12-17 07:46  strtok
+
+	* src/irc.c: Cleaned up irc.c
+
+2002-12-17 07:31  strtok
+
+	* src/: Makefile.am, Makefile.in, opercmd.c, scanwarn.c: Removed
+	  dlclist.c/dlclist.h Added 'status' as alias for stat/stats
+	  command
+
+2002-12-17 07:24  strtok
+
+	* src/: config.c, dnsbl.c, firedns.c, inet.c, irc.c, main.c,
+	  opercmd.c, scan.c, stats.c: Cleaned up main.c Standardized
+	  indenting for switch/case
+
+2002-12-17 07:14  strtok
+
+	* README, TODO: More updates to README
+
+2002-12-17 03:56  strtok
+
+	* src/firedns.c: firedns: Fixed bug where size was never checked
+	  (thus if it goes over dns_fdlimit it we write to naughty memory)
+
+2002-12-17 03:28  strtok
+
+	* src/: firedns.c, irc.c: Use proper lists in firedns.c (much
+	  cleaner now!)
+
+2002-12-16 22:00  strtok
+
+	* src/: scan.c, scan.h: scan.c: only add user to a scanner once
+
+2002-12-16 21:18  strtok
+
+	* ChangeLog, bopm.conf.sample, src/bopchecker.c, src/bopchecker.h:
+	  Removed bopchecker from project.  Added better commenting to
+	  bopm.conf.sample
+
+2002-12-16 17:54  andy
+
+	* configure, configure.in, src/inet.c, src/inet.h, src/irc.c,
+	  src/setup.h.in: Add configure check for inet_pton().
+
+	  Rename inetpton() in inet.c to inet_pton() and only use it if the
+	  build host does not have its own inet_pton().
+
+2002-12-16 02:26  dgl
+
+	* src/firedns.c: use poll in dns code to cope with >1024 fds
+
+2002-12-16 01:08  dgl
+
+	* src/config-parser.y: missing semicolon
+
+2002-12-16 00:57  strtok
+
+	* src/: irc.c, scan.c: Fixed userinfo_create and scan_create memory
+	  leaks
+
+2002-12-15 23:54  strtok
+
+	* Makefile.in, bopm.conf.sample, configure, configure.in,
+	  src/irc.c: Fix for & local channels
+
+2002-12-15 01:52  strtok
+
+	* src/scan.c: More verbose open proxy scanning
+
+2002-12-15 01:47  strtok
+
+	* src/: scan.c, stats.c: Fixed sending NULL with open proxy
+
+2002-12-15 00:50  strtok
+
+	* src/: config-lexer.l, config-parser.y, config.c, config.h,
+	  dnsbl.c, irc.c, opercmd.c, scan.c, stats.c, stats.h: Added stats
+
+2002-12-14 23:07  strtok
+
+	* src/opercmd.c: Cleanup command even if user is not an operator
+
+2002-12-14 23:02  strtok
+
+	* src/: config-lexer.l, config-parser.y, config.c, config.h,
+	  main.c, opercmd.c, opercmd.h, options.h, scan.c, scan.h: Added
+	  command_timer and command timeout functionality
+
+2002-12-13 20:03  strtok
+
+	* src/scan.c: Show nick!user@host on OPEN PROXY ->
+
+2002-12-13 01:30  strtok
+
+	* src/: dnsbl.c, firedns.c: Silly firedns, we don't want 5000 usec
+	  blocking!
+
+2002-12-13 00:04  dgl
+
+	* bopm.conf.sample: Added bahamut throttle message
+
+2002-12-12 21:59  strtok
+
+	* src/irc.c: Speed up cycles 2x (maybe define this in config file?)
+
+2002-12-12 20:31  strtok
+
+	* bopm.conf.sample: Removed commenting on sample conf Extra blurb
+	  about target_ip
+
+2002-12-12 18:00  dgl
+
+	* src/scan.c: Use format strings properly :)
+
+2002-12-12 17:48  dgl
+
+	* src/: dnsbl.c, irc.c: Fix dnsbl error message Only send nickserv
+	  line if it's set
+
+2002-12-12 17:42  dgl
+
+	* src/irc.c: Noticed that there was already a get_channel function
+	  :)
+
+2002-12-12 17:05  dgl
+
+	* bopm.conf.sample, src/config-lexer.l, src/config-parser.y,
+	  src/config.h, src/irc.c: Added invite option to channel block
+
+2002-12-12 16:00  dgl
+
+	* bopm.conf.sample, src/config-lexer.l, src/config-parser.y,
+	  src/config.c, src/config.h, src/irc.c: Added a nickserv option
+	  (TODO: needs to also send a reply on nickserv auth messages)
+	  Chaned the config file to use tabs rather than a mixture of 8
+	  spaces and tabs (I'm not bothered which it is - just make sure
+	  that they are the same? :)
+
+2002-12-12 07:54  strtok
+
+	* INSTALL, README: Updates to README/INSTALL
+
+2002-12-12 07:42  strtok
+
+	* TODO, src/dnsbl.c: Updated TODO Added more debug code for DNSBL
+
+2002-12-12 07:24  strtok
+
+	* bopm.conf.sample, src/config-parser.y, src/config.c, src/dnsbl.c,
+	  src/dnsbl.h, src/irc.c, src/main.c, src/opercmd.c, src/opercmd.h,
+	  src/options.h, src/scan.c, src/scan.h, src/scanwarn.c: Fixed
+	  dnsbl_report
+
+2002-12-12 02:08  strtok
+
+	* src/: irc.c, opercmd.c, opercmd.h: Cleanup of irc.c/opercmd.c,
+	  will copy old opercmd.c functions back from 2.x as needed.
+
+2002-12-11 22:39  strtok
+
+	* bopm.conf.sample: Kline *@%h, %u@%h wouldn't have been very good.
+
+2002-12-11 22:29  strtok
+
+	* bopm.conf.sample: Added timeout/max_read to bopm.conf.sample
+
+2002-12-11 22:18  dgl
+
+	* src/: dnsbl.c, firedns.c: Fix for dns code..
+
+2002-12-11 22:17  strtok
+
+	* src/: negcache.c, scan.c: Fixed logic error in negcache code
+
+2002-12-11 21:51  strtok
+
+	* src/irc.c: Fixed parsing bug.
+
+2002-12-11 21:42  strtok
+
+	* src/: irc.c, main.c, negcache.c, scan.c: Changed max parc to 17
+	  and checked to make sure it's never over 17 (tsk bahamut) Added
+	  negcache functionality
+
+2002-12-11 08:25  dgl
+
+	* src/firedns.c: remove rest of debugging code
+
+2002-12-11 03:41  strtok
+
+	* src/: dnsbl.c, scan.c: Added opm_endscan fix.
+
+2002-12-11 01:44  strtok
+
+	* src/: dnsbl.c, firedns.c: Removed dg's crazy debug code.  Added
+	  more description to DNS lookup logging
+
+2002-12-11 01:39  strtok
+
+	* src/: dnsbl.c, scan.c, scan.h: Added code to cleanup if scans <=
+	  0 Added code to call scan_negative if the scan was negative
+
+2002-12-10 23:27  dgl
+
+	* bopm.conf.sample, src/config-lexer.l, src/config-parser.y,
+	  src/config.c, src/config.h, src/firedns.c, src/firedns.h: Added
+	  dns_fdlimit to options config block Fixed sample config file
+
+2002-12-10 23:12  dgl
+
+	* src/: dnsbl.c, dnsbl.h, firedns.c, firedns.h: firedns.[ch]:
+	  fd-limiting code for dns The fdns code externs two new variables
+	  to change the limit and the current number of fds in use (see
+	  firedns.h) dnsbl.[ch]: Now logs the blacklist and type when
+	  lookups are successful, manipulates ss->scans and sends klines..
+
+2002-12-10 02:42  strtok
+
+	* src/: bopchecker.c, compat.c, config.c, config.h, dlclist.c,
+	  dlclist.h, dnsbl.c, firedns.c, firedns.h, inet.c, irc.c, irc.h,
+	  list.c, list.h, log.c, main.c, malloc.c, match.c, misc.c,
+	  negcache.c, negcache.h, opercmd.c, opercmd.h, scan.c, scan.h,
+	  scanwarn.c, scanwarn.h: Standardized indenting (it seems the
+	  first attempt at this didn't work)
+
+2002-12-10 02:37  strtok
+
+	* src/: irc.c, irc.h, negcache.c: Remove broken IPv6 code
+
+2002-12-10 01:58  strtok
+
+	* src/: irc.c, irc.h, scan.c: Added irc_send_channels function BOPM
+	  actually sends the KLINE message now to the server
+
+2002-12-10 00:53  strtok
+
+	* bopm.conf.sample, src/config-parser.y, src/config.h, src/scan.c:
+	  Made target_string a list to allow multiple target_strings Added
+	  target_string example to bopm.conf.sample for throttled proxies
+
+2002-12-09 23:21  strtok
+
+	* bopm.conf.sample, src/config.c, src/scan.c, src/scan.h: Added
+	  IRCItem->kline, for kline formatting.
+
+2002-12-09 01:16  strtok
+
+	* src/scan.c: Added scan_positive, scan_negative and scan_irckline
+	  to scan.c
+
+2002-12-09 00:39  strtok
+
+	* src/: config.c, scan.c: Added IRCItem->kline Added comment to
+	  scan_gettype
+
+2002-12-09 00:28  strtok
+
+	* Makefile.in, aclocal.m4, configure, configure.in,
+	  src/Makefile.am, src/Makefile.in, src/config-lexer.l,
+	  src/config-parser.y, src/config.h, src/config.l,
+	  src/config.tab.c, src/config.tab.h, src/config.y, src/lex.yy.c:
+	  Change config.l and config.y to config-parser.l and
+	  config-parser.y Added bison/lex of config-parser/config-lexer to
+	  automake
+
+2002-12-08 19:00  dgl
+
+	* Makefile.in, src/Makefile.am, src/Makefile.in, src/config.c,
+	  src/config.h, src/config.l, src/config.tab.c, src/config.tab.h,
+	  src/config.y, src/dnsbl.c, src/dnsbl.h, src/firedns.c,
+	  src/firedns.h, src/irc.c, src/lex.yy.c, src/main.c, src/scan.c:
+	  Inital DNSBL code based on heavily adapted firedns
+
+2002-12-08 00:18  strtok
+
+	* configure, configure.in: Version is now 3.0pre
+
+2002-12-08 00:13  strtok
+
+	* src/: config.tab.c, lex.yy.c, scan.c:
+	  Decrement ss->scan in scan_end callback
+
+2002-12-08 00:06  strtok
+
+	* src/: scan.c, scan.h: Added debug code in callbacks.	Pass scs as
+	  the data element of the scanner callback, we might need scs->name
+	  later on for logs
+
+2002-12-07 23:40  strtok
+
+	* src/: main.c, scan.c, scan.h: Added scan_cycle to scan.c
+
+2002-12-07 23:36  strtok
+
+	* src/scan.c: Increase scan count on opm_scan
+
+2002-12-07 23:27  strtok
+
+	* src/: config.tab.c, config.y, irc.c: Fixed sizeof(ChannelConf)
+	  instead of sizeof(UserConf) in config.y (OOPS!)
+
+2002-12-07 23:06  strtok
+
+	* src/scan.c: Actually add ms to MASKS in scan.c this time! Match
+	  connecting user against masks and add to all matching scanners.
+
+2002-12-07 22:44  strtok
+
+	* src/: scan.c, scan.h: Added shell of libopm callbacks to scan.c
+
+2002-12-07 21:26  strtok
+
+	* src/: config.c, main.c, scan.c, scan.h: Added scan_create to
+	  scan.c Added scan_free to scan.c
+
+2002-12-07 20:49  strtok
+
+	* src/: config.c, scan.c: In config.c always show which file we're
+	  loading (don't use OPT_DEBUG) In scan.c, use OPT_DEBUG > 0 for
+	  showing MASK->SCANNER linking
+
+2002-12-07 20:22  strtok
+
+	* src/: config.c, config.tab.c, config.y, dlclist.c, irc.c,
+	  lex.yy.c, malloc.c, malloc.h, scan.c: Fixed typos in config.y th
+	  at were causing memory corruption.
+
+2002-12-07 10:01  strtok
+
+	* src/: config.c, config.h, config.l, config.tab.c, config.tab.h,
+	  config.y, lex.yy.c, main.c, malloc.c, scan.c, scan.h: Added
+	  scan_init
+
+2002-12-07 08:00  strtok
+
+	* bopm.conf.sample, src/config.c, src/config.h, src/config.l,
+	  src/config.tab.c, src/config.tab.h, src/config.y, src/inet.h,
+	  src/lex.yy.c, src/scan.c: Added SCANNER block to config parser
+
+2002-12-06 21:51  andy
+
+	* Makefile.in, aclocal.m4, configure, configure.in,
+	  src/Makefile.am, src/Makefile.in: Remove bopchecker.	Rebuild
+	  autotools.  Statically link bopm with libopm.a.
+
+2002-12-05 06:23  strtok
+
+	* src/: Makefile.am, Makefile.in, config.c, config.h, config.tab.c,
+	  config.y, lex.yy.c, scan.h: Added scan_struct to scan.c.
+
+2002-11-23 22:38  strtok
+
+	* src/: config.c, irc.c, scan.c: Cleaned up GPL license headers
+
+2002-11-23 22:17  strtok
+
+	* src/: irc.c, scan.c, scan.h:
+	  Pass control from irc.c to scan.c when a user connects
+
+2002-11-23 21:18  strtok
+
+	* bopm.conf.sample, src/config.c: Added default connregex value.
+	  Added sample connregex for hybrid to development conf
+
+2002-11-23 21:13  strtok
+
+	* src/: config.h, config.l, config.tab.c, config.tab.h, config.y,
+	  irc.c, lex.yy.c: Added connection notice parsing using a regular
+	  expression
+
+2002-11-22 22:06  strtok
+
+	* src/: irc.c, irc.h: Moved parc/parv to scope of irc_parse and
+	  they're not passed by function.  Added the start of m_notice
+
+2002-11-22 05:51  strtok
+
+	* bopm.conf.sample: Changed bopm.conf.sample to reflect new
+	  configuration options
+
+2002-11-20 06:59  strtok
+
+	* src/config.tab.h: Added config.tab.h to project
+
+2002-11-20 06:58  strtok
+
+	* Makefile.in, aclocal.m4, configure, src/irc.c, src/irc.h: Further
+	  work on new irc.c
+
+2002-11-14 05:39  strtok
+
+	* src/: config.c, config.h, config.l, config.tab.c, config.y,
+	  irc.c, irc.h, lex.yy.c: Added more configuration directives.
+	  Begin rewrite of IRC parser.
+
+2002-11-12 20:37  strtok
+
+	* src/: Makefile.am, Makefile.in, config.c, config.h, config.l,
+	  config.tab.c, config.y, dnsbl.c, irc.c, lex.yy.c, main.c,
+	  negcache.c, scan.c: Added config.tab.c, lex.yy.c, malloc.c and
+	  list.c to Makefile.am Added Options { negcache, pidfile } to
+	  config parser
+
+2002-11-12 08:57  strtok
+
+	* src/: bopchecker.c, bopchecker.h, compat.c, config.c, config.h,
+	  config.l, config.tab.c, config.y, dlclist.c, dlclist.h, dnsbl.c,
+	  dnsbl.h, extern.h, inet.c, irc.c, irc.h, lex.yy.c, list.c,
+	  list.h, log.c, log.h, main.c, malloc.c, malloc.h, match.c,
+	  match.h, misc.c, negcache.c, negcache.h, opercmd.c, opercmd.h,
+	  options.h, scan.c, scan.h, scanwarn.c, scanwarn.h, stats.c,
+	  stats.h: Replaced config parser with flex/bison based parser.
+	  Ran code through an auto formatter to standardize the BOPM with
+	  libopm (style=ansi, 3 space indentation) Replaced malloc/free
+	  calls with malloc.c wrappers from libopm Added generic list class
+
+2002-11-12 08:40  dgl
+
+	* src/irc.c: Serious bug fix. Due to a lack of checking some
+	  messages would be treated as server notices when in fact they
+	  came from user input.  This can result in a user being able to
+	  scan any host or possibily cause bopm to segfault.
+
+2002-11-12 04:22  strtok
+
+	* configure: Version is now 3.0pre1
+
+2002-11-12 00:06  andy
+
+	* configure, configure.in: New opm report address.
+
+2002-11-02 14:35  dgl
+
+	* src/: dnsbl.c, stats.c: I like stats :) Added DNSBL reporting
+	  stats (also provides a nice way to check if dnsbl reporting is
+	  enabled..)
+
+2002-11-01 10:26  dgl
+
+	* src/inet.c: Removed u_char so _BSD_SOURCE doesn't have to be
+	  defined in some cases.  (Namely running bopm under dietlibc - the
+	  static file is smaller than a dynamic file from glibc :)).
+
+2002-10-31 17:08  dgl
+
+	* src/dnsbl.c: do send http post to dnsbl now
+
+2002-10-31 12:04  dgl
+
+	* src/dnsbl.c: as would not typoing like mad :(
+
+2002-10-31 12:04  dgl
+
+	* src/dnsbl.c: and writing the rest of the code would help..
+
+2002-10-31 12:00  dgl
+
+	* src/dnsbl.h: Added HTTP POST to dnsbl code
+
+2002-10-26 19:41  dgl
+
+	* src/dnsbl.c: added check to stop null pointer dereference
+
+2002-10-26 19:36  dgl
+
+	* src/: dnsbl.c, dnsbl.h: dnsbl messages show the type of proxy the
+	  dnsbl has recorded it as (for opm.blitzed.org anyway).
+
+2002-10-26 17:17  dgl
+
+	* src/scan.c: don't scan again if the connection is maked as closed
+
+2002-10-26 17:02  dgl
+
+	* src/scan.c: logic error type thing
+
+2002-10-24 21:18  dgl
+
+	* src/: dnsbl.c, scan.c, scan.h: scan: - HTTP Post proxies are now
+	  scanned - Code to not connect to a port more than once and won't
+	  try again if it's closed (probably helps with limited connections
+	  too) This adds a stage field into the protocol struct: 0 = scan
+	  first time 1 = scan second time only if port is open.
+
+	  dnsbl.c: - Don't submit HTTP Post to dnsbl
+
+2002-09-06 10:28  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Some people STILL don't get
+	  what BINDIRC and BINDSCAN do and like       to invent IP
+	  addresses to put there, then wonder why it does not	     work.
+
+2002-09-04 22:43  enygma
+
+	* src/inet.c: fixed copyright notices and forgotten logging entry
+
+2002-09-04 22:29  enygma
+
+	* src/inet.c: missing license header
+
+2002-08-29 01:07  andy
+
+	* ChangeLog: ChangeLog: 	Updated for next release.
+
+2002-08-28 20:16  andy
+
+	* configure, configure.in: Rebuild autoconf stuff in preparation
+	  for -RC1 release.
+
+2002-08-23 06:42  andy
+
+	* src/: negcache.c, negcache.h: src/negcache.[ch]:
+	  Implementation of a patricia trie for storing IP addresses and
+	  timestamps.  This data structure will allow searches for nodes
+	  with only log_2 N bit comparisons where N is the current number
+	  of	  nodes.  It also only requires as many nodes as there are
+	  IP	 addresses to store.
+
+		  Each node stores a key (the IP address), a timestamp, the
+	  bit
+		  index, and left and right branches.  The bit index is
+	  what makes
+		  this different from a radix search tree, it tells us at
+	  which bit
+		  this node's key differs from those above it in the trie.
+
+		  Properties of the trie:
+		    1) The bit index always decreases as we follow the tree
+	  from the head
+		       to an external node.
+		    2) Each branch of an external node points to the only
+	  node that can
+		       contain keys that match the bit pattern.  All
+	  searches terminate
+		       at external nodes.
+		    3) When trying to search for a bit pattern that is not
+	  present in the
+		       tree, you will hit an external node at the place
+	  where your bit
+		       pattern first deviates from all current nodes.  You
+	  can tell this
+		       has happened because the next node's bit index will
+	  be larger than
+		       the current, which would be contrary to point (1).
+		    4) Because the bit increments in each node store
+	  information about
+		       where each node's bit pattern differs from all
+	  others in the tree,
+		       extra nodes are not needed - unlike in a radix tree.
+		    5) As for a radix tree, a patricia trie will always end
+	  up the
+		       same no matter what order the nodes are inserted.
+
+2002-08-23 05:41  andy
+
+	* src/scan.c: src/scan.c:	scans_active_for_addr() - walk the
+	  scan list and check if there are     any other scans in progress
+	  for a given IP address (as specified in     dot quad format).
+
+		  When a scan fails and negative caching is enabled, check
+	  if there
+		  are other scans in progress for the same address.  If
+	  not, all
+		  scans have failed and an entry should be added in the
+	  negcache.
+
+		  Walking the list after every scan seems inefficient but I
+	  can't see
+		  any other way to tell if there are no more scans active.
+	  So, at
+		  the moment this is a good reason for not using negative
+	  caching.
+
+2002-08-23 05:29  andy
+
+	* src/options.h: src/options.h	NEG_CACHE_REBUILD: how long in
+	  seconds between rebuilds of the  negcache, if enabled.
+
+2002-08-23 05:28  andy
+
+	* src/main.c: src/main.c:	Periodically rebuild the negcache
+	  (if enabled) to remove entries	that are too old.  Note
+	  that even though this might only happen	  every 12 hours or
+	  so, old entries are ignored by nc_search()	anyway.  This is
+	  just to free up some memory.
+
+2002-08-23 05:17  andy
+
+	* src/irc.c: src/irc.c: 	Upon connection to the IRC server,
+	  initialise our negative cache        (if negative caching is
+	  enabled).
+
+		  When a user connection is detected, search for their IP
+	  in our
+		  negative cache (if negative caching is enabled).  If it
+	  is present,
+		  say so in the logfile and don't bother to scan them.
+
+		  Note that negative caching is only implemented for IPv4
+	  at the
+		  moment -- shouldn't be hard to extend it to IPv6 though.
+
+2002-08-23 05:12  andy
+
+	* src/config.c: src/config.c:	CONF_NEG_CACHE stores the value of
+	  the NEG_CACHE directive from	       the config.
+
+2002-08-23 05:11  andy
+
+	* src/bopchecker.c: src/bopchecker.c:	Dummy negcache_insert()
+	  function so that the bopchecker hack	  continues to compile.
+
+2002-08-23 05:10  andy
+
+	* src/: Makefile.am, Makefile.in: Makefile.in, src/Makefile.am,
+	  src/Makefile.in:	  New automake entries for negcache.[ch],
+	  rebuild makefiles.
+
+2002-08-23 05:08  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Documentation for new
+	  NEG_CACHE directive which determines how long     to cache
+	  negative results for (if at all).  WE DO NOT RECOMMEND THE
+	  USE OF NEGATIVE CACHING!
+
+2002-08-15 18:22  andy
+
+	* README: README:	Typo.
+
+2002-08-15 18:16  andy
+
+	* README: README:	Added a requirements section, specifically
+	  something about transparent  proxies.  This has been mentioned on
+	  the lists before but should	     probably be in the README
+	  since we have just discovered a host whose	BOPM K:lined 100%
+	  of users due to it being behind a transparent web	proxy. (!)
+
+2002-08-15 13:22  andy
+
+	* src/irc.c: src/irc.c: 	Code tidy.
+
+2002-08-15 13:13  dgl
+
+	* src/irc.c: send ping to generate data
+
+2002-08-13 04:44  andy
+
+	* bopm.conf.sample, src/config.c, src/config.h, src/dlclist.c,
+	  src/dlclist.h, src/extern.h, src/irc.c, src/main.c,
+	  src/options.h, src/scanwarn.c, src/scanwarn.h: bopm.conf.sample:
+	     Document SCAN_WARNING directive.
+
+	  src/config/h:   Added new config directive type, TYPE_WILDLIST.
+	  This will be like a	 linked list, but specifically for
+	  wildcards (which is the only use we	had for lists before now).
+	  They are special because they a) need       wildcards collapsed
+	  and b) don't allow duplicate wildcards.
+
+		  Normal linked lists will be of TYPE_LIST.
+
+	  src/config.c:   Rewrote add_to_list() and general linked list
+	  implementation as we	    believe it has never worked.
+
+		  Added CONF_SCAN_WARNING to hold linked list of notices
+	  from the
+		  SCAN_WARNING config directive.
+
+		  New linked list code needs an init_lists() function to
+	  allocate the
+		  heads of all linked lists.
+
+	  src/extern.h:   Added CONF_SCAN_WARNING.
+
+	  src/irc.c:	  Updated CONF_EXCLUDE code to match new linked
+	  list implementation.
+
+		  Removed some left over debug code.
+
+	  src/main.c:	  Added a new function, scanwarn_timer(), in the
+	  alarm loop.  This	   function will get called once a second
+	  and will empty the notice	   queue (described later).
+
+	  src/options.h:  Added option for how many notices to send per
+	  second.
+
+	  src/dlclist.[ch]:	  Implementation of generic doubly-linked
+	  circular lists.
+
+	  src/scanwarn.[ch]:	  Maintain a queue of pending notices to be
+	  sent regarding scanning.	A doubly-linked circular list is
+	  used as a queue, new notices added	 after the head and removed
+	  from before the head.
+
+2002-08-13 04:28  andy
+
+	* configure, configure.in, src/Makefile.am, src/Makefile.in: Added
+	  configure option for some excessive gcc3 warning flags
+
+2002-08-13 04:25  andy
+
+	* README: README:	Notes about IPv6 stuff.  Note about newer
+	  Unreal having different	connect notice umodes.
+
+2002-08-13 04:24  andy
+
+	* INSTALL: INSTALL:	Extra IPv6 docs and some tidying up.
+
+2002-08-12 20:15  strtok
+
+	* src/misc.c: Fixed clean. It would slice off the first character
+	  of a string if there were no leading spaces!
+
+2002-08-11 04:43  andryan
+
+	* contrib/crontab/bopmchk: just to make it work by default :)
+
+2002-08-11 00:22  enygma
+
+	* src/irc.c: Finally made Bopm be able to bind() to ipv6 interfaces
+	  on FreeBSD.
+
+2002-08-11 00:09  enygma
+
+	* src/scan.c: Fixed scan.c and its bind() so that it also works on
+	  FreeBSD.
+
+2002-08-10 23:59  enygma
+
+	* src/irc.c: Fixed buggy bind() call.
+
+2002-08-10 23:05  enygma
+
+	* src/irc.c: Changed the bopm_sockaddr bsadr so that sin_port and
+	  sin_family are also set before bind() is called.
+
+2002-08-10 20:47  andy
+
+	* src/inet.c: Some juggling of headers for BSD.  From TimeMr14C.
+
+2002-08-10 20:07  andy
+
+	* src/opercmd.c: src/opercmd.c: 	Stupidly missed a parameter
+	  off the format, which causes segfault       when a command
+	  expires (virtually never, in practice).  Also got	   the args
+	  to dissect_time wrong!
+
+2002-08-09 06:11  andy
+
+	* src/scan.c: src/scan.c:	addr is a STRING containing the IP
+	  address, casting it to       "struct in_addr *" is not going to
+	  make it one!
+
+2002-08-09 05:32  andy
+
+	* src/irc.c: irc.c:	Duh, should probably default to not trying
+	  to bind IPv6 stuff.
+
+2002-08-09 05:22  andy
+
+	* src/: Makefile.am, Makefile.in: src/Makefile.am:	bopchecker
+	  needs inet.c and inet.h, too.
+
+2002-08-09 05:18  andy
+
+	* src/Makefile.in: Regenerate autoconf stuff
+
+2002-08-09 05:17  andy
+
+	* src/: Makefile.am, irc.c, scan.c: src/irc.c: src/scan.c:
+	  hide some more IPv6 code with #ifdef's.
+
+	  src/Makefile.am:	  correct missing sources for inet.c and
+	  inet.h.
+
+2002-08-08 19:15  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Documentation of new
+	  directives, and extra clues to try and solve	     the most
+	  common support queries.
+
+2002-08-08 19:14  andy
+
+	* src/config.c: src/config.c:	Reformatting.
+
+2002-08-08 18:11  andy
+
+	* Makefile.in, aclocal.m4, configure, depcomp, configure.in,
+	  missing, src/Makefile.in: Update some autoconf stuff.
+
+	  configure.in:   Make IPv6 messages a little prettier with
+	  AC_HELP_STRING,	AC_MSG_CHECKING, AC_MSG_RESULT.
+
+2002-08-08 18:07  andy
+
+	* .cvsignore, src/.cvsignore: Ignore automatically generated
+	  autoconf stuff
+
+2002-08-08 17:42  andy
+
+	* configure, configure.in, src/Makefile.in, src/bopchecker.c,
+	  src/config.c, src/config.h, src/inet.c, src/inet.h, src/irc.c,
+	  src/irc.h, src/scan.c, src/scan.h, src/setup.h.in: Merged in
+	  TimeMr14C's IPv6 stuff to main branch.
+
+2002-08-02 20:38  andy
+
+	* bopm.conf.sample: Apparently this just was not obvious enough,
+	  nicks changed to protect the stupid:
+
+	  <User> [Aug 02 19:16:23 2002] MAIN -> BOPM 2.3 started.  <User>
+	  [Aug 02 19:16:23 2002] MAIN -> Reading configuration file...
+	  <User> [Aug 02 19:16:24 2002] IRC -> connect(): Unknown error
+	  connecting to (some.random.net) <User> then it just ends =\
+	  <grifferz> [andy@fullers services]$ telnet some.random.net 6667
+	  <grifferz> Trying 4.5.6.7...	<grifferz> no response <User> yea
+	  <User> thats not real <User> wait <User> that might be why <User>
+	  hang on <grifferz> how did you expect it to work then? <grifferz>
+	  ...  <User> u should make it more clear
+
+2002-07-27 20:24  strtok
+
+	* src/scan.c:
+	  scan.c: Added socks5 request. We were authing (so that we could
+	  receive back a 'success', but we were NOT requesting a
+	  destination IP.
+
+2002-07-08 14:28  andy
+
+	* bopm.conf.sample: ircU GLINE example.
+
+2002-07-01 03:46  andy
+
+	* configure, configure.in, src/Makefile.in, src/bopchecker.c,
+	  src/config.c, src/config.h, src/inet.c, src/inet.h, src/irc.c,
+	  src/irc.h, src/scan.c, src/scan.h, src/setup.h.in: Yusuf
+	  Iskenderoglu's ongoing ipv6 work
+
+2002-06-02 12:43  andy
+
+	* src/irc.c: src/irc.c: 	Handling of &channels was
+	  completely broken, thanks to TimeMr14C	for bug report.
+
+2002-05-27 13:08  andy
+
+	* src/main.c: src/main.c:	Only fclose() if we managed to
+	  fopen().
+
+2002-05-26 08:32  andy
+
+	* contrib/bopm.spec: bopm.spec: 	You can build Red Hat
+	  (S)RPMs from this.
+
+2002-05-26 07:26  andy
+
+	* bopm.conf.sample, src/config.c, src/extern.h, src/main.c:
+	  src/config.c, src/extern.h:	      Add support for PIDFILE
+	  config option.
+
+	  bopm.conf.sample:	  Document PIDFILE config option.
+
+	  main.c:	  Get PIDFILE path from config file, delay writing
+	  of PIDFILE until	 after logfile is read.
+
+2002-05-26 06:45  andy
+
+	* Makefile.in: Makefile.in, src/Makefile.in:	Regenerated after
+	  typo.
+
+2002-05-26 06:44  andy
+
+	* Makefile.am: Makefile.am:	Typo.
+
+2002-05-26 06:33  andy
+
+	* Makefile.in, aclocal.m4, configure, src/Makefile.in: Disable
+	  Autoconf maintainer mode
+
+2002-05-26 06:32  andy
+
+	* configure.in: configure.in:	Apparently I don't want it in
+	  maintainer mode otherwise it tries to     rebuild all the
+	  autoconf stuff.
+
+2002-05-26 06:24  andy
+
+	* README: README:	More docs.
+
+2002-05-26 06:18  andy
+
+	* INSTALL: INSTALL:	Documentation for new build process.
+
+2002-05-26 06:07  andy
+
+	* src/main.c: src/main.c:	Remove option '-v' which used to be
+	  for changing the "vardir" where     config and log would go.
+	  This is now controlled by ./configure 	settings.
+
+2002-05-26 06:02  andy
+
+	* .cvsignore: .cvsignore:	Sources were moved, so this can be
+	  pruned a bit.
+
+2002-05-26 06:01  andy
+
+	* src/: Makefile.am, Makefile.in, bopchecker.c, bopchecker.h,
+	  compat.c, compat.h, config.c, config.h, dnsbl.c, dnsbl.h,
+	  extern.h, irc.c, irc.h, log.c, log.h, main.c, match.c, match.h,
+	  .cvsignore, misc.c, misc.h, opercmd.c, opercmd.h, options.h,
+	  scan.c, scan.h, setup.h.in, stats.c, stats.h: Sources moved to
+	  src/ dir.
+
+2002-05-26 05:56  andy
+
+	* bopchecker.c, bopchecker.h, compat.c, compat.h, config.c,
+	  config.h: Sources moved to src/ dir.
+
+2002-05-26 05:55  andy
+
+	* aclocal.m4, config.guess, config.sub, install-sh, missing,
+	  mkinstalldirs: More stuff that Automake requires.
+
+2002-05-26 05:54  andy
+
+	* Makefile.am: Makefile.am:	Makefile.in is generated from here,
+	  and this controls which subdirs     get checked for other
+	  Makefile.am.
+
+2002-05-26 05:53  andy
+
+	* Makefile.in: Makefile.in:	Oops, but we need to generate it
+	  and distribute it.
+
+2002-05-26 05:53  andy
+
+	* Makefile.in: Makefile.in:	Now autogenerated from Makefile.am
+	  by Automake.
+
+2002-05-26 05:51  andy
+
+	* configure, configure.in: configure.in:	Converted to use
+	  Automake.  Also edit this file to set version  number.
+
+2002-05-26 05:50  andy
+
+	* version.h: This file no longer needed.
+
+2002-05-26 05:50  andy
+
+	* dnsbl.c, dnsbl.h, extern.h, irc.c, irc.h, log.c, log.h, main.c,
+	  match.c, match.h, misc.c, misc.h, opercmd.c, opercmd.h,
+	  options.h, scan.c, scan.h, setup.h.in, stats.c, stats.h: Sources
+	  moved to src/ dir.
+
+2002-05-25 16:19  andy
+
+	* irc.c: irc.c: 	Oper up after doing the other "on connect"
+	  things in an attempt to      play nice with some starnge ircd
+	  that wants all opers to be	 identified to their nick first..
+
+2002-05-23 18:04  andy
+
+	* Makefile.in: Makefile.in:	bopchecker needs compat stuff too.
+
+2002-05-23 05:22  andy
+
+	* Makefile.in, README, compat.c, compat.h, configure, configure.in,
+	  irc.c, setup.h.in: Merged SOLARIS_PORT branch.
+
+2002-05-23 05:13  andy
+
+	* Makefile.in, README, configure, configure.in: configure.in,
+	  configure:	    Check if libsocket and libnsl are needed (like
+	  on Solaris!)
+
+	  Makefile.in:	  Placeholders for libs
+
+2002-05-23 04:31  andy
+
+	* compat.c, compat.h, configure, configure.in, setup.h.in:
+	  configure.in, configure, setup.h.in:	       Check for
+	  inet_aton()
+
+	  compat.c, comapt.h:	  Provide our own inet_aton() if the system
+	  does not have one.
+
+2002-05-23 02:27  andy
+
+	* Makefile.in, compat.c, configure, configure.in, irc.c,
+	  setup.h.in: Makefile.in, compat.c:	 Add compat.c, where
+	  compatability routines will go.
+
+	  configure.in, configure:	  Check for strings.h, Solaris
+	  seems to want to put index() there.
+
+	  irc.c:  Include strings.h if we have it.
+
+2002-05-23 01:29  andy
+
+	* compat.h, irc.c: compat.h:	Header file for compatability stuff
+	  (duh).  Solaris at least    doesn't have INADDR_NONE.  irc.c:
+	  Include compat.h.
+
+2002-05-21 06:02  strtok
+
+	* ChangeLog:
+	  ChangeLog: Updated for version 2.3 release
+
+2002-05-17 20:31  strtok
+
+	* scan.c, stats.c:
+	  scan.c: Ubermicro optomization on flagging STATE_CLOSED on all
+	  connections with the same IP by eliminating use of strcmp.
+
+	  stats.c: Output file descriptor use in stats now. This will be
+	  useful for larger servers running bopm.
+
+2002-05-14 23:07  strtok
+
+	* version.h:
+	  version.h: Version 2.3 now
+
+2002-05-14 12:38  andy
+
+	* contrib/crontab/bopmchk: Useful crontab from skold
+	  <skold@habber.net>
+
+2002-05-14 04:37  strtok
+
+	* bopm.conf.sample:
+	  bopm.conf.sample: Extra clues for the idiots changing their
+	  KLINE_COMMAND 		  without knowing what they're
+	  doing.
+
+2002-05-14 01:59  strtok
+
+	* scan.c, stats.c:
+	  scan.c: Fixed problem with FD_USE being decremented when it
+	  shouldn't have been
+
+2002-05-12 19:43  strtok
+
+	* scan.c:
+	  scan.c: Fixed logic error when adding fd's to the poll array
+
+2002-05-06 23:39  strtok
+
+	* ChangeLog:
+	  ChangeLog: Updated changelog for 2.2r2
+
+2002-05-06 23:29  strtok
+
+	* irc.c:
+	  irc.c: Caught any NULL returns from strtok in the connect
+	  handlers.
+
+2002-05-06 23:09  andy
+
+	* irc.c: irc.c: 	Oops, looks like Unreal sends a server
+	  notice that is too much  like an ultimate ircd notice.  Here's a
+	  hopeful quick fix.
+
+2002-05-06 20:17  strtok
+
+	* irc.c:
+	  irc.c: With debug level >= 1, with unknown connect() error print
+	  strerror
+
+2002-05-06 19:14  strtok
+
+	* ChangeLog:
+	  ChangeLog: Updated changelog for 2.2r1
+
+2002-05-06 19:10  strtok
+
+	* ChangeLog:
+	  ChangeLog:	     Updated changelog for 2.2r1
+
+2002-05-06 14:00  dgl
+
+	* main.c: Fixing -c param bug (which has broken -c option since -v
+	  option was added (rel 1.23)).  TheShadow reported this in
+	  #blitzed
+
+2002-05-05 04:16  andy
+
+	* ChangeLog: ChangeLog: 	Updated.
+
+2002-05-05 02:54  andy
+
+	* main.c: main.c:	Apparently using _exit is the correct thing
+	  to do.
+
+2002-05-04 19:48  strtok
+
+	* bopm.conf.sample, config.c, extern.h, scan.c:
+	  scan.c, config.c, extern.h, bopm.conf.sample: Added CONF_TIMEOUT
+	  and TIMEOUT		directive to allow for configurable scan
+	  timeouts (suggested by lilo).
+
+2002-05-01 18:44  andy
+
+	* irc.c, bopm.conf.sample, config.c, extern.h: irc.c, config.c,
+	  extern.h:	  Added config option REALNAME which allows bopm's
+	  IRC "realname" to	 be configured.
+
+	  bopm.conf.sample:	  Sample REALNAME
+
+2002-05-01 17:58  andy
+
+	* stats.c, stats.h: stats.c, stats.h:	Reformatiing
+
+2002-05-01 05:01  andy
+
+	* scan.c, scan.h: scan.c, scan.h:	Reformatting.
+
+2002-05-01 00:24  andy
+
+	* irc.c, opercmd.c, opercmd.h: opercmd.c:	Reformatting.
+	  opercmd.h:	   Reformatting, moved some global variable
+	  declarations to opercmd.c irc.c:	 Needed an extern to get
+	  access to LAST_REAP_TIME.
+
+2002-04-30 23:41  andy
+
+	* misc.c, misc.h: misc.c, misc.h:	Reformatting.
+
+2002-04-30 22:53  andy
+
+	* main.c: main.c:	Reformatting.
+
+2002-04-30 21:14  andy
+
+	* log.c, log.h: log.c, log.h:	Reformatting.
+
+2002-04-30 04:01  andy
+
+	* irc.c, irc.h: irc.c:	Code cleanups.	Added check_channel()
+	  function to check if a given	    channel is one of our
+	  configured reporting channels.  Made a bunch	    of irc.c
+	  private fucntions have static linkage.  irc.h:	 Code
+	  cleanups.
+
+2002-04-30 01:37  andy
+
+	* dnsbl.c, extern.h, log.c, misc.c, opercmd.c, stats.c: extern.h:
+	      Code format cleanup.  Move include of config.h to files that
+	  need	     it.
+
+	  dnsbl.c, log.c, misc.c, opercmd.c, stats.c:	  Add include for
+	  config.h.
+
+2002-04-29 18:10  strtok
+
+	* bopm.conf.sample:
+	  bopm.conf.sample: Fixed TARGET_STRING sample
+
+2002-04-29 17:17  andy
+
+	* dnsbl.c, dnsbl.h: dnsbl.c:	Formatting cleanup & added more
+	  descriptive error message when  gethostbyname() fails (is man
+	  page wrong?)
+
+	  dnsbl.h:	  Formatting cleanup.
+
+2002-04-29 15:20  andy
+
+	* config.c: config.c:	Doh, KEYS is not required for normal
+	  operation.
+
+2002-04-29 15:18  andy
+
+	* bopchecker.h: bopchecker.h:	Open cisco router bit mask.
+
+2002-04-29 15:15  andy
+
+	* config.c, config.h: config.c: 	Tidied up indentation.
+
+		  Added static linkage for all private config functions.
+
+		  Added add_to_list() to simplify adding values to
+	  configuration
+		  lists.
+
+		  Added free_list() to simplify clearing out each config
+	  list at
+		  startup/rehash.
+
+		  Added add_to_config() to simplify adding a key/value pair
+	  to our
+		  config hash.
+
+	  config.h:	  Neater indentation, some prototypes moved to
+	  config.c.
+
+2002-04-29 06:57  strtok
+
+	* scan.c:
+	  scan.c: Uncommented CISCO from scan table as efnet reports it is
+	  working	  properly
+
+2002-04-28 19:20  andy
+
+	* bopchecker.c, bopchecker.h: Code clean up.
+
+2002-04-28 18:35  andy
+
+	* bopchecker.c, config.c, extern.h, irc.c, main.c, misc.c,
+	  opercmd.c, opercmd.h, scan.c, stats.c: bopchecker.c:
+	  Hacks to avoid unused variable warnings.  config.c:	  Code
+	  cleanups.  extern.h:	     Code cleanups.  irc.c:  Code cleanups.
+	  main.c:	   Merged singal handlers into one function, code
+	  cleanups.  misc.c:	   Code cleanups.  opercmd.c, opercmd.h:
+	  2nd parameter of checkoper was never used.  scan.c:	  Code
+	  cleanups.  stats.c:	     Code cleanups.
+
+2002-04-26 23:20  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Better example config
+	  suggestion from Erik / Andrew Church.
+
+2002-04-26 22:32  andy
+
+	* bopm.conf.sample, config.c, extern.h, irc.c: config.c,
+	  bopm.conf.sample:	 Added KEYS config parameter.
+
+	  irc.c:  Added support for channel keys, plus helper function
+	  get_chan_key()     which looks up the correct key for a given
+	  channel.
+
+2002-04-25 22:27  strtok
+
+	* scan.c:
+	  scan.c: Commented HTTP 8000 out of the scan table, those who wish
+	  to scan	  on this port can easily uncomment it.
+
+2002-04-25 07:24  strtok
+
+	* scan.c:
+	  scan.c: Removed use of scan_del() where STATE_CLOSED should have
+	  been set	   instead.
+
+2002-04-25 05:41  strtok
+
+	* options.h, scan.c:
+	  scan.c/options.h: Added MAXREAD (default 4096), max amount of
+	  bytes read from	   any port before the connection is
+	  considered a flood and failed.
+
+2002-04-25 05:17  strtok
+
+	* scan.c:
+	  scan.c: Fixed bug which caused freezing if data was virtually
+	  endless (reported	   by qurve/qeast
+
+2002-04-25 03:42  strtok
+
+	* scan.c:
+	  scan.c: Fixed scan_struct data bug where it tried to free data
+	  even if it wasn't malloc yet.
+
+	  scan.c: Commented out cisco and http port 8001 scanning, because
+	  servers will be using this commit live.
+
+2002-04-24 12:43  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Less Blitzed-like pages
+	  from Tom Gilder <tom@blitzed.org>
+
+2002-04-23 17:56  andy
+
+	* irc.c, irc.h: irc.c:	Here's support for ultimate ircd.
+
+2002-04-18 00:25  andy
+
+	* README, main.c, options.h: main.c, options.h: 	-v option
+	  from Harald Skoglund <harald@hekta.stud.iet.hist.no>
+
+	  README:	  Documentation of command line options.
+
+2002-04-17 23:16  andy
+
+	* bopm.conf.sample: README:	Again some notes added for SCANPORT
+	  because lots of people are having a	      hard time
+	  understanding what this is for.
+
+2002-04-14 12:03  dgl
+
+	* README: typo, the hybrid team didn't write math.[ch] :)
+
+2002-04-11 05:56  andy
+
+	* scan.c: scan.c:	So much call for HTTP scanning on ports
+	  8000, 8001.  Well, let's	  try it for a while and see.
+
+2002-04-04 03:32  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Many people appear to be
+	  getting confused over this.
+
+2002-03-31 20:33  andy
+
+	* README: Strange Unrealism.
+
+2002-03-31 06:31  andy
+
+	* README: Mailman moved to a slightly simpler URL.
+
+2002-03-21 17:23  andy
+
+	* README: More IRCu notes from wunix <wu@wunix.org>
+
+2002-03-19 13:25  andy
+
+	* README: README:	Some compatibility notes from Erik Fears
+	  <strtok@softhome.net>
+
+2002-03-03 21:49  andy
+
+	* configure, configure.in: configure.in:	Added DNSBL begging
+	  text
+
+2002-02-26 05:07  strtok
+
+	* scan.c: scan.c: Moved Cisco up in hash table so that it is tried
+	  before wingate, because cisco routers only allow 4 connections at
+	  once (pointed out by JPayne)
+
+2002-02-25 07:16  strtok
+
+	* scan.c:
+	  scan.c: Cisco scanning now works
+
+2002-02-25 07:08  strtok
+
+	* version.h: version.h: Incremented version to 2.2 so we can
+	  identify any bopms that have cvs updated
+
+2002-02-25 07:07  strtok
+
+	* scan.c: scan.c: Actually send() data for cisco check now (oops)
+
+2002-02-25 06:57  strtok
+
+	* scan.c, scan.h: scan.c/scan.h: Added open cisco router scanning
+
+2002-02-22 11:06  andy
+
+	* README: README:	Credits for Collide.
+
+2002-02-22 11:05  andy
+
+	* irc.c, irc.h: irc.c:	Added three new functions,
+	  do_hybrid_connect(), do_xnet_connect()       and
+	  do_trircd_connect().	This could be modularised further but for
+	    now this gets rid of some duplication.  Each function is for
+	  processing the connect notices of different classes of ircd.
+
+		  do_trircd_connect() adds support for tr-ircd, which has a
+	  &connects
+		  channel instead of a +c umode.
+
+2002-02-19 23:29  andy
+
+	* ChangeLog: ChangeLog: 	Update dfor next release
+
+2002-02-19 23:10  andy
+
+	* configure, configure.in: configure.in:	$ac_c deprecated
+
+2002-02-19 23:04  andy
+
+	* configure, configure.in: configure.in:	Fix broken "echo
+	  -n" check
+
+2002-02-19 23:00  andy
+
+	* configure, configure.in, setup.h.in: configure.in:	Fix
+	  sys/poll.h check
+
+2002-02-19 22:57  andy
+
+	* acconfig.h, configure, configure.in, setup.h.in: configure.in:
+	  Get rid of need for acconfig.h acconfig.h:      No longer
+	  needed
+
+2002-02-19 20:55  strtok
+
+	* version.h: version.h: Incremented version to 2.1
+
+2002-02-19 20:46  strtok
+
+	* scan.c: Fix for select()
+
+2002-02-17 17:15  andy
+
+	* README: README:	Some credits we missed, oops.
+
+2002-02-17 03:52  andy
+
+	* ChangeLog: [no log message]
+
+2002-02-17 02:35  andy
+
+	* irc.c: irc.c: 	Doh!  Need to check we have enough tokens
+	  before blindly accessing	tokens[6].
+
+2002-02-16 18:44  andy
+
+	* ChangeLog: [no log message]
+
+2002-02-16 18:43  andy
+
+	* configure, configure.in: configure.in:	Added a bit about
+	  using GNU Make.
+
+2002-02-16 18:37  andy
+
+	* ChangeLog: [no log message]
+
+2002-02-16 18:36  strtok
+
+	* config.c: config.c: Fixed -> typo
+
+2002-02-16 18:35  strtok
+
+	* config.c: config.c: DEBUG level 3 now also prints out LISTS with
+	  other config elements
+
+2002-02-16 18:17  andy
+
+	* ChangeLog: ChangeLog: 	Idea - let's remove changes to the
+	  changelog, from the changelog. :)
+
+2002-02-16 18:16  andy
+
+	* ChangeLog: ChangeLog: 	Updated again..
+
+2002-02-16 06:18  strtok
+
+	* config.c: Added code to free TYPE_LIST in config.c (someone
+	  forgot this!)
+
+2002-02-16 03:23  andy
+
+	* ChangeLog: ChangeLog: 	Updated for next release.
+
+2002-02-15 23:21  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Added docs and examples for
+	  EXCLUDE option.
+
+2002-02-15 04:57  andy
+
+	* Makefile.in, config.c, config.h, extern.h, irc.c, irc.h, match.c,
+	  match.h, scan.c:
+	  match.c, match.h: IRC wildcard matching functions from
+	  dancer-hybrid.  match() handles string matching and collapse()
+	  shortens a wildcard string as far as possible.
+
+	  config.h: Added new config type; TYPE_LIST.  Multiple parameters
+	  of this type are put into a linked list.
+
+	  Added missing config_memfail() prototype.
+
+	  config.c: Added new config option EXCLUDE.  This is a list of
+	  wildcard strings against which the host and IP address of
+	  connecting users will be matched.  A user which matches any entry
+	  will not be scanned.
+
+	  Makefile.in: Added new objects and dependencies for match.[cho]
+
+	  irc.c, irc.h: Added do_connect() function to avoid duplication.
+	  This function checks the users host and IP address against the
+	  EXCLUDE list and provided there are no matches proceeds to do a
+	  DNSBL check and proxy scan.
+
+	  The above patch was contributed by Rob Levin/lilo @ OPN
+
+2002-02-15 00:56  andy
+
+	* Makefile.in, misc.c, opercmd.c, scan.c, stats.c: Makefile.in,
+	  misc.c, stats.c:	  Forogt to include the autoconfiscated
+	  header
+
+	  opercmd.c, scan.c:	  Small tidyup.
+
+2002-02-14 05:56  andy
+
+	* INSTALL, README: README:	Updated mailing list info, credits,
+	  etc.	INSTALL:      Largely rewritten installation instructions
+	  and a blurb about   TARGET_STRING
+
+2002-02-14 05:17  andy
+
+	* acconfig.h, configure, configure.in, irc.c, options.h,
+	  setup.h.in: configure.in, options.h:	 Added configure option
+	  --with-unreal to replace the UNREAL	   definition that was in
+	  options.h acconfig.h:    Make autoheader work for --with-unreal
+	  irc.c:   WITH_UNREAL instead of UNREAL
+
+2002-02-14 05:06  andy
+
+	* acconfig.h, configure, configure.in, setup.h.in: configure.in:
+	  Added support for --with-select configure option so that
+	  people	 can force use of select() whether they have poll()
+	  or not.  acconfig.h:	       This makes autoheader work (which is
+	  used to make setup.h.in from	     configure.in) now that
+	  WITH_SELECT is added.
+
+2002-02-14 01:51  andy
+
+	* configure, configure.in, options.h, scan.c, setup.h.in:
+	  configure.in: 	Check for sys/poll.h options.h:
+	  We'll use poll() if sys/poll.h was found scan.c:	  Alter for
+	  autoconfiscated sys/poll.h check.
+
+2002-02-13 23:52  andy
+
+	* configure, configure.in, dnsbl.c, setup.h.in: configure.in:	Add
+	  a check for bigendian systems.  dnsbl.c:    If we're on a
+	  bigendian system this'll be backwards.
+
+2002-02-13 22:28  andy
+
+	* .cvsignore, Makefile.in, configure: OK, so we do need to
+	  distribute configure.
+
+2002-02-13 22:15  strtok
+
+	* scan.c, scan.h: Added byte counter to teach connection, and
+	  adjusted manual check output to be be more informative
+
+2002-02-13 20:50  andy
+
+	* bopchecker.c, irc.c, scan.c: bopchecker.c, irc.c, scan.c:	Use
+	  AC_HEADER_TIME and AC_CHECK_HEADERS(sys/time.h) to check how to
+	  handle time.h and sys/time.h (if there even if a sys/time.h, if
+	  it	  can be included with time.h)
+
+2002-02-13 20:32  andy
+
+	* bopchecker.c: bopchecker.c:	Another STDC_HEADERS check
+
+2002-02-13 20:28  andy
+
+	* config.c: config.c:	Typo fix.
+
+2002-02-13 20:26  andy
+
+	* Makefile.in, config.c, dnsbl.c, irc.c, log.c, main.c, opercmd.c,
+	  scan.c: Makefile.in:	       Add a distclean target.	We may want
+	  to distribute the configure	     script at some point instead
+	  of just configure.in and expect people     to use autoconf; we'll
+	  have to remember to change this then.
+
+	  config.c, dnsbl.c, irc.c, log.c, main.c, opercmd.c, scan.c:
+	  Take account of AC_HEADER_STDC check.
+
+2002-02-13 20:12  andy
+
+	* main.c: main.c:	Handle AC_TYPE_SIGNAL check.
+
+2002-02-13 19:58  andy
+
+	* setup.h.in: setup.h.in:	/me reads as far as "autoheader" in
+	  the autoconf manual.
+
+2002-02-13 19:24  andy
+
+	* .cvsignore, Makefile, Makefile.in, configure.in, setup.h.in:
+	  First stab at autoconfiscation (euheue)
+
+2002-02-13 16:51  andy
+
+	* bopchecker.c: bopchecker.c:	bopchecker needs a target string as
+	  well now.
+
+2002-02-13 05:40  strtok
+
+	* scan.c: Pad scan_struct->data + 1 byte on malloc to leave room
+	  for null terminator (was causing buffer overrun)
+
+2002-02-12 23:02  andy
+
+	* config.c: config.c:	Really doesn't need to be that verbose :)
+	  Remember I use -d and -dd a lot when helping people set up
+	  BOPM -       I really don't need 2 pages of config options flying
+	  by.
+
+2002-02-12 21:42  strtok
+
+	* version.h: VERSION for this release will be 2.0
+
+2002-02-12 21:17  strtok
+
+	* scan.c: Wingate write function now actually sends data
+
+2002-02-12 21:07  strtok
+
+	* scan.c, scan.h: Cleaned out code no longer needed
+
+2002-02-12 20:57  strtok
+
+	* bopm.conf.sample: Added TARGET_STRING to config file
+
+2002-02-12 20:54  strtok
+
+	* config.c, extern.h, options.h, scan.c, scan.h: No longer use
+	  individual read functions for each protocol, now search for a
+	  TARGET_STRING within the data. (set in conf)
+
+2002-02-12 19:19  strtok
+
+	* bopm.conf.sample, options.h, scan.c, scan.h: options.h USE_POLL
+	  and MAXPOLL for use of poll() as opposed to select() in
+	  scan.c. If USE_POLL is defined, the scanner will use poll(), if
+	  not		select() is used as before
+
+2002-02-12 06:10  strtok
+
+	* bopm.conf.sample, config.c, extern.h, misc.c, scan.c, scan.h:
+	  bopm.conf.sample: Added config parameter FDLIMIT (default 512),
+	  which is maximum number     of file descriptors that can be open
+	  at any time (for scanning).  config.c: Added -d debug output of
+	  set config parameters misc.c: Fixed bug involving clean() scan.c:
+	  Added scan_establish() code to socket()/connect() to a socket,
+	  connections	      are now queued if the FDLIMIT cap is reached.
+
+2002-02-10 15:37  andy
+
+	* README: README:	Credits for recent patches.
+
+2002-02-10 15:25  andy
+
+	* scan.c: scan.c:	Improved HTTP handling.  Seems to work
+	  (have tested against all	   known HTTP false positives seen
+	  so far, plus 2 known open proxies).	  Ideas and pseudocode from
+	  jpayne@blitzed.org.
+
+2002-02-10 14:34  andy
+
+	* irc.c, irc.h, main.c: irc.c: irc.h:	Added a MSGLEN #define so
+	  that networks which use different sized	IRC buffers can be
+	  made to work easily.
+
+	  main.c:	  Changed umask to something more sensible.
+
+	  Both the above from shasta@irc.pl.
+
+2002-02-07 17:23  andy
+
+	* bopm.conf.sample, dnsbl.c: dnsbl.c:	Need to check against
+	  DNSBL_ZONE with a dot on the end, because	    otherwise it
+	  will try the search domains in /etc/resolv.conf, and may   even
+	  find a match!  Reported and fixed by asmodeus@irc.gr
+
+	  bopm.conf.sample:	  Gotcha about putting your own dot at the
+	  end of the zone.
+
+2002-02-06 17:19  andy
+
+	* TODO: TODO:	More updates on that idea.
+
+2002-02-06 16:51  andy
+
+	* TODO: TODO:	Adding suggestion from Simorgh
+	  <simorgh@dataphone.se>
+
+2002-02-04 22:39  andy
+
+	* bopchecker.c: bopchecker.c:	Extra #include needed, reported by
+	  shasta@irc.pl
+
+2002-02-04 18:12  andy
+
+	* stats.c: stats.c:	Added simple connects/minute reading.
+
+2002-02-01 06:17  andy
+
+	* ChangeLog: ChangeLog: 	Updated for next realese.
+
+2002-02-01 06:16  andy
+
+	* README: README:	Added note about Unreal 3.2 support.
+
+2002-02-01 05:57  andy
+
+	* Makefile: Makefile:	irc.o depends on options.h
+
+2002-02-01 05:08  andy
+
+	* README: README:	Credits to locksmith for his help.
+
+2002-02-01 04:40  andy
+
+	* config.c: config.c:	Possible stupid error with calculating size
+	  of config hash.
+
+2002-01-31 06:00  strtok
+
+	* irc.c: irc.c: Last commit had an odd paste from vim (???)
+
+2002-01-31 05:38  strtok
+
+	* config.c, irc.c, scan.h: config.c: Added FDLIMIT configuration
+	  parameter (limit of open file descriptors) irc.c: Fixed NULL
+	  CONF_NICKSERV_IDENT pointer (reported by uneks) scan.h: Added
+	  STATE_UNESTABLISHED
+
+2002-01-30 23:55  andy
+
+	* irc.c: irc.c: 	Some ircd's (Xnet and others?) don't send
+	  +c notices with the server as 	the source.
+
+2002-01-29 17:33  andy
+
+	* ChangeLog: ChangeLog: 	Updated for next release.
+
+2002-01-29 17:31  andy
+
+	* config.c: config.c:	Now we've added a zero element on the
+	  config hash we need to adjust     the sizes..
+
+2002-01-29 01:49  strtok
+
+	* README: README: Added codebase specific compatibility (those
+	  tested)
+
+2002-01-29 01:46  andy
+
+	* ChangeLog: ChangeLog: 	Missed a late commit.
+
+2002-01-29 01:45  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Added suggestion from
+	  Sotiris Tsimbonis to make ti a bit more   obvious that a
+	  temporary KLINE should be used.
+
+2002-01-29 01:25  andy
+
+	* ChangeLog: ChangeLog: 	Updated ChangeLog for 1.1 release.
+
+2002-01-29 01:21  strtok
+
+	* version.h: Version.h: Now 1.1
+
+2002-01-29 00:23  andy
+
+	* bopchecker.c, bopchecker.h, config.c: bopchecker.c:	Some
+	  reorganisation.
+
+		  "req" field of config hash is now zero'd for all but the
+	  parameters
+		  we need for bopchecker to operate.
+
+		  Used a sleep(1) to reduce CPU usage.
+
+	  bopchecker.h:   Exit values have changed again!  0 and 1 are
+	  already in use within      bopm, so now 15-255 are reserved for
+	  bopchecker.
+
+		  HTTP	  =  16
+		  WinGate =  32
+		  SOCKS4  =  64
+		  SOCKS5  = 128
+
+	  config.c:	  Terminated the config hash with a zero'd entry so
+	  that it is easy	to tell where it ends.
+
+2002-01-29 00:15  strtok
+
+	* README, config.c: README: Added rehash instructions
+
+2002-01-28 01:37  andy
+
+	* README: README:	Credits for PASSWORD option
+
+2002-01-28 01:33  andy
+
+	* bopm.conf.sample, config.c, extern.h, irc.c: config.c, extern.h:
+	  Add PASSWORD config option.  irc.c:     Use PASSWORD if
+	  supplied.  bopm.conf.sample:	  Document PASSWORD, fix typo on
+	  SERVER
+
+2002-01-28 00:18  strtok
+
+	* config.c, config.h: config.c/config.h: BOPM now exits if
+	  'required' configuration parameters are not set.
+
+2002-01-27 23:31  strtok
+
+	* TODO: TODO: Updated TODO
+
+2002-01-27 14:17  andy
+
+	* bopchecker.c, bopchecker.h: bopchecker.h:	Added bitmasks for
+	  the types of proxy.  HTTP is 1, Wingate 2,   SOCKS4 is 4 and
+	  SOCKS5 8.
+
+	  bopchecker.c:   Now returns a bitmask of the types of proxies
+	  found back to the	    shell. THIS MEANS THAT VALUES > 1 MEAN
+	  A PROXY WAS FOUND AND 0  MEANS NO PROXY WAS FOUND, THIS IS THE
+	  EXACT OPPOSITE TO PRIOR   VERSIONS OF THIS PROGRAM!
+
+2002-01-27 04:23  strtok
+
+	* irc.c: irc.c: Fixed segfault if nickserv ident isnt defined in
+	  conf
+
+2002-01-26 19:17  strtok
+
+	* config.c: config.c: Replace C++ comment with C style comment
+	  (oops)
+
+2002-01-25 22:58  andy
+
+	* bopm.conf.sample: bopm.conf.sample:	Remove Blitzed address
+	  because of people sending us reports without	       contacting
+	  us.
+
+2002-01-25 22:02  andy
+
+	* scan.c: scan.c: Suggestion from Sotiris Tsimbonis that details go
+	  to channels
+
+2002-01-25 21:14  andy
+
+	* README, bopm.conf.sample, dnsbl.c: dnsbl.c: Allow reporting to
+	  multiple addresses README: Note about Sotiris Tsimbonis' idea
+	  bopm.conf.sample: Note about how to use multiple TO addresses
+
+2002-01-25 15:27  andy
+
+	* irc.c: irc.c: support & channels, bug found by Sotiris Tsimbonis
+	  <stsimb@irc.gr>.
+
+2002-01-24 21:54  strtok
+
+	* INSTALL: INSTALL: Updated INSTALL file to include information
+	  about options.h
+
+2002-01-24 21:53  strtok
+
+	* irc.c, options.h: irc.c/options.h: Added support for unreal ircds
+
+2002-01-24 17:40  strtok
+
+	* README: README: Added hybrid compatibility to README.
+
+2002-01-24 10:41  andy
+
+	* bopm.conf.sample, config.c, extern.h, irc.c: Added OPER_MODES
+	  config option to specify what modes the bopm will set on itself
+	  after opering up.
+
+2002-01-24 06:56  andy
+
+	* bopchecker.c: bopchecker needs to time out too, doh.
+
+2002-01-24 06:18  andy
+
+	* extern.h: Remove CONF_PING, a config option that never was.
+
+2002-01-24 06:07  andy
+
+	* INSTALL, README, bopchecker.c, extern.h, irc.c, main.c,
+	  options.h: Merged patch from Sotiris Tsimbonis <stsimb@irc.gr>
+	  with minor changes.  Adds a -c command line argument which tells
+	  bopm to use a different name for log, pid and config files.  i.e.
+	  ./bopm -c myserver will use myserver.conf, myserver.log,
+	  myserver.pid.
+
+	  The patch also makes bopm set umode -h on itself after opering,
+	  in order to prevent the bot appearing in /stats p output (shows
+	  opers available to help).
+
+	  bopchecker now takes the -c option also, in the same way as bopm.
+
+2002-01-23 04:58  strtok
+
+	* ChangeLog: ChangeLog: It's 2002!
+
+2002-01-22 21:44  strtok
+
+	* bopm.conf.sample: bopm.conf.sample: Fixed typo
+
+2002-01-22 19:09  strtok
+
+	* ChangeLog: ChangeLog: Added changelog
+
+2002-01-21 20:03  strtok
+
+	* scan.c: scan.c: Apache ip vhosting hack (apaches fault!)
+
+2002-01-21 15:07  andy
+
+	* README: typo
+
+2002-01-21 07:54  strtok
+
+	* scan.c: scan.c: Send \r\n\r\n for HTTP proxy rather than \n\n
+
+2002-01-20 21:53  strtok
+
+	* README: Added compatibility section to README and support notice
+
+2002-01-20 20:12  strtok
+
+	* dnsbl.c: dnsbl.c: Reordered priorities: Kline, then log then
+	  privmsg
+
+2002-01-20 20:01  andy
+
+	* .cvsignore: ignore another binary
+
+2002-01-20 19:59  strtok
+
+	* bopm.conf.sample, irc.c, options.h, scan.c: scan.c: Added
+	  HTTP/1.1 checking for HTTP proxies bopm.conf.sample: Commented
+	  out DNSBL from and to irc.c: Changed no data timeout to use
+	  NODATA_TIMEOUT from options.h options.h: Added NODATA_TIMEOUT
+	  default to 900 seconds (15 minutes)
+
+2002-01-20 07:06  strtok
+
+	* irc.c, main.c, version.h: version.h: Added #define for VERSION
+	  (currently 1.0) main.c: Log version on startup irc.c: Added CTCP
+	  version reply
+
+2002-01-20 03:27  andy
+
+	* bopchecker.c, bopchecker.h, bopm.conf.sample, dnsbl.c, irc.c,
+	  irc.h, scan.c: Kline messages now have ?ip= in the URL which will
+	  allow our web pages to be a bit cleverer.
+
+2002-01-20 02:58  andy
+
+	* bopm.conf.sample, config.c, extern.h, irc.c: Here's a config
+	  option for an away message (AWAY).  Also now responds to PRIVMSG
+	  that simply says INFO, giving a bit of information about what the
+	  bot does.  Help email address set from the HELP_EMAIL option.
+
+2002-01-20 02:03  andy
+
+	* Makefile, bopchecker.c, bopchecker.h: Added an evil hack called
+	  bopchecker which is a command line interface to bopm.  It returns
+	  EXIT_FAILURE if it doesn't find an open proxy, it returns
+	  EXIT_SUCCESS if it does.
+
+2002-01-19 20:09  andy
+
+	* irc.c: typo
+
+2002-01-19 20:03  andy
+
+	* scan.c: More hopeful manual check fixes
+
+2002-01-19 19:36  andy
+
+	* dnsbl.c, scan.c: Hopeful reporting fixes
+
+2002-01-19 18:49  andy
+
+	* dnsbl.c: Reporting proxies to DNSBL now works.
+
+2002-01-19 17:05  andy
+
+	* Makefile, config.c, dnsbl.c, dnsbl.h, extern.h, irc.c, scan.c,
+	  scan.h: Hooks for sending an email report (but it doesn't
+	  actually do anything yet)
+
+2002-01-19 15:32  andy
+
+	* bopm.conf.sample: Extra config options for DNSBL.
+
+2002-01-19 14:59  andy
+
+	* bopm.conf.sample: Tidying up, added the DNSBL_ZONE
+
+2002-01-19 14:09  andy
+
+	* INSTALL: Added bit about -d
+
+2002-01-19 14:01  andy
+
+	* README: Typos etc.
+
+2002-01-19 05:33  strtok
+
+	* scan.c: scan.c: Ridded instances of stats_num being incremented
+	  twice if a host was open AND was insecure
+
+2002-01-19 05:05  strtok
+
+	* README: README grammar fix
+
+2002-01-19 05:03  strtok
+
+	* TODO: Updated TODO
+
+2002-01-19 01:47  strtok
+
+	* README: More grammar fixes
+
+2002-01-19 01:45  strtok
+
+	* README: Bad grammar!
+
+2002-01-18 23:22  strtok
+
+	* INSTALL, README: More README documentation added (credits) Added
+	  INSTALL with quick install procedures
+
+2002-01-18 22:57  strtok
+
+	* misc.c: Off by one fix with clean()
+
+2002-01-18 22:49  strtok
+
+	* config.c: Yet another #include <time.h> for BSD!
+
+2002-01-18 22:47  strtok
+
+	* scan.c: scan.c: BOPM now increases number open (protocol) by
+	  determining if a socket can be written to, rather than if read
+	  returned 0.
+
+2002-01-18 22:28  strtok
+
+	* README: Begin README file.
+
+2002-01-18 20:29  strtok
+
+	* config.c, misc.c, misc.h: config.c: Strip leading/tailing
+	  characters from arguments misc.c/misc.h: Added clean() function
+	  which strips leading/tailing characters		 from a
+	  string and returns a pointer to the new string.
+
+2002-01-18 18:14  strtok
+
+	* scan.c: scan.c: Stats, num negotiated now increased on
+	  negotiation failed	     Fixed order of paramaters for manual
+	  checking
+
+2002-01-18 09:06  andy
+
+	* Makefile, config.c, dnsbl.c, dnsbl.h, extern.h, irc.c, scan.c,
+	  stats.c: Support for checking against a DNS (black|block)list.
+
+	  Set your zone using the DNSBL_ZONE config option, checking will
+	  take place			      on every connect and every
+	  time the "check" command is used.
+
+2002-01-18 06:07  strtok
+
+	* scan.c, stats.c: Added port to stats Replaced sizeof
+	  scan_protocols with SCAN_NUMPROTOCOLS
+
+2002-01-18 06:00  strtok
+
+	* main.c, scan.c, scan.h, stats.c: Added size_t SCAN_NUMPROTOCOLS
+
+2002-01-18 04:49  strtok
+
+	* scan.c: hopeful extern fix
+
+2002-01-18 04:10  strtok
+
+	* extern.h, scan.c, scan.h, stats.c, stats.h: Made stats variables
+	  part of the protocol_hash struct, I had to throw a ton of
+	  includes in stats.c to make #include "scan.h" happy
+
+2002-01-18 01:51  andy
+
+	* Makefile: Moke debug stuff work by linking it properly
+
+2002-01-18 01:25  andy
+
+	* .cvsignore, Makefile, main.c: Simple SIGINT handler
+
+2002-01-18 01:15  strtok
+
+	* irc.c: Fixed massive CPU usage (YAY).
+
+2002-01-18 00:39  andy
+
+	* Makefile: DEBUG_GPROF=1 make to enable gprof debugging
+
+2002-01-18 00:02  strtok
+
+	* TODO, irc.c: irc_reconnect() fixed and working rehashing now
+	  working (/kill bot to rehash)
+
+2002-01-17 23:46  strtok
+
+	* irc.c: irc.c: Reconnect if unable to WRITE
+
+2002-01-17 23:38  strtok
+
+	* irc.c: reconnect on select() returning -1 was bad mmkay
+
+2002-01-17 23:35  strtok
+
+	* irc.c: More attempted irc_reconnect() fixes.
+
+2002-01-17 23:31  strtok
+
+	* irc.c: irc.c: Log on irc_reconnect() call
+
+2002-01-17 23:25  strtok
+
+	* irc.c, irc.h: irc.c: added irc_reconnect
+
+2002-01-17 23:12  andy
+
+	* opercmd.c: And another
+
+2002-01-17 23:11  andy
+
+	* opercmd.c: BSD fix
+
+2002-01-17 23:07  andy
+
+	* irc.c: First four letters of nick for commands.
+
+2002-01-17 23:02  strtok
+
+	* config.c, irc.c, main.c, options.h, scan.c: config.c: Set pointer
+	  to type_string's to null irc.c: reconnect on select() exception
+	  vector being set with IRC_FD
+
+2002-01-17 22:12  strtok
+
+	* scan.c: scan_timer fix
+
+2002-01-17 22:08  strtok
+
+	* scan.c: scan.c: Added timeout on verbose checking
+
+2002-01-17 21:53  strtok
+
+	* irc.c, scan.c, scan.h: Changed scan_connect to compensate for
+	  verbose scanning.
+
+2002-01-17 12:58  andy
+
+	* Makefile, main.c, opercmd.c, scan.c, scan.h: Manual check almost
+	  done, but work must stop here for a few hours..
+
+2002-01-17 08:22  andy
+
+	* Makefile, irc.c, misc.c, misc.h, opercmd.c, opercmd.h, stats.c,
+	  stats.h: Support for oper-only commands.
+
+	  We keep a list of command structures, each oper command is placed
+	  into the first free structure and then a /userhost is issued.
+
+	  When the reply from userhost is received and the user verified as
+	  an oper then the command can be executed, otherwise it should be
+	  ignored.  Then the command structure may be cleared and any
+	  dynamic memory freed.
+
+	  We may receive userhost replies with no data, indicating that the
+	  nick left the network before we could check them.  Since we can't
+	  tell who it is, we need to periodically (in this case, every 2
+	  minutes) go through our command list and remove any commands that
+	  have not been executed in that period.
+
+	  dissect_time() also moved to misc.c, now that it is used by more
+	  than just the stats functions.
+
+	  Current limitation: oper commands may have only one parameter.
+
+2002-01-17 06:17  strtok
+
+	* README: Added README file (yet to be written)
+
+2002-01-17 01:47  andy
+
+	* irc.c: Oops, the old way left nick unterminated.
+
+2002-01-17 01:25  andy
+
+	* Makefile, irc.c, scan.c, stats.c, stats.h: Some simple stats:
+
+	  [01:24:54] <grifferz> peng stat [01:24:54] <penguinBopm> Uptime:
+	  1 minute, 46 seconds [01:24:54] <penguinBopm> Found 0 WinGates, 0
+	  open [01:24:54] <penguinBopm> Found 0 SOCKS4 servers, 0 open
+	  [01:24:54] <penguinBopm> Found 1 SOCKS5 servers, 1 open
+	  [01:24:54] <penguinBopm> Found 1 HTTP proxies, 1 open [01:24:54]
+	  <penguinBopm> Number of connects: 2
+
+2002-01-17 00:30  andy
+
+	* Makefile, TODO, irc.c, irc.h, main.c, stats.c, stats.h: Here's
+	  the beginnings of some command handling.  First four letters of
+	  server name plus command, or "!all" then command, either in msg
+	  or in a channel that bopm is watching.
+
+2002-01-16 22:12  strtok
+
+	* scan.c: scan.c: Flag conncetions STATE_CLOSED which return 0 on
+	  read function.
+
+2002-01-16 19:17  strtok
+
+	* irc.c: irc.c: Added no data timeout of 300 seconds
+	  select() now switches on errno to determine unrecoverable error
+	  and reconnects if need be.
+
+2002-01-16 16:17  andy
+
+	* irc.c: Rejoin when kicked.  Other part of the code already handle
+	  getting in to channels through +bikl modes.
+
+2002-01-16 15:37  andy
+
+	* irc.c: Log all incoming and outgoing IRC traffic at debug level
+	  2+ (./bopm -dd)
+
+2002-01-16 14:15  andy
+
+	* main.c: Some fork cleanups, some extra headers needed by strlen,
+	  umask, exit.
+
+2002-01-16 14:00  andy
+
+	* Makefile: -)3 is proabbly OK
+
+2002-01-16 06:40  strtok
+
+	* scan.c: scan.c: Added code to mark connects STATE_CLOSED if they
+	  match a host that	    has already been determined to be an
+	  open proxy.
+
+2002-01-16 06:07  strtok
+
+	* TODO, config.c: TODO: Added to project config.c: Removed debug
+	  line for free()
+
+2002-01-16 04:57  strtok
+
+	* bopm.conf.sample: Sample config is now more appropriate.
+
+2002-01-16 03:22  andy
+
+	* scan.c: A little bit more logging in debug mode.
+
+2002-01-16 03:11  andy
+
+	* log.c: Log a readable time stamp
+
+2002-01-16 00:31  andy
+
+	* config.c: HINT: if you run it without a config file, and you
+	  don't check, it tries to do gethostbyname on a null string and
+	  segfaults.
+
+2002-01-16 00:21  andy
+
+	* .cvsignore, main.c: getopt_long is not portable, so we'll just
+	  have to do with only -d for now.
+
+	  On the plus side, extra -d = higher debug level in case that is
+	  needed in future (OPT_DEBUG = debug level or 0 for no debug)
+
+2002-01-16 00:04  andy
+
+	* Makefile, extern.h, log.c, main.c: Added command line option -d
+	  or --debug, this prevents forking and directs all logging to
+	  stderr.
+
+2002-01-15 22:49  andy
+
+	* .cvsignore: More gcov stuff to ignore
+
+2002-01-15 22:48  andy
+
+	* .cvsignore: Ignore pid and log file.
+
+2002-01-15 22:17  andy
+
+	* .cvsignore, bopm.conf, bopm.conf.sample: old erik, move bopm.conf
+	  to bopm.sample.conf so it doesn't try to cvs commit my actual
+	  oper pass.
+
+2002-01-15 22:07  andy
+
+	* .cvsignore: And ignore the binary!
+
+2002-01-15 22:07  andy
+
+	* .cvsignore: Ignore gcov stuff
+
+2002-01-15 22:01  strtok
+
+	* scan.c: Logging in scan_w_socks4 for bad inet_aton call
+
+2002-01-15 21:58  andy
+
+	* .cvsignore: Ignore vi(m) swapfiles.
+
+2002-01-15 21:57  andy
+
+	* Makefile: DEBUG_GCOV=1 make DEBUG_GDB=1 make
+
+	  to enable coverage instrumenting and extra debug for gdb
+	  respectively.
+
+2002-01-15 21:48  andy
+
+	* Makefile: I do not think we need those flags (and they are
+	  gcc-specific)
+
+2002-01-15 21:37  andy
+
+	* Makefile: Here's a better Makefile (sorry dg :p)
+
+2002-01-15 21:37  andy
+
+	* make: We have a Makefile
+
+2002-01-15 21:29  andy
+
+	* Makefile: dg's Makefile
+
+2002-01-15 21:23  strtok
+
+	* scan.c: socks4 fix
+
+2002-01-15 21:05  strtok
+
+	* config.c, log.c, scan.c: buffer underrun fix
+
+2002-01-15 19:21  strtok
+
+	* irc.c: vsnprintf and snprintf conversion in irc_send (irc.c)
+
+2002-01-15 19:10  strtok
+
+	* log.c, scan.c: attempted bugfixes
+
+2002-01-15 08:04  strtok
+
+	* irc.c: Unborked +c scanning...
+
+2002-01-15 07:44  strtok
+
+	* irc.c: Fixed IRC binding.
+
+2002-01-15 07:34  strtok
+
+	* irc.c, scan.c: BSD fixes
+
+2002-01-15 07:15  strtok
+
+	* scan.c: bsd fix
+
+2002-01-15 07:01  strtok
+
+	* irc.c, main.c: bopm now forks and writes pid to bopm.pid debug
+	  printf() removed from irc.c, output exists only in the logfile
+	  now.
+
+2002-01-15 05:59  strtok
+
+	* bopm.conf, irc.c, scan.c: Nickserv ident and Chanserv invite
+	  fixes.
+
+2002-01-14 21:57  strtok
+
+	* irc.c: Few bug fixes.
+
+2002-01-14 21:54  strtok
+
+	* irc.c, irc.h: NickServ identification via dg style.
+
+2002-01-14 21:23  strtok
+
+	* bopm.conf, config.c, extern.h, irc.c: CHANSERV invite code,
+	  nastiness is due to avoiding strtok() and strstr()
+
+2002-01-14 19:31  strtok
+
+	* bopm.conf, irc.c, irc.h, log.c, scan.c, scan.h: Channel and
+	  bopm.log logging.
+
+2002-01-14 07:33  strtok
+
+	* bopm.conf, config.c, extern.h, irc.c, scan.c: Added Configurable
+	  KLINE command and config parameter KLINE_COMMAND Added
+	  NICKSERV_IDENT and NICKSERV_INVITE config parameters.
+
+2002-01-14 07:14  strtok
+
+	* config.c, config.h: config.c is now more pretty
+
+2002-01-14 05:47  strtok
+
+	* main.c, scan.c: Removed unportable flags on recv().  Added ignore
+	  on SIGPIPE
+
+2002-01-14 05:35  strtok
+
+	* scan.c: Added MSG_NOSIGNAL flag to all RECV functions in scanner
+	  to prevent SIGPIPE
+
+2002-01-14 05:23  strtok
+
+	* main.c: Replaced signal with sigaction.
+
+2002-01-14 03:20  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, irc.c: Removed PERFORM
+	  from configuration.  Added CHANNELS to config.
+
+2002-01-13 08:37  strtok
+
+	* log.c: fflush on log() (log.c) so that log files are generated
+	  properly.
+
+2002-01-13 07:17  strtok
+
+	* irc.c, scan.c: Bind to BINDSCAN for scanning (needs tested).
+
+2002-01-13 06:24  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, irc.c: Added BINDIRC and
+	  BINDSCAN as config parameters.  BINDIRC is now used for binding
+	  the irc connection.
+
+2002-01-13 04:05  strtok
+
+	* bopm.conf, scan.c: Added comments to bopm.conf.
+
+2002-01-12 19:58  strtok
+
+	* scan.c, scan.h: Insecure wingate detection -- yay
+
+2002-01-12 19:29  strtok
+
+	* log.c, scan.c, scan.h: socks5 scanning support
+
+2002-01-12 06:14  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, scan.c: Finished socks4
+	  and http proxy support, cleaned out debug code.  Added SCANIP and
+	  SCANPORT to config, which provides a means to tell the scanner
+	  what ip/port to try to connect the proxy to for testing.
+	  Currently this MUST be an IP (no host resolving)
+
+2002-01-12 06:03  strtok
+
+	* scan.c: Socks4 scanning working (just need to setup the right IP
+	  to use)
+
+2002-01-11 20:14  strtok
+
+	* scan.c, scan.h: Socks 4 write support.
+
+2002-01-11 19:10  strtok
+
+	* bopm.conf, main.c, scan.c: Several bugfixes, timeouts added,
+	  kline reason added to conf file
+
+2002-01-11 17:35  strtok
+
+	* irc.c, irc.h, main.c, scan.c, scan.h: Connection timeouts and
+	  removal of structs marked STATE_CLOSED every 1 sec (via alarm
+	  signal).
+
+2002-01-11 17:11  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, scan.c, scan.h: A few
+	  code cleanups.
+
+2002-01-11 06:45  strtok
+
+	* irc.c, irc.h, scan.c, scan.h: Klines work now (kline function
+	  call needs shifted to a less local position)
+
+2002-01-11 02:26  strtok
+
+	* bopm.conf, irc.c, scan.c, scan.h: checking for ready read/write
+	  in sock_check() using select. functions regarding specific
+	  protocols are then called for individual writing/reading.
+
+2002-01-10 23:58  strtok
+
+	* irc.c, main.c, scan.c, scan.h: Added scan_cycle() structure
+
+2002-01-10 23:47  strtok
+
+	* scan.c: set sockets non blocking, that might speed things up a
+	  bit!
+
+2002-01-10 23:37  strtok
+
+	* irc.c, scan.c, scan.h: Wrote the beginnings of scan_connect().
+	  Wanted to commit it to storage in case something happens to my
+	  copy.
+
+2002-01-10 04:01  strtok
+
+	* irc.c: Parsed out IP of connecting hosts from +c notices. (Much
+	  clearer than WGMON!)
+
+2002-01-09 17:36  strtok
+
+	* bopm.conf, irc.c, scan.c, scan.h: Rewrite IRC parsing (splits
+	  into 16 char *), nasty but effective for now.  Started on
+	  structure of scan.c/scan.h.
+
+2002-01-08 08:09  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, irc.c: Wrote irc_send
+	  (using stdarg), to send arbitrary irc data.  Added OPER config
+	  parameter and oper on connect.
+
+2002-01-07 19:01  strtok
+
+	* irc.c: BSD sys/time.h fix
+
+2002-01-07 06:58  strtok
+
+	* irc.c, make, scan.c, scan.h: Added scan.c/scan.h to project.
+
+2002-01-07 03:46  strtok
+
+	* bopm.conf, config.c, irc.c, irc.h: Split up irc_connect() into
+	  irc_connect() and irc_init() Removed 2 debug printfs
+
+2002-01-05 21:38  strtok
+
+	* irc.c: connect() error checking
+
+2002-01-05 21:24  strtok
+
+	* bopm.conf, irc.c: socket() error checking on IRC client
+
+2002-01-05 21:02  strtok
+
+	* bopm.conf, config.c, extern.h, irc.c: gethosybyname() error
+	  logging
+
+2002-01-05 19:53  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, irc.c, irc.h, log.c,
+	  main.c: Added perform, memory allocation error checking, and a
+	  lot of debug code (that needs to be removed later on)
+
+2002-01-04 06:32  strtok
+
+	* irc.c, log.c, log.h, main.c, make:	  Added log file
+	  capibilities.
+
+2002-01-04 02:57  strtok
+
+	* irc.c, irc.h:       Client now connects to server and reads data.
+
+2002-01-04 01:22  strtok
+
+	* irc.c, irc.h:
+	       Restructured connect code a bit, started on select()
+
+2002-01-04 00:22  strtok
+
+	* bopm.conf, irc.c:
+	       IRC server host resolution
+
+2002-01-03 23:47  strtok
+
+	* bopm.conf: [no log message]
+
+2002-01-03 20:05  strtok
+
+	* LICENSE:	Added GPL license.
+
+2002-01-03 05:06  strtok
+
+	* bopm.conf, irc.c:
+	       Create socket / Connect to IRC server (Primitive, no error
+	  checking)
+
+2002-01-03 00:18  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, irc.c, irc.h, main.c,
+	  make: Initial revision
+
+2002-01-03 00:18  strtok
+
+	* bopm.conf, config.c, config.h, extern.h, irc.c, irc.h, main.c,
+	  make: blitzed open proxy monitor
+

@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Blitzed Open Proxy Monitor Crontab Script - Restart BOPM if needed.
+#
+# From skold@habber.net.
+#
+# To install this script:
+#
+# Edit the first line of the script below to reflect the directory
+# you installed BOPM in.
+#
+# Copy this script to the directory you want it to stay in. This
+# could be the directory you installed BOPM in, or something neutral,
+# such as ~/crontabs or something.
+#
+# Run crontab -e
+#
+# To have the script run every minute, type this:
+#
+#      * * * * * ~/crontabs/bopmchk
+#
+# Save, and exit. The script will now run every minute.
+
+cd ~/bopm
+
+# Leave the rest alone.
+
+if [ -f var/bopm.pid ] ; then
+  PID=`cat var/bopm.pid`
+  if `kill -CHLD $PID >/dev/null 2>&1`; then
+    exit 0;
+  fi
+  rm -f var/bopm.pid
+fi
+
+bin/bopm
+exit 0;

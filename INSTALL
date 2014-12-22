@@ -1,0 +1,105 @@
+Make
+----
+
+    Quick Start:
+
+    1. ./configure
+    2. make
+    3. make install
+    4. cd $HOME/bopm
+    5. edit $HOME/bopm/etc/bopm.conf to suit
+    6. $HOME/bopm/bin/bopm
+
+    In detail:
+
+    ./configure has a few options which you might need:
+
+    --prefix            Sets the root of BOPM's install.  By default this
+                        is $HOME/bopm, with binaries going in
+			$HOME/bopm/bin, config in $HOME/bopm/etc and logs
+			in $HOME/bopm/var.
+
+    --bindir            Specify the place to install binaries.  By default
+                        this is $PREFIX/bin. (see --prefix, above)
+
+    --localstatedir     Specify the place where logs and PID files will be
+                        kept.  By default this is $PREFIX/var. (see
+			--prefix, above)
+
+    configure has many other options, see ./configure --help for more
+    details.
+
+    There are some further options in options.h which may be moved to
+    configure at some point.  If you think you need to change these then we
+    assume you've read the code and know why.
+
+    Compilation of BOPM requires GNU Make (usually 'gmake' on BSD systems).
+
+Configuration
+-------------
+
+    Edit bopm.conf as needed.  Most options are self explanatory and
+    contain a short description.
+
+    Please take note of the target_string, this is new in version 2 onward and may be
+    different for your ircd.  Because we now check that we really have
+    connected back onto IRC, BOPM needs to be told what your ircd says during
+    the first part of a connection.  If you're not sure, the best thing to do
+    is telnet to your ircd from your shell, e.g.:
+
+      [andy@fullers bopm]$ telnet porkscratchings.someserver.org 6667
+      Trying 207.8.219.202...
+      Connected to porkscratchings.someserver.org.
+      Escape character is '^]'.
+      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Looking up your hostname...
+      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Checking Ident
+      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Got Ident response
+      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Found your hostname
+
+    Just try to pick something in the first line of IRC output (for efficiency
+    reasons).
+
+    If you don't run an ircd at all (some people are using bopchecker for spam
+    checking, etc.) then you're going to have to use a bit of ingenuity.  You
+    basically need any port on your own machine that responds with a plain text
+    challenge that is unlikely to appear anywhere else.
+
+    NNTP servers are good examples because they give a banner.  Don't be
+    tempted to use port 25 (SMTP) because although it looks like just what you
+    want, too many networks transparent proxy outgoing port 25 connections to
+    their own smart host, so you'll miss many proxies.
+
+    The same applies if you run some kind of ircd that has no form of
+    banner at all (ircnet??).  Worst case is you'll need to make something
+    listen on one of your ports that gives some predictable string.
+
+    Remember that your users might run their own ircd on some typical proxy
+    port like 8080!  If you can, put a banner in that contains your own
+    server name, so that it is unlikely to be duplicated.
+
+
+Execution
+---------
+
+    You can run BOPM from any directory, the path to its config file is
+    compiled into it.  The bot will fork and connect to the IRC server
+    immediately.  Any errors and debug information can be found in
+    $PREFIX/var/bopm.log.
+
+    You can tell BOPM to use a different config file with the -c argument,
+    this works the same way that wgmon's -c argument does, just give the name
+    of the config file not including the ".conf".  This also affects the log
+    and PID files i.e. ./bopm -c myserver will read from myserver.conf, log to
+    myserver.log and write PID to myserver.pid.  If you do not use -c, the
+    files bopm.conf, bopm.log and bopm.pid will be used by default.  This can
+    be altered in options.h.  This is useful for running multiple BOPM on
+    the same host.
+
+    Further debugging can be enabled by using one or more -d switches.  One or
+    more -d switches will cause the bot to not fork on startup, and it will
+    send all log messages to stederr (i.e., your terminal) instead of its
+    logfile.  It will also cause extra debugging information that is not
+    normally of interest to be sent to stderr.  Two or more -d switches will
+    enable logging of all IRC traffic received and sent.
+
+    The -c and -d arguments may appear in any order.
