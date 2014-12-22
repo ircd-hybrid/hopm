@@ -138,6 +138,33 @@ USER                    { return USER;         }
 USERNAME                { return USERNAME;     }
 VHOST                   { return VHOST;        }
 
+years                   { return YEARS; }
+year                    { return YEARS; }
+months                  { return MONTHS; }
+month                   { return MONTHS; }
+weeks                   { return WEEKS; }
+week                    { return WEEKS; }
+days                    { return DAYS; }
+day                     { return DAYS; }
+hours                   { return HOURS; }
+hour                    { return HOURS; }
+minutes                 { return MINUTES; }
+minute                  { return MINUTES; }
+seconds                 { return SECONDS; }
+second                  { return SECONDS; }
+
+bytes                   { return BYTES; }
+byte                    { return BYTES; }
+kilobytes               { return KBYTES; }
+kilobyte                { return KBYTES; }
+kbytes                  { return KBYTES; }
+kbyte                   { return KBYTES; }
+kb                      { return KBYTES; }
+megabytes               { return MBYTES; }
+megabyte                { return MBYTES; }
+mbytes                  { return MBYTES; }
+mbyte                   { return MBYTES; }
+mb                      { return MBYTES; }
 
 HTTP                    {
                           yylval.number = OPM_TYPE_HTTP;

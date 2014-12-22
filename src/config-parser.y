@@ -38,6 +38,7 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 %token AWAY
 %token BAN_UNKNOWN
 %token BLACKLIST
+%token BYTES KBYTES MBYTES
 %token CHANNEL
 %token CONNREGEX
 %token DNS_FDLIMIT
@@ -68,6 +69,7 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 %token REPLY
 %token SCANLOG
 %token SCANNER
+%token SECONDS MINUTES HOURS DAYS WEEKS MONTHS YEARS
 %token SENDMAIL
 %token SERVER
 %token TARGET_IP
@@ -88,6 +90,10 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 %token <number> NUMBER
 %token <string> STRING
 %token <number> PROTOCOLTYPE
+%type  <number> timespec
+%type  <number> timespec_
+%type  <number> sizespec
+%type  <number> sizespec_
 
 %%
 
@@ -102,6 +108,23 @@ config_items: irc_entry     |
               scanner_entry |
               exempt_entry;
 
+timespec_: { $$ = 0; } | timespec;
+timespec:  NUMBER timespec_         { $$ = $1 + $2; } |
+           NUMBER SECONDS timespec_ { $$ = $1 + $3; } |
+           NUMBER MINUTES timespec_ { $$ = $1 * 60 + $3; } |
+           NUMBER HOURS timespec_   { $$ = $1 * 60 * 60 + $3; } |
+           NUMBER DAYS timespec_    { $$ = $1 * 60 * 60 * 24 + $3; } |
+           NUMBER WEEKS timespec_   { $$ = $1 * 60 * 60 * 24 * 7 + $3; } |
+           NUMBER MONTHS timespec_  { $$ = $1 * 60 * 60 * 24 * 7 * 4 + $3; } |
+           NUMBER YEARS timespec_   { $$ = $1 * 60 * 60 * 24 * 365 + $3; }
+           ;
+
+sizespec_:  { $$ = 0; } | sizespec;
+sizespec:   NUMBER sizespec_ { $$ = $1 + $2; } |
+            NUMBER BYTES sizespec_ { $$ = $1 + $3; } |
+            NUMBER KBYTES sizespec_ { $$ = $1 * 1024 + $3; } |
+            NUMBER MBYTES sizespec_ { $$ = $1 * 1024 * 1024 + $3; }
+            ;
 
 /*************************** OPTIONS BLOCK ***********************/
 
@@ -116,7 +139,7 @@ options_item: options_negcache |
               options_scanlog |
               error;
 
-options_negcache: NEGCACHE '=' NUMBER ';'
+options_negcache: NEGCACHE '=' timespec ';'
 {
    OptionsItem->negcache = $3;
 };
@@ -456,13 +479,13 @@ scanner_target_port: TARGET_PORT '=' NUMBER ';'
    item->target_port = $3;
 };
 
-scanner_timeout: TIMEOUT '=' NUMBER ';'
+scanner_timeout: TIMEOUT '=' timespec ';'
 {
    struct ScannerConf *item = (struct ScannerConf *) tmp;
    item->timeout = $3;
 };
 
-scanner_max_read: MAX_READ '=' NUMBER ';'
+scanner_max_read: MAX_READ '=' sizespec ';'
 {
    struct ScannerConf *item = (struct ScannerConf *) tmp;
    item->max_read = $3;

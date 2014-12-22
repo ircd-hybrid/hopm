@@ -48,110 +48,130 @@ extern int yydebug;
     AWAY = 258,
     BAN_UNKNOWN = 259,
     BLACKLIST = 260,
-    CHANNEL = 261,
-    CONNREGEX = 262,
-    DNS_FDLIMIT = 263,
-    DNSBL_FROM = 264,
-    DNSBL_TO = 265,
-    EXEMPT = 266,
-    FD = 267,
-    INVITE = 268,
-    IRC = 269,
-    KLINE = 270,
-    KEY = 271,
-    MASK = 272,
-    MAX_READ = 273,
-    MODE = 274,
-    NAME = 275,
-    NEGCACHE = 276,
-    NICK = 277,
-    NICKSERV = 278,
-    OPER = 279,
-    OPM = 280,
-    OPTIONS = 281,
-    PASSWORD = 282,
-    PERFORM = 283,
-    PIDFILE = 284,
-    PORT = 285,
-    PROTOCOL = 286,
-    REALNAME = 287,
-    REPLY = 288,
-    SCANLOG = 289,
-    SCANNER = 290,
-    SENDMAIL = 291,
-    SERVER = 292,
-    TARGET_IP = 293,
-    TARGET_PORT = 294,
-    TARGET_STRING = 295,
-    TIMEOUT = 296,
-    TYPE = 297,
-    USERNAME = 298,
-    USER = 299,
-    VHOST = 300,
-    NUMBER = 301,
-    STRING = 302,
-    PROTOCOLTYPE = 303
+    BYTES = 261,
+    KBYTES = 262,
+    MBYTES = 263,
+    CHANNEL = 264,
+    CONNREGEX = 265,
+    DNS_FDLIMIT = 266,
+    DNSBL_FROM = 267,
+    DNSBL_TO = 268,
+    EXEMPT = 269,
+    FD = 270,
+    INVITE = 271,
+    IRC = 272,
+    KLINE = 273,
+    KEY = 274,
+    MASK = 275,
+    MAX_READ = 276,
+    MODE = 277,
+    NAME = 278,
+    NEGCACHE = 279,
+    NICK = 280,
+    NICKSERV = 281,
+    OPER = 282,
+    OPM = 283,
+    OPTIONS = 284,
+    PASSWORD = 285,
+    PERFORM = 286,
+    PIDFILE = 287,
+    PORT = 288,
+    PROTOCOL = 289,
+    REALNAME = 290,
+    REPLY = 291,
+    SCANLOG = 292,
+    SCANNER = 293,
+    SECONDS = 294,
+    MINUTES = 295,
+    HOURS = 296,
+    DAYS = 297,
+    WEEKS = 298,
+    MONTHS = 299,
+    YEARS = 300,
+    SENDMAIL = 301,
+    SERVER = 302,
+    TARGET_IP = 303,
+    TARGET_PORT = 304,
+    TARGET_STRING = 305,
+    TIMEOUT = 306,
+    TYPE = 307,
+    USERNAME = 308,
+    USER = 309,
+    VHOST = 310,
+    NUMBER = 311,
+    STRING = 312,
+    PROTOCOLTYPE = 313
   };
 #endif
 /* Tokens.  */
 #define AWAY 258
 #define BAN_UNKNOWN 259
 #define BLACKLIST 260
-#define CHANNEL 261
-#define CONNREGEX 262
-#define DNS_FDLIMIT 263
-#define DNSBL_FROM 264
-#define DNSBL_TO 265
-#define EXEMPT 266
-#define FD 267
-#define INVITE 268
-#define IRC 269
-#define KLINE 270
-#define KEY 271
-#define MASK 272
-#define MAX_READ 273
-#define MODE 274
-#define NAME 275
-#define NEGCACHE 276
-#define NICK 277
-#define NICKSERV 278
-#define OPER 279
-#define OPM 280
-#define OPTIONS 281
-#define PASSWORD 282
-#define PERFORM 283
-#define PIDFILE 284
-#define PORT 285
-#define PROTOCOL 286
-#define REALNAME 287
-#define REPLY 288
-#define SCANLOG 289
-#define SCANNER 290
-#define SENDMAIL 291
-#define SERVER 292
-#define TARGET_IP 293
-#define TARGET_PORT 294
-#define TARGET_STRING 295
-#define TIMEOUT 296
-#define TYPE 297
-#define USERNAME 298
-#define USER 299
-#define VHOST 300
-#define NUMBER 301
-#define STRING 302
-#define PROTOCOLTYPE 303
+#define BYTES 261
+#define KBYTES 262
+#define MBYTES 263
+#define CHANNEL 264
+#define CONNREGEX 265
+#define DNS_FDLIMIT 266
+#define DNSBL_FROM 267
+#define DNSBL_TO 268
+#define EXEMPT 269
+#define FD 270
+#define INVITE 271
+#define IRC 272
+#define KLINE 273
+#define KEY 274
+#define MASK 275
+#define MAX_READ 276
+#define MODE 277
+#define NAME 278
+#define NEGCACHE 279
+#define NICK 280
+#define NICKSERV 281
+#define OPER 282
+#define OPM 283
+#define OPTIONS 284
+#define PASSWORD 285
+#define PERFORM 286
+#define PIDFILE 287
+#define PORT 288
+#define PROTOCOL 289
+#define REALNAME 290
+#define REPLY 291
+#define SCANLOG 292
+#define SCANNER 293
+#define SECONDS 294
+#define MINUTES 295
+#define HOURS 296
+#define DAYS 297
+#define WEEKS 298
+#define MONTHS 299
+#define YEARS 300
+#define SENDMAIL 301
+#define SERVER 302
+#define TARGET_IP 303
+#define TARGET_PORT 304
+#define TARGET_STRING 305
+#define TIMEOUT 306
+#define TYPE 307
+#define USERNAME 308
+#define USER 309
+#define VHOST 310
+#define NUMBER 311
+#define STRING 312
+#define PROTOCOLTYPE 313
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 83 "config-parser.y" /* yacc.c:1909  */
+#line 85 "config-parser.y" /* yacc.c:1909  */
 
         int number;
         char *string;
 
-#line 155 "config-parser.h" /* yacc.c:1909  */
+#line 175 "config-parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
