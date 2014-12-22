@@ -36,7 +36,7 @@ struct in6_addr {
 /* max number of nameservers used */
 #define FDNS_MAX              8
 /* preferred firedns config file */
-#define FDNS_CONFIG_PREF     BOPM_ETCDIR "/firedns.conf"
+#define FDNS_CONFIG_PREF     HOPM_ETCDIR "/firedns.conf"
 /* fallback config file */
 #define FDNS_CONFIG_FBCK     "/etc/resolv.conf"
 /* Number of seconds to wait for a reply */

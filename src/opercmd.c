@@ -133,7 +133,7 @@ void command_timer()
 
 /* command_parse
  *
- *    Parse a command to bopm (sent to a channel bopm is on). The command is parsed
+ *    Parse a command to hopm (sent to a channel hopm is on). The command is parsed
  *    from the parameters, and if it is a known command it is stored in a queue. A
  *    userhost is performed on the user to check if they are an IRC operator. When
  *    a reply is returned (command_userhost), the command will be executed.
@@ -334,7 +334,7 @@ void command_userhost(char *reply)
 
 /* cmd_check
  *
- *    Start a manual scan on given IP. Parameter MUST be an IP. BOPM should not
+ *    Start a manual scan on given IP. Parameter MUST be an IP. HOPM should not
  *    have to waste any time resolving a hostname.
  *
  * Parameters:

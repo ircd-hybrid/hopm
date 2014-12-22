@@ -120,24 +120,24 @@ void config_setup()
 {
 
    /* Setup IRC Block Defaults */
-   IRCItem->away = DupString("I'm a bot, don't message me");
+   IRCItem->away = DupString("I'm a bot. Your messages will be ignored.");
    IRCItem->mode = DupString("+cs");
-   IRCItem->nick = DupString("bopm");
+   IRCItem->nick = DupString("hopm");
    IRCItem->nickserv = DupString("");
    IRCItem->password = DupString("");
    IRCItem->port = 6667;
    IRCItem->oper = DupString("undefined");
-   IRCItem->username = DupString("bopm");
-   IRCItem->realname = DupString("Blitzed Open Proxy Monitor");
+   IRCItem->username = DupString("hopm");
+   IRCItem->realname = DupString("Hybrid Open Proxy Monitor");
    IRCItem->server = DupString("myserver.blitzed.org");
    IRCItem->vhost = DupString("");
    IRCItem->connregex = DupString("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*");
-   IRCItem->kline = DupString("KLINE %u@%h :Open Proxy found on your host. Please visit www.blitzed.org/proxy?ip=%i for more information.");
+   IRCItem->kline = DupString("KLINE %u@%h :Open Proxy found on your host.");
 
 
    /* Setup options block defaults */
    OptionsItem->negcache = 0;   /* 0 disabled negcache */
-   OptionsItem->pidfile = DupString("bopm.pid");
+   OptionsItem->pidfile = DupString("hopm.pid");
    OptionsItem->dns_fdlimit = 50;
    OptionsItem->scanlog = NULL;
 

@@ -65,8 +65,8 @@ int REOPEN  = 0;             /* Flagged to reopen log files on next cycle */
 unsigned int OPT_DEBUG = 0;  /* Debug level */
 
 char *CONFNAME = DEFAULTNAME;
-char *CONFDIR = BOPM_ETCDIR;
-char *LOGDIR = BOPM_LOGDIR;
+char *CONFDIR = HOPM_ETCDIR;
+char *LOGDIR = HOPM_LOGDIR;
 char *CONFFILE, *LOGFILE;
 
 struct sigaction ALARMACTION;
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
       log_printf("MAIN -> Debug level %d", OPT_DEBUG);
 
 
-   log_printf("MAIN -> BOPM %s started.", VERSION);
+   log_printf("MAIN -> HOPM %s started.", VERSION);
    log_printf("MAIN -> Reading configuration file...");
 
    config_load(CONFFILE);

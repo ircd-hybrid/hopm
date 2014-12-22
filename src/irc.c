@@ -137,7 +137,7 @@ static struct CommandHash COMMAND_TABLE[] = {
 
 /* irc_cycle
  *
- *    Pass control to the IRC portion of BOPM to handle any awaiting IRC events.
+ *    Pass control to the IRC portion of HOPM to handle any awaiting IRC events.
  *
  * Parameters:
  *    None
@@ -655,7 +655,7 @@ void irc_timer(void)
        * ircds (*cough* unreal *cough*) don't cause uneeded
        * reconnections
        */
-      irc_send("PING :BOPM");
+      irc_send("PING :HOPM");
    }
 
 }
@@ -1071,7 +1071,7 @@ static void m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo 
  *
  * parv[0]  = source
  * parv[1]  = USERHOST
- * parv[2]  = target (bopm)
+ * parv[2]  = target (hopm)
  * parv[3]  = :nick=(flags)user@host
  *
  *
@@ -1096,7 +1096,7 @@ static void m_userhost(char **parv, unsigned int parc, char *msg,
  *
  * parv[0]  = source
  * parv[1]  = numeric
- * parv[2]  = target (bopm)
+ * parv[2]  = target (hopm)
  * parv[3]  = channel
  * parv[4]  = error text
  *
@@ -1128,7 +1128,7 @@ static void m_cannot_join(char **parv, unsigned int parc, char *msg,
  *
  * parv[0]  = source
  * parv[1]  = numeric
- * parv[2]  = target (bopm)
+ * parv[2]  = target (hopm)
  * parv[3]  = channel
  * parv[4]  = error text
  *
@@ -1141,6 +1141,6 @@ static void m_kill(char **parv, unsigned int parc, char *msg, struct UserInfo *s
    USE_VAR(msg);
    USE_VAR(source_p);
 
-   /* Restart bopm to rehash */
+   /* Restart hopm to rehash */
    main_restart();
 }
