@@ -62,7 +62,6 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 %token PIDFILE
 %token PORT
 %token PROTOCOL
-%token PROTOCOLTYPE
 %token REALNAME
 %token REPLY
 %token SCANLOG

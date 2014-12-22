@@ -1,14 +1,13 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+/* A Bison parser, made by GNU Bison 3.0.2.  */
 
-/* Skeleton interface for Bison's Yacc-like parsers in C
+/* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,9 +15,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -33,59 +30,68 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* Tokens.  */
+#ifndef YY_YY_CONFIG_PARSER_H_INCLUDED
+# define YY_YY_CONFIG_PARSER_H_INCLUDED
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
+
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     AWAY = 258,
-     BAN_UNKNOWN = 259,
-     BLACKLIST = 260,
-     CHANNEL = 261,
-     CONNREGEX = 262,
-     DNS_FDLIMIT = 263,
-     DNSBL_FROM = 264,
-     DNSBL_TO = 265,
-     EXEMPT = 266,
-     FD = 267,
-     INVITE = 268,
-     IRC = 269,
-     KLINE = 270,
-     KEY = 271,
-     MASK = 272,
-     MAX_READ = 273,
-     MODE = 274,
-     NAME = 275,
-     NEGCACHE = 276,
-     NICK = 277,
-     NICKSERV = 278,
-     OPER = 279,
-     OPM = 280,
-     OPTIONS = 281,
-     PASSWORD = 282,
-     PERFORM = 283,
-     PIDFILE = 284,
-     PORT = 285,
-     PROTOCOL = 286,
-     PROTOCOLTYPE = 287,
-     REALNAME = 288,
-     REPLY = 289,
-     SCANLOG = 290,
-     SCANNER = 291,
-     SENDMAIL = 292,
-     SERVER = 293,
-     TARGET_IP = 294,
-     TARGET_PORT = 295,
-     TARGET_STRING = 296,
-     TIMEOUT = 297,
-     TYPE = 298,
-     USERNAME = 299,
-     USER = 300,
-     VHOST = 301,
-     NUMBER = 302,
-     STRING = 303
-   };
+  enum yytokentype
+  {
+    AWAY = 258,
+    BAN_UNKNOWN = 259,
+    BLACKLIST = 260,
+    CHANNEL = 261,
+    CONNREGEX = 262,
+    DNS_FDLIMIT = 263,
+    DNSBL_FROM = 264,
+    DNSBL_TO = 265,
+    EXEMPT = 266,
+    FD = 267,
+    INVITE = 268,
+    IRC = 269,
+    KLINE = 270,
+    KEY = 271,
+    MASK = 272,
+    MAX_READ = 273,
+    MODE = 274,
+    NAME = 275,
+    NEGCACHE = 276,
+    NICK = 277,
+    NICKSERV = 278,
+    OPER = 279,
+    OPM = 280,
+    OPTIONS = 281,
+    PASSWORD = 282,
+    PERFORM = 283,
+    PIDFILE = 284,
+    PORT = 285,
+    PROTOCOL = 286,
+    REALNAME = 287,
+    REPLY = 288,
+    SCANLOG = 289,
+    SCANNER = 290,
+    SENDMAIL = 291,
+    SERVER = 292,
+    TARGET_IP = 293,
+    TARGET_PORT = 294,
+    TARGET_STRING = 295,
+    TIMEOUT = 296,
+    TYPE = 297,
+    USERNAME = 298,
+    USER = 299,
+    VHOST = 300,
+    NUMBER = 301,
+    STRING = 302,
+    PROTOCOLTYPE = 303
+  };
 #endif
 /* Tokens.  */
 #define AWAY 258
@@ -117,41 +123,43 @@
 #define PIDFILE 284
 #define PORT 285
 #define PROTOCOL 286
-#define PROTOCOLTYPE 287
-#define REALNAME 288
-#define REPLY 289
-#define SCANLOG 290
-#define SCANNER 291
-#define SENDMAIL 292
-#define SERVER 293
-#define TARGET_IP 294
-#define TARGET_PORT 295
-#define TARGET_STRING 296
-#define TIMEOUT 297
-#define TYPE 298
-#define USERNAME 299
-#define USER 300
-#define VHOST 301
-#define NUMBER 302
-#define STRING 303
+#define REALNAME 287
+#define REPLY 288
+#define SCANLOG 289
+#define SCANNER 290
+#define SENDMAIL 291
+#define SERVER 292
+#define TARGET_IP 293
+#define TARGET_PORT 294
+#define TARGET_STRING 295
+#define TIMEOUT 296
+#define TYPE 297
+#define USERNAME 298
+#define USER 299
+#define VHOST 300
+#define NUMBER 301
+#define STRING 302
+#define PROTOCOLTYPE 303
 
-
-
-
+/* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-#line 82 "config-parser.y"
+typedef union YYSTYPE YYSTYPE;
+union YYSTYPE
 {
+#line 81 "config-parser.y" /* yacc.c:1909  */
+
         int number;
         char *string;
-}
-/* Line 1529 of yacc.c.  */
-#line 150 "y.tab.h"
-	YYSTYPE;
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+
+#line 155 "config-parser.h" /* yacc.c:1909  */
+};
 # define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
 #endif
+
 
 extern YYSTYPE yylval;
 
+int yyparse (void);
+
+#endif /* !YY_YY_CONFIG_PARSER_H_INCLUDED  */
