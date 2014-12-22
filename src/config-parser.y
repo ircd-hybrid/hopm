@@ -89,8 +89,8 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 
 %%
 
-config:     /* empty */
-          |config config_items
+config:
+          | config config_items
           ;
 
 config_items: irc_entry     |
@@ -105,8 +105,7 @@ config_items: irc_entry     |
 
 options_entry: OPTIONS '{' options_items '}' ';';
 
-options_items: /* Empty */                |
-               options_items options_item |
+options_items: options_items options_item |
                options_item;
 
 options_item: options_negcache |
@@ -488,8 +487,7 @@ scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
 
 opm_entry: OPM '{' opm_items  '}' ';' ;
 
-opm_items: /* Empty */        |
-           opm_items opm_item |
+opm_items: opm_items opm_item |
            opm_item;
 
 opm_item: opm_dnsbl_from      |
@@ -538,9 +536,8 @@ opm_blacklist_entry:
 }
 BLACKLIST '{' blacklist_items '}' ';';
 
-blacklist_items: /* Empty */                 |
-              blacklist_items blacklist_item |
-              blacklist_item;
+blacklist_items: blacklist_items blacklist_item |
+                 blacklist_item;
 
 blacklist_item: blacklist_name        |
                 blacklist_type        |
@@ -582,8 +579,7 @@ blacklist_ban_unknown: BAN_UNKNOWN '=' NUMBER ';' {
 
 blacklist_reply: REPLY '{' blacklist_reply_items '}' ';';
 
-blacklist_reply_items: /* Empty */                                |
-                       blacklist_reply_items blacklist_reply_item |
+blacklist_reply_items: blacklist_reply_items blacklist_reply_item |
                        blacklist_reply_item;
 
 blacklist_reply_item: NUMBER '=' STRING ';'
@@ -606,8 +602,7 @@ blacklist_reply_item: NUMBER '=' STRING ';'
 
 exempt_entry: EXEMPT '{' exempt_items  '}' ';' ;
 
-exempt_items: /* Empty */              |
-              exempt_items exempt_item |
+exempt_items: exempt_items exempt_item |
               exempt_item;
 
 exempt_item: exempt_mask  |
