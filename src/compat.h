@@ -11,16 +11,6 @@
 extern int bopm_inet_aton(const char *cp, struct in_addr *inp);
 #endif
 
-#ifndef HAVE_SNPRINTF
-#undef snprintf
-#define snprintf bopm_snprintf
-#endif
-
-#ifndef HAVE_VSNPRINTF
-#undef vsnprintf
-#define vsnprintf bopm_vsnprintf
-#endif
-
 #ifndef HAVE_INET_PTON
 #undef inet_pton
 #define inet_pton bopm_inet_pton

@@ -26,7 +26,9 @@ dnl         AC_MSG_RESULT([no])
 dnl fi
 
 dnl Checks for programs.
-AC_PROG_CC
+AC_PROG_CC_C99
+AS_IF([test "$ac_cv_prog_cc_c99" = "no"],
+    [AC_MSG_ERROR([no suitable C99 compiler found. Aborting.])])
 AC_PROG_LIBTOOL
 
 dnl Checks for libraries.
@@ -47,8 +49,6 @@ AC_STRUCT_TM
 dnl Checks for library functions.
 AC_TYPE_SIGNAL
 AC_FUNC_STRFTIME
-
-AC_FUNC_SNPRINTF
 
 dnl check for yacc
 AC_PROG_INSTALL

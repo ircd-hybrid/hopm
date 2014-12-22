@@ -25,7 +25,9 @@ dnl     AC_HELP_STRING([--with-faldo],
 dnl     [make some use of Nick Faldo]))
 
 dnl Checks for programs.
-AC_PROG_CC
+AC_PROG_CC_C99
+AS_IF([test "$ac_cv_prog_cc_c99" = "no"],
+    [AC_MSG_ERROR([no suitable C99 compiler found. Aborting.])])
 AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
@@ -43,8 +45,6 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_TYPE_SIZE_T
 AC_HEADER_TIME
-
-AC_FUNC_SNPRINTF
 
 dnl if they want select() or they don't have poll() then we need to check
 dnl that we actually have select()

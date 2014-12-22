@@ -11,16 +11,6 @@
 extern int libopm_inet_aton(const char *cp, struct in_addr *inp);
 #endif
 
-#ifndef HAVE_SNPRINTF
-#undef snprintf
-#define snprintf libopm_snprintf
-#endif
-
-#ifndef HAVE_VSNPRINTF
-#undef vsnprintf
-#define vsnprintf libopm_vsnprintf
-#endif
-
 #ifndef HAVE_INET_PTON
 #undef inet_pton
 #define inet_pton libopm_inet_pton
