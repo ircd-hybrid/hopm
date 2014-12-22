@@ -63,9 +63,9 @@ AC_CHECK_FUNCS(gethostbyname gethostbyname2)
 dnl AIX fun
 AC_C_BIGENDIAN
 
-dnl Solaris has to be weird doesn't it...
-AC_CHECK_LIB(socket, socket, AC_SUBST(LSOCKET, [-lsocket]))
-AC_CHECK_LIB(nsl, gethostbyname, AC_SUBST(LNSL, [-lnsl]))
+AC_CHECK_FUNC(getaddrinfo, [], AC_SEARCH_LIBS(getaddrinfo, nsl))
+AC_CHECK_FUNC(getnameinfo, [], AC_SEARCH_LIBS(getnameinfo, nsl))
+AC_SEARCH_LIBS([socket],[socket],,[AC_MSG_ERROR([socket library not found])])
 
 dnl teehee - taken from MRTG / Tobias Oetiker
 dnl if test "$with_faldo" != "no"; then
