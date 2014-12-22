@@ -1,5 +1,3 @@
-/* vim: set shiftwidth=3 softtabstop=3 expandtab: */
-
 /*
 firedns.c - firedns library
 Copyright (C) 2002 Ian Gulliver
@@ -45,8 +43,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "list.h"
 #include "log.h"
 #include "dnsbl.h"
-
-RCSID("$Id: firedns.c,v 1.22 2005/06/03 12:58:12 dg Exp $");
 
 #define FIREDNS_TRIES 3
 #define min(a,b) (a < b ? a : b)

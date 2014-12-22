@@ -13,8 +13,6 @@
 
 /* Stuff to shut up warnings about rcsid being unused. */
 #define USE_VAR(var)    static char sizeof##var = sizeof(sizeof##var) + sizeof(var)
-/* RCS tag. */
-#define RCSID(x)        static char rcsid[] = x; USE_VAR(rcsid);
 
 
 typedef struct  _OPM_CONFIG           OPM_CONFIG_T;

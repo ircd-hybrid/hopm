@@ -27,8 +27,6 @@
 #include "malloc.h"
 #include "opm.h"
 
-RCSID("$Id: malloc.c,v 1.10 2002/11/07 20:19:06 strtok Exp $");
-
 
 /* MyMalloc
  *  

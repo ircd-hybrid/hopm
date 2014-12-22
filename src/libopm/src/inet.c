@@ -66,7 +66,6 @@ along with this program; if not, write to
 #define HOSTIPLEN 15
 #endif
 
-RCSID("$Id: inet.c,v 1.7 2003/06/20 04:18:44 andy Exp $");
 
 extern const unsigned char ToLowerTab[];
 #define ToLower(c) (ToLowerTab[(unsigned char)(c)])

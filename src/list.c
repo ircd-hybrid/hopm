@@ -25,7 +25,6 @@
 #include "list.h"
 #include "defs.h"
 
-RCSID("$Id: list.c,v 1.6 2003/06/22 13:19:39 andy Exp $");
 
 node_t *node_create(void *data)
 {

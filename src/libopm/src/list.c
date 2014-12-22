@@ -28,7 +28,6 @@
 #include "malloc.h"
 #include "opm.h"
 
-RCSID("$Id: list.c,v 1.11 2003/06/27 18:51:02 strtok Exp $");
 
 OPM_NODE_T *libopm_node_create(void *data)
 {

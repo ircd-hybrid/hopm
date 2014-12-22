@@ -36,7 +36,6 @@
 #include "compat.h"
 #include "opm.h"
 
-RCSID("$Id: compat.c,v 1.3 2003/01/11 06:18:41 andy Exp $");
 
 #ifndef HAVE_INET_ATON
 /*

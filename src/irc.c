@@ -72,7 +72,6 @@
 #include "malloc.h"
 #include "main.h"
 
-RCSID("$Id: irc.c,v 1.27 2003/11/29 19:56:19 strtok Exp $");
 
 static void irc_init(void);
 static void irc_connect(void);

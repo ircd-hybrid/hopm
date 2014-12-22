@@ -51,7 +51,6 @@
 # include <string.h>
 #endif
 
-RCSID("$Id: libopm.c,v 1.80 2003/06/22 13:19:40 andy Exp $");
 
 static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void);
 static void libopm_protocol_config_free(OPM_PROTOCOL_CONFIG_T *);
