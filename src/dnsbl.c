@@ -136,7 +136,7 @@ static void dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl,
          item = p->data;
          if(item->number == type)
          {
-            strncpy(text_type, item->type, sizeof(text_type));
+            strlcpy(text_type, item->type, sizeof(text_type));
             break;
          }
       }

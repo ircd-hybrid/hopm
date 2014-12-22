@@ -309,14 +309,11 @@ static void irc_init(void)
    LIST_FOREACH(node, IRCItem->channels->head)
    {
       chan = (struct ChannelConf *) node->data;
-      strncat(IRC_CHANNELS, chan->name, MSGLENMAX);
+      strlcat(IRC_CHANNELS, chan->name, sizeof(IRC_CHANNELS));
 
       if(node->next)
-         strncat(IRC_CHANNELS, ",", MSGLENMAX);
+         strlcat(IRC_CHANNELS, ",", sizeof(IRC_CHANNELS));
    }
-   IRC_CHANNELS[MSGLENMAX] = '\0';
-
-
 }
 
 
