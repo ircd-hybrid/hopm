@@ -2,7 +2,7 @@
 #define OPTIONS_H
 
 /* The default name for conf, log, pid files */
-#define DEFAULTNAME "bopm"
+#define DEFAULTNAME "hopm"
 
 /* file extensions */
 /* config */
