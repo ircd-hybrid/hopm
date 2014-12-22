@@ -6,7 +6,7 @@ libopm_la_SOURCES = compat.c compat.h config.c config.h inet.c inet.h \
 
 include_HEADERS = opm.h opm_error.h opm_types.h opm_common.h
 
-libopm_la_LIBADD = @ETR_SOCKET_LIBS@ @LTLIBOBJS@
+libopm_la_LIBADD = @LTLIBOBJS@
 
 noinst_PROGRAMS = test test_debug
 test_SOURCES = test.c

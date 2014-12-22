@@ -31,9 +31,6 @@ AS_IF([test "$ac_cv_prog_cc_c99" = "no"],
 AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
-dnl check if we need -lsocket or -lnsl
-ETR_SOCKET_NSL
-
 dnl Checks for header files.
 AC_HEADER_STDC
 
@@ -66,16 +63,6 @@ AC_C_BIGENDIAN
 AC_CHECK_FUNC(getaddrinfo, [], AC_SEARCH_LIBS(getaddrinfo, nsl))
 AC_CHECK_FUNC(getnameinfo, [], AC_SEARCH_LIBS(getnameinfo, nsl))
 AC_SEARCH_LIBS([socket],[socket],,[AC_MSG_ERROR([socket library not found])])
-
-dnl teehee - taken from MRTG / Tobias Oetiker
-dnl if test "$with_faldo" != "no"; then
-dnl  echo $ECHO_N "checking for Nick Faldo $ECHO_C"
-dnl  for bleh in 1 2 3; do
-dnl   echo $ECHO_N "."        
-dnl   sleep 1
-dnl  done
-dnl  AC_MSG_RESULT([ http://blitzed.org/advocacy/enjoy.jpg])
-dnl fi
 
 LTLIBOBJS=`echo "$LIB@&t@OBJS" |
            sed 's,\.[[^.]]* ,.lo ,g;s,\.[[^.]]*$,.lo,'`

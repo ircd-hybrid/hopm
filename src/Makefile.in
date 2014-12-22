@@ -78,7 +78,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = bopm$(EXEEXT)
+bin_PROGRAMS = hopm$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/setup.h.in $(top_srcdir)/mkinstalldirs \
@@ -94,14 +94,14 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_bopm_OBJECTS = compat.$(OBJEXT) config-parser.$(OBJEXT) \
+am_hopm_OBJECTS = compat.$(OBJEXT) config-parser.$(OBJEXT) \
 	config-lexer.$(OBJEXT) config.$(OBJEXT) dnsbl.$(OBJEXT) \
 	inet.$(OBJEXT) irc.$(OBJEXT) log.$(OBJEXT) main.$(OBJEXT) \
 	match.$(OBJEXT) misc.$(OBJEXT) malloc.$(OBJEXT) list.$(OBJEXT) \
 	negcache.$(OBJEXT) opercmd.$(OBJEXT) scan.$(OBJEXT) \
 	stats.$(OBJEXT) firedns.$(OBJEXT)
-bopm_OBJECTS = $(am_bopm_OBJECTS)
-bopm_DEPENDENCIES = libopm/src/.libs/libopm.a @LIBOBJS@
+hopm_OBJECTS = $(am_hopm_OBJECTS)
+hopm_DEPENDENCIES = libopm/src/.libs/libopm.a @LIBOBJS@
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -159,8 +159,8 @@ AM_V_YACC = $(am__v_YACC_@AM_V@)
 am__v_YACC_ = $(am__v_YACC_@AM_DEFAULT_V@)
 am__v_YACC_0 = @echo "  YACC    " $@;
 am__v_YACC_1 = 
-SOURCES = $(bopm_SOURCES)
-DIST_SOURCES = $(bopm_SOURCES)
+SOURCES = $(hopm_SOURCES)
+DIST_SOURCES = $(hopm_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -353,13 +353,13 @@ top_srcdir = @top_srcdir@
 SUBDIRS = libopm .
 AM_CPPFLAGS = -DBOPM_ETCDIR="\"$(sysconfdir)\"" -DBOPM_LOGDIR="\"$(localstatedir)\""
 AM_YFLAGS = -d
-bopm_SOURCES = compat.c compat.h config-parser.y config-lexer.l config.c config.h \
+hopm_SOURCES = compat.c compat.h config-parser.y config-lexer.l config.c config.h \
     dnsbl.c dnsbl.h extern.h inet.c inet.h irc.c irc.h log.c log.h main.c match.c \
     match.h misc.c misc.h malloc.c malloc.h list.c list.h negcache.c negcache.h \
     opercmd.c opercmd.h options.h scan.c scan.h setup.h stats.c stats.h firedns.c \
 	 firedns.h main.h defs.h
 
-bopm_LDADD = libopm/src/.libs/libopm.a @ETR_SOCKET_LIBS@ @LIBOBJS@
+hopm_LDADD = libopm/src/.libs/libopm.a @LIBOBJS@
 all: setup.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -463,9 +463,9 @@ config-parser.h: config-parser.c
 	@if test ! -f $@; then rm -f config-parser.c; else :; fi
 	@if test ! -f $@; then $(MAKE) $(AM_MAKEFLAGS) config-parser.c; else :; fi
 
-bopm$(EXEEXT): $(bopm_OBJECTS) $(bopm_DEPENDENCIES) $(EXTRA_bopm_DEPENDENCIES) 
-	@rm -f bopm$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(bopm_OBJECTS) $(bopm_LDADD) $(LIBS)
+hopm$(EXEEXT): $(hopm_OBJECTS) $(hopm_DEPENDENCIES) $(EXTRA_hopm_DEPENDENCIES) 
+	@rm -f hopm$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(hopm_OBJECTS) $(hopm_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
