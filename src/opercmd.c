@@ -54,9 +54,6 @@ static void command_free(struct Command *);
 static void cmd_check(char *, char *, struct ChannelConf *);
 static void cmd_stat(char *, char *, struct ChannelConf *);
 static void cmd_fdstat(char *, char *, struct ChannelConf *);
-#if 0
-static void cmd_op(char *, char *, struct ChannelConf *);
-#endif
 
 static struct OperCommandHash COMMAND_TABLE[] =
    {
@@ -66,7 +63,6 @@ static struct OperCommandHash COMMAND_TABLE[] =
       {"STATS",  cmd_stat   },
       {"STATUS", cmd_stat   },
       {"FDSTAT", cmd_fdstat },
-/*    {"OP",     cmd_op     } */
    };
 
 
@@ -389,26 +385,3 @@ static void cmd_fdstat(char *param, char *source, struct ChannelConf *target)
 
    fdstats_output(target->name);
 }
-
-
-/* cmd_op
- *
- *   Op a user on the channel.
- *
- * Parameters:
- *    param: Parameters of the command
- *    source: irc_nick of user who requested the command
- *    target: channel command was sent to
- *
- * XXX - Doesn't seem to currently be in use anywhere?
- *  -grifferz
- */
-
-#if 0
-static void cmd_op(char *param, char *source, struct ChannelConf *target)
-{
-   irc_send("MODE %s +o %s", target->name, param);
-
-   USE_VAR(source);
-}
-#endif
