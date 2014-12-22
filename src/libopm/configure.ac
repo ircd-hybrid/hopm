@@ -68,13 +68,6 @@ LTLIBOBJS=`echo "$LIB@&t@OBJS" |
            sed 's,\.[[^.]]* ,.lo ,g;s,\.[[^.]]*$,.lo,'`
 AC_SUBST(LTLIBOBJS)
 
-dnl This comes last because configure won't actually work with -Werror in
-dnl the CFLAGS
-AC_ARG_WITH(werror,
-    AC_HELP_STRING([--with-werror],
-    [use -Werror to abort compilation on any warning]),
-    [CFLAGS="$CFLAGS -Werror"])
-
 AC_OUTPUT(Makefile src/Makefile doc/Makefile doc/Doxyfile)
 
 echo "##############################################################################"

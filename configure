@@ -771,7 +771,6 @@ with_aix_soname
 with_gnu_ld
 with_sysroot
 enable_libtool_lock
-with_werror
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1429,7 +1428,6 @@ Optional Packages:
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
   --with-sysroot[=DIR]    Search for dependent libraries within DIR (or the
                           compiler's sysroot if not specified).
-  --with-werror           use -Werror to abort compilation on any warning
 
 Some influential environment variables:
   CC          C compiler command
@@ -13469,13 +13467,6 @@ _ACEOF
 
 
 subdirs="$subdirs src/libopm"
-
-
-
-# Check whether --with-werror was given.
-if test "${with_werror+set}" = set; then :
-  withval=$with_werror; CFLAGS="$CFLAGS -Werror"
-fi
 
 
 ac_config_files="$ac_config_files Makefile doc/Makefile src/Makefile"
