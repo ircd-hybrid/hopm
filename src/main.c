@@ -70,9 +70,8 @@ struct sigaction ALARMACTION;
 struct sigaction INTACTION;
 struct sigaction USR1ACTION;
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-   char spid[16];
    pid_t pid;
    int c;
    size_t lenc, lenl;
@@ -155,22 +154,22 @@ int main(int argc, char **argv)
    if (OptionsItem->scanlog)
       scanlog_open(OptionsItem->scanlog);
 
-   pid = getpid();
+    pidout = fopen(OptionsItem->pidfile, "w");
 
-   pidout = fopen(OptionsItem->pidfile, "w");
-   snprintf(spid, 16, "%u", pid);
+    if (pidout)
+    {
+      char spid[16];
 
-   if (pidout)
-   {
+      snprintf(spid, sizeof(spid), "%u", getpid());
       fwrite(spid, sizeof(char), strlen(spid), pidout);
       fclose(pidout);
-   }
-   else
-   {
-      log_printf("MAIN -> Error opening %s: %s", OptionsItem->pidfile,
-          strerror(errno));
-      exit(EXIT_FAILURE);
-   }
+    }
+    else
+    {
+       log_printf("MAIN -> Error opening %s: %s", OptionsItem->pidfile,
+                  strerror(errno));
+       exit(EXIT_FAILURE);
+    }
 
    /* Setup alarm & int handlers. */
 
