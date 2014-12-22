@@ -31,12 +31,14 @@
 %{
 #include <stdio.h>
 #include <string.h>
+
+#include "inet.h"
+#include "compat.h"
 #include "config.h"
 #include "config-parser.h"
 
 
 void ccomment(void);
-void hashcomment(void);
 
 int linenum = 1;
 char linebuf[512];
@@ -44,14 +46,14 @@ char linebuf[512];
 %}
 
 string                 \"[^\"\n]*[\"\n]
-comment                #.*
+comment                ("//"|"#").*
 whitespace             [ \t\r]*
 
 %%
 
 "/*"                    { ccomment(); }
 
-{comment}               { hashcomment(); }
+{comment}               ;
 
 {string}                {
                            /* QSTRING from Hybrid7. Why re-invent the wheel? */
@@ -208,23 +210,17 @@ OFF                      {
                          }
 
 
-
-\n.*                    { 
-                           strcpy(linebuf, yytext+1); 
-                           linenum++; 
-                           yyless(1); 
-                        }
+\n.*                     {
+                           strlcpy(linebuf, yytext + 1, sizeof(linebuf));
+                           ++linenum;
+                           yyless(1);
+                         }
 
 {whitespace}            /* ignore whitespace */;
 
 .                       return yytext[0]; 
 
 %%
-
-
-void hashcomment(void)
-{
-}
 
 
 /* C-comment ignoring routine -kre*/
