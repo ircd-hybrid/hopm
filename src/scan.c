@@ -407,7 +407,7 @@ void scan_connect(char **user, char *msg)
       LIST_FOREACH(p2, scs->masks->head)
       {
          scsmask = (char *) p2->data;
-         if(match(scsmask, mask))
+         if(!match(scsmask, mask))
          {
             if(OPT_DEBUG)
             {
@@ -1128,7 +1128,7 @@ int scan_checkexempt(char *mask, char *ipmask)
    LIST_FOREACH(node, ExemptItem->masks->head)
    {
       exempt_mask = node->data;
-      if(match(exempt_mask, mask) || match(exempt_mask, ipmask))
+      if(!match(exempt_mask, mask) || !match(exempt_mask, ipmask))
          return 1;
    }
 
