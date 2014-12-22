@@ -795,11 +795,6 @@ static void m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo
    node_t *node;
    struct ChannelConf *channel;
 
-   USE_VAR(parv);
-   USE_VAR(parc);
-   USE_VAR(msg);
-   USE_VAR(notused);
-
    log_printf("IRC -> Connected to %s:%d", IRCItem->server, IRCItem->port);
 
    /* Identify to nickserv if needed */
@@ -847,9 +842,6 @@ static void m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo
  */
 static void m_ping(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
 {
-   USE_VAR(msg);
-   USE_VAR(source_p);
-
    if(parc < 3)
       return;
 
@@ -877,9 +869,6 @@ static void m_invite(char **parv, unsigned int parc, char *msg, struct UserInfo 
 {
    struct ChannelConf *channel;
    
-   USE_VAR(msg);
-   USE_VAR(source_p);
-
    if(parc < 4)
       return;
 
@@ -960,14 +949,9 @@ static void m_privmsg(char **parv, unsigned int parc, char *msg, struct UserInfo
 
 static void m_ctcp(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
 {
-   USE_VAR(parc);
-   USE_VAR(msg);
-
-   if(strncasecmp(parv[3], "\001VERSION\001", 9) == 0)
-   {
-      irc_send("NOTICE %s :\001VERSION Hybrid Open Proxy Monitor %s\001",
-            source_p->irc_nick, VERSION);
-   }
+  if (strncasecmp(parv[3], "\001VERSION\001", 9) == 0)
+    irc_send("NOTICE %s :\001VERSION Hybrid Open Proxy Monitor %s\001",
+             source_p->irc_nick, VERSION);
 }
 
 
@@ -1083,9 +1067,6 @@ static void m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo 
 static void m_userhost(char **parv, unsigned int parc, char *msg,
       struct UserInfo *source_p)
 {
-   USE_VAR(msg);
-   USE_VAR(source_p);
-
    if(parc < 4)
       return;
 
@@ -1106,9 +1087,6 @@ static void m_cannot_join(char **parv, unsigned int parc, char *msg,
       struct UserInfo *source_p)
 {
    struct ChannelConf *channel;
-
-   USE_VAR(msg);
-   USE_VAR(source_p);
 
    if(parc < 5)
       return;
@@ -1136,11 +1114,6 @@ static void m_cannot_join(char **parv, unsigned int parc, char *msg,
 
 static void m_kill(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
 {
-   USE_VAR(parv);
-   USE_VAR(parc);
-   USE_VAR(msg);
-   USE_VAR(source_p);
-
-   /* Restart hopm to rehash */
-   main_restart();
+  /* Restart hopm to rehash */
+  main_restart();
 }

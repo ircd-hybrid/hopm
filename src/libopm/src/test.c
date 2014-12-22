@@ -160,9 +160,6 @@ int main(int argc, char **argv)
 void open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
       void *data)
 {
-   USE_VAR(notused);
-   USE_VAR(data);
-
    printf("Open proxy on %s:%d [%d bytes read]\n", remote->ip,
          remote->port, remote->bytes_read);
    opm_end(scanner, remote);
@@ -171,29 +168,17 @@ void open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
 void negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
       void *data)
 {
-   USE_VAR(scanner);
-   USE_VAR(notused);
-   USE_VAR(data);
-
    printf("Negotiation on %s:%d failed [%d bytes read]\n", remote->ip,
          remote->port, remote->bytes_read);
 }
 
 void timeout(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
-   USE_VAR(scanner);
-   USE_VAR(notused);
-   USE_VAR(data);
-
    printf("Negotiation timed out on %s:%d\n", remote->ip, remote->port);
 }
 
 void end(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
-   USE_VAR(scanner);
-   USE_VAR(notused);
-   USE_VAR(data);
-
    printf("Scan on %s has ended\n", remote->ip);
    opm_remote_free(remote);
    complete = 1;
@@ -201,9 +186,6 @@ void end(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 
 void handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
 {
-   USE_VAR(scanner);
-   USE_VAR(data);
-
    switch(err)
    {
       case OPM_ERR_MAX_READ:

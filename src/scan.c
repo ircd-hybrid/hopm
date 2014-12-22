@@ -616,9 +616,6 @@ void scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
    struct scan_struct *ss;
    struct scanner_struct *scs;
 
-   USE_VAR(scanner);
-   USE_VAR(notused);
-
    /* Record that a scan happened */
    scan_log(remote);
 
@@ -677,9 +674,6 @@ void scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote,
 //   struct scan_struct *ss;
    struct scanner_struct *scs;
 
-   USE_VAR(scanner);
-   USE_VAR(notused);
-
    /* Record that a scan happened */
    scan_log(remote);
 
@@ -722,9 +716,6 @@ static void scan_timeout(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
 {
 //   struct scan_struct *ss;
    struct scanner_struct *scs;
-
-   USE_VAR(scanner);
-   USE_VAR(notused);
 
    /* Record that a scan happened */
    scan_log(remote);
@@ -771,9 +762,6 @@ static void scan_end(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
    struct scan_struct *ss;
    struct scanner_struct *scs;
 
-   USE_VAR(scanner);
-   USE_VAR(notused);
-
    scs = (struct scanner_struct *) data;
    ss = (struct scan_struct *) remote->data;
 
@@ -807,8 +795,6 @@ static void scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote,
 
    struct scan_struct *ss;
    struct scanner_struct *scs;
-
-   USE_VAR(scanner);
 
    scs = (struct scanner_struct *) data;
    ss = (struct scan_struct *) remote->data;

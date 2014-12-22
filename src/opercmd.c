@@ -147,11 +147,8 @@ void command_parse(char *command, char *msg, struct ChannelConf *target,
 {
    unsigned int i;
    char *param; /* Parsed parameters */
-
    struct Command *cs;
    node_t *node;
-
-   USE_VAR(msg);
 
    if(OPT_DEBUG)
    {
@@ -342,9 +339,7 @@ void command_userhost(char *reply)
 
 static void cmd_check(char *param, char *source, struct ChannelConf *target)
 {
-   USE_VAR(source);
-
-   scan_manual(param, target);
+  scan_manual(param, target);
 }
 
 
@@ -361,10 +356,7 @@ static void cmd_check(char *param, char *source, struct ChannelConf *target)
 
 static void cmd_stat(char *param, char *source, struct ChannelConf *target)
 {
-   USE_VAR(param);
-   USE_VAR(source);
-
-   stats_output(target->name);
+  stats_output(target->name);
 }
 
 
@@ -380,8 +372,5 @@ static void cmd_stat(char *param, char *source, struct ChannelConf *target)
 
 static void cmd_fdstat(char *param, char *source, struct ChannelConf *target)
 {
-   USE_VAR(param);
-   USE_VAR(source);
-
-   fdstats_output(target->name);
+  fdstats_output(target->name);
 }

@@ -45,8 +45,6 @@ static char SENDBUF[SENDBUFLEN + 1];
 
 int libopm_proxy_http_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   USE_VAR(scan);
-
    snprintf(SENDBUF, SENDBUFLEN, "CONNECT %s:%d HTTP/1.0\r\n\r\n",
       (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP), 
       *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT));
@@ -75,7 +73,6 @@ int libopm_proxy_socks4_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T
    unsigned long laddr;
    int len, scan_port;
    char *scan_ip;
-   USE_VAR(scan);
          
    scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
    scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
@@ -143,7 +140,6 @@ int libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T
    unsigned long laddr;
    int len, scan_port;
    char *scan_ip;
-   USE_VAR(scan);
    
    scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
    scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
@@ -183,7 +179,6 @@ int libopm_proxy_wingate_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_
 {
    int scan_port, len;
    char *scan_ip;
-   USE_VAR(scan);
 
    scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
    scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
@@ -207,7 +202,6 @@ int libopm_proxy_router_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T
 {
    int len, scan_port;
    char *scan_ip;
-   USE_VAR(scan);
 
    scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
    scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
@@ -231,7 +225,6 @@ int libopm_proxy_httppost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION
 {
    int len, scan_port;
    char *scan_ip;
-   USE_VAR(scan);
 
    scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
    scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
