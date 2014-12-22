@@ -1,9 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(bopm, [3.1.3])
+AC_INIT(hopm, [1.0.0beta1])
 AC_CONFIG_SRCDIR(src/opercmd.h)
 AM_CONFIG_HEADER(src/setup.h)
 AM_INIT_AUTOMAKE()
-AC_PREFIX_DEFAULT([\${HOME}/bopm])
+AC_PREFIX_DEFAULT([\${HOME}/hopm])
 AM_MAINTAINER_MODE
 
 AC_ARG_WITH(extra-fascism,
@@ -73,14 +73,6 @@ AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
 
 
-dnl teehee - taken from MRTG / Tobias Oetiker
-dnl echo $ECHO_N "checking for POSIX-compliant goat $ECHO_C"
-dnl for bleh in 1 2 3; do
-dnl  echo $ECHO_N "."        
-dnl  sleep 1
-dnl done
-dnl AC_MSG_RESULT([ http://www.blitzed.org/goat_winter_2001.phtml])
-
 AH_BOTTOM([
 #if SIZEOF_INT==4
 typedef signed int int32;
@@ -93,7 +85,7 @@ typedef unsigned long uint32;
 #endif
 
 #if SIZEOF_SHORT!=2
-#  error "Your short int data type is not 2 bytes: firedns is not going to work for you.  mail bopm@lists.blitzed.org!"
+#  error "Your short int data type is not 2 bytes: hopm (firedns) is not going to work for you."
 #endif
 ])
 
@@ -111,10 +103,9 @@ AC_OUTPUT(Makefile src/Makefile)
 
 echo "##############################################################################"
 echo "Everything is now configured, but you can find some more (infrequently"
-echo "changed) options in options.h.  To compile BOPM now, just type make.  It"
+echo "changed) options in options.h.  To compile HOPM now, just type make.  It"
 echo "requires GNU Make, which may be installed as gmake on your system."
 echo 
-echo "bopm will be installed in ${prefix}.  To change this, run:"
+echo "hopm will be installed in ${prefix}.  To change this, run:"
 echo "   ./configure --prefix=DIRECTORY"
 echo "##############################################################################"
-echo

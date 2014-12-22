@@ -148,6 +148,6 @@ typedef unsigned long uint32;
 #endif
 
 #if SIZEOF_SHORT!=2
-#  error "Your short int data type is not 2 bytes: firedns is not going to work for you.  mail bopm@lists.blitzed.org!"
+#  error "Your short int data type is not 2 bytes: hopm (firedns) is not going to work for you."
 #endif
 
