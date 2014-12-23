@@ -175,6 +175,15 @@ void dnsbl_result(struct firedns_result *res)
 	struct dnsbl_scan *ds = res->info;
 
    if(OPT_DEBUG)
+    if (ds->ss->manual_target)
+      log_printf("DNSBL -> Lookup result for %s (%s) %d.%d.%d.%d (error: %d)",
+          ds->ss->ip,
+          res->lookup,
+          (unsigned char)res->text[0],
+          (unsigned char)res->text[1],
+          (unsigned char)res->text[2],
+          (unsigned char)res->text[3], fdns_errno);
+    else
       log_printf("DNSBL -> Lookup result for %s!%s@%s (%s) %d.%d.%d.%d (error: %d)",
           ds->ss->irc_nick,
           ds->ss->irc_username,
