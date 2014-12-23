@@ -169,12 +169,11 @@ void command_parse(char *command, char *msg, struct ChannelConf *target,
 
    /* Skip past the botname/!all */
    command = strchr(command, ' ');
-
+/* TBD: skip leading spaces if there's more than one */
    /* There is no command OR
       there is at least nothing
       past that first space.  */
-   if(command == NULL ||
-         command++ == NULL)
+   if (command == NULL || *++command == '\0')
       return;
 
 
