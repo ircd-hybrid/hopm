@@ -22,6 +22,7 @@
  */
 
 #include <assert.h>
+#include <string.h>
 #include "setup.h"
 
 #include "malloc.h"
@@ -67,4 +68,15 @@ void libopm_MyFree(void **var)
    if(*var != NULL)
       free(*var);
    *var = NULL;
+}
+
+void *
+libopm_xstrdup(const char *s)
+{
+  void *ret = malloc(strlen(s) + 1);
+
+  assert(ret);
+  strcpy(ret, s);
+
+  return ret;
 }

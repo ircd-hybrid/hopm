@@ -169,8 +169,8 @@ OPM_REMOTE_T *opm_remote_create(const char *ip)
    if(ip == NULL)
       return NULL;
 
-   ret->ip = (char*) strdup(ip);  /* replace with custom strdup function */
- 
+   ret->ip = libopm_xstrdup(ip);
+
    ret->port          = 0;
    ret->protocol      = 0;
    ret->bytes_read    = 0;

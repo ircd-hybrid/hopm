@@ -12,5 +12,6 @@
 
 void *libopm_MyMalloc(size_t bytes);
 void libopm_MyFree(void **var);
+extern void *libopm_xstrdup(const char *);
 
 #endif /* MALLOC_H */

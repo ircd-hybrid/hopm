@@ -89,7 +89,7 @@ OPM_CONFIG_T *libopm_config_create()
             break;
 
          case OPM_TYPE_STRING:
-            ret->vars[i] = strdup("");
+            ret->vars[i] = libopm_xstrdup("");
             break;
 
          case OPM_TYPE_ADDRESS:
@@ -187,7 +187,7 @@ OPM_ERR_T libopm_config_set(OPM_CONFIG_T *config, int key, void *value)
       case OPM_TYPE_STRING:
          if((char *) config->vars[key] != NULL)
             MyFree(config->vars[key]);
-         config->vars[key] = strdup((char *) value);
+         config->vars[key] = libopm_xstrdup((char *) value);
          break;
 
       case OPM_TYPE_INT:
@@ -201,7 +201,7 @@ OPM_ERR_T libopm_config_set(OPM_CONFIG_T *config, int key, void *value)
          break; 
 
       case OPM_TYPE_STRINGLIST:
-         node = libopm_node_create(strdup((char *) value));
+         node = libopm_node_create(libopm_xstrdup((char *) value));
          libopm_list_add((OPM_LIST_T *) config->vars[key], node);
          break;                        
 
