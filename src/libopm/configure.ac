@@ -69,13 +69,3 @@ LTLIBOBJS=`echo "$LIB@&t@OBJS" |
 AC_SUBST(LTLIBOBJS)
 
 AC_OUTPUT(Makefile src/Makefile doc/Makefile doc/Doxyfile)
-
-echo "##############################################################################"
-echo "Everything is now configured.  To compile libopm now, just type make.  It"
-echo "requires GNU Make, which may be installed as gmake on your system."
-echo 
-echo "libopm will be installed in ${prefix}.  To change this, run:"
-echo "   ./configure --prefix=DIRECTORY"
-echo 
-echo "##############################################################################"
-echo

@@ -15088,13 +15088,3 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
-
-echo "##############################################################################"
-echo "Everything is now configured.  To compile libopm now, just type make.  It"
-echo "requires GNU Make, which may be installed as gmake on your system."
-echo
-echo "libopm will be installed in ${prefix}.  To change this, run:"
-echo "   ./configure --prefix=DIRECTORY"
-echo
-echo "##############################################################################"
-echo
