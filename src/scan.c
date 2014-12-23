@@ -949,7 +949,7 @@ static void scan_irckline(struct scan_struct *ss, const char *format, const char
                            break;
                         else
                         {
-                           strcat(message, table[i].data);
+                           strlcat(message, table[i].data, sizeof(message));
                            len += size;
                         }
 
