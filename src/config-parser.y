@@ -147,7 +147,7 @@ options_negcache: NEGCACHE '=' timespec ';'
 options_pidfile: PIDFILE '=' STRING ';'
 {
    MyFree(OptionsItem->pidfile);
-   OptionsItem->pidfile = DupString($3);
+   OptionsItem->pidfile = xstrdup($3);
 };
 
 options_dns_fdlimit: DNS_FDLIMIT '=' NUMBER ';'
@@ -158,7 +158,7 @@ options_dns_fdlimit: DNS_FDLIMIT '=' NUMBER ';'
 options_scanlog: SCANLOG '=' STRING ';'
 {
    MyFree(OptionsItem->scanlog);
-   OptionsItem->scanlog = DupString($3);
+   OptionsItem->scanlog = xstrdup($3);
 };
 
 /*************************** IRC BLOCK ***************************/
@@ -188,49 +188,49 @@ irc_item: irc_away      |
 irc_away: AWAY '=' STRING ';'
 {
    MyFree(IRCItem->away);
-   IRCItem->away = DupString($3);
+   IRCItem->away = xstrdup($3);
 };
 
 irc_kline: KLINE '=' STRING ';'
 {
    MyFree(IRCItem->kline);
-   IRCItem->kline = DupString($3);
+   IRCItem->kline = xstrdup($3);
 };
 
 irc_mode: MODE '=' STRING ';'
 {
    MyFree(IRCItem->mode);
-   IRCItem->mode = DupString($3);
+   IRCItem->mode = xstrdup($3);
 };
 
 irc_nick: NICK '=' STRING ';'
 {
    MyFree(IRCItem->nick);
-   IRCItem->nick = DupString($3);
+   IRCItem->nick = xstrdup($3);
 };
 
 irc_nickserv: NICKSERV '=' STRING ';'
 {
    MyFree(IRCItem->nickserv);
-   IRCItem->nickserv = DupString($3);
+   IRCItem->nickserv = xstrdup($3);
 };
 
 irc_oper: OPER '=' STRING ';'
 {
    MyFree(IRCItem->oper);
-   IRCItem->oper = DupString($3);
+   IRCItem->oper = xstrdup($3);
 };
 
 irc_password: PASSWORD '=' STRING ';'
 {
    MyFree(IRCItem->password);
-   IRCItem->password = DupString($3);
+   IRCItem->password = xstrdup($3);
 };
 
 irc_perform: PERFORM '=' STRING ';'
 {
    node_t *node;
-   node = node_create(DupString($3));
+   node = node_create(xstrdup($3));
 
    list_add(IRCItem->performs, node);
 };
@@ -243,31 +243,31 @@ irc_port: PORT '=' NUMBER ';'
 irc_realname: REALNAME '=' STRING ';'
 {
    MyFree(IRCItem->realname);
-   IRCItem->realname = DupString($3);
+   IRCItem->realname = xstrdup($3);
 };
 
 irc_server: SERVER '=' STRING ';'
 {
    MyFree(IRCItem->server);
-   IRCItem->server = DupString($3);
+   IRCItem->server = xstrdup($3);
 };
 
 irc_username: USERNAME '=' STRING ';'
 {
    MyFree(IRCItem->username);
-   IRCItem->username = DupString($3);
+   IRCItem->username = xstrdup($3);
 };
 
 irc_vhost: VHOST '=' STRING ';'
 {
    MyFree(IRCItem->vhost);
-   IRCItem->vhost = DupString($3);
+   IRCItem->vhost = xstrdup($3);
 };
 
 irc_connregex: CONNREGEX '=' STRING ';'
 {
    MyFree(IRCItem->connregex);
-   IRCItem->connregex = DupString($3);
+   IRCItem->connregex = xstrdup($3);
 };
 
 
@@ -280,9 +280,9 @@ channel_entry:
 
    item = MyMalloc(sizeof *item);
 
-   item->name = DupString("");
-   item->key = DupString("");
-   item->invite = DupString("");
+   item->name = xstrdup("");
+   item->key = xstrdup("");
+   item->invite = xstrdup("");
 
    node = node_create(item);
    list_add(IRCItem->channels, node);
@@ -303,7 +303,7 @@ channel_name: NAME '=' STRING ';'
    struct ChannelConf *item = tmp;
 
    MyFree(item->name);
-   item->name = DupString($3);
+   item->name = xstrdup($3);
 };
 
 channel_key: KEY '=' STRING ';'
@@ -311,7 +311,7 @@ channel_key: KEY '=' STRING ';'
    struct ChannelConf *item = tmp;
 
    MyFree(item->key);
-   item->key = DupString($3);
+   item->key = xstrdup($3);
 };
 
 channel_invite: INVITE '=' STRING ';'
@@ -319,7 +319,7 @@ channel_invite: INVITE '=' STRING ';'
    struct ChannelConf *item = tmp;
 
    MyFree(item->invite);
-   item->invite = DupString($3);
+   item->invite = xstrdup($3);
 };
 
 /*************************** USER BLOCK ***************************/
@@ -353,7 +353,7 @@ user_mask: MASK '=' STRING ';'
    struct UserConf *item = (struct UserConf *) tmp;
 
    node_t *node;
-   node = node_create((void *) DupString($3));
+   node = node_create((void *) xstrdup($3));
 
    list_add(item->masks, node);
 };
@@ -363,7 +363,7 @@ user_scanner: SCANNER '=' STRING ';'
    struct UserConf *item = (struct UserConf *) tmp;
 
    node_t *node;
-   node = node_create((void *) DupString($3));
+   node = node_create((void *) xstrdup($3));
 
    list_add(item->scanners, node);
 };
@@ -378,15 +378,15 @@ scanner_entry:
    item = MyMalloc(sizeof *item);
 
    /* Setup ScannerConf defaults */
-   item->name = DupString("undefined");
+   item->name = xstrdup("undefined");
 
 	if(LIST_SIZE(ScannerItemList) > 0)
 	{
 	   olditem = ScannerItemList->tail->data;
 
-		item->vhost = DupString(olditem->vhost);
+		item->vhost = xstrdup(olditem->vhost);
 		item->fd = olditem->fd;
-		item->target_ip = DupString(olditem->target_ip);
+		item->target_ip = xstrdup(olditem->target_ip);
 		item->target_port = olditem->target_port;
 		item->timeout = olditem->timeout;
 		item->max_read = olditem->max_read;
@@ -396,9 +396,9 @@ scanner_entry:
 	}
 	else
 	{
-	   item->vhost = DupString("0.0.0.0");
+	   item->vhost = xstrdup("0.0.0.0");
       item->fd = 512;
-      item->target_ip = DupString("127.0.0.1");
+      item->target_ip = xstrdup("127.0.0.1");
       item->target_port = 6667;
       item->timeout = 30;
       item->max_read = 4096;
@@ -434,21 +434,21 @@ scanner_name: NAME '=' STRING ';'
 {
    struct ScannerConf *item = (struct ScannerConf *) tmp;
    MyFree(item->name);
-   item->name = DupString($3);
+   item->name = xstrdup($3);
 };
 
 scanner_vhost: VHOST '=' STRING ';'
 {
    struct ScannerConf *item = (struct ScannerConf *) tmp;
    MyFree(item->vhost);
-   item->vhost = DupString($3);
+   item->vhost = xstrdup($3);
 };
 
 scanner_target_ip: TARGET_IP '=' STRING ';'
 {
    struct ScannerConf *item = (struct ScannerConf *) tmp;
    MyFree(item->target_ip);
-   item->target_ip = DupString($3);
+   item->target_ip = xstrdup($3);
 };
 
 scanner_target_string: TARGET_STRING '=' STRING ';'
@@ -524,19 +524,19 @@ opm_item: opm_dnsbl_from      |
 opm_dnsbl_from: DNSBL_FROM '=' STRING ';'
 {
    MyFree(OpmItem->dnsbl_from);
-   OpmItem->dnsbl_from = DupString($3);
+   OpmItem->dnsbl_from = xstrdup($3);
 };
 
 opm_dnsbl_to: DNSBL_TO '=' STRING ';'
 {
    MyFree(OpmItem->dnsbl_to);
-   OpmItem->dnsbl_to = DupString($3);
+   OpmItem->dnsbl_to = xstrdup($3);
 };
 
 opm_sendmail: SENDMAIL '=' STRING ';'
 {
    MyFree(OpmItem->sendmail);
-   OpmItem->sendmail = DupString($3);
+   OpmItem->sendmail = xstrdup($3);
 };
 
 /************************** BLACKLIST BLOCK *************************/
@@ -548,8 +548,8 @@ opm_blacklist_entry:
 
    item = MyMalloc(sizeof *item);
 
-   item->name = DupString("");
-   item->kline = DupString("");
+   item->name = xstrdup("");
+   item->kline = xstrdup("");
    item->ban_unknown = 0;
    item->type = A_BITMASK;
    item->reply = list_create();
@@ -575,14 +575,14 @@ blacklist_name: NAME '=' STRING ';' {
    struct BlacklistConf *item = tmp;
 
    MyFree(item->name);
-   item->name = DupString($3);
+   item->name = xstrdup($3);
 };
 
 blacklist_kline: KLINE '=' STRING ';' {
    struct BlacklistConf *item = tmp;
 
    MyFree(item->kline);
-   item->kline = DupString($3);
+   item->kline = xstrdup($3);
 };
 
 blacklist_type: TYPE '=' STRING ';' {
@@ -616,7 +616,7 @@ blacklist_reply_item: NUMBER '=' STRING ';'
    item = MyMalloc(sizeof *item);
 
    item->number = $1;
-   item->type = DupString($3);
+   item->type = xstrdup($3);
 
    node = node_create(item);
    list_add(blacklist->reply, node);
@@ -636,7 +636,7 @@ exempt_item: exempt_mask  |
 exempt_mask: MASK '=' STRING ';'
 {
    node_t *node;
-   node = node_create(DupString($3));
+   node = node_create(xstrdup($3));
 
    list_add(ExemptItem->masks, node);
 };

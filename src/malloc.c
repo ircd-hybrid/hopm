@@ -69,14 +69,13 @@ void _MyFree(void **var)
    *var = NULL;
 }
 
-
-char *DupString(const char *y)
+void *
+xstrdup(const char *s)
 {
-   char *x;
+  void *ret = malloc(strlen(s) + 1);
 
-   x = malloc(strlen(y) + 1);
-   assert(x);
-   strcpy(x, y);
+  assert(ret);
+  strcpy(ret, s);
 
-   return x;
+  return ret;
 }

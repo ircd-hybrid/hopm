@@ -7,6 +7,6 @@
 
 extern void *MyMalloc(size_t bytes);
 extern void _MyFree(void **var);
-char *DupString(const char *y);
+extern void *xstrdup(const char *);
 
 #endif /* MALLOC_H */

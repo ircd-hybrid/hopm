@@ -715,7 +715,7 @@ static struct UserInfo *userinfo_create(char *source)
    int i, len;
 
    nick = username = hostname = NULL;
-   tmp = DupString(source);
+   tmp = xstrdup(source);
    len = strlen(tmp);
 
    nick = tmp;
@@ -742,9 +742,9 @@ static struct UserInfo *userinfo_create(char *source)
 
    ret = MyMalloc(sizeof *ret);
 
-   ret->irc_nick     = DupString(nick);
-   ret->irc_username = DupString(username);
-   ret->irc_hostname = DupString(hostname);
+   ret->irc_nick     = xstrdup(nick);
+   ret->irc_username = xstrdup(username);
+   ret->irc_hostname = xstrdup(hostname);
 
    MyFree(tmp);
 

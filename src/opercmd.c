@@ -231,11 +231,11 @@ static struct Command *command_create(unsigned short type, char *param, char *ir
    ret->type = type;
 
    if(param != NULL)
-      ret->param = DupString(param);
+      ret->param = xstrdup(param);
    else
       ret->param = NULL;
 
-   ret->irc_nick = (char *) DupString(irc_nick);
+   ret->irc_nick = xstrdup(irc_nick);
    ret->target = target; /* FIXME: This needs fixed if rehash is implemented */
 
    time(&(ret->added));

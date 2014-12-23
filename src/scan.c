@@ -231,7 +231,7 @@ void scan_init()
 
       /* Build the scanner */
       scs->scanner = opm_create();
-      scs->name = (char *) DupString(sc->name);
+      scs->name = xstrdup(sc->name);
       scs->masks = list_create();
 
       /* Setup configuration */
@@ -301,7 +301,7 @@ void scan_init()
                            "[%s]", mask, scannername);
                   }
 
-                  node = node_create(DupString(mask));
+                  node = node_create(xstrdup(mask));
                   list_add(scs->masks, node);
                }
                break;
@@ -473,11 +473,11 @@ struct scan_struct *scan_create(char **user, char *msg)
 
    ss = MyMalloc(sizeof *ss);
 
-   ss->irc_nick = (char *) DupString(user[0]);
-   ss->irc_username = (char *) DupString(user[1]);
-   ss->irc_hostname = (char *) DupString(user[2]);
-   ss->ip = (char *) DupString(user[3]);
-   ss->proof = (char *) DupString(msg);
+   ss->irc_nick = xstrdup(user[0]);
+   ss->irc_username = xstrdup(user[1]);
+   ss->irc_hostname = xstrdup(user[2]);
+   ss->ip = xstrdup(user[3]);
+   ss->proof = xstrdup(msg);
 
    ss->remote = opm_remote_create(ss->ip);
    ss->scans = 0;
@@ -1027,7 +1027,7 @@ void scan_manual(char *param, struct ChannelConf *target)
    ss->irc_hostname = NULL;
    ss->proof        = NULL;
 
-   ss->ip = DupString(ip);
+   ss->ip = xstrdup(ip);
 
    ss->remote = opm_remote_create(ss->ip);
    ss->remote->data = ss;

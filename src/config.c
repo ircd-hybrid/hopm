@@ -117,34 +117,34 @@ void config_setup()
 {
 
    /* Setup IRC Block Defaults */
-   IRCItem->mode = DupString("+cs");
-   IRCItem->nick = DupString("hopm");
-   IRCItem->nickserv = DupString("");
-   IRCItem->password = DupString("");
+   IRCItem->mode = xstrdup("+cs");
+   IRCItem->nick = xstrdup("hopm");
+   IRCItem->nickserv = xstrdup("");
+   IRCItem->password = xstrdup("");
    IRCItem->port = 6667;
-   IRCItem->oper = DupString("undefined");
-   IRCItem->username = DupString("hopm");
-   IRCItem->realname = DupString("Hybrid Open Proxy Monitor");
-   IRCItem->server = DupString("myserver.blitzed.org");
-   IRCItem->vhost = DupString("");
-   IRCItem->connregex = DupString("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*");
-   IRCItem->kline = DupString("KLINE %u@%h :Open Proxy found on your host.");
+   IRCItem->oper = xstrdup("undefined");
+   IRCItem->username = xstrdup("hopm");
+   IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");
+   IRCItem->server = xstrdup("myserver.blitzed.org");
+   IRCItem->vhost = xstrdup("");
+   IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*");
+   IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
 
 
    /* Setup options block defaults */
    OptionsItem->negcache = 0;   /* 0 disabled negcache */
-   OptionsItem->pidfile = DupString("hopm.pid");
+   OptionsItem->pidfile = xstrdup("hopm.pid");
    OptionsItem->dns_fdlimit = 50;
    OptionsItem->scanlog = NULL;
 
    /* Setup OPM block defaults */
-   OpmItem->sendmail = DupString("/usr/sbin/sendmail");
-   OpmItem->dnsbl_from = DupString("");
-   OpmItem->dnsbl_to = DupString("");
+   OpmItem->sendmail = xstrdup("/usr/sbin/sendmail");
+   OpmItem->dnsbl_from = xstrdup("");
+   OpmItem->dnsbl_to = xstrdup("");
 }
 
 void yyerror(const char *str)
 {
-   log_printf("CONFIG -> %s: line %d, buf: %s", str, linenum,);
+   log_printf("CONFIG -> %s: line %d", str, linenum);
    exit(EXIT_FAILURE);
 }
