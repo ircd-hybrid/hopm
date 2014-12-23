@@ -890,9 +890,9 @@ static void scan_irckline(struct scan_struct *ss, const char *format, const char
 
    char message[MSGLENMAX];  /* OUTPUT */
 
-   unsigned short pos = 0;   /* position in format */
-   unsigned short len = 0;   /* position in message */
-   unsigned short size = 0;  /* temporary size buffer */
+   unsigned int pos = 0;   /* position in format */
+   unsigned int len = 0;   /* position in message */
+   unsigned int size = 0;  /* temporary size buffer */
 
    unsigned int i;
 

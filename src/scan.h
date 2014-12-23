@@ -13,8 +13,8 @@ struct scan_struct
    char *proof;
    OPM_REMOTE_T *remote;
 
-   unsigned short scans;
-   unsigned short positive;
+   unsigned int scans;
+   unsigned int positive;
 
    struct ChannelConf *manual_target;
 };
