@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
       switch (c)
       {
          case 'c':
-            CONFNAME = strdup(optarg);
+            CONFNAME = xstrdup(optarg);
             break;
          case 'd':
             OPT_DEBUG++;
