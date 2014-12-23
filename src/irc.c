@@ -307,7 +307,7 @@ static void irc_init(void)
    IRC_CHANNELS[0] = '\0';
    LIST_FOREACH(node, IRCItem->channels->head)
    {
-      chan = (struct ChannelConf *) node->data;
+      chan = node->data;
       strlcat(IRC_CHANNELS, chan->name, sizeof(IRC_CHANNELS));
 
       if(node->next)
@@ -813,12 +813,12 @@ static void m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo
 
    /* Perform */
    LIST_FOREACH(node, IRCItem->performs->head)
-      irc_send("%s", (char *) node->data);
+      irc_send("%s", node->data);
 
    /* Join all listed channels. */
    LIST_FOREACH(node, IRCItem->channels->head)
    {
-      channel = (struct ChannelConf *) node->data;
+      channel = node->data;
 
       if (EmptyString(channel->name))
          continue;

@@ -582,7 +582,7 @@ struct firedns_result *firedns_getresult(const int fd)
    /* Find query in list of dns lookups */
    LIST_FOREACH(node, CONNECTIONS->head)
    {
-      c = (struct s_connection *) node->data;
+      c = node->data;
       if(c->fd == fd)
          break;
       else
@@ -743,7 +743,7 @@ void firedns_cycle(void)
       if(size >= OptionsItem->dns_fdlimit)
          break;
 
-      p = (struct s_connection *) node->data;
+      p = node->data;
 
       if(p->fd < 0)
          continue;
@@ -788,7 +788,7 @@ void firedns_cycle(void)
 
    LIST_FOREACH_SAFE(node, next, CONNECTIONS->head)
    {
-      p = (struct s_connection *) node->data;
+      p = node->data;
       if(p->fd > 0)
       {
          for(i = 0; i < size; i++)

@@ -118,7 +118,7 @@ void scan_cycle()
    /* Cycle each scanner object */
    LIST_FOREACH(p, SCANNERS->head)
    {
-      scs = (struct scanner_struct *) p->data;
+      scs = p->data;
       opm_cycle(scs->scanner);
    }
 }
@@ -257,7 +257,7 @@ void scan_init()
       /* Setup the protocols */
       LIST_FOREACH(p2, sc->protocols->head)
       {
-         pc = (struct ProtocolConf *) p2->data;
+         pc = p2->data;
 
          if(OPT_DEBUG >= 2)
          {
@@ -280,20 +280,20 @@ void scan_init()
    /* Give scanners a list of masks they scan */
    LIST_FOREACH(p, SCANNERS->head)
    {
-      scs = (struct scanner_struct *) p->data;
+      scs = p->data;
 
       LIST_FOREACH(p2, UserItemList->head)
       {
-         uc = (struct UserConf *) p2->data;
+         uc = p2->data;
          LIST_FOREACH(p3, uc->scanners->head)
          {
-            scannername = (char *) p3->data;
+            scannername = p3->data;
             /* Add all these masks to scanner */
             if(strcasecmp(scannername, scs->name) == 0)
             {
                LIST_FOREACH(p4, uc->masks->head)
                {
-                  mask = (char *) p4->data;
+                  mask = p4->data;
 
                   if(OPT_DEBUG)
                   {
@@ -403,10 +403,10 @@ void scan_connect(char **user, char *msg)
    /* Add ss->remote to all matching scanners */
    LIST_FOREACH(p, SCANNERS->head)
    {
-      scs = (struct scanner_struct *) p->data;
+      scs = p->data;
       LIST_FOREACH(p2, scs->masks->head)
       {
-         scsmask = (char *) p2->data;
+         scsmask = p2->data;
          if(!match(scsmask, mask))
          {
             if(OPT_DEBUG)
@@ -588,7 +588,7 @@ void scan_positive(struct scan_struct *ss, const char *kline, const char *type)
    /* Close all scans prematurely */
    LIST_FOREACH(node, SCANNERS->head)
    {
-      scanner = (OPM_T *) ((struct scanner_struct *) node->data)->scanner;
+      scanner = ((struct scanner_struct *)node->data)->scanner;
       opm_end(scanner, ss->remote);
    }
 
@@ -619,8 +619,8 @@ void scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
    /* Record that a scan happened */
    scan_log(remote);
 
-   scs = (struct scanner_struct *) data;
-   ss = (struct scan_struct *) remote->data;
+   scs = data;
+   ss = remote->data;
 
    if(ss->manual_target == NULL)
    {
@@ -677,8 +677,8 @@ void scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote,
    /* Record that a scan happened */
    scan_log(remote);
 
-   scs = (struct scanner_struct *) data;
-//   ss = (struct scan_struct *) remote->data;
+   scs = data;
+//   ss = remote->data;
 
    if(OPT_DEBUG)
    {
@@ -720,8 +720,8 @@ static void scan_timeout(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
    /* Record that a scan happened */
    scan_log(remote);
 
-   scs = (struct scanner_struct *) data;
-//   ss = (struct scan_struct *) remote->data;
+   scs = data;
+//   ss = remote->data;
 
    if(OPT_DEBUG)
    {
@@ -762,8 +762,8 @@ static void scan_end(OPM_T *scanner, OPM_REMOTE_T *remote, int notused,
    struct scan_struct *ss;
    struct scanner_struct *scs;
 
-   scs = (struct scanner_struct *) data;
-   ss = (struct scan_struct *) remote->data;
+   scs = data;
+   ss = remote->data;
 
    if(OPT_DEBUG)
       log_printf("SCAN -> Scan %s [%s] completed", remote->ip, scs->name);
@@ -796,8 +796,8 @@ static void scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote,
    struct scan_struct *ss;
    struct scanner_struct *scs;
 
-   scs = (struct scanner_struct *) data;
-   ss = (struct scan_struct *) remote->data;
+   scs = data;
+   ss = remote->data;
 
    switch(err)
    {
@@ -1055,7 +1055,7 @@ void scan_manual(char *param, struct ChannelConf *target)
    /* Add ss->remote to all scanners */
    LIST_FOREACH(p, SCANNERS->head)
    {
-      scs = (struct scanner_struct *) p->data;
+      scs = p->data;
 
       /* If we have a scannername, only allow that scanner
          to be used */
@@ -1150,7 +1150,7 @@ static void scan_log(OPM_REMOTE_T *remote)
    char buf_present[25];
    time_t present;
    struct tm *tm_present;
-   struct scan_struct *ss = (struct scan_struct *) remote->data;
+   struct scan_struct *ss = remote->data;
 
    if(!(OptionsItem->scanlog && scanlogfile))
       return;

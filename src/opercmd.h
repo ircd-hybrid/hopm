@@ -29,13 +29,10 @@ struct Command
    time_t added;
 };
 
-
-typedef void (*oper_command) (char *, char*, struct ChannelConf *);
-
 struct OperCommandHash
 {
    const char *command;
-   oper_command handler;
+   void (*handler)(char *, char*, struct ChannelConf *);
 };
 
 extern void command_init(void);

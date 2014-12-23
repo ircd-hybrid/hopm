@@ -205,7 +205,7 @@ void opm_remote_free(OPM_REMOTE_T *remote)
 
    LIST_FOREACH_SAFE(p, next, remote->protocols->head)
    {
-      ppc = (OPM_PROTOCOL_CONFIG_T *) p->data;
+      ppc = p->data;
 
       libopm_protocol_config_free(ppc);
       libopm_list_remove(remote->protocols, p);
@@ -265,7 +265,7 @@ void opm_free(OPM_T *scanner)
 
    LIST_FOREACH_SAFE(p, next, scanner->protocols->head)
    {
-      ppc = (OPM_PROTOCOL_CONFIG_T *) p->data;
+      ppc = p->data;
 
       libopm_protocol_config_free(ppc);
       libopm_list_remove(scanner->protocols, p);
@@ -274,7 +274,7 @@ void opm_free(OPM_T *scanner)
 
    LIST_FOREACH_SAFE(p, next, scanner->scans->head)
    {
-      scan = (OPM_SCAN_T *) p->data;
+      scan = p->data;
       libopm_scan_free(scan);
       libopm_list_remove(scanner->scans, p);
       libopm_node_free(p);
@@ -282,7 +282,7 @@ void opm_free(OPM_T *scanner)
 
    LIST_FOREACH_SAFE(p, next, scanner->queue->head)
    {
-      scan = (OPM_SCAN_T *) p->data;
+      scan = p->data;
       libopm_scan_free(scan);
       libopm_list_remove(scanner->queue, p);
       libopm_node_free(p);
@@ -572,14 +572,14 @@ void opm_end(OPM_T *scanner, OPM_REMOTE_T *remote)
 
    LIST_FOREACH_SAFE(node1, next1, scanner->queue->head)
    {
-      scan = (OPM_SCAN_T *) node1->data;
+      scan = node1->data;
       if(scan->remote == remote)
       {
          /* Free all connections */
          LIST_FOREACH_SAFE(node2, next2, scan->connections->head)
          {
 
-            conn = (OPM_CONNECTION_T *) node2->data;
+            conn = node2->data;
 
             libopm_list_remove(scan->connections, node2);
             libopm_connection_free(conn);
@@ -629,7 +629,7 @@ void opm_endscan(OPM_T *scanner, OPM_REMOTE_T *remote)
    */
    LIST_FOREACH(node1, scanner->scans->head)
    {
-      scan = (OPM_SCAN_T *) node1->data;
+      scan = node1->data;
 
       if(scan->remote == remote)
       {
@@ -742,7 +742,7 @@ static void libopm_scan_free(OPM_SCAN_T *scan)
 
    LIST_FOREACH_SAFE(p, next, scan->connections->head)
    {
-      conn = (OPM_CONNECTION_T *) p->data;
+      conn = p->data;
       libopm_connection_free(conn);
 
       libopm_list_remove(scan->connections, p);
@@ -856,7 +856,7 @@ static void libopm_check_queue(OPM_T *scanner)
    {
 
       /* Grab the top scan */
-      scan = (OPM_SCAN_T *) scanner->queue->head->data;      
+      scan = scanner->queue->head->data;      
       protocols = LIST_SIZE(scan->connections);
 
       /* Check if it will fit in the live scan list */
@@ -904,14 +904,14 @@ static void libopm_check_establish(OPM_T *scanner)
 
    LIST_FOREACH(node1, scanner->scans->head)
    {
-      scan = (OPM_SCAN_T *) node1->data;
+      scan = node1->data;
       LIST_FOREACH(node2, scan->connections->head)
       {
          /* Only scan if we have free file descriptors */
          if(scanner->fd_use >= fd_limit)
             return;
 
-         conn = (OPM_CONNECTION_T *) node2->data;
+         conn = node2->data;
          if(conn->state == OPM_STATE_UNESTABLISHED)
             libopm_do_connect(scanner, scan, conn);
       } 
@@ -956,11 +956,11 @@ static void libopm_check_closed(OPM_T *scanner)
 
    LIST_FOREACH_SAFE(node1, next1, scanner->scans->head)
    {
-      scan = (OPM_SCAN_T *) node1->data;
+      scan = node1->data;
       LIST_FOREACH_SAFE(node2, next2, scan->connections->head)
       {
 
-         conn = (OPM_CONNECTION_T *) node2->data;
+         conn = node2->data;
 
          if(conn->state == OPM_STATE_CLOSED)
          {
@@ -1105,13 +1105,13 @@ static void libopm_check_poll(OPM_T *scanner)
 
    LIST_FOREACH(node1, scanner->scans->head)
    {
-      scan = (OPM_SCAN_T *) node1->data;
+      scan = node1->data;
       LIST_FOREACH(node2, scan->connections->head)
       {
          if(size >= ufds_size)
             break;
 
-         conn = (OPM_CONNECTION_T *) node2->data;
+         conn = node2->data;
        
          if(conn->state < OPM_STATE_ESTABLISHED ||
             conn->state == OPM_STATE_CLOSED)
@@ -1284,7 +1284,7 @@ static void libopm_do_read(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *c
    list = (OPM_LIST_T *) libopm_config(scanner->config, OPM_CONFIG_TARGET_STRING);
    LIST_FOREACH(node, list->head)
    {
-      target_string = (char *) node->data;
+      target_string = node->data;
       if(strstr(conn->readbuf, target_string))
       {
          libopm_do_openproxy(scanner, scan, conn);

@@ -114,7 +114,7 @@ void command_timer()
 
    LIST_FOREACH_SAFE(node, next, COMMANDS->head)
    {
-      cs = (struct Command *) node->data;
+      cs = node->data;
       if((present - cs->added) > COMMANDTIMEOUT)
       {
          command_free(cs);
@@ -307,7 +307,7 @@ void command_userhost(char *reply)
    /* Find any queued commands that match this user */
    LIST_FOREACH_SAFE(node, next, COMMANDS->head)
    {
-      cs = (struct Command *) node->data;
+      cs = node->data;
 
       if(strcmp(cs->irc_nick, reply) == 0)
       {
