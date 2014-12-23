@@ -319,7 +319,7 @@ int firedns_getip(int type, const char * const name, void *info)
 
    s->class = 1;
    s->type = type;
-   strncpy(s->lookup, name, 256);
+   strlcpy(s->lookup, name, sizeof(s->lookup));
    s->info = info;
    
    if(fdns_fdinuse >= OptionsItem->dns_fdlimit)
@@ -597,7 +597,7 @@ struct firedns_result *firedns_getresult(const int fd)
 
    l = recv(c->fd,&h,sizeof(struct s_header),0);
    result.info = (void *) c->info;
-   strncpy(result.lookup, c->lookup, 256);
+   strlcpy(result.lookup, c->lookup, sizeof(result.lookup));
 
    if(l == -1)
    {
@@ -756,7 +756,7 @@ void firedns_cycle(void)
 
          memset(new_result.text, 0, sizeof(new_result.text));
          new_result.info = p->info;
-         strncpy(new_result.lookup, p->lookup, 256);
+         strlcpy(new_result.lookup, p->lookup, sizeof(new_result.lookup));
 
          close(p->fd);
          fdns_fdinuse--;
