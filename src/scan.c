@@ -1008,8 +1008,6 @@ void scan_manual(char *param, struct ChannelConf *target)
       scannername++;
    }
 
-   ss = MyMalloc(sizeof *ss);
-
    /* If IP is a hostname, resolve it using gethostbyname (which will block!) */
    if (!(addr = firedns_resolveip4(ip)))
    {
@@ -1020,6 +1018,8 @@ void scan_manual(char *param, struct ChannelConf *target)
 
    /* IP = the resolved IP now (it was the ip OR hostname before) */
    ip = inet_ntoa(*addr);
+
+   ss = MyMalloc(sizeof *ss);
 
    /* These don't exist in a manual scan */
    ss->irc_nick     = NULL;
