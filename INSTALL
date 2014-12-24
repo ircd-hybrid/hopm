@@ -47,14 +47,14 @@ Configuration
     the first part of a connection.  If you're not sure, the best thing to do
     is telnet to your ircd from your shell, e.g.:
 
-      [andy@fullers hopm]$ telnet porkscratchings.someserver.org 6667
-      Trying 207.8.219.202...
-      Connected to porkscratchings.someserver.org.
+      [miwob@svn ~]$ telnet irc.ircd-hybrid.org 6667
+      Trying 74.208.44.181...
+      Connected to irc.ircd-hybrid.org (74.208.44.181).
       Escape character is '^]'.
-      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Looking up your hostname
-      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Checking Ident
-      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Got Ident response
-      :porkscratchings.pa.us.someserver.org NOTICE AUTH :*** Found your hostname
+      :irc.ircd-hybrid.org NOTICE * :*** Looking up your hostname
+      :irc.ircd-hybrid.org NOTICE * :*** Checking Ident
+      :irc.ircd-hybrid.org NOTICE * :*** No Ident response
+      :irc.ircd-hybrid.org NOTICE * :*** Found your hostname
 
     Just try to pick something in the first line of IRC output (for efficiency
     reasons).
