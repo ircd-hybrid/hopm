@@ -199,8 +199,6 @@ irc_cycle(void)
 static void
 irc_init(void)
 {
-  node_t *node;
-  struct ChannelConf *chan;
   struct bopm_sockaddr bsaddr;
   struct in_addr *irc_host;
 
