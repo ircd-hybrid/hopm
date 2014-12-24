@@ -63,7 +63,6 @@ along with this program; if not, write to:
 #include "config.h"
 #include "malloc.h"
 #include "log.h"
-#include "defs.h"
 
 
 extern unsigned int OPT_DEBUG;

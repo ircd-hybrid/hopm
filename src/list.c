@@ -23,7 +23,6 @@
 
 #include "malloc.h"
 #include "list.h"
-#include "defs.h"
 
 
 node_t *node_create(void *data)
