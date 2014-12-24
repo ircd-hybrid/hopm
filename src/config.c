@@ -125,7 +125,7 @@ void config_setup()
    IRCItem->oper = xstrdup("undefined");
    IRCItem->username = xstrdup("hopm");
    IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");
-   IRCItem->server = xstrdup("myserver.blitzed.org");
+   IRCItem->server = xstrdup("irc.example.org");
    IRCItem->vhost = xstrdup("");
    IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*");
    IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
