@@ -39,7 +39,6 @@ AC_CHECK_HEADERS(sys/poll.h, have_poll_sys_h=yes, have_sys_poll_h=no)
 AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h strings.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
 AC_TYPE_SIZE_T
 AC_HEADER_TIME
 
@@ -55,7 +54,7 @@ fi
 AC_CHECK_FUNCS(inet_aton inet_pton)
 
 dnl Check if we can use gethostbyname2 for ipv6
-AC_CHECK_FUNCS(gethostbyname gethostbyname2)
+AC_CHECK_FUNCS(gethostbyname)
 
 dnl AIX fun
 AC_C_BIGENDIAN

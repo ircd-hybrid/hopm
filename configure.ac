@@ -41,7 +41,6 @@ AC_CHECK_HEADERS(sys/poll.h, have_poll_sys_h=yes, have_sys_poll_h=no)
 AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h strings.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
 AC_TYPE_SIZE_T
 AC_HEADER_TIME
 AC_STRUCT_TM
@@ -65,7 +64,7 @@ AC_CHECK_FUNC(getnameinfo, [], AC_SEARCH_LIBS(getnameinfo, nsl))
 AC_CHECK_FUNCS(strlcpy strlcat inet_aton inet_pton socket strdup strstr)
 
 dnl Check if we can use gethostbyname2 for ipv6
-AC_CHECK_FUNCS(gethostbyname gethostbyname2)
+AC_CHECK_FUNCS(gethostbyname)
 
 dnl AIX fun
 AC_C_BIGENDIAN
@@ -96,11 +95,9 @@ AC_CONFIG_SUBDIRS(src/libopm)
 AC_OUTPUT(Makefile doc/Makefile src/Makefile)
 
 
-echo "##############################################################################"
-echo "Everything is now configured, but you can find some more (infrequently"
-echo "changed) options in options.h.  To compile HOPM now, just type make.  It"
-echo "requires GNU Make, which may be installed as gmake on your system."
+echo "###############################################################################"
+echo "Configuration complete.  Type make (or gmake on some *BSD machines) to compile."
 echo 
-echo "hopm will be installed in ${prefix}.  To change this, run:"
+echo "HOPM will be installed in ${prefix}.  To change this, run:"
 echo "   ./configure --prefix=DIRECTORY"
-echo "##############################################################################"
+echo "###############################################################################"
