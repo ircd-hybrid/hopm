@@ -1,10 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 
-SUBDIRS = src doc
+SUBDIRS = src
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
-
-docs:
-	-cd doc && $(MAKE) $(AM_MAKEFLAGS) $@

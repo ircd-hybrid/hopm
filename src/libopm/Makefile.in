@@ -207,9 +207,6 @@ CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-DOX_DIR_HTML = @DOX_DIR_HTML@
-DOX_DIR_LATEX = @DOX_DIR_LATEX@
-DOX_DIR_MAN = @DOX_DIR_MAN@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -310,7 +307,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src doc
+SUBDIRS = src
 all: all-recursive
 
 .SUFFIXES:
@@ -777,9 +774,6 @@ uninstall-am:
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
-
-docs:
-	-cd doc && $(MAKE) $(AM_MAKEFLAGS) $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

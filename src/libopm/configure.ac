@@ -6,15 +6,6 @@ AM_INIT_AUTOMAKE()
 AC_PREFIX_DEFAULT([/usr/local/libopm])
 AM_MAINTAINER_MODE
 
-# for documentation purposes
-DOX_DIR_HTML=api
-DOX_DIR_LATEX=latex
-DOX_DIR_MAN=man
-
-AC_SUBST(DOX_DIR_HTML)
-AC_SUBST(DOX_DIR_LATEX)
-AC_SUBST(DOX_DIR_MAN)
-
 AC_ARG_WITH(extra-fascism,
     AC_HELP_STRING([--with-extra-fascism],
     [add extra gcc3-specific warning flags]),
@@ -67,4 +58,4 @@ LTLIBOBJS=`echo "$LIB@&t@OBJS" |
            sed 's,\.[[^.]]* ,.lo ,g;s,\.[[^.]]*$,.lo,'`
 AC_SUBST(LTLIBOBJS)
 
-AC_OUTPUT(Makefile src/Makefile doc/Makefile doc/Doxyfile)
+AC_OUTPUT(Makefile src/Makefile)

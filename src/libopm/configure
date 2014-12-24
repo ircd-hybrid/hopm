@@ -682,9 +682,6 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
-DOX_DIR_MAN
-DOX_DIR_LATEX
-DOX_DIR_HTML
 MAINT
 MAINTAINER_MODE_FALSE
 MAINTAINER_MODE_TRUE
@@ -2899,15 +2896,6 @@ else
 fi
 
   MAINT=$MAINTAINER_MODE_TRUE
-
-
-
-# for documentation purposes
-DOX_DIR_HTML=api
-DOX_DIR_LATEX=latex
-DOX_DIR_MAN=man
-
-
 
 
 
@@ -12783,7 +12771,7 @@ LTLIBOBJS=`echo "$LIBOBJS" |
            sed 's,\.[^.]* ,.lo ,g;s,\.[^.]*$,.lo,'`
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile doc/Makefile doc/Doxyfile"
+ac_config_files="$ac_config_files Makefile src/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -13800,8 +13788,6 @@ do
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
-    "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
-    "doc/Doxyfile") CONFIG_FILES="$CONFIG_FILES doc/Doxyfile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
