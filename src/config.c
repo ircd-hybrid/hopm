@@ -47,8 +47,6 @@ void config_init(void);
 
 
 
-/* Configuration     */
-
 struct OptionsConf *OptionsItem = NULL;
 struct IRCConf *IRCItem = NULL;
 struct OpmConf *OpmItem = NULL;
@@ -56,95 +54,93 @@ struct ExemptConf *ExemptItem = NULL;
 list_t *UserItemList = NULL;
 list_t *ScannerItemList = NULL;
 
-/* End Configuration */
-
-
 
 /* Rehash or load new configuration from filename, via flex/bison parser */
-void config_load(const char *filename)
+void
+config_load(const char *filename)
 {
+  config_init();
+  config_setup();  /* Setup/clear current configuration */
 
-   config_init();
-   config_setup(); /* Setup/clear current configuration */
+  log_printf("CONFIG -> Loading %s", filename);
 
-   log_printf("CONFIG -> Loading %s", filename);
+  if ((yyin = fopen(filename, "r")) == NULL)
+  {
+    log_printf("CONFIG -> Error opening %s", filename);
+    exit(1);
+  }
 
-   if((yyin = fopen(filename, "r")) == NULL)
-   {
-      log_printf("CONFIG -> Error opening %s", filename);
-      exit(1);
-   }
+  yyparse();
 
-   yyparse();
+  scan_init();     /* Initialize the scanners once we have the configuration */
+  command_init();  /* Initialize the command queue */
+  stats_init();    /* Initialize stats (UPTIME) */
+  firedns_init();  /* Initialize adns */
 
-   scan_init();       /* Initialize the scanners once we have the configuration */
-   command_init();    /* Initialize the command queue */
-   stats_init();      /* Initialize stats (UPTIME) */
-   firedns_init();    /* Initialize adns */
-
-   fclose(yyin);
+  fclose(yyin);
 }
 
 /* Malloc and initialize configuration data to NULL */
-void config_init()
+void
+config_init(void)
 {
-   /* Init IRC block */
-   IRCItem = MyMalloc(sizeof *IRCItem);
-   IRCItem->channels = list_create();
-   IRCItem->performs = list_create();
+  /* Init IRC block */
+  IRCItem = MyMalloc(sizeof *IRCItem);
+  IRCItem->channels = list_create();
+  IRCItem->performs = list_create();
 
-   /* Init Options block */
-   OptionsItem = MyMalloc(sizeof *OptionsItem);
+  /* Init Options block */
+  OptionsItem = MyMalloc(sizeof *OptionsItem);
 
-   /* Init OPM block */
-   OpmItem = MyMalloc(sizeof *OpmItem);
-   OpmItem->blacklists = list_create();
+  /* Init OPM block */
+  OpmItem = MyMalloc(sizeof *OpmItem);
+  OpmItem->blacklists = list_create();
 
-   /* Init list of User blocks */
-   UserItemList = list_create();
+  /* Init list of User blocks */
+  UserItemList = list_create();
 
-   /* Init list of Scanner blocks */
-   ScannerItemList = list_create();
+  /* Init list of Scanner blocks */
+  ScannerItemList = list_create();
 
-   /* Init list of Exempts */
-   ExemptItem = MyMalloc(sizeof *ExemptItem);
-   ExemptItem->masks = list_create();
+  /* Init list of Exempts */
+  ExemptItem = MyMalloc(sizeof *ExemptItem);
+  ExemptItem->masks = list_create();
 }
 
 /* Setup structs that hold configuration data and then reset default values */
-
-void config_setup()
+void
+config_setup(void)
 {
+  /* Setup IRC Block Defaults */
+  IRCItem->mode = xstrdup("+cs");
+  IRCItem->nick = xstrdup("hopm");
+  IRCItem->nickserv = xstrdup("");
+  IRCItem->password = xstrdup("");
+  IRCItem->port = 6667;
+  IRCItem->oper = xstrdup("undefined");
+  IRCItem->username = xstrdup("hopm");
+  IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");
+  IRCItem->server = xstrdup("irc.example.org");
+  IRCItem->vhost = xstrdup("");
+  IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*");
+  IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
 
-   /* Setup IRC Block Defaults */
-   IRCItem->mode = xstrdup("+cs");
-   IRCItem->nick = xstrdup("hopm");
-   IRCItem->nickserv = xstrdup("");
-   IRCItem->password = xstrdup("");
-   IRCItem->port = 6667;
-   IRCItem->oper = xstrdup("undefined");
-   IRCItem->username = xstrdup("hopm");
-   IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");
-   IRCItem->server = xstrdup("irc.example.org");
-   IRCItem->vhost = xstrdup("");
-   IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*");
-   IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
 
+  /* Setup options block defaults */
+  OptionsItem->negcache = 0;   /* 0 disabled negcache */
+  OptionsItem->pidfile = xstrdup("hopm.pid");
+  OptionsItem->dns_fdlimit = 50;
+  OptionsItem->scanlog = NULL;
 
-   /* Setup options block defaults */
-   OptionsItem->negcache = 0;   /* 0 disabled negcache */
-   OptionsItem->pidfile = xstrdup("hopm.pid");
-   OptionsItem->dns_fdlimit = 50;
-   OptionsItem->scanlog = NULL;
-
-   /* Setup OPM block defaults */
-   OpmItem->sendmail = xstrdup("/usr/sbin/sendmail");
-   OpmItem->dnsbl_from = xstrdup("");
-   OpmItem->dnsbl_to = xstrdup("");
+  /* Setup OPM block defaults */
+  OpmItem->sendmail = xstrdup("/usr/sbin/sendmail");
+  OpmItem->dnsbl_from = xstrdup("");
+  OpmItem->dnsbl_to = xstrdup("");
 }
 
-void yyerror(const char *str)
+void
+yyerror(const char *str)
 {
-   log_printf("CONFIG -> %s: line %d", str, linenum);
-   exit(EXIT_FAILURE);
+  log_printf("CONFIG -> %s: line %d", str, linenum);
+  exit(EXIT_FAILURE);
 }

@@ -74,32 +74,29 @@ static unsigned int STATS_CONNECTIONS;
 static unsigned int STATS_DNSBLSENT;
 
 static struct StatsHash STATS_PROXIES[] =
-   {
-      {OPM_TYPE_HTTP,     0, "HTTP"     },
-      {OPM_TYPE_HTTPPOST, 0, "HTTPPOST" },
-      {OPM_TYPE_SOCKS4,   0, "SOCKS4"   },
-      {OPM_TYPE_SOCKS5,   0, "SOCKS5"   },
-      {OPM_TYPE_ROUTER,   0, "ROUTER"   },
-      {OPM_TYPE_WINGATE,  0, "WINGATE"  }
-   };
+{
+  { OPM_TYPE_HTTP,     0, "HTTP"     },
+  { OPM_TYPE_HTTPPOST, 0, "HTTPPOST" },
+  { OPM_TYPE_SOCKS4,   0, "SOCKS4"   },
+  { OPM_TYPE_SOCKS5,   0, "SOCKS5"   },
+  { OPM_TYPE_ROUTER,   0, "ROUTER"   },
+  { OPM_TYPE_WINGATE,  0, "WINGATE"  }
+};
 
 
 /* stats_init
  *
- *    Perform initialization of bopm stats 
+ *    Perform initialization of bopm stats
  *
  * Parameters: NONE
  * Return: NONE
- * 
+ *
  */
-
-void stats_init(void)
+void
+stats_init(void)
 {
-   time(&STATS_UPTIME);
+  time(&STATS_UPTIME);
 }
-
-
-
 
 /* stats_openproxy
  *
@@ -108,19 +105,15 @@ void stats_init(void)
  *
  * Parameters: NONE
  * Return: NONE
- * 
+ *
  */
-
-void stats_openproxy(int type)
+void
+stats_openproxy(int type)
 {
-   unsigned int i;
-
-   for(i = 0; i < (sizeof(STATS_PROXIES) / sizeof(struct StatsHash)); i++)
-      if(STATS_PROXIES[i].type == type)
-         STATS_PROXIES[i].count++;
+  for (unsigned int i = 0; i < (sizeof(STATS_PROXIES) / sizeof(struct StatsHash)); ++i)
+    if (STATS_PROXIES[i].type == type)
+      ++STATS_PROXIES[i].count;
 }
-
-
 
 /* stats_connect
  *
@@ -129,16 +122,13 @@ void stats_openproxy(int type)
  *
  * Parameters: NONE
  * Return: NONE
- * 
+ *
  */
-
-
-void stats_connect(void)
+void
+stats_connect(void)
 {
-   STATS_CONNECTIONS++;
+  ++STATS_CONNECTIONS;
 }
-
-
 
 /* stats_dnsblrecv
  *
@@ -148,14 +138,11 @@ void stats_connect(void)
  * Return: NONE
  *
  */
-
-void stats_dnsblrecv(struct BlacklistConf *bl)
+void
+stats_dnsblrecv(struct BlacklistConf *bl)
 {
-   bl->stats_recv++;
+  ++bl->stats_recv;
 }
-
-
-
 
 /* stats_dnsblsend
  *
@@ -165,14 +152,11 @@ void stats_dnsblrecv(struct BlacklistConf *bl)
  * Return: NONE
  *
  */
-
-void stats_dnsblsend(void)
+void
+stats_dnsblsend(void)
 {
-   STATS_DNSBLSENT++;
+  ++STATS_DNSBLSENT;
 }
-
-
-
 
 /* stats_output
  *
@@ -181,54 +165,42 @@ void stats_dnsblsend(void)
  *
  * Parameters: NONE
  * Return: NONE
- * 
+ *
  */
-
-void stats_output(char *target)
+void
+stats_output(char *target)
 {
-   unsigned int i;
-   time_t present;
-   time_t uptime;
-   node_t *p;
-   struct BlacklistConf *bl;
+  time_t present;
+  time_t uptime;
+  node_t *p;
 
-   time(&present);
-   uptime = present - STATS_UPTIME;
+  time(&present);
+  uptime = present - STATS_UPTIME;
 
-   irc_send("PRIVMSG %s :Uptime: %s", target, dissect_time(uptime));
+  irc_send("PRIVMSG %s :Uptime: %s", target, dissect_time(uptime));
 
-   LIST_FOREACH(p, OpmItem->blacklists->head)
-   {
-      bl = p->data;
-      if(bl->stats_recv > 0)
-      {
-         irc_send("PRIVMSG %s :DNSBL: %u successful lookups from %s",
-            target, bl->stats_recv, bl->name);
-      }
-   }
+  LIST_FOREACH(p, OpmItem->blacklists->head)
+  {
+    struct BlacklistConf *bl = p->data;
 
-   if(STATS_DNSBLSENT > 0)
-   {
-      irc_send("PRIVMSG %s :DNSBL: %u reports sent", target,
-            STATS_DNSBLSENT);
-   }
+    if (bl->stats_recv > 0)
+      irc_send("PRIVMSG %s :DNSBL: %u successful lookups from %s",
+               target, bl->stats_recv, bl->name);
+  }
 
-   for(i = 0; i < (sizeof(STATS_PROXIES) / sizeof(struct StatsHash)); i++)
-   {
-      if(STATS_PROXIES[i].count > 0)
-      {
-         irc_send("PRIVMSG %s :Found %u (%s) open.", target,
+  if (STATS_DNSBLSENT > 0)
+    irc_send("PRIVMSG %s :DNSBL: %u reports sent", target,
+             STATS_DNSBLSENT);
+
+  for (unsigned int i = 0; i < (sizeof(STATS_PROXIES) / sizeof(struct StatsHash)); ++i)
+    if (STATS_PROXIES[i].count > 0)
+      irc_send("PRIVMSG %s :Found %u (%s) open.", target,
                STATS_PROXIES[i].count, STATS_PROXIES[i].name);
-      }
-   }
 
    irc_send("PRIVMSG %s :Number of connects: %u (%.2f/minute)",
             target, STATS_CONNECTIONS, STATS_CONNECTIONS ?
             (float)STATS_CONNECTIONS / ((float)uptime / 60.0) : 0.0);
-
 }
-
-
 
 /* fdstats_output
  *
@@ -239,63 +211,62 @@ void stats_output(char *target)
  * Return: NONE
  *
  */
-
-void fdstats_output(char *target)
+void
+fdstats_output(char *target)
 {
-   struct rlimit rlim;
-   unsigned total_fd_use, i;
-   int newfd;
+  struct rlimit rlim;
+  unsigned int total_fd_use = 0;
 
-   /* Get file descriptor ceiling */
-   if(getrlimit(RLIMIT_NOFILE, &rlim) == -1)
-   {
-      log_printf("FDSTAT -> getrlimit() error retrieving RLIMIT_NOFILE (%s)", strerror(errno));
-      irc_send("PRIVMSG %s :FDSTAT -> getrlimit() error retrieving RLIMIT_NOFILE (%s)",
-                target,  strerror(errno));
-      return;
-   }
+  /* Get file descriptor ceiling */
+  if (getrlimit(RLIMIT_NOFILE, &rlim) == -1)
+  {
+    log_printf("FDSTAT -> getrlimit() error retrieving RLIMIT_NOFILE (%s)", strerror(errno));
+    irc_send("PRIVMSG %s :FDSTAT -> getrlimit() error retrieving RLIMIT_NOFILE (%s)",
+             target, strerror(errno));
+    return;
+  }
 
-   /*
-    * Check which file descriptors are active, based on suggestions from:
-    * http://groups.google.com/groups?th=a48b9fe8ca43947c&rnum=1
-    */
-   total_fd_use = 0;
-   for(i = 0; i < rlim.rlim_cur; i++)
-   {
-      newfd = dup(i);
+  /*
+   * Check which file descriptors are active, based on suggestions from:
+   * http://groups.google.com/groups?th=a48b9fe8ca43947c&rnum=1
+   */
+  for (unsigned int i = 0; i < rlim.rlim_cur; ++i)
+  {
+    int newfd = dup(i);
 
-      if(newfd > 0) {
-         total_fd_use++;
-         close(newfd);
-      }
-      else
+    if (newfd > 0)
+    {
+      ++total_fd_use;
+      close(newfd);
+    }
+    else
+    {
+      switch (errno)
       {
-         switch (errno)
-         {
-            case EMFILE:
-               /*
-                * We ran out of FDs whilst trying to dup an existing one,
-                * so all fds are open and we can stop checking here.
-                */
-               i = total_fd_use = rlim.rlim_cur;
-               break;
+        case EMFILE:
+          /*
+           * We ran out of FDs whilst trying to dup an existing one,
+           * so all fds are open and we can stop checking here.
+           */
+          i = total_fd_use = rlim.rlim_cur;
+          break;
 
-            case EBADF:
-               /* Not an FD in use. */
-               break;
+        case EBADF:
+          /* Not an FD in use. */
+          break;
 
-            case EINTR:
-               /* Try again. */
-               i--;
-               break;
+        case EINTR:
+          /* Try again. */
+          --i;
+          break;
 
-            default:
-               /* We don't expect any other errors. */
-               log_printf("fd %u errno = %u (%s)", i, errno, strerror(errno));
-               break;
-         }
+        default:
+          /* We don't expect any other errors. */
+          log_printf("fd %u errno = %u (%s)", i, errno, strerror(errno));
+          break;
       }
-   }
+    }
+  }
 
-   irc_send("PRIVMSG %s :Total open FD: %u/%d", target, total_fd_use, rlim.rlim_cur);
+  irc_send("PRIVMSG %s :Total open FD: %u/%d", target, total_fd_use, rlim.rlim_cur);
 }

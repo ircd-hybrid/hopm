@@ -43,9 +43,8 @@ along with this program; if not, write to the Free Software
 #include "list.h"
 #include "stats.h"
 
-/* List of active commands */
 
-list_t *COMMANDS = NULL;
+list_t *COMMANDS = NULL;  /* List of active commands */
 
 
 static struct Command *command_create(unsigned short type, char *param, char *irc_nick, struct ChannelConf *target);
@@ -56,15 +55,14 @@ static void cmd_stat(char *, char *, struct ChannelConf *);
 static void cmd_fdstat(char *, char *, struct ChannelConf *);
 
 static struct OperCommandHash COMMAND_TABLE[] =
-   {
-      {"CHECK",  cmd_check  },
-      {"SCAN",   cmd_check  },
-      {"STAT",   cmd_stat   },
-      {"STATS",  cmd_stat   },
-      {"STATUS", cmd_stat   },
-      {"FDSTAT", cmd_fdstat },
-   };
-
+{
+  {"CHECK",  cmd_check  },
+  {"SCAN",   cmd_check  },
+  {"STAT",   cmd_stat   },
+  {"STATS",  cmd_stat   },
+  {"STATUS", cmd_stat   },
+  {"FDSTAT", cmd_fdstat },
+};
 
 
 /* command_init
@@ -75,15 +73,12 @@ static struct OperCommandHash COMMAND_TABLE[] =
  * Return: NONE
  *
  */
-
-void command_init()
+void
+command_init(void)
 {
-   if(COMMANDS == NULL)
-      COMMANDS = list_create();
+  if (COMMANDS == NULL)
+    COMMANDS = list_create();
 }
-
-
-
 
 /* command_timer
  *
@@ -94,38 +89,36 @@ void command_init()
  * Return: NONE
  *
  */
-
-void command_timer()
+void
+command_timer(void)
 {
+  static unsigned short interval;
+  node_t *node, *next;
+  struct Command *cs;
+  time_t present;
 
-   static unsigned short interval;
+  /* Only perform command removal every COMMANDINTERVAL seconds */
+  if (interval++ < COMMANDINTERVAL)
+    return;
+  else
+    interval = 0;
 
-   node_t *node, *next;
-   struct Command *cs;
-   time_t present;
+  time(&present);
 
-   /* Only perform command removal every COMMANDINTERVAL seconds */
-   if(interval++ < COMMANDINTERVAL)
+  LIST_FOREACH_SAFE(node, next, COMMANDS->head)
+  {
+    cs = node->data;
+
+    if ((present - cs->added) > COMMANDTIMEOUT)
+    {
+      command_free(cs);
+      list_remove(COMMANDS, node);
+      node_free(node);
+    }
+    else   /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
       return;
-   else
-      interval = 0;
-
-   time(&present);
-
-   LIST_FOREACH_SAFE(node, next, COMMANDS->head)
-   {
-      cs = node->data;
-      if((present - cs->added) > COMMANDTIMEOUT)
-      {
-         command_free(cs);
-         list_remove(COMMANDS, node);
-         node_free(node);
-      }
-      else   /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
-         return;
-   }
+  }
 }
-
 
 /* command_parse
  *
@@ -141,72 +134,68 @@ void command_timer()
  *    source_p: Operator (hopefully) that sent the command.
  *
  */
-
-void command_parse(char *command, char *msg, struct ChannelConf *target,
-      struct UserInfo *source_p)
+void
+command_parse(char *command, char *msg, struct ChannelConf *target,
+              struct UserInfo *source_p)
 {
-   unsigned int i;
-   char *param; /* Parsed parameters */
-   struct Command *cs;
-   node_t *node;
+  char *param;  /* Parsed parameters */
+  struct Command *cs;
+  node_t *node;
 
-   if(OPT_DEBUG)
-   {
-      log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
-            source_p->irc_nick, target->name);
-   }
+  if (OPT_DEBUG)
+    log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
+               source_p->irc_nick, target->name);
 
-   /* Only allow COMMANDMAX commands in the queue */
-   if(LIST_SIZE(COMMANDS) >= COMMANDMAX)
-      return;
+  /* Only allow COMMANDMAX commands in the queue */
+  if (LIST_SIZE(COMMANDS) >= COMMANDMAX)
+    return;
 
-   /* Parameter is the first character in command after the first space.
-      param will be NULL if:
-      1. There was no space
-      2. There was a space but it was the last character in command, in which case
-         param = '\0'
+  /*
+   * Parameter is the first character in command after the first space.
+   * param will be NULL if:
+   * 1. There was no space
+   * 2. There was a space but it was the last character in command, in which case
+   *    param = '\0'
    */
 
-   /* Skip past the botname/!all */
-   command = strchr(command, ' ');
-/* TBD: skip leading spaces if there's more than one */
-   /* There is no command OR
-      there is at least nothing
-      past that first space.  */
-   if (command == NULL || *++command == '\0')
-      return;
+  /* Skip past the botname/!all */
+  command = strchr(command, ' ');
 
+  /* TBD: skip leading spaces if there's more than one */
+  /*
+   * There is no command OR there is at least nothing
+   * past that first space.
+   */
+  if (command == NULL || *++command == '\0')
+    return;
 
-   /* Find the parameters */
-   param = strchr(command, ' ');
+  /* Find the parameters */
+  param = strchr(command, ' ');
 
-   if(param != NULL)
-   {
-      *param = '\0';
-      param++;
-   }
-   else
-      param = "";
+  if (param)
+  {
+    *param = '\0';
+    param++;
+  }
+  else
+    param = "";
 
-   log_printf("COMMAND -> parsed [%s] [%s]", command, param);
+  log_printf("COMMAND -> parsed [%s] [%s]", command, param);
 
-   /* Lookup the command in the table */
-   for(i = 0; i < sizeof(COMMAND_TABLE) / sizeof(struct OperCommandHash); i++)
-   {
-      if(strcasecmp(command, COMMAND_TABLE[i].command) == 0)
-      {
-         /* Queue this command */
-         cs = command_create(i, param, source_p->irc_nick, target);
-         node = node_create(cs);
-         list_add(COMMANDS, node);
-      }
-   }
+  /* Lookup the command in the table */
+  for (unsigned int i = 0; i < sizeof(COMMAND_TABLE) / sizeof(struct OperCommandHash); ++i)
+  {
+    if (strcasecmp(command, COMMAND_TABLE[i].command) == 0)
+    {
+      /* Queue this command */
+      cs = command_create(i, param, source_p->irc_nick, target);
+      node = node_create(cs);
+      list_add(COMMANDS, node);
+    }
+  }
 
-   irc_send("USERHOST %s", source_p->irc_nick);
+  irc_send("USERHOST %s", source_p->irc_nick);
 }
-
-
-
 
 /* command_create
  * 
@@ -221,30 +210,25 @@ void command_parse(char *command, char *msg, struct ChannelConf *target,
  * Return:
  *    Pointer to new Command
  */
-
-static struct Command *command_create(unsigned short type, char *param, char *irc_nick, struct ChannelConf *target)
+static struct Command *
+command_create(unsigned short type, char *param, char *irc_nick, struct ChannelConf *target)
 {
-   struct Command *ret;
+  struct Command *ret = MyMalloc(sizeof *ret);
 
-   ret = MyMalloc(sizeof *ret);
+  ret->type = type;
 
-   ret->type = type;
+  if (param)
+    ret->param = xstrdup(param);
+  else
+    ret->param = NULL;
 
-   if(param != NULL)
-      ret->param = xstrdup(param);
-   else
-      ret->param = NULL;
+  ret->irc_nick = xstrdup(irc_nick);
+  ret->target = target;  /* FIXME: This needs fixed if rehash is implemented */
 
-   ret->irc_nick = xstrdup(irc_nick);
-   ret->target = target; /* FIXME: This needs fixed if rehash is implemented */
+  time(&(ret->added));
 
-   time(&(ret->added));
-
-   return ret;
-
+  return ret;
 }
-
-
 
 /* command_free
  * 
@@ -255,22 +239,20 @@ static struct Command *command_create(unsigned short type, char *param, char *ir
  *   
  * Return: NONE
  */
-
-static void command_free(struct Command *command)
+static void
+command_free(struct Command *command)
 {
-   if(command->param != NULL)
-      MyFree(command->param);
-   MyFree(command->irc_nick);
-   MyFree(command);
+  if (command->param)
+    MyFree(command->param);
+
+  MyFree(command->irc_nick);
+  MyFree(command);
 }
-
-
-
 
 /* command_userhost
  *
  *    A 302 reply was received. The reply is parsed to check if the
- *    user was an operator. If so any commands they had queued are 
+ *    user was an operator. If so any commands they had queued are
  *    executed.
  *  
  * Parameters:
@@ -279,50 +261,46 @@ static void command_free(struct Command *command)
  * Return: NONE
  * 
  */
-
-void command_userhost(char *reply)
+void
+command_userhost(char *reply)
 {
-   node_t *node, *next;
-   struct Command *cs;
-   char *tmp;
+  node_t *node, *next;
+  char *tmp;
+  int oper = 0;
 
-   int oper = 0;
+  tmp = strchr(reply, '=');
 
-   tmp = strchr(reply, '=');
+  /* They quit, ignore it */
+  if (tmp == NULL)
+    return;
 
-   /* They quit, ignore it */
-   if (!tmp)
-      return;
+  /* Operators have a * flag in a USERHOST reply */
+  if (*(tmp - 1) == '*')
+    oper = 1;
 
-   /* Operators have a * flag in a USERHOST reply */
-   if (*(tmp - 1) == '*')
-      oper = 1;
-
-   /* Null terminate it so tmp = the oper's nick */
-  if(oper) 
-     *(--tmp) = '\0';
+  /* Null terminate it so tmp = the oper's nick */
+  if (oper)
+    *(--tmp) = '\0';
   else
-     *(tmp) = '\0';
+    *(tmp) = '\0';
 
-   /* Find any queued commands that match this user */
-   LIST_FOREACH_SAFE(node, next, COMMANDS->head)
-   {
-      cs = node->data;
+  /* Find any queued commands that match this user */
+  LIST_FOREACH_SAFE(node, next, COMMANDS->head)
+  {
+    struct Command *cs = node->data;
 
-      if(strcmp(cs->irc_nick, reply) == 0)
-      {
-         if(oper)
-            COMMAND_TABLE[cs->type].handler(cs->param, cs->irc_nick, cs->target);
+    if (strcmp(cs->irc_nick, reply) == 0)
+    {
+      if (oper)
+        COMMAND_TABLE[cs->type].handler(cs->param, cs->irc_nick, cs->target);
 
-         /* Cleanup the command */
-         command_free(cs);
-         list_remove(COMMANDS, node);
-         node_free(node);
-      }
-   }
+      /* Cleanup the command */
+      command_free(cs);
+      list_remove(COMMANDS, node);
+      node_free(node);
+    }
+  }
 }
-
-
 
 /* cmd_check
  *
@@ -335,13 +313,11 @@ void command_userhost(char *reply)
  *    target: channel command was sent to
  *
  */
-
-static void cmd_check(char *param, char *source, struct ChannelConf *target)
+static void
+cmd_check(char *param, char *source, struct ChannelConf *target)
 {
   scan_manual(param, target);
 }
-
-
 
 /* cmd_stat
  *
@@ -352,12 +328,11 @@ static void cmd_check(char *param, char *source, struct ChannelConf *target)
  *    source: irc_nick of user who requested the command
  *    target: channel command was sent to
  */
-
-static void cmd_stat(char *param, char *source, struct ChannelConf *target)
+static void
+cmd_stat(char *param, char *source, struct ChannelConf *target)
 {
   stats_output(target->name);
 }
-
 
 /* cmd_fdstat
  *
@@ -368,8 +343,8 @@ static void cmd_stat(char *param, char *source, struct ChannelConf *target)
  *    source: irc_nick of user who requested the command
  *    target: channel command was sent to
  */
-
-static void cmd_fdstat(char *param, char *source, struct ChannelConf *target)
+static void
+cmd_fdstat(char *param, char *source, struct ChannelConf *target)
 {
   fdstats_output(target->name);
 }
