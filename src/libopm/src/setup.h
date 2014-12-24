@@ -13,9 +13,6 @@
 /* Define to 1 if you have the `gethostbyname' function. */
 #define HAVE_GETHOSTBYNAME 1
 
-/* Define to 1 if you have the `gethostbyname2' function. */
-#define HAVE_GETHOSTBYNAME2 1
-
 /* Define to 1 if you have the `inet_aton' function. */
 #define HAVE_INET_ATON 1
 
@@ -102,9 +99,6 @@
 /* #  undef WORDS_BIGENDIAN */
 # endif
 #endif
-
-/* Define to empty if `const' does not conform to ANSI C. */
-/* #undef const */
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 /* #undef size_t */
