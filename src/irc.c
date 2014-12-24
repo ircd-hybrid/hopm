@@ -103,7 +103,6 @@ extern struct cnode *nc_head;
 
 char                 IRC_RAW[MSGLENMAX];         /* Buffer to read data into              */
 char                 IRC_SENDBUFF[MSGLENMAX];    /* Send buffer                           */
-char                 IRC_CHANNELS[MSGLENMAX];    /* Stores comma delim list of channels   */
 int                  IRC_RAW_LEN    = 0;         /* Position of IRC_RAW                   */
 
 int                  IRC_FD         = 0;        /* File descriptor for IRC client        */
@@ -302,17 +301,6 @@ static void irc_init(void)
       }
 
    }
-
-   /* Setup target list for irc_send_channels */
-   IRC_CHANNELS[0] = '\0';
-   LIST_FOREACH(node, IRCItem->channels->head)
-   {
-      chan = node->data;
-      strlcat(IRC_CHANNELS, chan->name, sizeof(IRC_CHANNELS));
-
-      if(node->next)
-         strlcat(IRC_CHANNELS, ",", sizeof(IRC_CHANNELS));
-   }
 }
 
 
@@ -364,17 +352,21 @@ void irc_send(const char *data, ...)
 
 void irc_send_channels(const char *data, ...)
 {
+   const node_t *node;
    va_list arglist;
-   char    data2[MSGLENMAX];
-   char    tosend[MSGLENMAX];
+   char    buf[MSGLENMAX];
 
    va_start(arglist, data);
-   vsnprintf(data2, MSGLENMAX, data, arglist);
+   vsnprintf(buf, sizeof(buf), data, arglist);
    va_end(arglist);
 
-   snprintf(tosend, MSGLENMAX, "PRIVMSG %s :%s", IRC_CHANNELS, data2);
 
-   irc_send("%s", tosend);
+   LIST_FOREACH(node, IRCItem->channels->head)
+   {
+     const struct ChannelConf *chan = node->data;
+
+     irc_send("PRIVMSG %s :%s", chan->name, buf);
+   }
 }
 
 
