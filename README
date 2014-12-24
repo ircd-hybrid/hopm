@@ -35,10 +35,11 @@ Compatibility
 
 ircd-hybrid 8.2.1
 
-HOPM is designed for ircd-hybrid.  It is easily suitable for any other ircd with
-little modification (connregex in hopm.conf). However, if an ircd does not send
-IP's in a connection notice, HOPM will not be effective because the time it takes
-to resolve a hostname would be a significant factor to HOPM's efficiency.
+HOPM is designed for ircd-hybrid based ircds.  It is easily suitable for any
+other ircd with little modification (connregex in hopm.conf). However, if an
+ircd does not send IP addresses in a connection notice, HOPM will not be
+effective because the time it takes to resolve a hostname would be a
+significant factor to HOPM's efficiency.
 
 
 Command Line Options
