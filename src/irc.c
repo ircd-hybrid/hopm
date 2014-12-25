@@ -1,5 +1,3 @@
-/* vim: set shiftwidth=3 softtabstop=3 expandtab: */ 
-
 /*
  * Copyright (C) 2002-2003  Erik Fears
  *
@@ -233,69 +231,62 @@ irc_init(void)
 
   if (IRC_FD == -1)
   {
-      switch(errno)
+    switch (errno)
+    {
+      case EINVAL:
+      case EPROTONOSUPPORT:
+        log_printf("IRC -> socket(): SOCK_STREAM is not supported on this domain");
+        break;
+      case ENFILE:
+        log_printf("IRC -> socket(): Not enough free file descriptors to allocate IRC socket");
+        break;
+      case EMFILE:
+        log_printf("IRC -> socket(): Process table overflow when requesting file descriptor");
+        break;
+      case EACCES:
+        log_printf("IRC -> socket(): Permission denied to create socket of type SOCK_STREAM");
+        break;
+      case ENOMEM:
+        log_printf("IRC -> socket(): Insufficient memory to allocate socket");
+        break;
+      default:
+        log_printf("IRC -> socket(): Unknown error allocating socket");
+        break;
+    }
+
+    exit(EXIT_FAILURE);
+  }
+
+  /* Bind */
+  if (!EmptyString(IRCItem->vhost))
+  {
+    int bindret = 0;
+
+    if (!inet_pton(AF_INET, IRCItem->vhost, &(IRC_LOCAL.in4.s_addr)))
+    {
+      log_printf("IRC -> bind(): %s is an invalid address", IRCItem->vhost);
+      exit(EXIT_FAILURE);
+    }
+
+    bsaddr.sa4.sin_addr.s_addr = IRC_LOCAL.in4.s_addr;
+    bsaddr.sa4.sin_family = AF_INET;
+    bsaddr.sa4.sin_port = htons(0);
+
+    bindret = bind(IRC_FD, (struct sockaddr *) &(bsaddr.sa4), sizeof(bsaddr.sa4));
+
+    if (bindret)
+    {
+      switch (errno)
       {
-         case EINVAL:
-         case EPROTONOSUPPORT:
-            log_printf("IRC -> socket(): SOCK_STREAM is not "
-                "supported on this domain");
-            break;
-         case ENFILE:
-            log_printf("IRC -> socket(): Not enough free file "
-                "descriptors to allocate IRC socket");
-            break;
-         case EMFILE:
-            log_printf("IRC -> socket(): Process table overflow when "
-                "requesting file descriptor");
-            break;
-         case EACCES:
-            log_printf("IRC -> socket(): Permission denied to create "
-                "socket of type SOCK_STREAM");
-            break;
-         case ENOMEM:
-            log_printf("IRC -> socket(): Insufficient memory to "
-                "allocate socket");
-            break;
-         default:
-            log_printf("IRC -> socket(): Unknown error allocating "
-                "socket");
-            break;
+        case EACCES:
+          log_printf("IRC -> bind(): No access to bind to %s", IRCItem->vhost);
+          break;
+        default:
+          log_printf("IRC -> bind(): Error binding to %s (%d)", IRCItem->vhost, errno);
+          break;
       }
 
       exit(EXIT_FAILURE);
-   }
-
-   /* Bind */
-   if (!EmptyString(IRCItem->vhost))
-   {
-      int bindret = 0;
-
-      if (!inet_pton(AF_INET, IRCItem->vhost, &(IRC_LOCAL.in4.s_addr)))
-      {
-         log_printf("IRC -> bind(): %s is an invalid address", IRCItem->vhost);
-         exit(EXIT_FAILURE);
-      }
-
-      bsaddr.sa4.sin_addr.s_addr = IRC_LOCAL.in4.s_addr;
-      bsaddr.sa4.sin_family = AF_INET;
-      bsaddr.sa4.sin_port = htons(0);
-
-      bindret = bind(IRC_FD, (struct sockaddr *) &(bsaddr.sa4), sizeof(bsaddr.sa4));
-
-      if (bindret)
-      {
-         switch(errno)
-         {
-            case EACCES:
-               log_printf("IRC -> bind(): No access to bind to %s",
-                   IRCItem->vhost);
-               break;
-            default:
-               log_printf("IRC -> bind(): Error binding to %s (%d)",
-                   IRCItem->vhost, errno);
-               break;
-         }
-         exit(EXIT_FAILURE);
     }
   }
 }
@@ -468,37 +459,40 @@ irc_reconnect(void)
 static void
 irc_read(void)
 {
-   int len;
-   char c;
+  int len;
+  char c;
 
-   while ((len = read(IRC_FD, &c, 1)) > 0)
-   {
-      if (c == '\r')
-         continue;
+  while ((len = read(IRC_FD, &c, 1)) > 0)
+  {
+    if (c == '\r')
+      continue;
 
-      if (c == '\n')
-      {
-         /* Null string. */
-         IRC_RAW[IRC_RAW_LEN] = '\0';
-         /* Parse line. */
-         irc_parse();
-         /* Reset counter. */
-         IRC_RAW_LEN = 0;
-         break;
-      }
+    if (c == '\n')
+    {
+      /* Null string. */
+      IRC_RAW[IRC_RAW_LEN] = '\0';
 
-      if (c != '\r' && c != '\n' && c != '\0')
-         IRC_RAW[IRC_RAW_LEN++] = c;
-   }
+      /* Parse line. */
+      irc_parse();
 
-   if((len <= 0) && (errno != EAGAIN))
-   {
-      if(OPT_DEBUG >= 2)
-         log_printf("irc_read -> errno=%d len=%d", errno, len);
-      irc_reconnect();
+      /* Reset counter. */
       IRC_RAW_LEN = 0;
-      return;
-   }
+      break;
+    }
+
+    if (c != '\r' && c != '\n' && c != '\0')
+      IRC_RAW[IRC_RAW_LEN++] = c;
+  }
+
+  if ((len <= 0) && (errno != EAGAIN))
+  {
+    if (OPT_DEBUG >= 2)
+      log_printf("irc_read -> errno=%d len=%d", errno, len);
+
+    irc_reconnect();
+    IRC_RAW_LEN = 0;
+    return;
+  }
 }
 
 /* irc_parse
@@ -512,87 +506,87 @@ irc_read(void)
 static void
 irc_parse(void)
 {
-   struct UserInfo *source_p;
-   char *pos;
-   unsigned int i;
+  struct UserInfo *source_p;
+  char *pos;
 
-   /*
-      parv stores the parsed token, parc is the count of the parsed 
-      tokens
-     
-      parv[0] is ALWAYS the source, and is the server name of the source
-      did not exist 
+  /*
+   * parv stores the parsed token, parc is the count of the parsed
+   * tokens
+   *
+   * parv[0] is ALWAYS the source, and is the server name of the source
+   * did not exist
    */
+  static char            *parv[17];
+  static unsigned int     parc;
+  static char             msg[MSGLENMAX];    /* Temporarily stores IRC msg to pass to handlers */
 
-   static char            *parv[17];
-   static unsigned int     parc;
-   static char             msg[MSGLENMAX];    /* Temporarily stores IRC msg to pass to handlers */
+  parc = 1;
 
-   parc = 1;
+  if (IRC_RAW_LEN <= 0)
+    return;
 
-   if(IRC_RAW_LEN <= 0)
-      return;
+  if (OPT_DEBUG >= 2)
+    log_printf("IRC READ -> %s", IRC_RAW);
 
-   if (OPT_DEBUG >= 2)
-      log_printf("IRC READ -> %s", IRC_RAW);
+  time(&IRC_LAST);
 
-   time(&IRC_LAST);
+  /* Store a copy of IRC_RAW for the handlers (for functions that need PROOF) */
+  strlcpy(msg, IRC_RAW, sizeof(msg));
 
-   /* Store a copy of IRC_RAW for the handlers (for functions that need PROOF) */
-   strlcpy(msg, IRC_RAW, sizeof(msg));
+  /* parv[0] is always the source */
+  if (IRC_RAW[0] == ':')
+    parv[0] = IRC_RAW + 1;
+  else
+  {
+    parv[0] = IRCItem->server;
+    parv[parc++] = IRC_RAW;
+  }
 
-   /* parv[0] is always the source */
-   if(IRC_RAW[0] == ':')
-      parv[0] = IRC_RAW + 1;
-   else
-   {
-      parv[0] = IRCItem->server;
-      parv[parc++] = IRC_RAW;
-   }
+  pos = IRC_RAW;
 
-   pos = IRC_RAW;
-
-   while((pos = strchr(pos, ' ')) && parc <= 17)
-   {
-
-      /* Avoid excessive spaces and end of IRC_RAW */
-      if(*(pos + 1) == ' ' && *(pos + 1) == '\0')
-      {
-         pos++;
-         continue;
-      }
-
-      /* Anything after a : is considered the final string of the
-            message */
-      if(*(pos + 1) == ':')
-      {
-         parv[parc++] = pos + 2;
-         *pos = '\0';
-         break;
-      }
-
-      /* Set the next parv at this position and replace the space with a
-         \0 for the previous parv */
-      parv[parc++] = pos + 1;
-      *pos = '\0';
+  while ((pos = strchr(pos, ' ')) && parc <= 17)
+  {
+    /* Avoid excessive spaces and end of IRC_RAW */
+    if (*(pos + 1) == ' ' && *(pos + 1) == '\0')
+    {
       pos++;
-   }
+      continue;
+    }
 
-   /* Generate a UserInfo struct from the source */
+    /* Anything after a : is considered the final string of the message */
+    if (*(pos + 1) == ':')
+    {
+      parv[parc++] = pos + 2;
+      *pos = '\0';
+      break;
+    }
 
-   source_p = userinfo_create(parv[0]);
+    /*
+     * Set the next parv at this position and replace the space with a
+     * \0 for the previous parv
+     */
+    parv[parc++] = pos + 1;
+    *pos = '\0';
+    pos++;
+  }
 
-   /* Determine which command this is from the command table
-      and let the handler for that command take control */
+  /* Generate a UserInfo struct from the source */
+  source_p = userinfo_create(parv[0]);
 
-   for(i = 0; i < (sizeof(COMMAND_TABLE) / sizeof(struct CommandHash)); i++)
-      if(strcasecmp(COMMAND_TABLE[i].command, parv[1]) == 0)
-      {
-         (*COMMAND_TABLE[i].handler)(parv, parc, msg, source_p);
-         break;
-      }
+  /*
+   * Determine which command this is from the command table
+   * and let the handler for that command take control
+   */
+  for (unsigned int i = 0; i < (sizeof(COMMAND_TABLE) / sizeof(struct CommandHash)); ++i)
+  {
+    if (strcasecmp(COMMAND_TABLE[i].command, parv[1]) == 0)
+    {
+      (*COMMAND_TABLE[i].handler)(parv, parc, msg, source_p);
+      break;
+    }
+  }
 
-   userinfo_free(source_p);
+  userinfo_free(source_p);
 }
 
 /* irc_timer
@@ -645,11 +639,10 @@ static struct ChannelConf *
 get_channel(const char *channel)
 {
   node_t *node;
-  struct ChannelConf *item;
 
   LIST_FOREACH(node, IRCItem->channels->head)
   {
-    item = node->data;
+    struct ChannelConf *item = node->data;
 
     if (strcasecmp(item->name, channel) == 0)
       return item;
