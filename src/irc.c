@@ -101,7 +101,7 @@ extern struct cnode *nc_head;
 
 char                 IRC_RAW[MSGLENMAX];         /* Buffer to read data into              */
 char                 IRC_SENDBUFF[MSGLENMAX];    /* Send buffer                           */
-int                  IRC_RAW_LEN    = 0;         /* Position of IRC_RAW                   */
+static unsigned int  IRC_RAW_LEN    = 0;         /* Position of IRC_RAW                   */
 
 int                  IRC_FD         = 0;        /* File descriptor for IRC client        */
 
@@ -522,7 +522,7 @@ irc_parse(void)
 
   parc = 1;
 
-  if (IRC_RAW_LEN <= 0)
+  if (IRC_RAW_LEN == 0)
     return;
 
   if (OPT_DEBUG >= 2)
