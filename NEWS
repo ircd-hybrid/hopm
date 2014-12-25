@@ -1,4 +1,8 @@
 -- Noteworthy changes in version 1.0.0beta1 (2014-12-25)
+########################################################################
+o) NOTE: this is the first release of the hybrid open proxy monitor (HOPM)
+   fully based off the discontinued blitzed open proxy monitor (BOPM)
+########################################################################
 o) Modernized and cleaned up build system
 o) The configuration parser now does support time and size units
 o) The configuration parser now does support c++ style comments
