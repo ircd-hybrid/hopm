@@ -58,7 +58,7 @@ void opm_free(OPM_T *);
 OPM_REMOTE_T *opm_remote_create(const char *);
 void opm_remote_free(OPM_REMOTE_T *);
 
-OPM_ERR_T opm_config(OPM_T *, int, void *);
+OPM_ERR_T opm_config(OPM_T *, int, const void *);
 OPM_ERR_T opm_scan(OPM_T *, OPM_REMOTE_T *);
 void opm_end(OPM_T *, OPM_REMOTE_T *);
 void opm_endscan(OPM_T *, OPM_REMOTE_T *);

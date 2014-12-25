@@ -171,7 +171,7 @@ void libopm_config_free(OPM_CONFIG_T *config)
  *    0: Some error occured
  */
 
-OPM_ERR_T libopm_config_set(OPM_CONFIG_T *config, int key, void *value)
+OPM_ERR_T libopm_config_set(OPM_CONFIG_T *config, int key, const void *value)
 {
 
    int num;
@@ -187,21 +187,21 @@ OPM_ERR_T libopm_config_set(OPM_CONFIG_T *config, int key, void *value)
       case OPM_TYPE_STRING:
          if((char *) config->vars[key] != NULL)
             MyFree(config->vars[key]);
-         config->vars[key] = libopm_xstrdup((char *) value);
+         config->vars[key] = libopm_xstrdup(value);
          break;
 
       case OPM_TYPE_INT:
-         *(int *) config->vars[key] = *(int *) value;
+         *(int *) config->vars[key] = *(const int *) value;
          break;
 
       case OPM_TYPE_ADDRESS:
-         if( inet_pton(AF_INET, (char *) value, &( ((opm_sockaddr *)config->vars[key])->sa4.sin_addr))
+         if( inet_pton(AF_INET, value, &( ((opm_sockaddr *)config->vars[key])->sa4.sin_addr))
                   <= 0)
             return OPM_ERR_BADVALUE; /* return appropriate err code */
          break; 
 
       case OPM_TYPE_STRINGLIST:
-         node = libopm_node_create(libopm_xstrdup((char *) value));
+         node = libopm_node_create(libopm_xstrdup(value));
          libopm_list_add((OPM_LIST_T *) config->vars[key], node);
          break;                        
 

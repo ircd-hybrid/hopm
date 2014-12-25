@@ -313,7 +313,7 @@ void opm_free(OPM_T *scanner)
  *    OPM_ERR_T containing error code
  */
 
-OPM_ERR_T opm_config(OPM_T *scanner, int key, void *value)
+OPM_ERR_T opm_config(OPM_T *scanner, int key, const void *value)
 {
    return libopm_config_set((scanner->config), key, value);
 }
