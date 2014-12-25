@@ -45,9 +45,6 @@ AC_TYPE_SIZE_T
 AC_HEADER_TIME
 AC_STRUCT_TM
 
-dnl Checks for library functions.
-AC_FUNC_STRFTIME
-
 dnl check for yacc
 AC_PROG_INSTALL
 AC_PROG_YACC
