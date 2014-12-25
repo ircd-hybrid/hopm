@@ -227,11 +227,11 @@ scan_init(void)
     scs->masks = list_create();
 
     /* Setup configuration */
-    opm_config(scs->scanner, OPM_CONFIG_FD_LIMIT, &(sc->fd));
+    opm_config(scs->scanner, OPM_CONFIG_FD_LIMIT, &sc->fd);
     opm_config(scs->scanner, OPM_CONFIG_SCAN_IP, sc->target_ip);
-    opm_config(scs->scanner, OPM_CONFIG_SCAN_PORT, &(sc->target_port));
-    opm_config(scs->scanner, OPM_CONFIG_TIMEOUT, &(sc->timeout));
-    opm_config(scs->scanner, OPM_CONFIG_MAX_READ, &(sc->max_read));
+    opm_config(scs->scanner, OPM_CONFIG_SCAN_PORT, &sc->target_port);
+    opm_config(scs->scanner, OPM_CONFIG_TIMEOUT, &sc->timeout);
+    opm_config(scs->scanner, OPM_CONFIG_MAX_READ, &sc->max_read);
     opm_config(scs->scanner, OPM_CONFIG_BIND_IP, sc->vhost);
 
     /* add target strings */
