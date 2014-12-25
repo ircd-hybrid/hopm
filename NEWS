@@ -1,11 +1,11 @@
--- Noteworthy changes in version 1.0.0beta1 (????-??-??)
-o) Modernized build system
+-- Noteworthy changes in version 1.0.0beta1 (2014-12-25)
+o) Modernized and cleaned up build system
 o) The configuration parser now does support time and size units
 o) The configuration parser now does support c++ style comments
 o) Fixed a memory leak in conjunction with manual scans
 o) Fixed weird behaviour in the command parser
 o) Code hardening. Replaced occurences of strcpy/strcat with strlcpy/strlcat, etc.
-o) Various code cleanups
+o) Various code cleanups and optimizations
 o) The irc::away configuration option is now optional
 
 
