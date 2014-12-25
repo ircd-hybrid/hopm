@@ -3,7 +3,6 @@
 
 #include "inet.h"
 
-#define NICKMAX 32 + 1
 #define MSGLENMAX 512 + 1
 
 
