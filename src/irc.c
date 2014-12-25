@@ -480,7 +480,7 @@ irc_read(void)
       break;
     }
 
-    if (c != '\r' && c != '\n' && c != '\0')
+    if (c != '\0')
       IRC_RAW[IRC_RAW_LEN++] = c;
   }
 
