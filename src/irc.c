@@ -99,20 +99,18 @@ extern struct cnode *nc_head;
  * again so global scope is given.
  */
 
-char                 IRC_RAW[MSGLENMAX];         /* Buffer to read data into              */
-char                 IRC_SENDBUFF[MSGLENMAX];    /* Send buffer                           */
+static char          IRC_RAW[MSGLENMAX];         /* Buffer to read data into              */
 static unsigned int  IRC_RAW_LEN    = 0;         /* Position of IRC_RAW                   */
+static int           IRC_FD         = 0;         /* File descriptor for IRC client        */
 
-int                  IRC_FD         = 0;        /* File descriptor for IRC client        */
+static struct bopm_sockaddr IRC_SVR;             /* Sock Address Struct for IRC server    */
+static struct bopm_ircaddr  IRC_LOCAL;           /* Sock Address Struct for Bind          */
 
-struct bopm_sockaddr IRC_SVR;                   /* Sock Address Struct for IRC server    */
-struct bopm_ircaddr  IRC_LOCAL;                 /* Sock Address Struct for Bind          */
+static fd_set        IRC_READ_FDSET;             /* fd_set for IRC (read) data for select()*/
+static struct timeval IRC_TIMEOUT;               /* timeval struct for select() timeout   */
 
-fd_set               IRC_READ_FDSET;             /* fd_set for IRC (read) data for select()*/
-struct timeval       IRC_TIMEOUT;                /* timeval struct for select() timeout   */
-
-time_t               IRC_LAST = 0;               /* Last full line of data from irc server*/
-time_t               IRC_LASTRECONNECT = 0;      /* Time of last reconnection */
+static time_t IRC_LAST = 0;                      /* Last full line of data from irc server*/
+static time_t IRC_LASTRECONNECT = 0;             /* Time of last reconnection */
 
 /*
  * Table should be ordered with most occuring (or priority)
