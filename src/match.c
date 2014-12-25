@@ -21,7 +21,7 @@
 
 /*! \file match.c
  * \brief Functions to match/compare strings.
- * \version $Id: match.c 5037 2014-12-13 15:59:13Z michael $
+ * \version $Id$
  */
 
 #include <stdarg.h>

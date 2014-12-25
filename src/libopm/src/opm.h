@@ -3,7 +3,7 @@
 /** \file opm.h
  *  \brief Main header for libopm.
  *  \author Erik Fears
- *  \version $Id: opm.h,v 1.26 2003/06/20 04:18:44 andy Exp $
+ *  \version $Id$
  */
 
 #ifndef OPM_H

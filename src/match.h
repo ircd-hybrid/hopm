@@ -21,7 +21,7 @@
 
 /*! \file match.h
  * \brief Functions to match/compare strings.
- * \version $Id: match.h 5037 2014-12-13 15:59:13Z michael $
+ * \version $Id$
  */
 
 #ifndef MATCH_H

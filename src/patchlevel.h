@@ -1,6 +1,6 @@
 /*! \file patchlevel.h
  * \brief A header defining the patchlevel.
- * \version $Id: patchlevel.h 4772 2014-10-20 18:04:30Z michael $
+ * \version $Id$
  */
 
 #ifndef PATCHLEVEL
