@@ -1,5 +1,3 @@
-/* vim: set shiftwidth=3 softtabstop=3 expandtab: */ 
-
 /** \file opm.h
  *  \brief Main header for libopm.
  *  \author Erik Fears

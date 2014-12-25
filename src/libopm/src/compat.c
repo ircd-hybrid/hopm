@@ -1,5 +1,3 @@
-/* vim: set shiftwidth=3 softtabstop=3 expandtab: */ 
-
 /*
  * Copyright (C) 2002  Andy Smith
  *
