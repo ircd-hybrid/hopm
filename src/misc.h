@@ -3,5 +3,4 @@
 
 extern char *dissect_time(time_t);
 extern char *clean(char *);
-
 #endif

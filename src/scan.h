@@ -5,32 +5,32 @@
 
 struct scan_struct
 {
-   char *irc_nick;
-   char *irc_username;
-   char *irc_hostname;
+  char *irc_nick;
+  char *irc_username;
+  char *irc_hostname;
 
-   char *ip;
-   char *proof;
-   OPM_REMOTE_T *remote;
+  char *ip;
+  char *proof;
+  OPM_REMOTE_T *remote;
 
-   unsigned int scans;
-   unsigned int positive;
+  unsigned int scans;
+  unsigned int positive;
 
-   struct ChannelConf *manual_target;
+  struct ChannelConf *manual_target;
 };
 
 
 struct scanner_struct
 {
-   char *name;
-   OPM_T *scanner;
-   list_t *masks;
+  char *name;
+  OPM_T *scanner;
+  list_t *masks;
 };
 
 struct protocol_assoc
 {
-   int type;
-   const char *name;
+  int type;
+  const char *name;
 };
 
 extern void scan_init(void);
@@ -45,9 +45,9 @@ extern void scan_positive(struct scan_struct *, const char *, const char *);
 
 struct kline_format_assoc
 {
-   char key;
-   const void *data;
-   int type;
+  char key;
+  const void *data;
+  int type;
 };
 
 #define FORMATTYPE_STRING 1
