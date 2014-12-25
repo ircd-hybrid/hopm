@@ -82,7 +82,7 @@ bin_PROGRAMS = hopm$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/setup.h.in $(top_srcdir)/mkinstalldirs \
-	config-parser.h config-parser.c config-lexer.c \
+	config-lexer.c config-parser.h config-parser.c \
 	$(top_srcdir)/depcomp $(top_srcdir)/ylwrap
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -94,12 +94,12 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_hopm_OBJECTS = compat.$(OBJEXT) config-parser.$(OBJEXT) \
-	config-lexer.$(OBJEXT) config.$(OBJEXT) dnsbl.$(OBJEXT) \
-	inet.$(OBJEXT) irc.$(OBJEXT) log.$(OBJEXT) main.$(OBJEXT) \
-	match.$(OBJEXT) misc.$(OBJEXT) malloc.$(OBJEXT) list.$(OBJEXT) \
-	negcache.$(OBJEXT) opercmd.$(OBJEXT) scan.$(OBJEXT) \
-	stats.$(OBJEXT) firedns.$(OBJEXT)
+am_hopm_OBJECTS = compat.$(OBJEXT) config.$(OBJEXT) \
+	config-lexer.$(OBJEXT) config-parser.$(OBJEXT) dnsbl.$(OBJEXT) \
+	firedns.$(OBJEXT) inet.$(OBJEXT) irc.$(OBJEXT) list.$(OBJEXT) \
+	log.$(OBJEXT) main.$(OBJEXT) malloc.$(OBJEXT) match.$(OBJEXT) \
+	misc.$(OBJEXT) negcache.$(OBJEXT) opercmd.$(OBJEXT) \
+	scan.$(OBJEXT) stats.$(OBJEXT)
 hopm_OBJECTS = $(am_hopm_OBJECTS)
 hopm_DEPENDENCIES = libopm/src/.libs/libopm.a @LIBOBJS@
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -353,11 +353,43 @@ top_srcdir = @top_srcdir@
 SUBDIRS = libopm .
 AM_CPPFLAGS = -DHOPM_ETCDIR="\"$(sysconfdir)\"" -DHOPM_LOGDIR="\"$(localstatedir)\""
 AM_YFLAGS = -d
-hopm_SOURCES = compat.c compat.h config-parser.y config-lexer.l config.c config.h \
-    dnsbl.c dnsbl.h extern.h inet.c inet.h irc.c irc.h log.c log.h main.c match.c \
-    match.h misc.c misc.h malloc.c malloc.h list.c list.h negcache.c negcache.h \
-    opercmd.c opercmd.h options.h scan.c scan.h setup.h stats.c stats.h firedns.c \
-	 firedns.h main.h
+hopm_SOURCES = compat.c        \
+               compat.h        \
+               config.c        \
+               config.h        \
+               config-lexer.l  \
+               config-parser.y \
+               dnsbl.c         \
+               dnsbl.h         \
+               extern.h        \
+               firedns.c       \
+               firedns.h       \
+               inet.c          \
+               inet.h          \
+               irc.c           \
+               irc.h           \
+               list.c          \
+               list.h          \
+               log.c           \
+               log.h           \
+               main.c          \
+               main.h          \
+               malloc.c        \
+               malloc.h        \
+               match.c         \
+               match.h         \
+               misc.c          \
+               misc.h          \
+               negcache.c      \
+               negcache.h      \
+               opercmd.c       \
+               opercmd.h       \
+               options.h       \
+               patchlevel.h    \
+               scan.c          \
+               scan.h          \
+               stats.c         \
+               stats.h
 
 hopm_LDADD = libopm/src/.libs/libopm.a @LIBOBJS@
 all: setup.h
