@@ -93,9 +93,6 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define as the return type of signal handlers (`int' or `void'). */
-#undef RETSIGTYPE
-
 /* The size of `int', as computed by sizeof. */
 #undef SIZEOF_INT
 

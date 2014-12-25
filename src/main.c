@@ -54,7 +54,7 @@ along with this program; if not, write to the Free Software
 #include "main.h"
 
 
-static RETSIGTYPE do_signal(int signum);
+static void do_signal(int signum);
 
 int RESTART = 0;             /* Flagged to restart on next cycle */
 int ALARMED = 0;             /* Flagged to call timer functions on next cycle */

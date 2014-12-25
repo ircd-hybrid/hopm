@@ -7,13 +7,13 @@ AC_PREFIX_DEFAULT([\${HOME}/hopm])
 AM_MAINTAINER_MODE
 
 AC_ARG_WITH(extra-fascism,
-    AC_HELP_STRING([--with-extra-fascism],
+    AS_HELP_STRING([--with-extra-fascism],
     [Add extra gcc3-specific warning flags]),
     [CFLAGS="$CFLAGS -g -O0 -W -Wall -Wfloat-equal -Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs"])
 
 dnl ipv6?
 dnl AC_ARG_ENABLE(ipv6,
-dnl     AC_HELP_STRING([--enable-ipv6], [Enable IPV6 support]),
+dnl     AS_HELP_STRING([--enable-ipv6], [Enable IPV6 support]),
 dnl     [ac_cv_ipv6=$enableval], [ac_cv_ipv6="no"])
 
 dnl AC_MSG_CHECKING([whether to enable IPv6 features])
@@ -46,7 +46,6 @@ AC_HEADER_TIME
 AC_STRUCT_TM
 
 dnl Checks for library functions.
-AC_TYPE_SIGNAL
 AC_FUNC_STRFTIME
 
 dnl check for yacc
@@ -92,7 +91,8 @@ typedef unsigned long uint32;
 
 AC_CONFIG_SUBDIRS(src/libopm)
 
-AC_OUTPUT(Makefile doc/Makefile src/Makefile)
+AC_CONFIG_FILES(Makefile doc/Makefile src/Makefile)
+AC_OUTPUT
 
 
 echo "###############################################################################"

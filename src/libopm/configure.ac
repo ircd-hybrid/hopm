@@ -7,12 +7,12 @@ AC_PREFIX_DEFAULT([/usr/local/libopm])
 AM_MAINTAINER_MODE
 
 AC_ARG_WITH(extra-fascism,
-    AC_HELP_STRING([--with-extra-fascism],
+    AS_HELP_STRING([--with-extra-fascism],
     [add extra gcc3-specific warning flags]),
     [CFLAGS="$CFLAGS -g -O0 -W -Wall -Wfloat-equal -Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs"])
 
 dnl AC_ARG_WITH(faldo,
-dnl     AC_HELP_STRING([--with-faldo],
+dnl     AS_HELP_STRING([--with-faldo],
 dnl     [make some use of Nick Faldo]))
 
 dnl Checks for programs.
@@ -58,4 +58,5 @@ LTLIBOBJS=`echo "$LIB@&t@OBJS" |
            sed 's,\.[[^.]]* ,.lo ,g;s,\.[[^.]]*$,.lo,'`
 AC_SUBST(LTLIBOBJS)
 
-AC_OUTPUT(Makefile src/Makefile)
+AC_CONFIG_FILES(Makefile src/Makefile)
+AC_OUTPUT
