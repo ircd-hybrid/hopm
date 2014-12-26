@@ -228,7 +228,7 @@ void negcache_insert(const char *ipstr)
       return;
    }
 
-   memcpy(&ip.sa4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, res->ai_addrlen);
+   memcpy(&ip.sa4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
    freeaddrinfo(res);
 
    n = nc_insert(nc_head, ip.sa4.sin_addr.s_addr);

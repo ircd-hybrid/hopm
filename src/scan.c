@@ -359,7 +359,7 @@ scan_connect(char **user, char *msg)
       }
       else
       {
-         memcpy(&ip.sa4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, res->ai_addrlen);
+         memcpy(&ip.sa4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
          freeaddrinfo(res);
 
          if (check_neg_cache(ip.sa4.sin_addr.s_addr))
