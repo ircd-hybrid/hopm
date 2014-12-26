@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(hopm, [1.0.0beta1])
 AC_CONFIG_SRCDIR(src/opercmd.h)
-AM_CONFIG_HEADER(src/setup.h)
+AC_CONFIG_HEADER(src/setup.h)
 AM_INIT_AUTOMAKE()
 AC_PREFIX_DEFAULT([\${HOME}/hopm])
 AM_MAINTAINER_MODE
