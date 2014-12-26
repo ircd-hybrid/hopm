@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netdb.h>
 #include <sys/poll.h>
 #include <sys/time.h>
 #include <netinet/in.h>
@@ -213,11 +214,19 @@ void firedns_init(void)
 #endif
             if (i4 < FDNS_MAX)
             {
-               if (inet_aton(&buf[i], &addr4))
-               {
-                  memcpy(&servers4[i4++],&addr4,sizeof(struct in_addr));
-               }
-            }
+              struct addrinfo hints, *res;
+
+              memset(&hints, 0, sizeof(hints));
+              hints.ai_family   = AF_INET;
+              hints.ai_socktype = SOCK_STREAM;
+              hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
+
+              if (!getaddrinfo(&buf[i], NULL, &hints, &res))
+              {
+                memcpy(&servers4[i4++], &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
+                freeaddrinfo(res);
+              }
+           }
          }
       }
    }
@@ -239,8 +248,18 @@ void firedns_init(void)
 #endif
          if (i4 < FDNS_MAX)
          {
-            if (inet_pton(AF_INET, buf, (char *)&addr4))
-               memcpy(&servers4[i4++],&addr4,sizeof(struct in_addr));
+              struct addrinfo hints, *res;
+
+              memset(&hints, 0, sizeof(hints));
+              hints.ai_family   = AF_INET;
+              hints.ai_socktype = SOCK_STREAM;
+              hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
+
+              if (!getaddrinfo(&buf[i], NULL, &hints, &res))
+              {
+                memcpy(&servers4[i4++], &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
+                freeaddrinfo(res);
+              }
          }
       }
    }

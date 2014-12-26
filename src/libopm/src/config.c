@@ -195,10 +195,21 @@ OPM_ERR_T libopm_config_set(OPM_CONFIG_T *config, int key, const void *value)
          break;
 
       case OPM_TYPE_ADDRESS:
-         if( inet_pton(AF_INET, value, &( ((opm_sockaddr *)config->vars[key])->sa4.sin_addr))
-                  <= 0)
-            return OPM_ERR_BADVALUE; /* return appropriate err code */
-         break; 
+      {
+        struct addrinfo hints, *res;
+
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family   = AF_INET;
+        hints.ai_socktype = SOCK_STREAM;
+        hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
+
+        if (getaddrinfo(value, NULL, &hints, &res))
+          return OPM_ERR_BADVALUE;  /* return appropriate err code */
+
+        memcpy(&(((opm_sockaddr *)config->vars[key])->sa4.sin_addr), &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
+        freeaddrinfo(res);
+        break; 
+      }
 
       case OPM_TYPE_STRINGLIST:
          node = libopm_node_create(libopm_xstrdup(value));

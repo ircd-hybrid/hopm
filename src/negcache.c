@@ -45,6 +45,7 @@ along with this program; if not, write to:
 #ifdef STDC_HEADERS
 #include <stdlib.h>
 #endif
+#include <string.h>
 
 #ifdef TIME_WITH_SYS_TIME
 #include <sys/time.h>
@@ -56,6 +57,10 @@ along with this program; if not, write to:
 #  include <time.h>
 # endif
 #endif
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
 
 #include "inet.h"
 #include "irc.h"
@@ -210,12 +215,21 @@ void negcache_insert(const char *ipstr)
 {
    struct bopm_sockaddr ip;
    struct cnode *n;
+   struct addrinfo hints, *res;
 
-   if (!inet_pton(AF_INET, ipstr, &(ip.sa4.sin_addr)))
+   memset(&hints, 0, sizeof(hints));
+   hints.ai_family   = AF_INET;
+   hints.ai_socktype = SOCK_STREAM;
+   hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
+
+   if (getaddrinfo(ipstr, NULL, &hints, &res))
    {
       log_printf("NEGCACHE -> Invalid IPv4 address '%s'", ipstr);
       return;
    }
+
+   memcpy(&ip.sa4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, res->ai_addrlen);
+   freeaddrinfo(res);
 
    n = nc_insert(nc_head, ip.sa4.sin_addr.s_addr);
 

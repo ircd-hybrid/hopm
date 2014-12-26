@@ -46,6 +46,10 @@
 #include <errno.h>
 #include <fcntl.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+
 #ifdef HAVE_SYS_POLL_H
 # include <sys/poll.h>
 #endif
@@ -341,13 +345,23 @@ scan_connect(char **user, char *msg)
   /* Check negcache before anything */
   if (OptionsItem->negcache > 0)
   {
-      if (!inet_pton(AF_INET, user[3], &(ip.sa4.sin_addr)))
+    struct addrinfo hints, *res;
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family   = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
+
+      if (getaddrinfo(user[3], NULL, &hints, &res))
       {
          log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
          return;
       }
       else
       {
+         memcpy(&ip.sa4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, res->ai_addrlen);
+         freeaddrinfo(res);
+
          if (check_neg_cache(ip.sa4.sin_addr.s_addr))
          {
             if (OPT_DEBUG)
