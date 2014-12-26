@@ -57,7 +57,6 @@ along with this program; if not, write to:
 # endif
 #endif
 
-#include "inet.h"
 #include "irc.h"
 #include "negcache.h"
 #include "config.h"

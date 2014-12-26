@@ -8,15 +8,13 @@ hopm_SOURCES = compat.c        \
                compat.h        \
                config.c        \
                config.h        \
-               config-lexer.l  \
                config-parser.y \
+               config-lexer.l  \
                dnsbl.c         \
                dnsbl.h         \
                extern.h        \
                firedns.c       \
                firedns.h       \
-               inet.c          \
-               inet.h          \
                irc.c           \
                irc.h           \
                list.c          \

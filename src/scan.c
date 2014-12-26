@@ -50,7 +50,6 @@
 # include <sys/poll.h>
 #endif
 
-#include "inet.h"
 #include "compat.h"
 #include "config.h"
 #include "irc.h"
