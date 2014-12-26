@@ -90,15 +90,6 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* The size of `int', as computed by sizeof. */
-#undef SIZEOF_INT
-
-/* The size of `long', as computed by sizeof. */
-#undef SIZEOF_LONG
-
-/* The size of `short', as computed by sizeof. */
-#undef SIZEOF_SHORT
-
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
@@ -129,19 +120,3 @@
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t
-
-
-#if SIZEOF_INT==4
-typedef signed int int32;
-typedef unsigned int uint32;
-#elif SIZEOF_LONG==4
-typedef signed long int32;
-typedef unsigned long uint32;
-#else
-#  error "No 32-bit integer type!"
-#endif
-
-#if SIZEOF_SHORT!=2
-#  error "Your short int data type is not 2 bytes: hopm (firedns) is not going to work for you."
-#endif
-

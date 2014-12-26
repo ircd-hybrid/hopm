@@ -65,26 +65,6 @@ AC_CHECK_FUNCS(gethostbyname)
 dnl AIX fun
 AC_C_BIGENDIAN
 
-AC_CHECK_SIZEOF(int)
-AC_CHECK_SIZEOF(short)
-AC_CHECK_SIZEOF(long)
-
-
-AH_BOTTOM([
-#if SIZEOF_INT==4
-typedef signed int int32;
-typedef unsigned int uint32;
-#elif SIZEOF_LONG==4
-typedef signed long int32;
-typedef unsigned long uint32;
-#else
-#  error "No 32-bit integer type!"
-#endif
-
-#if SIZEOF_SHORT!=2
-#  error "Your short int data type is not 2 bytes: hopm (firedns) is not going to work for you."
-#endif
-])
 
 AC_CONFIG_SUBDIRS(src/libopm)
 
