@@ -56,7 +56,7 @@ AC_SEARCH_LIBS([socket],[socket],,[AC_MSG_ERROR([socket library not found])])
 AC_CHECK_FUNC(getaddrinfo, [], AC_SEARCH_LIBS(getaddrinfo, nsl))
 AC_CHECK_FUNC(getnameinfo, [], AC_SEARCH_LIBS(getnameinfo, nsl))
 
-AC_CHECK_FUNCS(strlcpy strlcat inet_aton socket strdup strstr)
+AC_CHECK_FUNCS(strlcpy strlcat socket)
 
 dnl Check if we can use gethostbyname2 for ipv6
 AC_CHECK_FUNCS(gethostbyname)

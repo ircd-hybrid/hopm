@@ -41,8 +41,6 @@ if test "$have_sys_poll_h" = "no"; then
  fi
 fi
 
-AC_CHECK_FUNCS(inet_aton inet_pton)
-
 dnl Check if we can use gethostbyname2 for ipv6
 AC_CHECK_FUNCS(gethostbyname)
 
