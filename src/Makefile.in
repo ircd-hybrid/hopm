@@ -82,7 +82,7 @@ bin_PROGRAMS = hopm$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/setup.h.in $(top_srcdir)/mkinstalldirs \
-	config-lexer.c config-parser.h config-parser.c \
+	config-parser.h config-parser.c config-lexer.c \
 	$(top_srcdir)/depcomp $(top_srcdir)/ylwrap
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -95,11 +95,11 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_hopm_OBJECTS = compat.$(OBJEXT) config.$(OBJEXT) \
-	config-lexer.$(OBJEXT) config-parser.$(OBJEXT) dnsbl.$(OBJEXT) \
-	firedns.$(OBJEXT) inet.$(OBJEXT) irc.$(OBJEXT) list.$(OBJEXT) \
-	log.$(OBJEXT) main.$(OBJEXT) malloc.$(OBJEXT) match.$(OBJEXT) \
-	misc.$(OBJEXT) negcache.$(OBJEXT) opercmd.$(OBJEXT) \
-	scan.$(OBJEXT) stats.$(OBJEXT)
+	config-parser.$(OBJEXT) config-lexer.$(OBJEXT) dnsbl.$(OBJEXT) \
+	firedns.$(OBJEXT) irc.$(OBJEXT) list.$(OBJEXT) log.$(OBJEXT) \
+	main.$(OBJEXT) malloc.$(OBJEXT) match.$(OBJEXT) misc.$(OBJEXT) \
+	negcache.$(OBJEXT) opercmd.$(OBJEXT) scan.$(OBJEXT) \
+	stats.$(OBJEXT)
 hopm_OBJECTS = $(am_hopm_OBJECTS)
 hopm_DEPENDENCIES = libopm/src/.libs/libopm.a @LIBOBJS@
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -357,15 +357,13 @@ hopm_SOURCES = compat.c        \
                compat.h        \
                config.c        \
                config.h        \
-               config-lexer.l  \
                config-parser.y \
+               config-lexer.l  \
                dnsbl.c         \
                dnsbl.h         \
                extern.h        \
                firedns.c       \
                firedns.h       \
-               inet.c          \
-               inet.h          \
                irc.c           \
                irc.h           \
                list.c          \
@@ -511,7 +509,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dnsbl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/firedns.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/inet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/irc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@

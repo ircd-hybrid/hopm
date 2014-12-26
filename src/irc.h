@@ -1,7 +1,10 @@
 #ifndef IRC_H
 #define IRC_H
 
-#include "inet.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #define MSGLENMAX 512 + 1
 

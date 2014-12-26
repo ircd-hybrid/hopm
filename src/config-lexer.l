@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "inet.h"
 #include "compat.h"
 #include "config.h"
 #include "config-parser.h"
