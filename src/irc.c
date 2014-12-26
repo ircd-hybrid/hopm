@@ -273,7 +273,7 @@ irc_init(void)
       exit(EXIT_FAILURE);
     }
 
-    memcpy(&IRC_LOCAL.in4.s_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, res->ai_addrlen);
+    memcpy(&IRC_LOCAL.in4.s_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
     freeaddrinfo(res);
 
     bsaddr.sa4.sin_addr.s_addr = IRC_LOCAL.in4.s_addr;
