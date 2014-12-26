@@ -26,7 +26,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <netdb.h>
 #include <sys/poll.h>
 #include <sys/time.h>
 #include <netinet/in.h>
@@ -205,7 +204,7 @@ void firedns_init(void)
             /* glibc /etc/resolv.conf seems to allow ipv6 server names */
             if (i6 < FDNS_MAX)
             {
-               if (inet_pton6(&buf[i], (char *)&addr6) != NULL)
+               if (inet_pton(AF_INET6, &buf[i], &addr6) > 0)
                {
                   memcpy(&servers6[i6++],&addr6,sizeof(struct in6_addr));
                   continue;
@@ -214,18 +213,8 @@ void firedns_init(void)
 #endif
             if (i4 < FDNS_MAX)
             {
-              struct addrinfo hints, *res;
-
-              memset(&hints, 0, sizeof(hints));
-              hints.ai_family   = AF_INET;
-              hints.ai_socktype = SOCK_STREAM;
-              hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
-
-              if (!getaddrinfo(&buf[i], NULL, &hints, &res))
-              {
-                memcpy(&servers4[i4++], &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
-                freeaddrinfo(res);
-              }
+              if (inet_pton(AF_INET, &buf[i], &addr4) > 0)
+                memcpy(&servers4[i4++],&addr4,sizeof(struct in_addr));
            }
          }
       }
@@ -239,7 +228,7 @@ void firedns_init(void)
 #ifdef IPV6
          if (i6 < FDNS_MAX)
          {
-            if (inet_pton(AF_INET6, buf, (char *)&addr6))
+            if (inet_pton(AF_INET6, buf, &addr6) > 0)
             {
                memcpy(&servers6[i6++], &addr6, sizeof(struct in6_addr));
                continue;
@@ -248,18 +237,8 @@ void firedns_init(void)
 #endif
          if (i4 < FDNS_MAX)
          {
-              struct addrinfo hints, *res;
-
-              memset(&hints, 0, sizeof(hints));
-              hints.ai_family   = AF_INET;
-              hints.ai_socktype = SOCK_STREAM;
-              hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
-
-              if (!getaddrinfo(&buf[i], NULL, &hints, &res))
-              {
-                memcpy(&servers4[i4++], &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
-                freeaddrinfo(res);
-              }
+              if (inet_pton(AF_INET, buf, &addr4) > 0)
+                memcpy(&servers4[i4++],&addr4,sizeof(struct in_addr));
          }
       }
    }
@@ -280,7 +259,7 @@ struct in_addr *firedns_resolveip4(const char * const name)
 { /* immediate A query */
    static struct in_addr addr;
 
-   if(inet_aton(name, &addr))
+   if (inet_pton(AF_INET, name, &addr) > 0)
       return &addr;
    
    return (struct in_addr *) firedns_resolveip(FDNS_QRY_A, name);

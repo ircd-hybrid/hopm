@@ -39,7 +39,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <netdb.h>
 
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
@@ -259,22 +258,13 @@ irc_init(void)
   /* Bind */
   if (!EmptyString(IRCItem->vhost))
   {
-    struct addrinfo hints, *res;
     int bindret = 0;
 
-    memset(&hints, 0, sizeof(hints));
-    hints.ai_family   = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags    = AI_PASSIVE | AI_NUMERICHOST;
-
-    if (getaddrinfo(IRCItem->vhost, NULL, &hints, &res))
+    if (inet_pton(AF_INET, IRCItem->vhost, &(IRC_LOCAL.in4.s_addr)) <= 0)
     {
       log_printf("IRC -> bind(): %s is an invalid address", IRCItem->vhost);
       exit(EXIT_FAILURE);
     }
-
-    memcpy(&IRC_LOCAL.in4.s_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(struct in_addr));
-    freeaddrinfo(res);
 
     bsaddr.sa4.sin_addr.s_addr = IRC_LOCAL.in4.s_addr;
     bsaddr.sa4.sin_family = AF_INET;

@@ -63,7 +63,7 @@ dnsbl_add(struct scan_struct *ss)
   struct dnsbl_scan *ds;
 
 
-  if (!inet_aton(ss->ip, &in))
+  if (inet_pton(AF_INET, ss->ip, &in) <= 0)
   {
     log_printf("DNSBL -> Invalid address '%s', ignoring.", ss->ip);
     return;
