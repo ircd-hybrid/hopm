@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(libopm, [0.1])
 AC_CONFIG_SRCDIR(src/libopm.h)
-AM_CONFIG_HEADER(src/setup.h)
+AC_CONFIG_HEADER(src/setup.h)
 AM_INIT_AUTOMAKE()
 AC_PREFIX_DEFAULT([/usr/local/libopm])
 AM_MAINTAINER_MODE
