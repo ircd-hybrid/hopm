@@ -15,10 +15,6 @@
 # include <sys/poll.h>
 #endif
 
-#ifndef AF_INET6
-# define AF_INET6 10
-#endif
-
 typedef struct _opm_sockaddr opm_sockaddr;
 typedef struct _opm_inaddr opm_inaddr;
 
@@ -30,7 +26,4 @@ struct _opm_inaddr {
         struct in_addr in4;
 };
 
-#ifndef HAVE_INET_PTON
-extern int inet_pton(int, const char *, void *);
-#endif
 #endif /* INET_H */
