@@ -13,6 +13,4 @@
 #ifndef HAVE_INET_PTON
 extern int bopm_inet_pton(int, const char *, void *);
 #endif
-extern char *inetntop(int, const void *, char *, unsigned int);
-
 #endif /* INET_H */

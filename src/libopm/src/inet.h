@@ -33,5 +33,4 @@ struct _opm_inaddr {
 #ifndef HAVE_INET_PTON
 extern int inet_pton(int, const char *, void *);
 #endif
-extern const char *inetntop(int, const void *, char *, unsigned int);
 #endif /* INET_H */
