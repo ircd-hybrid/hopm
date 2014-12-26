@@ -114,7 +114,7 @@ struct s_rr_middle
    uint16_t type;
    uint16_t class;
    /* XXX - firedns depends on this being 4 bytes */
-   uint32 ttl;
+   uint32_t ttl;
    uint16_t rdlength;
 };
 
