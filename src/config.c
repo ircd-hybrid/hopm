@@ -112,7 +112,7 @@ void
 config_setup(void)
 {
   /* Setup IRC Block Defaults */
-  IRCItem->mode = xstrdup("+cs");
+  IRCItem->mode = xstrdup("+c");
   IRCItem->nick = xstrdup("hopm");
   IRCItem->nickserv = xstrdup("");
   IRCItem->password = xstrdup("");
