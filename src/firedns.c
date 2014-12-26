@@ -97,8 +97,8 @@ struct s_connection
     * firedns_add_query()
     */
    unsigned char id[2];
-   unsigned short class;
-   unsigned short type;
+   uint16_t class;
+   uint16_t type;
    /* file descriptor returned from sockets */
    int fd;
    void *info;
@@ -111,11 +111,11 @@ struct s_connection
 
 struct s_rr_middle
 {
-   unsigned short type;
-   unsigned short class;
+   uint16_t type;
+   uint16_t class;
    /* XXX - firedns depends on this being 4 bytes */
    uint32 ttl;
-   unsigned short rdlength;
+   uint16_t rdlength;
 };
 
 /* DNS query header */
@@ -135,10 +135,10 @@ struct s_header
 #define FLAGS2_MASK_Z  0x70
 #define FLAGS2_MASK_RCODE 0x0f
 
-   unsigned short qdcount;
-   unsigned short ancount;
-   unsigned short nscount;
-   unsigned short arcount;
+   uint16_t qdcount;
+   uint16_t ancount;
+   uint16_t nscount;
+   uint16_t arcount;
    /* DNS question, populated by firedns_build_query_payload() */
    unsigned char payload[512];
 };
@@ -148,7 +148,7 @@ struct s_header
 static struct s_connection *firedns_add_query(void);
 static int firedns_doquery(struct s_connection *s);
 static int firedns_build_query_payload(const char * const name,
-      unsigned short rr, unsigned short class, unsigned char * payload);
+      uint16_t, uint16_t, unsigned char * payload);
 static int firedns_send_requests(struct s_header *h, struct s_connection *s,
       int l);
 
@@ -386,11 +386,11 @@ static int firedns_doquery(struct s_connection *s)
  * populate payload with query: name= question, rr= record type
  */
 static int firedns_build_query_payload(const char * const name,
-      unsigned short rr, unsigned short class, unsigned char * payload)
+      uint16_t rr, uint16_t class, unsigned char * payload)
 {
-   short payloadpos;
+   int16_t payloadpos;
    const char * tempchr, * tempchr2;
-   unsigned short l;
+   uint16_t l;
 
    payloadpos = 0;
    tempchr2 = name;
