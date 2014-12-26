@@ -34,7 +34,4 @@ struct _opm_inaddr {
 extern int inet_pton(int, const char *, void *);
 #endif
 extern const char *inetntop(int, const void *, char *, unsigned int);
-extern struct hostent *opm_gethostbyname(const char *);
-
-
 #endif /* INET_H */
