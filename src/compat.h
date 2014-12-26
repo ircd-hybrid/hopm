@@ -11,11 +11,6 @@
 extern int bopm_inet_aton(const char *cp, struct in_addr *inp);
 #endif
 
-#ifndef HAVE_INET_PTON
-#undef inet_pton
-#define inet_pton bopm_inet_pton
-#endif
-
 #ifndef HAVE_STRLCPY
 extern size_t strlcpy(char *, const char *, size_t);
 #endif

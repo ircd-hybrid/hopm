@@ -10,10 +10,4 @@
 #define inet_aton libopm_inet_aton
 extern int libopm_inet_aton(const char *cp, struct in_addr *inp);
 #endif
-
-#ifndef HAVE_INET_PTON
-#undef inet_pton
-#define inet_pton libopm_inet_pton
-#endif
-
 #endif
