@@ -210,7 +210,7 @@ void negcache_insert(const char *ipstr)
    struct bopm_sockaddr ip;
    struct cnode *n;
 
-   if (!inet_pton(AF_INET, ipstr, &(ip.sa4.sin_addr)))
+   if (inet_pton(AF_INET, ipstr, &(ip.sa4.sin_addr)) <= 0)
    {
       log_printf("NEGCACHE -> Invalid IPv4 address '%s'", ipstr);
       return;
