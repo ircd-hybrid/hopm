@@ -67,7 +67,7 @@ config_load(const char *filename)
   if ((yyin = fopen(filename, "r")) == NULL)
   {
     log_printf("CONFIG -> Error opening %s", filename);
-    exit(1);
+    exit(EXIT_FAILURE);
   }
 
   yyparse();
