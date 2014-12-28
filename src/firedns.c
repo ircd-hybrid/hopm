@@ -59,10 +59,8 @@ static struct in_addr servers4[FDNS_MAX];
 /* actual count of nameservers; set by firedns_init() */
 static int i4;
 
-#ifdef IPV6
 static int i6;
 static struct in6_addr servers6[FDNS_MAX];
-#endif
 
 /*
  * linked list of open DNS queries; populated by firedns_add_query(),
@@ -104,9 +102,7 @@ struct s_connection
    void *info;
    time_t start;
    char lookup[256];
-#ifdef IPV6
    int v6;
-#endif
 };
 
 struct s_rr_middle
@@ -164,13 +160,9 @@ void firedns_init(void)
    struct in_addr addr4;
    char buf[1024];
    const char *file;
-#ifdef IPV6
-
    struct in6_addr addr6;
 
    i6 = 0;
-#endif
-
    i4 = 0;
 
    /* Initialize connections list */
@@ -178,10 +170,8 @@ void firedns_init(void)
 
    srand((unsigned int) time(NULL));
    memset(servers4,'\0',sizeof(struct in_addr) * FDNS_MAX);
-#ifdef IPV6
-
    memset(servers6,'\0',sizeof(struct in6_addr) * FDNS_MAX);
-#endif
+
    /* read etc/firedns.conf if we've got it, otherwise parse /etc/resolv.conf */
    f = fopen(FDNS_CONFIG_PREF,"r");
    if (f == NULL)
@@ -200,7 +190,7 @@ void firedns_init(void)
             i = 10;
             while (buf[i] == ' ' || buf[i] == '\t')
                i++;
-#ifdef IPV6
+
             /* glibc /etc/resolv.conf seems to allow ipv6 server names */
             if (i6 < FDNS_MAX)
             {
@@ -210,7 +200,7 @@ void firedns_init(void)
                   continue;
                }
             }
-#endif
+
             if (i4 < FDNS_MAX)
             {
               if (inet_pton(AF_INET, &buf[i], &addr4) > 0)
@@ -225,7 +215,7 @@ void firedns_init(void)
       while (fgets(buf,1024,f) != NULL)
       {
          buf[strspn(buf, "0123456789.")] = '\0';
-#ifdef IPV6
+
          if (i6 < FDNS_MAX)
          {
             if (inet_pton(AF_INET6, buf, &addr6) > 0)
@@ -234,7 +224,7 @@ void firedns_init(void)
                continue;
             }
          }
-#endif
+
          if (i4 < FDNS_MAX)
          {
               if (inet_pton(AF_INET, buf, &addr4) > 0)
@@ -245,9 +235,8 @@ void firedns_init(void)
    fclose(f);
 
    if(i4 == 0
-#ifdef IPV6 /* (yuck) */
+ /* (yuck) */
          && i6
-#endif
      )
    {
       log_printf("FIREDNS -> No nameservers found in %s", file);
@@ -429,10 +418,7 @@ static int firedns_send_requests(struct s_header *h, struct s_connection *s,
 {
    int i, sent_ok = 0;
    struct sockaddr_in addr4;
-
-#ifdef IPV6
    struct sockaddr_in6 addr6;
-#endif
    
    /* set header flags */
    h->flags1 = 0 | FLAGS1_MASK_RD;
@@ -444,8 +430,6 @@ static int firedns_send_requests(struct s_header *h, struct s_connection *s,
    memcpy(h->id, s->id, 2);
 
    /* try to create ipv6 or ipv4 socket */
-#ifdef IPV6
-
    s->v6 = 0;
    if (i6 > 0)
    {
@@ -473,7 +457,6 @@ static int firedns_send_requests(struct s_header *h, struct s_connection *s,
    }
    if (s->v6 == 0)
    {
-#endif
       s->fd = socket(PF_INET, SOCK_DGRAM, 0);
       if (s->fd != -1)
       {
@@ -501,13 +484,8 @@ static int firedns_send_requests(struct s_header *h, struct s_connection *s,
          fdns_errno = FDNS_ERR_NETWORK;
          return -1;
       }
-#ifdef IPV6
-
    }
-#endif
 
-
-#ifdef IPV6
    /* if we've got ipv6 support, an ip v6 socket, and ipv6 servers, send to them */
    if (i6 > 0 && s->v6 == 1)
    {
@@ -521,11 +499,9 @@ static int firedns_send_requests(struct s_header *h, struct s_connection *s,
             sent_ok = 1;
       }
    }
-#endif
 
    for (i = 0; i < i4; i++)
    {
-#ifdef IPV6
       /* send via ipv4-over-ipv6 if we've got an ipv6 socket */
       if (s->v6 == 1)
       {
@@ -538,7 +514,7 @@ static int firedns_send_requests(struct s_header *h, struct s_connection *s,
             sent_ok = 1;
          continue;
       }
-#endif
+
       /* otherwise send via standard ipv4 boringness */
       memset(&addr4,0,sizeof(addr4));
       memcpy(&addr4.sin_addr,&servers4[i],sizeof(addr4.sin_addr));
