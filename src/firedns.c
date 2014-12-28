@@ -195,7 +195,6 @@ firedns_init(void)
         while (buf[i] == ' ' || buf[i] == '\t')
           ++i;
 
-        /* glibc /etc/resolv.conf seems to allow ipv6 server names */
         if (i6 < FDNS_MAX)
         {
           if (inet_pton(AF_INET6, &buf[i], &addr6) > 0)
@@ -239,12 +238,6 @@ firedns_init(void)
   }
 
   fclose(f);
-
-  if (i4 == 0 /* (yuck) */ && i6)
-  {
-    log_printf("FIREDNS -> No nameservers found in %s", file);
-    exit(EXIT_FAILURE);
-  }
 }
 
 /* immediate A query */
@@ -263,6 +256,11 @@ firedns_resolveip4(const char *const name)
 struct in6_addr *
 firedns_resolveip6(const char * const name)
 {
+  static struct in6_addr addr;
+
+  if (inet_pton(AF_INET6, name, &addr) > 0)
+    return &addr;
+
   return (struct in6_addr *)firedns_resolveip(FDNS_QRY_AAAA, name);
 }
 
