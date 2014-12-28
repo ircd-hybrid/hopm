@@ -27,12 +27,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#ifndef AF_INET6
-struct in6_addr {
-   unsigned char   s6_addr[16];
-};
-#endif
-
 /* max number of nameservers used */
 #define FDNS_MAX              8
 /* preferred firedns config file */
