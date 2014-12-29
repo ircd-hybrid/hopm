@@ -25,7 +25,7 @@ AC_SUBST(LIBTOOL_DEPS)
 dnl Checks for header files.
 AC_CHECK_HEADERS(sys/poll.h, have_poll_sys_h=yes, have_sys_poll_h=no)
 
-AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h strings.h)
+AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME

@@ -32,9 +32,6 @@ along with this program; if not, write to
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#ifdef HAVE_STRINGS_H
-# include <strings.h>
-#endif
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
