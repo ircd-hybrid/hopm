@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <stdio.h>
+#include <time.h>
 #include "list.h"
 #include "libopm/src/opm_types.h"
 
@@ -19,6 +20,7 @@ struct IRCConf
   char *realname;
   char *server;
   int port;
+  time_t readtimeout;
   char *password;
   char *vhost;
   char *nickserv;

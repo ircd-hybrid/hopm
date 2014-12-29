@@ -117,6 +117,7 @@ config_setup(void)
   IRCItem->nickserv = xstrdup("");
   IRCItem->password = xstrdup("");
   IRCItem->port = 6667;
+  IRCItem->readtimeout = 900;
   IRCItem->oper = xstrdup("undefined");
   IRCItem->username = xstrdup("hopm");
   IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");

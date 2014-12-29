@@ -77,30 +77,31 @@ extern int yydebug;
     PIDFILE = 287,
     PORT = 288,
     PROTOCOL = 289,
-    REALNAME = 290,
-    REPLY = 291,
-    SCANLOG = 292,
-    SCANNER = 293,
-    SECONDS = 294,
-    MINUTES = 295,
-    HOURS = 296,
-    DAYS = 297,
-    WEEKS = 298,
-    MONTHS = 299,
-    YEARS = 300,
-    SENDMAIL = 301,
-    SERVER = 302,
-    TARGET_IP = 303,
-    TARGET_PORT = 304,
-    TARGET_STRING = 305,
-    TIMEOUT = 306,
-    TYPE = 307,
-    USERNAME = 308,
-    USER = 309,
-    VHOST = 310,
-    NUMBER = 311,
-    STRING = 312,
-    PROTOCOLTYPE = 313
+    READTIMEOUT = 290,
+    REALNAME = 291,
+    REPLY = 292,
+    SCANLOG = 293,
+    SCANNER = 294,
+    SECONDS = 295,
+    MINUTES = 296,
+    HOURS = 297,
+    DAYS = 298,
+    WEEKS = 299,
+    MONTHS = 300,
+    YEARS = 301,
+    SENDMAIL = 302,
+    SERVER = 303,
+    TARGET_IP = 304,
+    TARGET_PORT = 305,
+    TARGET_STRING = 306,
+    TIMEOUT = 307,
+    TYPE = 308,
+    USERNAME = 309,
+    USER = 310,
+    VHOST = 311,
+    NUMBER = 312,
+    STRING = 313,
+    PROTOCOLTYPE = 314
   };
 #endif
 /* Tokens.  */
@@ -136,42 +137,43 @@ extern int yydebug;
 #define PIDFILE 287
 #define PORT 288
 #define PROTOCOL 289
-#define REALNAME 290
-#define REPLY 291
-#define SCANLOG 292
-#define SCANNER 293
-#define SECONDS 294
-#define MINUTES 295
-#define HOURS 296
-#define DAYS 297
-#define WEEKS 298
-#define MONTHS 299
-#define YEARS 300
-#define SENDMAIL 301
-#define SERVER 302
-#define TARGET_IP 303
-#define TARGET_PORT 304
-#define TARGET_STRING 305
-#define TIMEOUT 306
-#define TYPE 307
-#define USERNAME 308
-#define USER 309
-#define VHOST 310
-#define NUMBER 311
-#define STRING 312
-#define PROTOCOLTYPE 313
+#define READTIMEOUT 290
+#define REALNAME 291
+#define REPLY 292
+#define SCANLOG 293
+#define SCANNER 294
+#define SECONDS 295
+#define MINUTES 296
+#define HOURS 297
+#define DAYS 298
+#define WEEKS 299
+#define MONTHS 300
+#define YEARS 301
+#define SENDMAIL 302
+#define SERVER 303
+#define TARGET_IP 304
+#define TARGET_PORT 305
+#define TARGET_STRING 306
+#define TIMEOUT 307
+#define TYPE 308
+#define USERNAME 309
+#define USER 310
+#define VHOST 311
+#define NUMBER 312
+#define STRING 313
+#define PROTOCOLTYPE 314
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 85 "config-parser.y" /* yacc.c:1909  */
+#line 86 "config-parser.y" /* yacc.c:1909  */
 
         int number;
         char *string;
 
-#line 175 "config-parser.h" /* yacc.c:1909  */
+#line 177 "config-parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
