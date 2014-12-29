@@ -34,8 +34,6 @@ AC_PROG_LIBTOOL
 dnl Checks for libraries.
 
 dnl Checks for header files.
-AC_HEADER_STDC
-
 AC_CHECK_HEADERS(sys/poll.h, have_poll_sys_h=yes, have_sys_poll_h=no)
 
 AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h strings.h)

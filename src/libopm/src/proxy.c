@@ -23,11 +23,8 @@
 #include "setup.h"
 
 #include <stdio.h>
-
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-# include <string.h>
-#endif
+#include <stdlib.h>
+#include <string.h>
 
 #include "inet.h"
 #include "compat.h"

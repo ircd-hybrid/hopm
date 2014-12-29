@@ -25,11 +25,8 @@
 
 #include <stdio.h>
 #include <unistd.h>
-
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-# include <string.h>
-#endif
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef HAVE_STRINGS_H
 # include <strings.h>

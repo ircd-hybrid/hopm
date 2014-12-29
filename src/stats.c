@@ -24,10 +24,7 @@ along with this program; if not, write to the Free Software
 
 #include <stdio.h>
 #include <unistd.h>
-
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-#endif
+#include <stdlib.h>
 
 #ifdef HAVE_STRINGS_H
 # include <strings.h>

@@ -31,9 +31,7 @@
 #include "opm_common.h"
 #include "list.h"
 
-#ifdef STDC_HEADERS
-# include <string.h>
-#endif
+#include <string.h>
 
 
 static OPM_CONFIG_HASH_T HASH[] = {

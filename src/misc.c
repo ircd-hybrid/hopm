@@ -24,10 +24,7 @@ along with this program; if not, write to the Free Software
 
 #include <stdio.h>
 #include <time.h>
-
-#ifdef STDC_HEADERS
-# include <string.h>
-#endif
+#include <string.h>
 
 #include "compat.h"
 #include "config.h"
