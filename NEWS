@@ -1,3 +1,9 @@
+-- Noteworthy changes in version 1.0.0beta2 (????-??-??)
+o) Added irc::readtimeout configuration option
+o) Many code cleanups and optimizations
+o) Worked towards IPv6 support
+
+
 -- Noteworthy changes in version 1.0.0beta1 (2014-12-25)
 ########################################################################
 o) NOTE: this is the first release of the hybrid open proxy monitor (HOPM)
