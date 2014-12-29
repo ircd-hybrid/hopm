@@ -166,7 +166,7 @@ stats_dnsblsend(void)
  *
  */
 void
-stats_output(char *target)
+stats_output(const char *target)
 {
   time_t present;
   time_t uptime;
@@ -210,7 +210,7 @@ stats_output(char *target)
  *
  */
 void
-fdstats_output(char *target)
+fdstats_output(const char *target)
 {
   struct rlimit rlim;
   unsigned int total_fd_use = 0;
