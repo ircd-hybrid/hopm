@@ -304,19 +304,23 @@ void
 irc_send(const char *data, ...)
 {
   va_list arglist;
-  char data2[MSGLENMAX];
-  char tosend[MSGLENMAX];
+  char buf[MSGLENMAX];
+  int len = 0;
 
   va_start(arglist, data);
-  vsnprintf(data2, MSGLENMAX, data, arglist);
+  len = vsnprintf(buf, sizeof(buf), data, arglist);
   va_end(arglist);
 
   if (OPT_DEBUG >= 2)
-    log_printf("IRC SEND -> %s", data2);
+    log_printf("IRC SEND -> %s", buf);
 
-  snprintf(tosend, MSGLENMAX, "%s\n", data2);
+  if (len > 510)
+    len = 510;
 
-  if (send(IRC_FD, tosend, strlen(tosend), 0) == -1)
+  buf[len++] = '\r';
+  buf[len++] = '\n';
+
+  if (send(IRC_FD, buf, len, 0) == -1)
   {
     /* Return of -1 indicates error sending data; we reconnect. */
     log_printf("IRC -> Error sending data to server\n");
