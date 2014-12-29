@@ -16,7 +16,7 @@ extern void stats_openproxy(int);
 extern void stats_connect(void);
 extern void stats_dnsblrecv(struct BlacklistConf *);
 extern void stats_dnsblsend(void);
-extern void stats_output(char *);
-extern void fdstats_output(char *);
+extern void stats_output(const char *);
+extern void fdstats_output(const char *);
 
 #endif /* STATS_H */
