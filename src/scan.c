@@ -26,11 +26,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
-
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-# include <string.h>
-#endif
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>

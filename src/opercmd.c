@@ -22,11 +22,8 @@ along with this program; if not, write to the Free Software
 
 #include "setup.h"
 
-#ifdef STDC_HEADERS
-# include <string.h>
-# include <stdlib.h>
-#endif
-
+#include <string.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <time.h>

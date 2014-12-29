@@ -30,10 +30,8 @@ along with this program; if not, write to
 #include <errno.h>
 #include <stdio.h>
 #include <assert.h>
-#if STDC_HEADERS
-# include <string.h>
-# include <stdlib.h>
-#endif
+#include <string.h>
+#include <stdlib.h>
 #ifdef HAVE_STRINGS_H
 # include <strings.h>
 #endif

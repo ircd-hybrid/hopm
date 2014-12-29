@@ -3,9 +3,7 @@
 
 #include "setup.h"
 
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-#endif
+#include <stdlib.h>
 
 #define MyMalloc(SIZE) libopm_MyMalloc(SIZE)
 #define MyFree(X) libopm_MyFree((void **) &X)

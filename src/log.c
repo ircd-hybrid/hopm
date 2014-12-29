@@ -24,19 +24,15 @@ along with this program; if not, write to
 
 #include <stdio.h>
 #include <errno.h>
-
-#ifdef STDC_HEADERS
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#endif
-
 #include <time.h>
 
 #include "compat.h"
 #include "config.h"
-#include "extern.h"
 #include "log.h"
+#include "main.h"
 
 
 FILE *logfile;

@@ -22,10 +22,7 @@ along with this program; if not, write to the
 #include "setup.h"
 
 #include <stdio.h>
-
-#ifdef STDC_HEADERS
-# include <string.h>
-#endif
+#include <string.h>
 
 #include "compat.h"
 

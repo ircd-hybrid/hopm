@@ -33,11 +33,8 @@ along with this program; if not, write to the Free Software
 #include <errno.h>
 #include <sys/resource.h> /* getrlimit */
 #include <fcntl.h>
-
-#ifdef STDC_HEADERS
 #include <stdlib.h>
 #include <string.h>
-#endif
 
 #include "compat.h"
 #include "config.h"

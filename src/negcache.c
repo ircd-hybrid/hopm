@@ -41,10 +41,7 @@ along with this program; if not, write to:
 #include "setup.h"
 
 #include <stdio.h>
-
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 
 #ifdef TIME_WITH_SYS_TIME
 #include <sys/time.h>
