@@ -606,8 +606,8 @@ irc_timer(void)
 
   delta = present - IRC_LAST;
 
-  /* No data in NODATA_TIMEOUT minutes (set in options.h). */
-  if (delta >= NODATA_TIMEOUT)
+  /* No data in IRCItem->readtimeout seconds */
+  if (delta >= IRCItem->readtimeout)
   {
     log_printf("IRC -> Timeout awaiting data from server.");
     irc_reconnect();
@@ -615,7 +615,7 @@ irc_timer(void)
     /* Make sure we dont do this again for a while */
     time(&IRC_LAST);
   }
-  else if (delta >= NODATA_TIMEOUT / 2)
+  else if (delta >= IRCItem->readtimeout / 2)
   {
     /*
      * Generate some data so high ping times or bugs in certain

@@ -32,9 +32,4 @@
  * connecting (hundreds per minute).  Default is 12 hours.
  */
 #define NEG_CACHE_REBUILD (60 * 60 * 12)
-
-/* Defines time in which bot will timeout * if no data is received
- * (default 15 min) */
-#define NODATA_TIMEOUT 900
-
 #endif /* OPTIONS_H */
