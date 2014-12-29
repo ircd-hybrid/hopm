@@ -12592,18 +12592,6 @@ fi
 done
 
 
-for ac_func in gethostbyname
-do :
-  ac_fn_c_check_func "$LINENO" "gethostbyname" "ac_cv_func_gethostbyname"
-if test "x$ac_cv_func_gethostbyname" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_GETHOSTBYNAME 1
-_ACEOF
-
-fi
-done
-
-
  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether byte ordering is bigendian" >&5
 $as_echo_n "checking whether byte ordering is bigendian... " >&6; }
 if ${ac_cv_c_bigendian+:} false; then :

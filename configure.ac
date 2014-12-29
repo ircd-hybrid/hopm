@@ -56,9 +56,6 @@ AC_CHECK_FUNC(getnameinfo, [], AC_SEARCH_LIBS(getnameinfo, nsl))
 
 AC_CHECK_FUNCS(strlcpy strlcat socket)
 
-dnl Check if we can use gethostbyname2 for ipv6
-AC_CHECK_FUNCS(gethostbyname)
-
 dnl AIX fun
 AC_C_BIGENDIAN
 
