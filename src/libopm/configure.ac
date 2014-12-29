@@ -6,15 +6,6 @@ AM_INIT_AUTOMAKE()
 AC_PREFIX_DEFAULT([/usr/local/libopm])
 AM_MAINTAINER_MODE
 
-AC_ARG_WITH(extra-fascism,
-    AS_HELP_STRING([--with-extra-fascism],
-    [add extra gcc3-specific warning flags]),
-    [CFLAGS="$CFLAGS -g -O0 -W -Wall -Wfloat-equal -Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs"])
-
-dnl AC_ARG_WITH(faldo,
-dnl     AS_HELP_STRING([--with-faldo],
-dnl     [make some use of Nick Faldo]))
-
 dnl Checks for programs.
 AC_PROG_CC_C99
 AS_IF([test "$ac_cv_prog_cc_c99" = "no"],

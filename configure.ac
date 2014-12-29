@@ -6,25 +6,6 @@ AM_INIT_AUTOMAKE()
 AC_PREFIX_DEFAULT([\${HOME}/hopm])
 AM_MAINTAINER_MODE
 
-AC_ARG_WITH(extra-fascism,
-    AS_HELP_STRING([--with-extra-fascism],
-    [Add extra gcc3-specific warning flags]),
-    [CFLAGS="$CFLAGS -g -O0 -W -Wall -Wfloat-equal -Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs"])
-
-dnl ipv6?
-dnl AC_ARG_ENABLE(ipv6,
-dnl     AS_HELP_STRING([--enable-ipv6], [Enable IPV6 support]),
-dnl     [ac_cv_ipv6=$enableval], [ac_cv_ipv6="no"])
-
-dnl AC_MSG_CHECKING([whether to enable IPv6 features])
-
-dnl if test "$ac_cv_ipv6" = "yes" ; then
-dnl         AC_DEFINE(IPV6, 1, [Use Ipv6 Support])
-dnl         AC_MSG_RESULT([yes])
-dnl else
-dnl         AC_MSG_RESULT([no])
-dnl fi
-
 dnl Checks for programs.
 AC_PROG_CC_C99
 AS_IF([test "$ac_cv_prog_cc_c99" = "no"],
