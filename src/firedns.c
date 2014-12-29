@@ -159,6 +159,7 @@ firedns_init(void)
   struct in_addr addr4;
   struct in6_addr addr6;
   char buf[1024];
+  char *p = NULL;
   const char *file;
 
   i6 = 0;
@@ -188,6 +189,9 @@ firedns_init(void)
 
     while (fgets(buf, 1024, f))
     {
+      if ((p = strchr(buf, '\n')))
+        *p = '\0';
+
       if (strncmp(buf, "nameserver", 10) == 0)
       {
         i = 10;
@@ -218,6 +222,9 @@ firedns_init(void)
 
     while (fgets(buf, 1024, f))
     {
+      if ((p = strchr(buf, '\n')))
+        *p = '\0';
+
       buf[strspn(buf, "0123456789.")] = '\0';
 
       if (i6 < FDNS_MAX)
