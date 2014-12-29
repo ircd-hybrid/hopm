@@ -128,7 +128,8 @@ static struct CommandHash COMMAND_TABLE[] =
   { "473",      m_cannot_join },
   { "474",      m_cannot_join },
   { "475",      m_cannot_join },
-  { "KILL",     m_kill        }
+  { "KILL",     m_kill        },
+  { NULL,       NULL          }
 };
 
 /* irc_cycle
@@ -514,11 +515,9 @@ irc_parse(void)
    * parv[0] is ALWAYS the source, and is the server name of the source
    * did not exist
    */
-  static char            *parv[17];
-  static unsigned int     parc;
-  static char             msg[MSGLENMAX];    /* Temporarily stores IRC msg to pass to handlers */
-
-  parc = 1;
+  char            *parv[17];
+  unsigned int     parc = 1;
+  char             msg[MSGLENMAX];    /* Temporarily stores IRC msg to pass to handlers */
 
   if (IRC_RAW_LEN == 0)
     return;
@@ -575,11 +574,11 @@ irc_parse(void)
    * Determine which command this is from the command table
    * and let the handler for that command take control
    */
-  for (unsigned int i = 0; i < (sizeof(COMMAND_TABLE) / sizeof(struct CommandHash)); ++i)
+  for (const struct CommandHash *cmd = COMMAND_TABLE; cmd->command; ++cmd)
   {
-    if (strcasecmp(COMMAND_TABLE[i].command, parv[1]) == 0)
+    if (strcasecmp(cmd->command, parv[1]) == 0)
     {
-      (*COMMAND_TABLE[i].handler)(parv, parc, msg, source_p);
+      cmd->handler(parv, parc, msg, source_p);
       break;
     }
   }
