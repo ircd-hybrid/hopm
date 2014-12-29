@@ -29,7 +29,6 @@
 # include <string.h>
 #endif
 
-#include "extern.h"
 #include "config.h"
 #include "malloc.h"
 #include "log.h"

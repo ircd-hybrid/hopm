@@ -62,7 +62,6 @@
 #include "scan.h"
 #include "dnsbl.h"
 #include "stats.h"
-#include "extern.h"
 #include "options.h"
 #include "match.h"
 #include "compat.h"
