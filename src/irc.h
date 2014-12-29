@@ -26,12 +26,10 @@ struct UserInfo
   char *irc_hostname;
 };
 
-typedef void (*irc_command) (char **, unsigned int, char *, struct UserInfo *);
-
 struct CommandHash
 {
   const char *command;
-  irc_command handler;
+  void (*handler)(char **, unsigned int, char *, struct UserInfo *);
 };
 
 extern void irc_send(const char *, ...);
