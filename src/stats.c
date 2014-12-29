@@ -25,14 +25,7 @@ along with this program; if not, write to the Free Software
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-
-#ifdef HAVE_STRINGS_H
-# include <strings.h>
-#endif
-
-#if HAVE_STRING_H
-# include <string.h>
-#endif
+#include <string.h>
 
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>

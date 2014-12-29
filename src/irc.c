@@ -27,11 +27,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef HAVE_STRINGS_H
-# include <strings.h>
-#endif
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
