@@ -106,7 +106,7 @@ main(int argc, char *argv[])
         CONFNAME = xstrdup(optarg);
          break;
       case 'd':
-        OPT_DEBUG++;
+        ++OPT_DEBUG;
         break;
       default:  /* Unknown arg, guess we'll just do nothing for now. */
         break;
@@ -123,7 +123,7 @@ main(int argc, char *argv[])
   snprintf(LOGFILE, lenl, "%s/%s.%s", LOGDIR, CONFNAME, LOGEXT);
 
   /* Fork off. */
-  if (OPT_DEBUG <= 0)
+  if (OPT_DEBUG == 0)
   {
     if ((pid = fork()) < 0)
     {
