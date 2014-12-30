@@ -46,10 +46,7 @@
 #endif
 
 #include <unistd.h>
-
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
+#include <string.h>
 
 
 static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void);
