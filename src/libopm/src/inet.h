@@ -11,10 +11,6 @@
 #endif
 #include <sys/types.h>
 
-#ifdef HAVE_SYS_POLL_H
-# include <sys/poll.h>
-#endif
-
 typedef struct _opm_sockaddr opm_sockaddr;
 typedef struct _opm_inaddr opm_inaddr;
 
