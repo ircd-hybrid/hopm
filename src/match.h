@@ -30,5 +30,4 @@
 #define EmptyString(x) (!(x) || (*(x) == '\0'))
 
 extern int match(const char *, const char *);
-extern char *collapse(char *);
 #endif

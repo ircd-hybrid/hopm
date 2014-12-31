@@ -44,9 +44,9 @@
 #  include <time.h>
 # endif
 #endif
-
 #include <unistd.h>
 #include <string.h>
+#include <poll.h>
 
 
 static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void);
