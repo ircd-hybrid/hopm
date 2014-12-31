@@ -1,0 +1,26 @@
+# $Id: .travis.yml 4851 2014-11-05 18:17:41Z michael $
+
+language: c
+
+os:
+  - linux
+  - osx
+
+compiler:
+ - gcc
+ - clang
+
+script:
+ - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then export CC=gcc-4.8; fi
+ - make
+ - sudo make install
+
+notifications:
+ email:
+  - bugs@ircd-hybrid.org
+ irc:
+  channels:
+  - "irc.ircd-hybrid.org#ircd-coders"
+  skip_join: true
+
+osx_image: xcode61
