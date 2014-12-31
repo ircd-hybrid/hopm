@@ -42,10 +42,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
-
-#ifdef HAVE_SYS_POLL_H
-# include <sys/poll.h>
-#endif
+#include <poll.h>
 
 #include "compat.h"
 #include "config.h"
@@ -230,7 +227,7 @@ scan_init(void)
 
     /* add target strings */
     LIST_FOREACH(p2, sc->target_string->head)
-      opm_config(scs->scanner, OPM_CONFIG_TARGET_STRING, (char *) p2->data);
+      opm_config(scs->scanner, OPM_CONFIG_TARGET_STRING, p2->data);
 
     /* Setup callbacks */
     opm_callback(scs->scanner, OPM_CALLBACK_OPENPROXY, &scan_open_proxy, scs);
