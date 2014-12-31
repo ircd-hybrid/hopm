@@ -11,8 +11,8 @@ compiler:
  - clang
 
 script:
- - ./configure
  - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then export CC=gcc-4.8; fi
+ - ./configure
  - make
  - sudo make install
 
