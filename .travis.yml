@@ -1,4 +1,4 @@
-# $Id: .travis.yml 4851 2014-11-05 18:17:41Z michael $
+# $Id$
 
 language: c
 
