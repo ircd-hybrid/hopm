@@ -13,22 +13,10 @@ AS_IF([test "$ac_cv_prog_cc_c99" = "no"],
 AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
-dnl Checks for header files.
-AC_CHECK_HEADERS(sys/poll.h, have_poll_sys_h=yes, have_sys_poll_h=no)
-
 AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME
-
-dnl if they want select() or they don't have poll() then we need to check
-dnl that we actually have select()
-if test "$have_sys_poll_h" = "no"; then
- AC_CHECK_FUNCS(select, have_select=yes, have_select=no)
- if test "$have_select" = "no"; then
-   AC_MSG_ERROR([No select() implementation found])
- fi
-fi
 
 dnl AIX fun
 AC_C_BIGENDIAN

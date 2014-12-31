@@ -12076,21 +12076,6 @@ CC=$lt_save_CC
 
 
 
-for ac_header in sys/poll.h
-do :
-  ac_fn_c_check_header_mongrel "$LINENO" "sys/poll.h" "ac_cv_header_sys_poll_h" "$ac_includes_default"
-if test "x$ac_cv_header_sys_poll_h" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_SYS_POLL_H 1
-_ACEOF
- have_poll_sys_h=yes
-else
-  have_sys_poll_h=no
-fi
-
-done
-
-
 for ac_header in fcntl.h sys/time.h unistd.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`

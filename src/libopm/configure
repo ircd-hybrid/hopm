@@ -12062,21 +12062,6 @@ CC=$lt_save_CC
 
 
 
-for ac_header in sys/poll.h
-do :
-  ac_fn_c_check_header_mongrel "$LINENO" "sys/poll.h" "ac_cv_header_sys_poll_h" "$ac_includes_default"
-if test "x$ac_cv_header_sys_poll_h" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_SYS_POLL_H 1
-_ACEOF
- have_poll_sys_h=yes
-else
-  have_sys_poll_h=no
-fi
-
-done
-
-
 for ac_header in fcntl.h sys/time.h unistd.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
@@ -12126,25 +12111,6 @@ $as_echo "#define TIME_WITH_SYS_TIME 1" >>confdefs.h
 
 fi
 
-
-if test "$have_sys_poll_h" = "no"; then
- for ac_func in select
-do :
-  ac_fn_c_check_func "$LINENO" "select" "ac_cv_func_select"
-if test "x$ac_cv_func_select" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_SELECT 1
-_ACEOF
- have_select=yes
-else
-  have_select=no
-fi
-done
-
- if test "$have_select" = "no"; then
-   as_fn_error $? "No select() implementation found" "$LINENO" 5
- fi
-fi
 
  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether byte ordering is bigendian" >&5
 $as_echo_n "checking whether byte ordering is bigendian... " >&6; }
