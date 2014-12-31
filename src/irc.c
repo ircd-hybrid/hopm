@@ -31,6 +31,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <poll.h>
 
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
@@ -97,9 +98,6 @@ static int           IRC_FD         = 0;         /* File descriptor for IRC clie
 static struct bopm_sockaddr IRC_SVR;             /* Sock Address Struct for IRC server    */
 static struct bopm_ircaddr  IRC_LOCAL;           /* Sock Address Struct for Bind          */
 
-static fd_set        IRC_READ_FDSET;             /* fd_set for IRC (read) data for select()*/
-static struct timeval IRC_TIMEOUT;               /* timeval struct for select() timeout   */
-
 static time_t IRC_LAST = 0;                      /* Last full line of data from irc server*/
 static time_t IRC_LASTRECONNECT = 0;             /* Time of last reconnection */
 
@@ -136,6 +134,8 @@ static struct CommandHash COMMAND_TABLE[] =
 void
 irc_cycle(void)
 {
+  static struct pollfd pfd;
+
   if (IRC_FD <= 0)
   {
     /* Initialise negative cache. */
@@ -150,24 +150,18 @@ irc_cycle(void)
     return;  /* In case connect() immediately failed */
   }
 
-  IRC_TIMEOUT.tv_sec  = 0;
+  pfd.fd = IRC_FD;
+  pfd.events = POLLIN;
 
-  /* Block .025 seconds to avoid excessive CPU use on select(). */
-  IRC_TIMEOUT.tv_usec = 25000;
-
-  FD_ZERO(&IRC_READ_FDSET);
-  FD_SET(IRC_FD, &IRC_READ_FDSET);
-
-  switch (select((IRC_FD + 1), &IRC_READ_FDSET, 0, 0, &IRC_TIMEOUT))
+  /* Block .025 seconds to avoid excessive CPU use on poll(). */
+  switch (poll(&pfd, 1, 25))
   {
+    case  0:
     case -1:
-      return;
-      break;
-    case 0:
       break;
     default:
       /* Check if IRC data is available. */
-      if (FD_ISSET(IRC_FD, &IRC_READ_FDSET))
+      if (pfd.revents & POLLIN)
         irc_read();
 
       break;
