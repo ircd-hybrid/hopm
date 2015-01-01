@@ -27,7 +27,7 @@
 #include "malloc.h"
 
 
-/* MyMalloc
+/* xcalloc
  *  
  *   A wrapper function for malloc(), for catching memory issues
  *   and error handling.
@@ -39,7 +39,7 @@
  *    Pointer to allocated memory
  */
 
-void *MyMalloc(size_t bytes)
+void *xcalloc(size_t bytes)
 {
    void *ret = calloc(1, bytes);
    assert(ret);
@@ -51,7 +51,7 @@ void *MyMalloc(size_t bytes)
 
 /*  MyFree
  *
- *  Free memory allocated with MyMalloc
+ *  Free memory allocated with xcalloc
  *
  *  Parameters:
  *     var: pointer to memory to free

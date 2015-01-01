@@ -197,7 +197,7 @@ scan_init(void)
   LIST_FOREACH(p, ScannerItemList->head)
   {
     sc = p->data;
-    scs = MyMalloc(sizeof *scs);
+    scs = xcalloc(sizeof *scs);
 
     if (OPT_DEBUG)
       log_printf("SCAN -> Setting up scanner [%s]", sc->name);
@@ -429,7 +429,7 @@ scan_connect(char **user, char *msg)
 struct scan_struct *
 scan_create(char **user, char *msg)
 {
-  struct scan_struct *ss = MyMalloc(sizeof *ss);
+  struct scan_struct *ss = xcalloc(sizeof *ss);
 
   ss->irc_nick = xstrdup(user[0]);
   ss->irc_username = xstrdup(user[1]);
@@ -917,7 +917,7 @@ scan_manual(char *param, struct ChannelConf *target)
   /* IP = the resolved IP now (it was the ip OR hostname before) */
   ip = inet_ntoa(*addr);
 
-  ss = MyMalloc(sizeof *ss);
+  ss = xcalloc(sizeof *ss);
 
   /* These don't exist in a manual scan */
   ss->irc_nick     = NULL;

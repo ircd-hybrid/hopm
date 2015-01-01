@@ -64,8 +64,8 @@ OPM_CONFIG_T *libopm_config_create()
 
    num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
 
-   ret = MyMalloc(sizeof(OPM_CONFIG_T));
-   ret->vars = MyMalloc(sizeof(void *) * num);
+   ret = xcalloc(sizeof(OPM_CONFIG_T));
+   ret->vars = xcalloc(sizeof(void *) * num);
 
 
    /* Set default config items. This in the future would be much better
@@ -82,7 +82,7 @@ OPM_CONFIG_T *libopm_config_create()
       switch(libopm_config_gettype(i))
       {
          case OPM_TYPE_INT:
-            ret->vars[i] = MyMalloc(sizeof(int));
+            ret->vars[i] = xcalloc(sizeof(int));
             *(int *) ret->vars[i] = 0;
             break;
 
@@ -91,7 +91,7 @@ OPM_CONFIG_T *libopm_config_create()
             break;
 
          case OPM_TYPE_ADDRESS:
-            ret->vars[i] = MyMalloc(sizeof(opm_sockaddr));
+            ret->vars[i] = xcalloc(sizeof(opm_sockaddr));
             memset((opm_sockaddr *) ret->vars[i], 0, sizeof(opm_sockaddr));
             break; 
 

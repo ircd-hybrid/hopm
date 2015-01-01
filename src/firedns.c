@@ -357,7 +357,7 @@ firedns_add_query(void)
   struct s_connection *s;
 
   /* create new connection object */
-  s = MyMalloc(sizeof *s);
+  s = xcalloc(sizeof *s);
 
   /* verified by firedns_getresult() */
   s->id[0] = rand() % 255;
@@ -775,7 +775,7 @@ firedns_cycle(void)
     return;
 
   if (ufds == NULL)
-    ufds = MyMalloc((sizeof *ufds) * OptionsItem->dns_fdlimit);
+    ufds = xcalloc((sizeof *ufds) * OptionsItem->dns_fdlimit);
 
   time(&timenow);
   size = 0;

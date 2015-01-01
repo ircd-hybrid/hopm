@@ -5,10 +5,10 @@
 
 #include <stdlib.h>
 
-#define MyMalloc(SIZE) libopm_MyMalloc(SIZE)
+#define xcalloc(SIZE) libopm_xcalloc(SIZE)
 #define MyFree(X) libopm_MyFree((void **) &X)
 
-void *libopm_MyMalloc(size_t bytes);
+void *libopm_xcalloc(size_t bytes);
 void libopm_MyFree(void **var);
 extern void *libopm_xstrdup(const char *);
 

@@ -80,7 +80,7 @@ void nc_init(struct cnode **head)
       return;
    }
 
-   *head = MyMalloc(sizeof **head);
+   *head = xcalloc(sizeof **head);
 
    maxb = (sizeof((*head)->ip) * 8);
    (*head)->ip = 0;
@@ -149,7 +149,7 @@ static struct cnode *nc_insert(struct cnode *head, const unsigned long ip)
       x = GETBIT(ip, x->b) ? x->r : x->l;
    }
 
-   t = MyMalloc(sizeof *t);
+   t = xcalloc(sizeof *t);
    t->ip = ip;
    t->b = i;
    t->l = GETBIT(ip, t->b) ? x : t;

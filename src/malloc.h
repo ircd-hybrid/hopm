@@ -5,7 +5,7 @@
 
 #define MyFree(X) _MyFree((void **) &X)
 
-extern void *MyMalloc(size_t bytes);
+extern void *xcalloc(size_t bytes);
 extern void _MyFree(void **var);
 extern void *xstrdup(const char *);
 
