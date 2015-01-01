@@ -23,7 +23,9 @@
 
 #include "setup.h"
 
+
 #include <stdio.h>
+#include <errno.h>
 #include <string.h>
 
 #include "config.h"
@@ -62,7 +64,7 @@ config_load(const char *filename)
 
   if ((yyin = fopen(filename, "r")) == NULL)
   {
-    log_printf("CONFIG -> Error opening %s", filename);
+    log_printf("CONFIG -> Error opening %s: %s", filename, strerror(errno));
     exit(EXIT_FAILURE);
   }
 
