@@ -14,11 +14,10 @@ AC_PROG_LIBTOOL
 
 dnl Checks for libraries.
 
-AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h)
+AC_CHECK_HEADERS(sys/time.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME
-AC_STRUCT_TM
 
 dnl check for yacc
 AC_PROG_INSTALL
@@ -32,7 +31,7 @@ AC_SEARCH_LIBS([socket],[socket],,[AC_MSG_ERROR([socket library not found])])
 AC_CHECK_FUNC(getaddrinfo, [], AC_SEARCH_LIBS(getaddrinfo, nsl))
 AC_CHECK_FUNC(getnameinfo, [], AC_SEARCH_LIBS(getnameinfo, nsl))
 
-AC_CHECK_FUNCS(strlcpy strlcat socket)
+AC_CHECK_FUNCS(strlcpy strlcat)
 
 dnl AIX fun
 AC_C_BIGENDIAN
