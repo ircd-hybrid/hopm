@@ -216,8 +216,6 @@ command_create(unsigned short type, char *param, char *irc_nick, struct ChannelC
 
   if (param)
     ret->param = xstrdup(param);
-  else
-    ret->param = NULL;
 
   ret->irc_nick = xstrdup(irc_nick);
   ret->target = target;  /* FIXME: This needs fixed if rehash is implemented */
