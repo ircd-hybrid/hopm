@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(hopm, [1.0.0beta2])
+AC_INIT(hopm, [1.0.0beta1])
 AC_CONFIG_SRCDIR(src/opercmd.h)
 AC_CONFIG_HEADER(src/setup.h)
 AM_INIT_AUTOMAKE()
@@ -37,10 +37,7 @@ AC_CHECK_FUNCS(strlcpy strlcat socket)
 dnl AIX fun
 AC_C_BIGENDIAN
 
-
-AC_CONFIG_SUBDIRS(src/libopm)
-
-AC_CONFIG_FILES(Makefile doc/Makefile src/Makefile)
+AC_CONFIG_FILES(Makefile doc/Makefile src/Makefile src/libopm/Makefile src/libopm/src/Makefile)
 AC_OUTPUT
 
 
