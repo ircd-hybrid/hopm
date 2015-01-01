@@ -112,29 +112,20 @@ config_setup(void)
   /* Setup IRC Block Defaults */
   IRCItem->mode = xstrdup("+c");
   IRCItem->nick = xstrdup("hopm");
-  IRCItem->nickserv = xstrdup("");
-  IRCItem->password = xstrdup("");
   IRCItem->port = 6667;
   IRCItem->readtimeout = 900;
   IRCItem->oper = xstrdup("undefined");
   IRCItem->username = xstrdup("hopm");
   IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");
   IRCItem->server = xstrdup("irc.example.org");
-  IRCItem->vhost = xstrdup("");
   IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9\\.]+)\\].*");
   IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
-
 
   /* Setup options block defaults */
   OptionsItem->negcache = 0;   /* 0 disabled negcache */
   OptionsItem->pidfile = xstrdup("hopm.pid");
   OptionsItem->dns_fdlimit = 50;
   OptionsItem->scanlog = NULL;
-
-  /* Setup OPM block defaults */
-  OpmItem->sendmail = xstrdup("/usr/sbin/sendmail");
-  OpmItem->dnsbl_from = xstrdup("");
-  OpmItem->dnsbl_to = xstrdup("");
 }
 
 void
