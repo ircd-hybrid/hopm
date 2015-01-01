@@ -1,4 +1,4 @@
-SUBDIRS = libopm .
+SUBDIRS = libopm
 bin_PROGRAMS = hopm
 
 AM_CPPFLAGS = -DHOPM_ETCDIR="\"$(sysconfdir)\"" -DHOPM_LOGDIR="\"$(localstatedir)\""
