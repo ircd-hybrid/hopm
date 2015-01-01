@@ -6,9 +6,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-#ifdef HAVE_FCNTL_H
-# include <fcntl.h>
-#endif
+#include <fcntl.h>
 #include <sys/types.h>
 
 typedef struct _opm_sockaddr opm_sockaddr;
