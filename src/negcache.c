@@ -42,17 +42,8 @@ along with this program; if not, write to:
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#ifdef TIME_WITH_SYS_TIME
 #include <sys/time.h>
 #include <time.h>
-#else
-# ifdef HAVE_SYS_TIME_H
-#  include <sys/time.h>
-# else
-#  include <time.h>
-# endif
-#endif
 
 #include "irc.h"
 #include "negcache.h"
