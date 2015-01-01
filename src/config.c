@@ -52,15 +52,15 @@ void
 config_init(void)
 {
   /* Init IRC block */
-  IRCItem = MyMalloc(sizeof *IRCItem);
+  IRCItem = xcalloc(sizeof *IRCItem);
   IRCItem->channels = list_create();
   IRCItem->performs = list_create();
 
   /* Init Options block */
-  OptionsItem = MyMalloc(sizeof *OptionsItem);
+  OptionsItem = xcalloc(sizeof *OptionsItem);
 
   /* Init OPM block */
-  OpmItem = MyMalloc(sizeof *OpmItem);
+  OpmItem = xcalloc(sizeof *OpmItem);
   OpmItem->blacklists = list_create();
 
   /* Init list of User blocks */
@@ -70,7 +70,7 @@ config_init(void)
   ScannerItemList = list_create();
 
   /* Init list of Exempts */
-  ExemptItem = MyMalloc(sizeof *ExemptItem);
+  ExemptItem = xcalloc(sizeof *ExemptItem);
   ExemptItem->masks = list_create();
 }
 

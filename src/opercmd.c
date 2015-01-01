@@ -210,7 +210,7 @@ command_parse(char *command, char *msg, struct ChannelConf *target,
 static struct Command *
 command_create(unsigned short type, char *param, char *irc_nick, struct ChannelConf *target)
 {
-  struct Command *ret = MyMalloc(sizeof *ret);
+  struct Command *ret = xcalloc(sizeof *ret);
 
   ret->type = type;
 

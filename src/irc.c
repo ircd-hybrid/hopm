@@ -644,7 +644,7 @@ userinfo_create(char *source)
     return NULL;
   }
 
-  ret = MyMalloc(sizeof *ret);
+  ret = xcalloc(sizeof *ret);
   ret->irc_nick     = xstrdup(nick);
   ret->irc_username = xstrdup(username);
   ret->irc_hostname = xstrdup(hostname);
@@ -873,7 +873,7 @@ m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
   /* Compile the regular expression if it has not been already */
   if (preg == NULL)
   {
-    preg = MyMalloc(sizeof *preg);
+    preg = xcalloc(sizeof *preg);
 
     if ((errnum = regcomp(preg, IRCItem->connregex, REG_ICASE | REG_EXTENDED)))
     {

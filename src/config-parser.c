@@ -1826,7 +1826,7 @@ yyreduce:
    node_t *node;
    struct ChannelConf *item;
 
-   item = MyMalloc(sizeof *item);
+   item = xcalloc(sizeof *item);
 
    item->name = xstrdup("");
    item->key = xstrdup("");
@@ -1879,7 +1879,7 @@ yyreduce:
    node_t *node;
    struct UserConf *item;
 
-   item = MyMalloc(sizeof *item);
+   item = xcalloc(sizeof *item);
 
    item->masks = list_create();
    item->scanners = list_create();
@@ -1924,7 +1924,7 @@ yyreduce:
    node_t *node;
    struct ScannerConf *item, *olditem;
 
-   item = MyMalloc(sizeof *item);
+   item = xcalloc(sizeof *item);
 
    /* Setup ScannerConf defaults */
    item->name = xstrdup("undefined");
@@ -2059,7 +2059,7 @@ yyreduce:
 
    node_t *node;
  
-   item = MyMalloc(sizeof *item);
+   item = xcalloc(sizeof *item);
    item->type = (yyvsp[-3].number);
    item->port = (yyvsp[-1].number);
 
@@ -2104,7 +2104,7 @@ yyreduce:
    node_t *node;
    struct BlacklistConf *item;
 
-   item = MyMalloc(sizeof *item);
+   item = xcalloc(sizeof *item);
 
    item->name = xstrdup("");
    item->kline = xstrdup("");
@@ -2174,7 +2174,7 @@ yyreduce:
    struct BlacklistConf *blacklist = tmp;
    node_t *node;
 
-   item = MyMalloc(sizeof *item);
+   item = xcalloc(sizeof *item);
 
    item->number = (yyvsp[-3].number);
    item->type = xstrdup((yyvsp[-1].string));

@@ -31,7 +31,7 @@
 
 OPM_NODE_T *libopm_node_create(void *data)
 {
-   OPM_NODE_T *node = MyMalloc(sizeof *node);
+   OPM_NODE_T *node = xcalloc(sizeof *node);
    node->next = NULL;
    node->prev = NULL;  
    node->data = (void *) data;
@@ -41,7 +41,7 @@ OPM_NODE_T *libopm_node_create(void *data)
 
 OPM_LIST_T *libopm_list_create()
 {
-   OPM_LIST_T *list = MyMalloc(sizeof *list);
+   OPM_LIST_T *list = xcalloc(sizeof *list);
 
    list->head = NULL;
    list->tail = NULL;

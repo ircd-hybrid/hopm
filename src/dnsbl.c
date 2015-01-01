@@ -80,7 +80,7 @@ dnsbl_add(struct scan_struct *ss)
     snprintf(lookup, 128, "%d.%d.%d.%d.%s", d, c, b, a, bl->name);
 #endif
 
-    ds = MyMalloc(sizeof *ds);
+    ds = xcalloc(sizeof *ds);
     ds->ss = ss;
     ds->bl = bl;
 
