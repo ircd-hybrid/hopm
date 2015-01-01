@@ -294,7 +294,7 @@ channel_entry:
    node = node_create(item);
    list_add(IRCItem->channels, node);
 
-   tmp = (void *) item;
+   tmp = item;
 }
 CHANNEL '{' channel_items '}' ';';
 
@@ -344,7 +344,7 @@ user_entry:
    node = node_create(item);
    list_add(UserItemList, node);
 
-   tmp = (void *) item; 
+   tmp = item; 
 } 
 USER '{' user_items  '}' ';' ;
 
@@ -357,20 +357,20 @@ user_item: user_mask     |
 
 user_mask: MASK '=' STRING ';'
 {
-   struct UserConf *item = (struct UserConf *) tmp;
-
+   struct UserConf *item = tmp;
    node_t *node;
-   node = node_create((void *) xstrdup($3));
+
+   node = node_create(xstrdup($3));
 
    list_add(item->masks, node);
 };
 
 user_scanner: SCANNER '=' STRING ';'
 {
-   struct UserConf *item = (struct UserConf *) tmp;
-
+   struct UserConf *item = tmp;
    node_t *node;
-   node = node_create((void *) xstrdup($3));
+
+   node = node_create(xstrdup($3));
 
    list_add(item->scanners, node);
 };
@@ -419,7 +419,7 @@ scanner_entry:
    node = node_create(item);
 
    list_add(ScannerItemList, node);
-   tmp = (void *) item;
+   tmp = item;
 }
 SCANNER '{' scanner_items  '}' ';' ;
 
@@ -439,28 +439,28 @@ scanner_item: scanner_name          |
 
 scanner_name: NAME '=' STRING ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    MyFree(item->name);
    item->name = xstrdup($3);
 };
 
 scanner_vhost: VHOST '=' STRING ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    MyFree(item->vhost);
    item->vhost = xstrdup($3);
 };
 
 scanner_target_ip: TARGET_IP '=' STRING ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    MyFree(item->target_ip);
    item->target_ip = xstrdup($3);
 };
 
 scanner_target_string: TARGET_STRING '=' STRING ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
 
    node_t *node;
    node = node_create($3);
@@ -476,25 +476,25 @@ scanner_target_string: TARGET_STRING '=' STRING ';'
 
 scanner_fd: FD '=' NUMBER ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->fd = $3;
 };
 
 scanner_target_port: TARGET_PORT '=' NUMBER ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->target_port = $3;
 };
 
 scanner_timeout: TIMEOUT '=' timespec ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->timeout = $3;
 };
 
 scanner_max_read: MAX_READ '=' sizespec ';'
 {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->max_read = $3;
 };
 
@@ -509,7 +509,7 @@ scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
    item->type = $3;
    item->port = $5;
 
-   item2 = (struct ScannerConf *) tmp;
+   item2 = tmp;
 
    node = node_create(item);
    list_add(item2->protocols, node);
@@ -564,7 +564,7 @@ opm_blacklist_entry:
    node = node_create(item);
    list_add(OpmItem->blacklists, node);
 
-   tmp = (void *) item;
+   tmp = item;
 }
 BLACKLIST '{' blacklist_items '}' ';';
 
