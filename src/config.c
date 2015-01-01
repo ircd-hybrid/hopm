@@ -23,12 +23,12 @@
 
 #include "setup.h"
 
-
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
 
 #include "config.h"
+#include "config-parser.h"
 #include "malloc.h"
 #include "log.h"
 #include "scan.h"
@@ -38,12 +38,6 @@
 #include "firedns.h"
 
 extern FILE *yyin;
-extern int yyparse(void);
-
-void config_setup(void);
-void config_init(void);
-
-
 
 struct OptionsConf *OptionsItem = NULL;
 struct IRCConf *IRCItem = NULL;
@@ -52,31 +46,6 @@ struct ExemptConf *ExemptItem = NULL;
 list_t *UserItemList = NULL;
 list_t *ScannerItemList = NULL;
 
-
-/* Rehash or load new configuration from filename, via flex/bison parser */
-void
-config_load(const char *filename)
-{
-  config_init();
-  config_setup();  /* Setup/clear current configuration */
-
-  log_printf("CONFIG -> Loading %s", filename);
-
-  if ((yyin = fopen(filename, "r")) == NULL)
-  {
-    log_printf("CONFIG -> Error opening %s: %s", filename, strerror(errno));
-    exit(EXIT_FAILURE);
-  }
-
-  yyparse();
-
-  scan_init();     /* Initialize the scanners once we have the configuration */
-  command_init();  /* Initialize the command queue */
-  stats_init();    /* Initialize stats (UPTIME) */
-  firedns_init();  /* Initialize adns */
-
-  fclose(yyin);
-}
 
 /* Malloc and initialize configuration data to NULL */
 void
@@ -126,6 +95,31 @@ config_setup(void)
   OptionsItem->pidfile = xstrdup("hopm.pid");
   OptionsItem->dns_fdlimit = 50;
   OptionsItem->scanlog = NULL;
+}
+
+/* Rehash or load new configuration from filename, via flex/bison parser */
+void
+config_load(const char *filename)
+{
+  config_init();
+  config_setup();  /* Setup/clear current configuration */
+
+  log_printf("CONFIG -> Loading %s", filename);
+
+  if ((yyin = fopen(filename, "r")) == NULL)
+  {
+    log_printf("CONFIG -> Error opening %s: %s", filename, strerror(errno));
+    exit(EXIT_FAILURE);
+  }
+
+  yyparse();
+
+  scan_init();     /* Initialize the scanners once we have the configuration */
+  command_init();  /* Initialize the command queue */
+  stats_init();    /* Initialize stats (UPTIME) */
+  firedns_init();  /* Initialize adns */
+
+  fclose(yyin);
 }
 
 void
