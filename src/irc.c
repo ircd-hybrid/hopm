@@ -215,29 +215,7 @@ irc_init(void)
 
   if (IRC_FD == -1)
   {
-    switch (errno)
-    {
-      case EINVAL:
-      case EPROTONOSUPPORT:
-        log_printf("IRC -> socket(): SOCK_STREAM is not supported on this domain");
-        break;
-      case ENFILE:
-        log_printf("IRC -> socket(): Not enough free file descriptors to allocate IRC socket");
-        break;
-      case EMFILE:
-        log_printf("IRC -> socket(): Process table overflow when requesting file descriptor");
-        break;
-      case EACCES:
-        log_printf("IRC -> socket(): Permission denied to create socket of type SOCK_STREAM");
-        break;
-      case ENOMEM:
-        log_printf("IRC -> socket(): Insufficient memory to allocate socket");
-        break;
-      default:
-        log_printf("IRC -> socket(): Unknown error allocating socket");
-        break;
-    }
-
+    log_printf("IRC -> socket(): error creating socket: %s", strerror(errno));
     exit(EXIT_FAILURE);
   }
 
@@ -260,16 +238,7 @@ irc_init(void)
 
     if (bindret)
     {
-      switch (errno)
-      {
-        case EACCES:
-          log_printf("IRC -> bind(): No access to bind to %s", IRCItem->vhost);
-          break;
-        default:
-          log_printf("IRC -> bind(): Error binding to %s (%d)", IRCItem->vhost, errno);
-          break;
-      }
-
+      log_printf("IRC -> bind(): error binding to %s: %s", IRCItem->vhost, strerror(errno));
       exit(EXIT_FAILURE);
     }
   }
