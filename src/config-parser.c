@@ -1835,7 +1835,7 @@ yyreduce:
    node = node_create(item);
    list_add(IRCItem->channels, node);
 
-   tmp = (void *) item;
+   tmp = item;
 }
 #line 1841 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1887,7 +1887,7 @@ yyreduce:
    node = node_create(item);
    list_add(UserItemList, node);
 
-   tmp = (void *) item; 
+   tmp = item; 
 }
 #line 1893 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1895,10 +1895,10 @@ yyreduce:
   case 90:
 #line 359 "config-parser.y" /* yacc.c:1646  */
     {
-   struct UserConf *item = (struct UserConf *) tmp;
-
+   struct UserConf *item = tmp;
    node_t *node;
-   node = node_create((void *) xstrdup((yyvsp[-1].string)));
+
+   node = node_create(xstrdup((yyvsp[-1].string)));
 
    list_add(item->masks, node);
 }
@@ -1908,10 +1908,10 @@ yyreduce:
   case 91:
 #line 369 "config-parser.y" /* yacc.c:1646  */
     {
-   struct UserConf *item = (struct UserConf *) tmp;
-
+   struct UserConf *item = tmp;
    node_t *node;
-   node = node_create((void *) xstrdup((yyvsp[-1].string)));
+
+   node = node_create(xstrdup((yyvsp[-1].string)));
 
    list_add(item->scanners, node);
 }
@@ -1961,7 +1961,7 @@ yyreduce:
    node = node_create(item);
 
    list_add(ScannerItemList, node);
-   tmp = (void *) item;
+   tmp = item;
 }
 #line 1967 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1969,7 +1969,7 @@ yyreduce:
   case 106:
 #line 441 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    MyFree(item->name);
    item->name = xstrdup((yyvsp[-1].string));
 }
@@ -1979,7 +1979,7 @@ yyreduce:
   case 107:
 #line 448 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    MyFree(item->vhost);
    item->vhost = xstrdup((yyvsp[-1].string));
 }
@@ -1989,7 +1989,7 @@ yyreduce:
   case 108:
 #line 455 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    MyFree(item->target_ip);
    item->target_ip = xstrdup((yyvsp[-1].string));
 }
@@ -1999,7 +1999,7 @@ yyreduce:
   case 109:
 #line 462 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
 
    node_t *node;
    node = node_create((yyvsp[-1].string));
@@ -2018,7 +2018,7 @@ yyreduce:
   case 110:
 #line 478 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->fd = (yyvsp[-1].number);
 }
 #line 2025 "config-parser.c" /* yacc.c:1646  */
@@ -2027,7 +2027,7 @@ yyreduce:
   case 111:
 #line 484 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->target_port = (yyvsp[-1].number);
 }
 #line 2034 "config-parser.c" /* yacc.c:1646  */
@@ -2036,7 +2036,7 @@ yyreduce:
   case 112:
 #line 490 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->timeout = (yyvsp[-1].number);
 }
 #line 2043 "config-parser.c" /* yacc.c:1646  */
@@ -2045,7 +2045,7 @@ yyreduce:
   case 113:
 #line 496 "config-parser.y" /* yacc.c:1646  */
     {
-   struct ScannerConf *item = (struct ScannerConf *) tmp;
+   struct ScannerConf *item = tmp;
    item->max_read = (yyvsp[-1].number);
 }
 #line 2052 "config-parser.c" /* yacc.c:1646  */
@@ -2063,7 +2063,7 @@ yyreduce:
    item->type = (yyvsp[-3].number);
    item->port = (yyvsp[-1].number);
 
-   item2 = (struct ScannerConf *) tmp;
+   item2 = tmp;
 
    node = node_create(item);
    list_add(item2->protocols, node);
@@ -2115,7 +2115,7 @@ yyreduce:
    node = node_create(item);
    list_add(OpmItem->blacklists, node);
 
-   tmp = (void *) item;
+   tmp = item;
 }
 #line 2121 "config-parser.c" /* yacc.c:1646  */
     break;
