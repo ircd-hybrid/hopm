@@ -232,6 +232,8 @@ dnsbl_cycle(void)
   firedns_cycle();
 }
 
+#define DNSBL_REPORT_VERSION "3.1.3"
+
 /*
  * Send an email to report this open proxy.
  */
@@ -255,7 +257,7 @@ dnsbl_report(struct scan_struct *ss)
            "X-BOPM-Version: %s\n\n"
            "%s: %s:%d\n\n"
            "%s\n", IRCItem->nick, OpmItem->dnsbl_from, OpmItem->dnsbl_to,
-           VERSION, scan_gettype(ss->remote->protocol), ss->ip,
+           DNSBL_REPORT_VERSION, scan_gettype(ss->remote->protocol), ss->ip,
            ss->remote->port, ss->proof);
 
   if (OPT_DEBUG >= 3)
