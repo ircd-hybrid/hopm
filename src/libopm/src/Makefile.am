@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libopm.la
+noinst_LTLIBRARIES = libopm.la
 
 libopm_la_SOURCES = compat.c     \
                     compat.h     \
