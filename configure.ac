@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(hopm, [1.0.0beta2])
+AC_INIT([hopm], [1.0.0beta2], [bugs@ircd-hybrid.org])
 AC_CONFIG_SRCDIR(src/opercmd.h)
 AC_CONFIG_HEADER(src/setup.h)
 AM_INIT_AUTOMAKE()
@@ -11,13 +11,6 @@ AC_PROG_CC_C99
 AS_IF([test "$ac_cv_prog_cc_c99" = "no"],
     [AC_MSG_ERROR([no suitable C99 compiler found. Aborting.])])
 AC_PROG_LIBTOOL
-
-dnl Checks for libraries.
-
-AC_CHECK_HEADERS(sys/time.h)
-
-dnl Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_TIME
 
 dnl check for yacc
 AC_PROG_INSTALL
