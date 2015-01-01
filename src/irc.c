@@ -277,7 +277,7 @@ irc_send(const char *data, ...)
   if (send(IRC_FD, buf, len, 0) == -1)
   {
     /* Return of -1 indicates error sending data; we reconnect. */
-    log_printf("IRC -> Error sending data to server\n");
+    log_printf("IRC -> Error sending data to server: %s", strerror(errno));
     irc_reconnect();
   }
 }
