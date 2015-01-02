@@ -74,9 +74,9 @@ dnsbl_add(struct scan_struct *ss)
     struct BlacklistConf *bl = p->data;
 
 #ifdef WORDS_BIGENDIAN
-    snprintf(lookup, 128, "%d.%d.%d.%d.%s", a, b, c, d, bl->name);
+    snprintf(lookup, sizeof(lookup), "%d.%d.%d.%d.%s", a, b, c, d, bl->name);
 #else
-    snprintf(lookup, 128, "%d.%d.%d.%d.%s", d, c, b, a, bl->name);
+    snprintf(lookup, sizeof(lookup), "%d.%d.%d.%d.%s", d, c, b, a, bl->name);
 #endif
 
     ds = xcalloc(sizeof *ds);
