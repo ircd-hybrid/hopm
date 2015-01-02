@@ -115,7 +115,7 @@ scan_cycle(void)
 void
 scan_timer(void)
 {
-  static int nc_counter;
+  static unsigned int nc_counter;
 
   if (OptionsItem->negcache > 0)
   {
@@ -318,8 +318,8 @@ scan_connect(char **user, char *msg)
    * username/hostname can be.  Some ircds use really mad values for
    * these.
    */
-  static char mask[MSGLENMAX];
-  static char ipmask[MSGLENMAX];
+  char mask[MSGLENMAX];
+  char ipmask[MSGLENMAX];
 
   /* Check negcache before anything */
   if (OptionsItem->negcache > 0)
@@ -436,11 +436,7 @@ scan_create(char **user, char *msg)
   ss->irc_hostname = xstrdup(user[2]);
   ss->ip = xstrdup(user[3]);
   ss->proof = xstrdup(msg);
-
   ss->remote = opm_remote_create(ss->ip);
-  ss->scans = 0;
-  ss->positive = 0;
-  ss->manual_target = NULL;
 
   assert(ss->remote);
   return ss;
@@ -918,20 +914,9 @@ scan_manual(char *param, struct ChannelConf *target)
   ip = inet_ntoa(*addr);
 
   ss = xcalloc(sizeof *ss);
-
-  /* These don't exist in a manual scan */
-  ss->irc_nick     = NULL;
-  ss->irc_username = NULL;
-  ss->irc_hostname = NULL;
-  ss->proof        = NULL;
-
   ss->ip = xstrdup(ip);
-
   ss->remote = opm_remote_create(ss->ip);
   ss->remote->data = ss;
-  ss->scans = 0;
-  ss->positive = 0;
-
   ss->manual_target = target;
 
   assert(ss->remote);
@@ -1010,14 +995,13 @@ scan_manual(char *param, struct ChannelConf *target)
  *     0 if mask is not in list 
  */
 int
-scan_checkexempt(char *mask, char *ipmask)
+scan_checkexempt(const char *mask, const char *ipmask)
 {
   node_t *node;
-  char *exempt_mask;
 
   LIST_FOREACH(node, ExemptItem->masks->head)
   {
-    exempt_mask = node->data;
+    const char *exempt_mask = node->data;
 
     if (!match(exempt_mask, mask) || !match(exempt_mask, ipmask))
       return 1;
