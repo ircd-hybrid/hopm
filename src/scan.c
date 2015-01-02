@@ -287,7 +287,6 @@ scan_init(void)
   }
 }
 
-
 /* scan_connect
  *
  *    scan_connect is called when m_notice (irc.c) matches a connection
@@ -324,86 +323,87 @@ scan_connect(char **user, char *msg)
   /* Check negcache before anything */
   if (OptionsItem->negcache > 0)
   {
-      if (inet_pton(AF_INET, user[3], &(ip.sa4.sin_addr)) <= 0)
+    if (inet_pton(AF_INET, user[3], &(ip.sa4.sin_addr)) <= 0)
+    {
+      log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
+      return;
+    }
+    else
+    {
+      if (check_neg_cache(ip.sa4.sin_addr.s_addr))
       {
-         log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
-         return;
-      }
-      else
-      {
-         if (check_neg_cache(ip.sa4.sin_addr.s_addr))
-         {
-            if (OPT_DEBUG)
-               log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. "
+        if (OPT_DEBUG)
+          log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. "
                      "Skipping all tests.", user[0], user[1], user[2],
                      user[3]);
-
-            return;
-         }
+        return;
       }
-   }
+    }
+  }
 
-   /* Generate user mask */
-   snprintf(mask, MSGLENMAX, "%s!%s@%s", user[0], user[1], user[2]);
-   snprintf(ipmask, MSGLENMAX, "%s!%s@%s", user[0], user[1], user[3]);
+  /* Generate user mask */
+  snprintf(mask, MSGLENMAX, "%s!%s@%s", user[0], user[1], user[2]);
+  snprintf(ipmask, MSGLENMAX, "%s!%s@%s", user[0], user[1], user[3]);
 
-   /* Check exempt list now that we have a mask */
-   if (scan_checkexempt(mask, ipmask))
-   {
-      if (OPT_DEBUG)
-         log_printf("SCAN -> %s is exempt from scanning", mask);
-      return;
-   }
+  /* Check exempt list now that we have a mask */
+  if (scan_checkexempt(mask, ipmask))
+  {
+    if (OPT_DEBUG)
+      log_printf("SCAN -> %s is exempt from scanning", mask);
 
-   /* create scan_struct */
-   ss = scan_create(user, msg);
+    return;
+  }
 
-   /* Store ss in the remote struct, so that in callbacks we have ss */
-   ss->remote->data = ss;
+  /* create scan_struct */
+  ss = scan_create(user, msg);
 
-   /* Start checking our DNSBLs */
-   if (LIST_SIZE(OpmItem->blacklists) > 0)
-      dnsbl_add(ss);
+  /* Store ss in the remote struct, so that in callbacks we have ss */
+  ss->remote->data = ss;
 
-   /* Add ss->remote to all matching scanners */
-   LIST_FOREACH(p, SCANNERS->head)
-   {
-      scs = p->data;
-      LIST_FOREACH(p2, scs->masks->head)
+  /* Start checking our DNSBLs */
+  if (LIST_SIZE(OpmItem->blacklists) > 0)
+    dnsbl_add(ss);
+
+  /* Add ss->remote to all matching scanners */
+  LIST_FOREACH(p, SCANNERS->head)
+  {
+    scs = p->data;
+
+    LIST_FOREACH(p2, scs->masks->head)
+    {
+      scsmask = p2->data;
+
+      if (!match(scsmask, mask))
       {
-         scsmask = p2->data;
-         if (!match(scsmask, mask))
-         {
-            if (OPT_DEBUG)
-               log_printf("SCAN -> Passing %s to scanner [%s]", mask,
-                     scs->name);
+        if (OPT_DEBUG)
+          log_printf("SCAN -> Passing %s to scanner [%s]", mask, scs->name);
 
-            if ((ret = opm_scan(scs->scanner, ss->remote)) != OPM_SUCCESS)
-            {
-               switch (ret)
-               {
-                  case OPM_ERR_NOPROTOCOLS:
-                     continue;
-                     break;
-                  case OPM_ERR_BADADDR:
-                     log_printf("OPM -> Bad address %s [%s].",
-                           (ss->manual_target ? ss->manual_target->name :
-                           "(unknown)"), ss->ip);
-                     break;
-                  default:
-                     log_printf("OPM -> Unknown error %s [%s].",
-                           (ss->manual_target ? ss->manual_target->name :
-                           "(unknown)"), ss->ip);
-                     break;
-               }
-            }
-            else
-               ++ss->scans;  /* Increase scan count only if OPM_SUCCESS */
+        if ((ret = opm_scan(scs->scanner, ss->remote)) != OPM_SUCCESS)
+        {
+          switch (ret)
+          {
+            case OPM_ERR_NOPROTOCOLS:
+              continue;
+              break;
+            case OPM_ERR_BADADDR:
+              log_printf("OPM -> Bad address %s [%s].",
+                         (ss->manual_target ? ss->manual_target->name :
+                         "(unknown)"), ss->ip);
+              break;
+            default:
+              log_printf("OPM -> Unknown error %s [%s].",
+                         (ss->manual_target ? ss->manual_target->name :
+                         "(unknown)"), ss->ip);
+              break;
+          }
+        }
+        else
+          ++ss->scans;  /* Increase scan count only if OPM_SUCCESS */
 
-            break;  /* Continue to next scanner */
-         }
+        break;  /* Continue to next scanner */
       }
-   }
+    }
+  }
 
   /* All scanners returned !OPM_SUCCESS and there were no dnsbl checks */
   if (ss->scans == 0)
@@ -707,39 +707,38 @@ scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
 
   switch (err)
   {
-      case OPM_ERR_MAX_READ:
-         if (OPT_DEBUG >= 2)
-            log_printf("SCAN -> Max read on %s:%d (%s) [%s] (%d bytes read)",
-                  remote->ip, remote->port, scan_gettype(remote->protocol),
-                  scs->name, remote->bytes_read);
+    case OPM_ERR_MAX_READ:
+      if (OPT_DEBUG >= 2)
+        log_printf("SCAN -> Max read on %s:%d (%s) [%s] (%d bytes read)",
+                   remote->ip, remote->port, scan_gettype(remote->protocol),
+                   scs->name, remote->bytes_read);
 
-         if (ss->manual_target)
-            irc_send("PRIVMSG %s :CHECK -> Negotiation failed %s:%d (%s) "
-                  "[%s] (%d bytes read)", ss->manual_target->name,
-                  remote->ip, remote->port, scan_gettype(remote->protocol),
-                  scs->name, remote->bytes_read);
+      if (ss->manual_target)
+        irc_send("PRIVMSG %s :CHECK -> Negotiation failed %s:%d (%s) "
+                 "[%s] (%d bytes read)", ss->manual_target->name,
+                 remote->ip, remote->port, scan_gettype(remote->protocol),
+                 scs->name, remote->bytes_read);
+      break;
+    case OPM_ERR_BIND:
+      log_printf("SCAN -> Bind error on %s:%d (%s) [%s]", remote->ip,
+                 remote->port, scan_gettype(remote->protocol), scs->name);
+      break;
+    case OPM_ERR_NOFD:
+      log_printf("SCAN -> File descriptor allocation error %s:%d (%s) "
+                "[%s]", remote->ip, remote->port,
+                scan_gettype(remote->protocol), scs->name);
 
-         break;
-      case OPM_ERR_BIND:
-         log_printf("SCAN -> Bind error on %s:%d (%s) [%s]", remote->ip,
-               remote->port, scan_gettype(remote->protocol), scs->name);
-         break;
-      case OPM_ERR_NOFD:
-         log_printf("SCAN -> File descriptor allocation error %s:%d (%s) "
-               "[%s]", remote->ip, remote->port,
-               scan_gettype(remote->protocol), scs->name);
-
-         if (ss->manual_target)
-            irc_send("PRIVMSG %s :CHECK -> Scan failed %s:%d (%s) [%s] "
-                  "(file descriptor allocation error)",
-                  ss->manual_target->name, remote->ip, remote->port,
-                  scan_gettype(remote->protocol), scs->name);
-         break;
-      default:  /* Unknown Error! */
-         if (OPT_DEBUG)
-           log_printf("SCAN -> Unknown error %s:%d (%s) [%s]", remote->ip,
-                  remote->port, scan_gettype(remote->protocol), scs->name);
-         break;
+      if (ss->manual_target)
+        irc_send("PRIVMSG %s :CHECK -> Scan failed %s:%d (%s) [%s] "
+                 "(file descriptor allocation error)",
+                 ss->manual_target->name, remote->ip, remote->port,
+                 scan_gettype(remote->protocol), scs->name);
+      break;
+    default:  /* Unknown Error! */
+      if (OPT_DEBUG)
+        log_printf("SCAN -> Unknown error %s:%d (%s) [%s]", remote->ip,
+                   remote->port, scan_gettype(remote->protocol), scs->name);
+      break;
   }
 }
 
@@ -812,49 +811,49 @@ scan_irckline(struct scan_struct *ss, const char *format, const char *type)
   {
     switch (format[pos])
     {
+      case '%':
+        /* % is the last char in the string, move on */
+        if (format[pos + 1] == '\0')
+          continue;
 
-         case '%':
-            /* % is the last char in the string, move on */
-            if(format[pos + 1] == '\0')
-               continue;
+        /* %% escapes % and becomes % */
+        if (format[pos + 1] == '%')
+        {
+          message[len++] = '%';
+          ++pos;  /* Skip past the escaped % */
+          break;
+        }
 
-            /* %% escapes % and becomes % */
-            if(format[pos + 1] == '%')
+        /* Safe to check against table now */
+        for (i = 0; i < (sizeof(table) / sizeof(struct kline_format_assoc)); ++i)
+        {
+          if (table[i].key == format[pos + 1])
+          {
+            size = strlen(table[i].data);
+
+            /* Check if the new string can fit! */
+            if ((size + len) > (MSGLENMAX - 1))
+              break;
+            else
             {
-               message[len++] = '%';
-               pos++; /* skip past the escaped % */
-               break;
+              strlcat(message, table[i].data, sizeof(message));
+              len += size;
             }
+          }
+        }
 
-            /* Safe to check against table now */
-            for(i = 0; i < (sizeof(table) / sizeof(struct kline_format_assoc)); i++)
-            {
-               if(table[i].key == format[pos + 1])
-               {
-                        size = strlen(table[i].data);
+        /* Skip key character */
+        ++pos;
+        break;
 
-                        /* Check if the new string can fit! */
-                        if( (size + len) > (MSGLENMAX - 1) )
-                           break;
-                        else
-                        {
-                           strlcat(message, table[i].data, sizeof(message));
-                           len += size;
-                        }
+        default:
+          message[len++] = format[pos];
+          message[len] = '\0';
+          break;
+    }
 
-               }
-            }
-            /* Skip key character */
-            pos++;
-            break;
-
-         default:
-            message[len++] = format[pos];
-            message[len] = '\0';
-            break;
-      }
-      /* continue to next character in format */
-      pos++;
+    /* Continue to next character in format */
+    ++pos;
   }
 
   irc_send("%s", message);
@@ -924,40 +923,41 @@ scan_manual(char *param, struct ChannelConf *target)
   if (LIST_SIZE(OpmItem->blacklists) > 0)
     dnsbl_add(ss);
 
-   /* Add ss->remote to all scanners */
-   LIST_FOREACH(p, SCANNERS->head)
-   {
-      scs = p->data;
+  /* Add ss->remote to all scanners */
+  LIST_FOREACH(p, SCANNERS->head)
+  {
+    scs = p->data;
 
-      /* If we have a scannername, only allow that scanner
-         to be used */
-      if (scannername)
-         if (strcasecmp(scannername, scs->name))
-            continue;
+    /*
+     * If we have a scannername, only allow that scanner
+     * to be used
+     */
+    if (scannername)
+      if (strcasecmp(scannername, scs->name))
+        continue;
 
-      if (OPT_DEBUG)
-         log_printf("SCAN -> Passing %s to scanner [%s] (MANUAL SCAN)", ip,
-               scs->name);
+    if (OPT_DEBUG)
+      log_printf("SCAN -> Passing %s to scanner [%s] (MANUAL SCAN)", ip, scs->name);
 
-      if ((ret = opm_scan(scs->scanner, ss->remote)) != OPM_SUCCESS)
+    if ((ret = opm_scan(scs->scanner, ss->remote)) != OPM_SUCCESS)
+    {
+      switch (ret)
       {
-         switch (ret)
-         {
-            case OPM_ERR_NOPROTOCOLS:
-               break;
-            case OPM_ERR_BADADDR:
-               irc_send("PRIVMSG %s :OPM -> Bad address %s [%s]",
-                     ss->manual_target->name, ss->ip, scs->name);
-               break;
-            default:
-               irc_send("PRIVMSG %s :OPM -> Unknown error %s [%s]",
-                     ss->manual_target->name, ss->ip, scs->name);
-               break;
-         }
+        case OPM_ERR_NOPROTOCOLS:
+          break;
+        case OPM_ERR_BADADDR:
+          irc_send("PRIVMSG %s :OPM -> Bad address %s [%s]",
+                   ss->manual_target->name, ss->ip, scs->name);
+          break;
+        default:
+          irc_send("PRIVMSG %s :OPM -> Unknown error %s [%s]",
+                   ss->manual_target->name, ss->ip, scs->name);
+          break;
       }
-      else
-         ++ss->scans; /* Increase scan count only if OPM_SUCCESS */
-   }
+    }
+    else
+      ++ss->scans;  /* Increase scan count only if OPM_SUCCESS */
+  }
 
   /*
    * If all of the scanners gave !OPM_SUCCESS and there were no dnsbl checks,
