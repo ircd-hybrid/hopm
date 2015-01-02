@@ -89,9 +89,8 @@ command_init(void)
 void
 command_timer(void)
 {
-  static unsigned short interval;
+  static unsigned int interval;
   node_t *node, *next;
-  struct Command *cs;
   time_t present;
 
   /* Only perform command removal every COMMANDINTERVAL seconds */
@@ -104,7 +103,7 @@ command_timer(void)
 
   LIST_FOREACH_SAFE(node, next, COMMANDS->head)
   {
-    cs = node->data;
+    struct Command *cs = node->data;
 
     if ((present - cs->added) > COMMANDTIMEOUT)
     {

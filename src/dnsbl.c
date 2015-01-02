@@ -58,7 +58,6 @@ dnsbl_add(struct scan_struct *ss)
   int res;
   struct dnsbl_scan *ds;
 
-
   if (inet_pton(AF_INET, ss->ip, &in) <= 0)
   {
     log_printf("DNSBL -> Invalid address '%s', ignoring.", ss->ip);
@@ -109,7 +108,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
   {
     LIST_FOREACH(p, bl->reply->head)
     {
-      struct BlacklistReplyConf *item = p->data;
+      const struct BlacklistReplyConf *item = p->data;
 
       if (item->number & type)
       {
@@ -128,7 +127,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
   {
     LIST_FOREACH(p, bl->reply->head)
     {
-      struct BlacklistReplyConf *item = p->data;
+      const struct BlacklistReplyConf *item = p->data;
 
       if (item->number == type)
       {

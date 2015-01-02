@@ -250,7 +250,7 @@ irc_send(const char *data, ...)
 {
   va_list arglist;
   char buf[MSGLENMAX];
-  int len = 0;
+  size_t len = 0;
 
   va_start(arglist, data);
   len = vsnprintf(buf, sizeof(buf), data, arglist);
@@ -293,7 +293,6 @@ irc_send_channels(const char *data, ...)
   va_start(arglist, data);
   vsnprintf(buf, sizeof(buf), data, arglist);
   va_end(arglist);
-
 
   LIST_FOREACH(node, IRCItem->channels->head)
   {
@@ -715,7 +714,7 @@ m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo *notused)
   /* Join all listed channels. */
   LIST_FOREACH(node, IRCItem->channels->head)
   {
-    struct ChannelConf *channel = node->data;
+    const struct ChannelConf *channel = node->data;
 
     if (EmptyString(channel->name))
       continue;
@@ -860,7 +859,7 @@ m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
   regmatch_t pmatch[5];
 
   static char errmsg[256];
-  int errnum, i;
+  int errnum;
   char *user[4];
 
   if (parc < 4)
@@ -908,7 +907,7 @@ m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
    *   HOSTNAME: pmatch[3].rm_so  TO  pmatch[3].rm_eo
    *   IP      : pmatch[4].rm_so  TO  pmatch[4].rm_eo
    */
-  for (i = 0; i < 4; ++i)
+  for (unsigned int i = 0; i < 4; ++i)
   {
     user[i] = (parv[3] + pmatch[i + 1].rm_so);
     *(parv[3] + pmatch[i + 1].rm_eo) = '\0';
@@ -962,7 +961,7 @@ m_userhost(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
 static void
 m_cannot_join(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
 {
-  struct ChannelConf *channel;
+  const struct ChannelConf *channel = NULL;
 
   if (parc < 5)
     return;
