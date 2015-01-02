@@ -47,9 +47,6 @@ struct kline_format_assoc
 {
   char key;
   const void *data;
-  int type;
 };
-
-#define FORMATTYPE_STRING 1
 
 #endif /* SCAN_H */

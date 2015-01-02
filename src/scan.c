@@ -791,11 +791,11 @@ scan_irckline(struct scan_struct *ss, const char *format, const char *type)
   unsigned int i;
   struct kline_format_assoc table[] =
   {
-    {'i', NULL, FORMATTYPE_STRING },
-    {'h', NULL, FORMATTYPE_STRING },
-    {'u', NULL, FORMATTYPE_STRING },
-    {'n', NULL, FORMATTYPE_STRING },
-    {'t', NULL, FORMATTYPE_STRING }
+    {'i', NULL },
+    {'h', NULL },
+    {'u', NULL },
+    {'n', NULL },
+    {'t', NULL }
   };
 
   table[0].data = ss->ip;
@@ -831,10 +831,6 @@ scan_irckline(struct scan_struct *ss, const char *format, const char *type)
             {
                if(table[i].key == format[pos + 1])
                {
-                  switch(table[i].type)
-                  {
-                     case FORMATTYPE_STRING:
-
                         size = strlen(table[i].data);
 
                         /* Check if the new string can fit! */
@@ -846,9 +842,6 @@ scan_irckline(struct scan_struct *ss, const char *format, const char *type)
                            len += size;
                         }
 
-                     default:
-                        break;
-                  }
                }
             }
             /* Skip key character */
