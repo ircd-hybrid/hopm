@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([hopm], [1.0.0beta2], [bugs@ircd-hybrid.org])
+AC_INIT([hopm], [1.0.0], [bugs@ircd-hybrid.org])
 AC_CONFIG_SRCDIR(src/opercmd.h)
 AC_CONFIG_HEADER(src/setup.h)
 AM_INIT_AUTOMAKE()
