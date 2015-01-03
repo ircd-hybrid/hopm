@@ -41,10 +41,10 @@ along with this program; if not, write to the Free Software
 #include "stats.h"
 
 
-list_t *COMMANDS = NULL;  /* List of active commands */
+static list_t *COMMANDS = NULL;  /* List of active commands */
 
 
-static struct Command *command_create(unsigned short type, char *param, char *irc_nick, struct ChannelConf *target);
+static struct Command *command_create(const struct OperCommandHash *, char *param, char *irc_nick, struct ChannelConf *target);
 static void command_free(struct Command *);
 
 static void cmd_check(char *, char *, struct ChannelConf *);
@@ -53,12 +53,13 @@ static void cmd_fdstat(char *, char *, struct ChannelConf *);
 
 static struct OperCommandHash COMMAND_TABLE[] =
 {
-  {"CHECK",  cmd_check  },
-  {"SCAN",   cmd_check  },
-  {"STAT",   cmd_stat   },
-  {"STATS",  cmd_stat   },
-  {"STATUS", cmd_stat   },
-  {"FDSTAT", cmd_fdstat },
+  { "CHECK",  cmd_check  },
+  { "SCAN",   cmd_check  },
+  { "STAT",   cmd_stat   },
+  { "STATS",  cmd_stat   },
+  { "STATUS", cmd_stat   },
+  { "FDSTAT", cmd_fdstat },
+  { NULL,     NULL       }
 };
 
 
@@ -135,8 +136,6 @@ command_parse(char *command, char *msg, struct ChannelConf *target,
               struct UserInfo *source_p)
 {
   char *param;  /* Parsed parameters */
-  struct Command *cs;
-  node_t *node;
 
   if (OPT_DEBUG)
     log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
@@ -179,14 +178,14 @@ command_parse(char *command, char *msg, struct ChannelConf *target,
   log_printf("COMMAND -> parsed [%s] [%s]", command, param);
 
   /* Lookup the command in the table */
-  for (unsigned int i = 0; i < sizeof(COMMAND_TABLE) / sizeof(struct OperCommandHash); ++i)
+  for (const struct OperCommandHash *tab = COMMAND_TABLE; tab->command; ++tab)
   {
-    if (strcasecmp(command, COMMAND_TABLE[i].command) == 0)
+    if (strcasecmp(command, tab->command) == 0)
     {
       /* Queue this command */
-      cs = command_create(i, param, source_p->irc_nick, target);
-      node = node_create(cs);
-      list_add(COMMANDS, node);
+      struct Command *cs = command_create(tab, param, source_p->irc_nick, target);
+
+      list_add(COMMANDS, node_create(cs));
     }
   }
 
@@ -207,15 +206,14 @@ command_parse(char *command, char *msg, struct ChannelConf *target,
  *    Pointer to new Command
  */
 static struct Command *
-command_create(unsigned short type, char *param, char *irc_nick, struct ChannelConf *target)
+command_create(const struct OperCommandHash *tab, char *param, char *irc_nick, struct ChannelConf *target)
 {
   struct Command *ret = xcalloc(sizeof *ret);
-
-  ret->type = type;
 
   if (param)
     ret->param = xstrdup(param);
 
+  ret->tab = tab;
   ret->irc_nick = xstrdup(irc_nick);
   ret->target = target;  /* FIXME: This needs fixed if rehash is implemented */
 
@@ -286,7 +284,7 @@ command_userhost(char *reply)
     if (strcmp(cs->irc_nick, reply) == 0)
     {
       if (oper)
-        COMMAND_TABLE[cs->type].handler(cs->param, cs->irc_nick, cs->target);
+        cs->tab->handler(cs->param, cs->irc_nick, cs->target);
 
       /* Cleanup the command */
       command_free(cs);

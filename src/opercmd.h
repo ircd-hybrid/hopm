@@ -3,10 +3,17 @@
 
 #include "config.h"
 
+
+struct OperCommandHash
+{
+  const char *command;
+  void (*handler)(char *, char *, struct ChannelConf *);
+};
+
 struct Command
 {
-  /* Index of command in COMMAND_TABLE in opercmd.c */
-  unsigned short type;
+  /* Points to specific entry in COMMAND_TABLE in opercmd.c */
+  const struct OperCommandHash *tab;
 
   /* Command parameter.
    * <erik> but i cant think of any commands bopm will ever have that is
@@ -27,12 +34,6 @@ struct Command
    * not get executed.
    */
   time_t added;
-};
-
-struct OperCommandHash
-{
-  const char *command;
-  void (*handler)(char *, char*, struct ChannelConf *);
 };
 
 extern void command_init(void);
