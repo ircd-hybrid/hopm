@@ -47,9 +47,9 @@ static list_t *COMMANDS = NULL;  /* List of active commands */
 static struct Command *command_create(const struct OperCommandHash *, char *param, char *irc_nick, struct ChannelConf *target);
 static void command_free(struct Command *);
 
-static void cmd_check(char *, char *, struct ChannelConf *);
-static void cmd_stat(char *, char *, struct ChannelConf *);
-static void cmd_fdstat(char *, char *, struct ChannelConf *);
+static void cmd_check(char *, struct ChannelConf *);
+static void cmd_stat(char *, struct ChannelConf *);
+static void cmd_fdstat(char *, struct ChannelConf *);
 
 static struct OperCommandHash COMMAND_TABLE[] =
 {
@@ -254,7 +254,7 @@ command_free(struct Command *command)
  * 
  */
 void
-command_userhost(char *reply)
+command_userhost(const char *reply)
 {
   node_t *node, *next;
   char *tmp;
@@ -284,7 +284,7 @@ command_userhost(char *reply)
     if (strcmp(cs->irc_nick, reply) == 0)
     {
       if (oper)
-        cs->tab->handler(cs->param, cs->irc_nick, cs->target);
+        cs->tab->handler(cs->param, cs->target);
 
       /* Cleanup the command */
       command_free(cs);
@@ -301,12 +301,11 @@ command_userhost(char *reply)
  *
  * Parameters:
  *    param: Parameters of the command
- *    source: irc_nick of user who requested the command
  *    target: channel command was sent to
  *
  */
 static void
-cmd_check(char *param, char *source, struct ChannelConf *target)
+cmd_check(char *param, struct ChannelConf *target)
 {
   scan_manual(param, target);
 }
@@ -317,11 +316,10 @@ cmd_check(char *param, char *source, struct ChannelConf *target)
  *
  * Parameters:
  *    param: Parameters of the command
- *    source: irc_nick of user who requested the command
  *    target: channel command was sent to
  */
 static void
-cmd_stat(char *param, char *source, struct ChannelConf *target)
+cmd_stat(char *param, struct ChannelConf *target)
 {
   stats_output(target->name);
 }
@@ -332,11 +330,10 @@ cmd_stat(char *param, char *source, struct ChannelConf *target)
  *
  * Parameters:
  *    param: Parameters of the command
- *    source: irc_nick of user who requested the command
  *    target: channel command was sent to
  */
 static void
-cmd_fdstat(char *param, char *source, struct ChannelConf *target)
+cmd_fdstat(char *param, struct ChannelConf *target)
 {
   fdstats_output(target->name);
 }
