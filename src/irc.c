@@ -857,8 +857,6 @@ m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
 {
   static regex_t *preg = NULL;
   regmatch_t pmatch[5];
-
-  static char errmsg[256];
   int errnum;
   char *user[4];
 
@@ -876,7 +874,9 @@ m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
 
     if ((errnum = regcomp(preg, IRCItem->connregex, REG_ICASE | REG_EXTENDED)))
     {
-      regerror(errnum, preg, errmsg, 256);
+      char errmsg[256];
+
+      regerror(errnum, preg, errmsg, sizeof(errmsg));
       log_printf("IRC REGEX -> Error when compiling regular expression");
       log_printf("IRC REGEX -> %s", errmsg);
 
