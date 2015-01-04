@@ -1,3 +1,7 @@
+-- Noteworthy changes in version 1.0.0 (2015-01-03)
+o) Minor stabilization and performance improvements
+
+
 -- Noteworthy changes in version 1.0.0beta2 (2014-12-31)
 o) Added irc::readtimeout configuration option
 o) Many code cleanups and optimizations
@@ -12,6 +16,7 @@ o) NOTE: this is the first release of the hybrid open proxy monitor (HOPM)
    fully based off the discontinued blitzed open proxy monitor (BOPM)
 ########################################################################
 o) Modernized and cleaned up build system
+o) Modernized the example configuration file. Removed/updated blacklist entries.
 o) The configuration parser now does support time and size units
 o) The configuration parser now does support c++ style comments
 o) Fixed a memory leak in conjunction with manual scans
