@@ -33,6 +33,9 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include "compat.h"
 #include "config.h"
@@ -305,7 +308,7 @@ scan_init(void)
 void
 scan_connect(char **user, char *msg)
 {
-  struct bopm_sockaddr ip;
+  struct sockaddr_in ip;
   node_t *p, *p2;
   struct scan_struct *ss;
   struct scanner_struct *scs;
@@ -323,14 +326,14 @@ scan_connect(char **user, char *msg)
   /* Check negcache before anything */
   if (OptionsItem->negcache > 0)
   {
-    if (inet_pton(AF_INET, user[3], &(ip.sa4.sin_addr)) <= 0)
+    if (inet_pton(AF_INET, user[3], &ip.sin_addr) <= 0)
     {
       log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
       return;
     }
     else
     {
-      if (check_neg_cache(ip.sa4.sin_addr.s_addr))
+      if (check_neg_cache(ip.sin_addr.s_addr))
       {
         if (OPT_DEBUG)
           log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. "
