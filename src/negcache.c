@@ -44,6 +44,10 @@ along with this program; if not, write to:
 #include <stdlib.h>
 #include <sys/time.h>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include "irc.h"
 #include "negcache.h"
@@ -195,16 +199,16 @@ struct cnode *check_neg_cache(const unsigned long ip)
  */
 void negcache_insert(const char *ipstr)
 {
-   struct bopm_sockaddr ip;
+   struct sockaddr_in ip;
    struct cnode *n;
 
-   if (inet_pton(AF_INET, ipstr, &(ip.sa4.sin_addr)) <= 0)
+   if (inet_pton(AF_INET, ipstr, &ip.sin_addr) <= 0)
    {
       log_printf("NEGCACHE -> Invalid IPv4 address '%s'", ipstr);
       return;
    }
 
-   n = nc_insert(nc_head, ip.sa4.sin_addr.s_addr);
+   n = nc_insert(nc_head, ip.sin_addr.s_addr);
 
    if (n)
       n->seen = time(NULL);
