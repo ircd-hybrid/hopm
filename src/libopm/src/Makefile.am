@@ -1,10 +1,7 @@
 noinst_LTLIBRARIES = libopm.la
 
-libopm_la_SOURCES = compat.c     \
-                    compat.h     \
-                    config.c     \
+libopm_la_SOURCES = config.c     \
                     config.h     \
-                    inet.c       \
                     inet.h       \
                     libopm.c     \
                     libopm.h     \

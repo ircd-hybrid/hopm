@@ -91,8 +91,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libopm_la_DEPENDENCIES = @LTLIBOBJS@
-am_libopm_la_OBJECTS = compat.lo config.lo inet.lo libopm.lo list.lo \
-	malloc.lo proxy.lo
+am_libopm_la_OBJECTS = config.lo libopm.lo list.lo malloc.lo proxy.lo
 libopm_la_OBJECTS = $(am_libopm_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -280,11 +279,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LTLIBRARIES = libopm.la
-libopm_la_SOURCES = compat.c     \
-                    compat.h     \
-                    config.c     \
+libopm_la_SOURCES = config.c     \
                     config.h     \
-                    inet.c       \
                     inet.h       \
                     libopm.c     \
                     libopm.h     \
@@ -355,9 +351,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/compat.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/config.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/inet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libopm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/malloc.Plo@am__quote@
