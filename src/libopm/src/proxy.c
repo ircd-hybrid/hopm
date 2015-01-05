@@ -27,7 +27,6 @@
 #include <string.h>
 
 #include "inet.h"
-#include "compat.h"
 #include "config.h"
 #include "proxy.h"
 #include "opm_common.h"
