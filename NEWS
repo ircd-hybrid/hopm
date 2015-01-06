@@ -1,5 +1,6 @@
--- Noteworthy changes in version 1.0.1 (2015-??-??)
+-- Noteworthy changes in version 1.0.1 (2015-01-06)
 o) Fixed build on OS X
+o) More code cleanups, no user-visible changes
 
 
 -- Noteworthy changes in version 1.0.0 (2015-01-03)
