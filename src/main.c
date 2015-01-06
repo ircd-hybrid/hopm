@@ -166,10 +166,7 @@ main(int argc, char *argv[])
 
   if (pidout)
   {
-    char spid[16];
-
-    snprintf(spid, sizeof(spid), "%u", getpid());
-    fwrite(spid, sizeof(char), strlen(spid), pidout);
+    fprintf(pidout, "%u\n", (unsigned int)getpid());
     fclose(pidout);
   }
   else
