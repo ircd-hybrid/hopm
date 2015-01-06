@@ -149,7 +149,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
   if (ss->manual_target)
     irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s appears in BL zone %s (%s)",
              ss->manual_target->name, ss->ip, bl->name, text_type);
-  else if (!ss->positive)
+  else if (ss->positive == 0)
   {
     /* Only report it if no other scans have found positives yet. */
     scan_positive(ss, (bl->kline[0] ? bl->kline : IRCItem->kline), text_type);

@@ -65,17 +65,16 @@ static struct ChannelConf *get_channel(const char *);
 static struct UserInfo *userinfo_create(char *);
 static void userinfo_free(struct UserInfo *source);
 
-static void m_ping(char **, unsigned int, char *, struct UserInfo *);
-static void m_invite(char **, unsigned int, char *, struct UserInfo *);
-static void m_privmsg(char **, unsigned int, char *, struct UserInfo *);
-static void m_ctcp(char **, unsigned int, char *, struct UserInfo *);
-static void m_notice(char **, unsigned int, char *, struct UserInfo *);
-static void m_perform(char **, unsigned int, char *, struct UserInfo *);
-static void m_userhost(char **, unsigned int, char *, struct UserInfo *);
-static void m_cannot_join(char **, unsigned int, char *, struct UserInfo *);
-static void m_kill(char **, unsigned int, char *, struct UserInfo *);
+static void m_ping(char *[], unsigned int, char *, struct UserInfo *);
+static void m_invite(char *[], unsigned int, char *, struct UserInfo *);
+static void m_privmsg(char *[], unsigned int, char *, struct UserInfo *);
+static void m_ctcp(char *[], unsigned int, char *, struct UserInfo *);
+static void m_notice(char *[], unsigned int, char *, struct UserInfo *);
+static void m_perform(char *[], unsigned int, char *, struct UserInfo *);
+static void m_userhost(char *[], unsigned int, char *, struct UserInfo *);
+static void m_cannot_join(char *[], unsigned int, char *, struct UserInfo *);
+static void m_kill(char *[], unsigned int, char *, struct UserInfo *);
 
-extern struct cnode *nc_head;
 
 /*
  * Certain variables we don't want to allocate memory for over and over
@@ -556,14 +555,13 @@ irc_timer(void)
     log_printf("IRC -> Timeout awaiting data from server.");
     irc_reconnect();
 
-    /* Make sure we dont do this again for a while */
+    /* Make sure we don't do this again for a while */
     time(&IRC_LAST);
   }
   else if (delta >= IRCItem->readtimeout / 2)
   {
     /*
-     * Generate some data so high ping times or bugs in certain
-     * ircds (*cough* unreal *cough*) don't cause uneeded
+     * Generate some data so high ping times don't cause uneeded
      * reconnections
      */
     irc_send("PING :HOPM");
@@ -687,7 +685,7 @@ userinfo_free(struct UserInfo *source_p)
  * the source (parv[0]) is a server.
  */
 static void
-m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo *notused)
+m_perform(char *parv[], unsigned int parc, char *msg, struct UserInfo *notused)
 {
   node_t *node;
 
@@ -736,7 +734,7 @@ m_perform(char **parv, unsigned int parc, char *msg, struct UserInfo *notused)
  * the source (parv[0]) is a server.
  */
 static void
-m_ping(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_ping(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
   if (parc < 3)
     return;
@@ -758,9 +756,9 @@ m_ping(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
  * the source (parv[0]) is a server.
  */
 static void
-m_invite(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_invite(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
-  struct ChannelConf *channel;
+  struct ChannelConf *channel = NULL;
 
   if (parc < 4)
     return;
@@ -784,9 +782,9 @@ m_invite(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
  * the source (parv[0]) is a server.
  */
 static void
-m_privmsg(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_privmsg(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
-  struct ChannelConf *channel;
+  struct ChannelConf *channel = NULL;
   size_t nick_len;
 
   if (source_p == NULL)
@@ -833,7 +831,7 @@ m_privmsg(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
  *
  */
 static void
-m_ctcp(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_ctcp(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
   if (strncasecmp(parv[3], "\001VERSION\001", 9) == 0)
     irc_send("NOTICE %s :\001VERSION Hybrid Open Proxy Monitor %s\001",
@@ -853,18 +851,18 @@ m_ctcp(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
  *
  */
 static void
-m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_notice(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
   static regex_t *preg = NULL;
   regmatch_t pmatch[5];
   int errnum;
   char *user[4];
 
-  if (parc < 4)
-    return;
-
   /* Not interested in notices from users */
   if (source_p)
+    return;
+
+  if (parc < 4)
     return;
 
   /* Compile the regular expression if it has not been already */
@@ -941,7 +939,7 @@ m_notice(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
  *
  */
 static void
-m_userhost(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_userhost(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
   if (parc < 4)
     return;
@@ -959,7 +957,7 @@ m_userhost(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
  *
  */
 static void
-m_cannot_join(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_cannot_join(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
   const struct ChannelConf *channel = NULL;
 
@@ -986,7 +984,7 @@ m_cannot_join(char **parv, unsigned int parc, char *msg, struct UserInfo *source
  *
  */
 static void
-m_kill(char **parv, unsigned int parc, char *msg, struct UserInfo *source_p)
+m_kill(char *parv[], unsigned int parc, char *msg, struct UserInfo *source_p)
 {
   /* Restart hopm to rehash */
   main_restart();

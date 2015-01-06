@@ -65,14 +65,9 @@ static list_t *SCANNERS = NULL;   /* List of OPM_T */
 static list_t *MASKS    = NULL;   /* Associative list of masks->scanners */
 
 
-/* Negative Cache */
-struct cnode *nc_head;
-
-
 /* Function declarations */
-
-struct scan_struct *scan_create(char **, char *);
-void scan_free(struct scan_struct *);
+static struct scan_struct *scan_create(char *[], char *);
+static void scan_free(struct scan_struct *);
 static void scan_irckline(struct scan_struct *, const char *, const char *);
 static void scan_negative(struct scan_struct *);
 static void scan_log(OPM_REMOTE_T *);
@@ -306,7 +301,7 @@ scan_init(void)
  *
  */
 void
-scan_connect(char **user, char *msg)
+scan_connect(char *user[], char *msg)
 {
   struct sockaddr_in ip;
   node_t *p, *p2;
@@ -429,8 +424,8 @@ scan_connect(char **user, char *msg)
  * Return: Pointer to new scan_struct
  *
  */
-struct scan_struct *
-scan_create(char **user, char *msg)
+static struct scan_struct *
+scan_create(char *user[], char *msg)
 {
   struct scan_struct *ss = xcalloc(sizeof *ss);
 
@@ -455,7 +450,7 @@ scan_create(char **user, char *msg)
  *
  * Return: NONE
  */
-void
+static void
 scan_free(struct scan_struct *ss)
 {
   if (ss == NULL)
@@ -492,7 +487,7 @@ scan_checkfinished(struct scan_struct *ss)
                    ss->irc_nick, ss->irc_username, ss->irc_hostname);
 
       /* Scan was a negative */
-      if (!ss->positive)
+      if (ss->positive == 0)
         scan_negative(ss);
     }
 

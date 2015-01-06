@@ -10,6 +10,7 @@ struct cnode
   struct cnode *r;  /* Node to the right. */
 };
 
+extern struct cnode *nc_head;
 extern void nc_init(struct cnode **);
 extern struct cnode *check_neg_cache(const unsigned long);
 extern void negcache_insert(const char *);
