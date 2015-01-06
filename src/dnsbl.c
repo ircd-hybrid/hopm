@@ -169,7 +169,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
 void
 dnsbl_result(struct firedns_result *res)
 {
-  struct dnsbl_scan *ds = res->info;
+  struct dnsbl_scan *const ds = res->info;
 
   if (OPT_DEBUG)
   {
@@ -238,7 +238,7 @@ dnsbl_cycle(void)
  * Send an email to report this open proxy.
  */
 void
-dnsbl_report(struct scan_struct *ss)
+dnsbl_report(const struct scan_struct *ss)
 {
   char buf[4096], cmdbuf[512];
   FILE *fp;
