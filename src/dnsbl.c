@@ -31,6 +31,7 @@ along with this program; if not, write to the Free Software
 #include <arpa/inet.h>
 #include <time.h>
 #include <errno.h>
+#include <assert.h>
 
 #include "compat.h"
 #include "config.h"
@@ -242,8 +243,7 @@ dnsbl_report(struct scan_struct *ss)
   char buf[4096], cmdbuf[512];
   FILE *fp;
 
-  if (ss->ip == NULL)
-    return;
+  assert(ss->ip);
 
   if (EmptyString(OpmItem->dnsbl_to) || EmptyString(OpmItem->dnsbl_from) || EmptyString(OpmItem->sendmail))
     return;
