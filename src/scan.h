@@ -19,7 +19,6 @@ struct scan_struct
   struct ChannelConf *manual_target;
 };
 
-
 struct scanner_struct
 {
   char *name;
@@ -33,20 +32,19 @@ struct protocol_assoc
   const char *name;
 };
 
-extern void scan_init(void);
-extern const char *scan_gettype(int);
-extern void scan_cycle(void);
-extern void scan_connect(char **, char *);
-extern void scan_checkfinished(struct scan_struct *);
-extern void scan_manual(char *, struct ChannelConf *);
-extern int scan_checkexempt(const char *, const char *);
-extern void scan_timer(void);
-extern void scan_positive(struct scan_struct *, const char *, const char *);
-
 struct kline_format_assoc
 {
   char key;
   const void *data;
 };
 
+extern void scan_init(void);
+extern const char *scan_gettype(int);
+extern void scan_cycle(void);
+extern void scan_connect(char *[], char *);
+extern void scan_checkfinished(struct scan_struct *);
+extern void scan_manual(char *, struct ChannelConf *);
+extern int scan_checkexempt(const char *, const char *);
+extern void scan_timer(void);
+extern void scan_positive(struct scan_struct *, const char *, const char *);
 #endif /* SCAN_H */

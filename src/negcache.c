@@ -63,9 +63,9 @@ static struct cnode *nc_insert(struct cnode *head, const unsigned long ip);
 static void nc_rebuild(struct cnode *old_head, struct cnode *new_head,
                        struct cnode *n, time_t now);
 
+struct cnode *nc_head;
 time_t last_nc_expire;
 unsigned int maxb;
-extern struct cnode *nc_head;
 
 /*
  * Return the bit which appears k bits from the right in x.
