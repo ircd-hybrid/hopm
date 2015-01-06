@@ -86,12 +86,12 @@ dnsbl_add(struct scan_struct *ss)
     if (OPT_DEBUG)
       log_printf("DNSBL -> Passed '%s' to resolver", lookup);
 
-    res = firedns_getip(FDNS_QRY_A, lookup, (void *) ds);
+    res = firedns_getip(FDNS_QRY_A, lookup, ds);
 
     if (res == -1 && fdns_errno != FDNS_ERR_FDLIMIT)
     {
       log_printf("DNSBL -> Error sending dns lookup for '%s': %s", lookup, firedns_strerror(fdns_errno));
-      free(ds);
+      MyFree(ds);
     }
     else
       ++ss->scans;  /* Increase scan count - one for each blacklist */
