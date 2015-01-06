@@ -70,7 +70,6 @@ static void libopm_do_writeready(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_hup(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_read(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_openproxy(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
-
 static void libopm_do_callback(OPM_T *, OPM_REMOTE_T *, int, int);
 
 static OPM_REMOTE_T *libopm_setup_remote(OPM_REMOTE_T *, OPM_CONNECTION_T *);
@@ -83,18 +82,15 @@ static OPM_REMOTE_T *libopm_setup_remote(OPM_REMOTE_T *, OPM_CONNECTION_T *);
  *    data).
  *
  */
-
-static OPM_PROTOCOL_T OPM_PROTOCOLS[] = {
-    {OPM_TYPE_HTTP,               libopm_proxy_http_write,     NULL},
-    {OPM_TYPE_SOCKS4,             libopm_proxy_socks4_write,   NULL},
-    {OPM_TYPE_SOCKS5,             libopm_proxy_socks5_write,   NULL},
-    {OPM_TYPE_ROUTER,             libopm_proxy_router_write,   NULL},
-    {OPM_TYPE_WINGATE,            libopm_proxy_wingate_write,  NULL},
-    {OPM_TYPE_HTTPPOST,           libopm_proxy_httppost_write, NULL}
+static OPM_PROTOCOL_T OPM_PROTOCOLS[] =
+{
+  { OPM_TYPE_HTTP,     libopm_proxy_http_write,     NULL },
+  { OPM_TYPE_SOCKS4,   libopm_proxy_socks4_write,   NULL },
+  { OPM_TYPE_SOCKS5,   libopm_proxy_socks5_write,   NULL },
+  { OPM_TYPE_ROUTER,   libopm_proxy_router_write,   NULL },
+  { OPM_TYPE_WINGATE,  libopm_proxy_wingate_write,  NULL },
+  { OPM_TYPE_HTTPPOST, libopm_proxy_httppost_write, NULL }
 };
-
-
-
 
 /* opm_create
  *
@@ -102,37 +98,35 @@ static OPM_PROTOCOL_T OPM_PROTOCOLS[] = {
  *
  * Parameters:
  *    None
- *  
- * Return 
+ *
+ * Return
  *    Pointer to new OPM_T (scanner)
  */
-
-OPM_T *opm_create()
+OPM_T *
+opm_create(void)
 {
-   int i;
-   OPM_T *ret;
+  int i;
+  OPM_T *ret;
 
-   ret = xcalloc(sizeof *ret);
+  ret = xcalloc(sizeof *ret);
 
-   ret->config = libopm_config_create();
-   ret->scans = libopm_list_create();
-   ret->queue = libopm_list_create();
-   ret->protocols = libopm_list_create();
-   ret->fd_use = 0;
+  ret->config = libopm_config_create();
+  ret->scans = libopm_list_create();
+  ret->queue = libopm_list_create();
+  ret->protocols = libopm_list_create();
+  ret->fd_use = 0;
 
-   /* Setup callbacks */
-   ret->callbacks = xcalloc(sizeof(OPM_CALLBACK_T) * CBLEN);
-   for(i = 0; i < CBLEN; i++)
-   {
-      ret->callbacks[i].func = NULL;
-      ret->callbacks[i].data = NULL;
-   }
+  /* Setup callbacks */
+  ret->callbacks = xcalloc(sizeof(OPM_CALLBACK_T) * CBLEN);
 
-   return ret;
+  for (i = 0; i < CBLEN; i++)
+  {
+    ret->callbacks[i].func = NULL;
+    ret->callbacks[i].data = NULL;
+  }
+
+  return ret;
 }
-
-
-
 
 /* opm_remote_create
  *
@@ -146,32 +140,28 @@ OPM_T *opm_create()
  *    Address of OPM_REMOTE_T created
  *
  */
+OPM_REMOTE_T *
+opm_remote_create(const char *ip)
+{
+  OPM_REMOTE_T *ret;
 
-OPM_REMOTE_T *opm_remote_create(const char *ip)
-{ 
-   OPM_REMOTE_T *ret;
+  ret = xcalloc(sizeof *ret);
 
+  /* Do initializations */
+  if (ip == NULL)
+    return NULL;
 
-   ret = xcalloc(sizeof *ret);
+  ret->ip = libopm_xstrdup(ip);
 
-   /* Do initializations */
-   if(ip == NULL)
-      return NULL;
+  ret->port          = 0;
+  ret->protocol      = 0;
+  ret->bytes_read    = 0;
+  ret->data          = NULL;
 
-   ret->ip = libopm_xstrdup(ip);
+  ret->protocols = libopm_list_create();  /* Setup protocol list */
 
-   ret->port          = 0;
-   ret->protocol      = 0;
-   ret->bytes_read    = 0;
-
-   ret->data          = NULL;
-
-   ret->protocols = libopm_list_create(); /* setup protocol list */
-
-   return ret;
+  return ret;
 }
-
-
 
 /* opm_remote_free
  *
@@ -183,31 +173,27 @@ OPM_REMOTE_T *opm_remote_create(const char *ip)
  * Return:
  *    None
  */
-
-void opm_remote_free(OPM_REMOTE_T *remote)
+void
+opm_remote_free(OPM_REMOTE_T *remote)
 {
+  OPM_NODE_T *p, *next;
+  OPM_PROTOCOL_CONFIG_T *ppc;
 
-   OPM_NODE_T *p, *next;
-   OPM_PROTOCOL_CONFIG_T *ppc;
+  MyFree(remote->ip);
 
-   MyFree(remote->ip);
+  LIST_FOREACH_SAFE(p, next, remote->protocols->head)
+  {
+    ppc = p->data;
 
-   LIST_FOREACH_SAFE(p, next, remote->protocols->head)
-   {
-      ppc = p->data;
+    libopm_protocol_config_free(ppc);
+    libopm_list_remove(remote->protocols, p);
+    libopm_node_free(p);
+  }
 
-      libopm_protocol_config_free(ppc);
-      libopm_list_remove(remote->protocols, p);
-      libopm_node_free(p);
-   }
+  libopm_list_free(remote->protocols);
 
-   libopm_list_free(remote->protocols);
-
-   MyFree(remote);
+  MyFree(remote);
 }
-
-
-
 
 /* opm_callback
  *    Register scanner level callback
@@ -219,19 +205,17 @@ void opm_remote_free(OPM_REMOTE_T *remote)
  *    Error code
  */
 
-OPM_ERR_T opm_callback(OPM_T *scanner, int type, OPM_CALLBACK_FUNC *function, void *data)
+OPM_ERR_T
+opm_callback(OPM_T *scanner, int type, OPM_CALLBACK_FUNC *function, void *data)
 {
-   if(type < 0 || type >= (CBLEN + 1))
-      return OPM_ERR_CBNOTFOUND;
+  if (type < 0 || type >= (CBLEN + 1))
+    return OPM_ERR_CBNOTFOUND;
 
-   scanner->callbacks[type].func = function;
-   scanner->callbacks[type].data = data;
+  scanner->callbacks[type].func = function;
+  scanner->callbacks[type].data = data;
 
-   return OPM_SUCCESS;
+  return OPM_SUCCESS;
 }
-
-
-
 
 /* opm_free
  *
@@ -243,50 +227,49 @@ OPM_ERR_T opm_callback(OPM_T *scanner, int type, OPM_CALLBACK_FUNC *function, vo
  * Return:
  *    None
  */
-
-void opm_free(OPM_T *scanner)
+void
+opm_free(OPM_T *scanner)
 {
-   OPM_NODE_T *p, *next;
-   OPM_PROTOCOL_CONFIG_T *ppc;
-   OPM_SCAN_T *scan;
+  OPM_NODE_T *p, *next;
+  OPM_PROTOCOL_CONFIG_T *ppc;
+  OPM_SCAN_T *scan;
 
-   libopm_config_free(scanner->config);
+  libopm_config_free(scanner->config);
 
-   LIST_FOREACH_SAFE(p, next, scanner->protocols->head)
-   {
-      ppc = p->data;
+  LIST_FOREACH_SAFE(p, next, scanner->protocols->head)
+  {
+    ppc = p->data;
 
-      libopm_protocol_config_free(ppc);
-      libopm_list_remove(scanner->protocols, p);
-      libopm_node_free(p);
-   }
+    libopm_protocol_config_free(ppc);
+    libopm_list_remove(scanner->protocols, p);
+    libopm_node_free(p);
+  }
 
-   LIST_FOREACH_SAFE(p, next, scanner->scans->head)
-   {
-      scan = p->data;
-      libopm_scan_free(scan);
-      libopm_list_remove(scanner->scans, p);
-      libopm_node_free(p);
-   }
+  LIST_FOREACH_SAFE(p, next, scanner->scans->head)
+  {
+    scan = p->data;
 
-   LIST_FOREACH_SAFE(p, next, scanner->queue->head)
-   {
-      scan = p->data;
-      libopm_scan_free(scan);
-      libopm_list_remove(scanner->queue, p);
-      libopm_node_free(p);
-   }
+    libopm_scan_free(scan);
+    libopm_list_remove(scanner->scans, p);
+    libopm_node_free(p);
+  }
 
-   libopm_list_free(scanner->protocols);
-   libopm_list_free(scanner->scans);
-   libopm_list_free(scanner->queue);
+  LIST_FOREACH_SAFE(p, next, scanner->queue->head)
+  {
+    scan = p->data;
 
-   MyFree(scanner->callbacks);
-   MyFree(scanner);
+    libopm_scan_free(scan);
+    libopm_list_remove(scanner->queue, p);
+    libopm_node_free(p);
+  }
+
+  libopm_list_free(scanner->protocols);
+  libopm_list_free(scanner->scans);
+  libopm_list_free(scanner->queue);
+
+  MyFree(scanner->callbacks);
+  MyFree(scanner);
 }
-
-
-
 
 /* opm_config
  *
@@ -301,20 +284,17 @@ void opm_free(OPM_T *scanner)
  * Return:
  *    OPM_ERR_T containing error code
  */
-
-OPM_ERR_T opm_config(OPM_T *scanner, int key, const void *value)
+OPM_ERR_T
+opm_config(OPM_T *scanner, int key, const void *value)
 {
-   return libopm_config_set((scanner->config), key, value);
+  return libopm_config_set((scanner->config), key, value);
 }
-
-
-
 
 /* opm_addtype
  *
- *    Add a proxy type and port to the list of protocols 
+ *    Add a proxy type and port to the list of protocols
  *    a scanner will use.
- * 
+ *
  * Parameters:
  *    scanner: pointer to scanner struct
  *    type:    type of proxy to scan (used in hashing to the functions)
@@ -323,34 +303,31 @@ OPM_ERR_T opm_config(OPM_T *scanner, int key, const void *value)
  *    OPM_SUCCESS: Successful protocol add
  *    OPM_ERR_BADPROTOCOL: Protocol is unknown
  */
-
-OPM_ERR_T opm_addtype(OPM_T *scanner, int type, unsigned short int port)
+OPM_ERR_T
+opm_addtype(OPM_T *scanner, int type, unsigned short int port)
 {
-   unsigned int i;
+  unsigned int i;
 
-   OPM_NODE_T *node;
-   OPM_PROTOCOL_CONFIG_T *protocol_config;
+  OPM_NODE_T *node;
+  OPM_PROTOCOL_CONFIG_T *protocol_config;
 
-   for(i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); i++)
-   {
-      if(type == OPM_PROTOCOLS[i].type)
-      {
-         protocol_config = libopm_protocol_config_create();
+  for (i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); i++)
+  {
+    if (type == OPM_PROTOCOLS[i].type)
+    {
+      protocol_config = libopm_protocol_config_create();
+      protocol_config->type = &OPM_PROTOCOLS[i];
+      protocol_config->port = port;
 
-         protocol_config->type = &OPM_PROTOCOLS[i];
-         protocol_config->port = port;
-  
-         node = libopm_node_create(protocol_config);
-         libopm_list_add(scanner->protocols, node);
+      node = libopm_node_create(protocol_config);
+      libopm_list_add(scanner->protocols, node);
 
-         return OPM_SUCCESS;
+      return OPM_SUCCESS;
+    }
+  }
 
-      }
-   }
-   return OPM_ERR_BADPROTOCOL;
+  return OPM_ERR_BADPROTOCOL;
 }
-
-
 
 /* opm_remote_addtype
  *
@@ -365,34 +342,30 @@ OPM_ERR_T opm_addtype(OPM_T *scanner, int type, unsigned short int port)
  *    OPM_SUCCESS: Successful protocol add
  *    OPM_ERR_BADPROTOCOL: Protocol is unknown
  */
-
 OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *remote, int type, unsigned short int port)
 {
-   unsigned int i;
+  unsigned int i;
 
-   OPM_NODE_T *node;
-   OPM_PROTOCOL_CONFIG_T *protocol_config;
+  OPM_NODE_T *node;
+  OPM_PROTOCOL_CONFIG_T *protocol_config;
 
-   for(i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); i++)
-   {
-      if(type == OPM_PROTOCOLS[i].type)
-      {
-         protocol_config = libopm_protocol_config_create();
+  for (i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); i++)
+  {
+    if (type == OPM_PROTOCOLS[i].type)
+    {
+      protocol_config = libopm_protocol_config_create();
+      protocol_config->type = &OPM_PROTOCOLS[i];
+      protocol_config->port = port;
 
-         protocol_config->type = &OPM_PROTOCOLS[i];
-         protocol_config->port = port;
+      node = libopm_node_create(protocol_config);
+      libopm_list_add(remote->protocols, node);
 
-         node = libopm_node_create(protocol_config);
-         libopm_list_add(remote->protocols, node);
+      return OPM_SUCCESS;
+    }
+  }
 
-         return OPM_SUCCESS;
-      }
-   }
-   return OPM_ERR_BADPROTOCOL;
+  return OPM_ERR_BADPROTOCOL;
 }
-
-
-
 
 /* libopm_protocol_create
  *
@@ -406,46 +379,42 @@ OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *remote, int type, unsigned short int 
  * XXX - does not appear to be used anywhere?
  * -grifferz
  */
-
 #if 0
 static OPM_PROTOCOL_T *libopm_protocol_create(void)
 {
-   OPM_PROTOCOL_T *ret;
-   ret = xcalloc(sizeof(OPM_PROTOCOL_T));
+  OPM_PROTOCOL_T *ret;
+  ret = xcalloc(sizeof(OPM_PROTOCOL_T));
 
-   ret->type           = 0;
-   ret->write_function = NULL;
-   ret->read_function  = NULL;
-   
-   return ret;
+  ret->type           = 0;
+  ret->write_function = NULL;
+  ret->read_function  = NULL;
+
+  return ret;
 }
 #endif
 
-
 /* libopm_protocol_free
  *
- *    Free an OPM_PROTOCOL_T struct. Assume that if 
- *    format is not NULL, it is pointed to dynamically 
+ *    Free an OPM_PROTOCOL_T struct. Assume that if
+ *    format is not NULL, it is pointed to dynamically
  *    allocated memory and free it.
- * 
+ *
  * Parameters:
  *    protocol: struct to free
- * 
+ *
  * Return:
  *    None
  *
  * XXX - apparently no longer used?
  *  -grifferz
  */
-
 #if 0
-static void libopm_protocol_free(OPM_PROTOCOL_T *protocol)
+static void
+libopm_protocol_free(OPM_PROTOCOL_T *protocol)
 {
-   MyFree(protocol);
+  MyFree(protocol);
 }
 #endif
-
-
 
 /* libopm_protocol_config_create
  *
@@ -457,17 +426,14 @@ static void libopm_protocol_free(OPM_PROTOCOL_T *protocol)
  * Return:
  *    Address of new OPM_PROTOCOL_CONFIG_T
  */
-
-static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void)
+static OPM_PROTOCOL_CONFIG_T *
+libopm_protocol_config_create(void)
 {
-   OPM_PROTOCOL_CONFIG_T *ret;
-   ret = xcalloc(sizeof *ret);
+  OPM_PROTOCOL_CONFIG_T *ret;
+  ret = xcalloc(sizeof *ret);
 
-   return ret;
+  return ret;
 }
-
-
-
 
 /* protocol_config_free
  *
@@ -479,14 +445,11 @@ static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void)
  * Return:
  *    None
  */
-
-static void libopm_protocol_config_free(OPM_PROTOCOL_CONFIG_T *protocol)
+static void
+libopm_protocol_config_free(OPM_PROTOCOL_CONFIG_T *protocol)
 {
-   MyFree(protocol);
+  MyFree(protocol);
 }
-
-
-
 
 /* opm_scan
  *
@@ -497,42 +460,36 @@ static void libopm_protocol_config_free(OPM_PROTOCOL_CONFIG_T *protocol)
  * Parameters:
  *    scanner: Scanner to scan host on
  *    remote:  OPM_REMOTE_T defining remote host
- *    
+ *
  * Return:
  *    (to be written)
  */
-
-OPM_ERR_T opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
+OPM_ERR_T
+opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
-   OPM_SCAN_T *scan; /* New scan for OPM_T */
-   OPM_NODE_T *node;     /* Node we'll add scan to
-                        when we link it to scans */
-   unsigned int fd_limit;
+  OPM_SCAN_T *scan;  /* New scan for OPM_T */
+  OPM_NODE_T *node;  /* Node we'll add scan to when we link it to scans */
+  unsigned int fd_limit;
 
-   fd_limit = *(int *) libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT);
+  fd_limit = *(int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT);
 
-   if(LIST_SIZE(scanner->protocols) == 0 && 
+  if (LIST_SIZE(scanner->protocols) == 0 &&
       LIST_SIZE(remote->protocols) == 0)
-   {
-      return OPM_ERR_NOPROTOCOLS; 
-   }
+    return OPM_ERR_NOPROTOCOLS;
 
-   scan = libopm_scan_create(scanner, remote);
+  scan = libopm_scan_create(scanner, remote);
 
-   if(inet_pton(AF_INET, remote->ip, &(scan->addr.sa4.sin_addr) ) <= 0)
-   {
-      libopm_scan_free(scan);
-      return OPM_ERR_BADADDR;
-   }
+  if (inet_pton(AF_INET, remote->ip, &(scan->addr.sa4.sin_addr) ) <= 0)
+  {
+    libopm_scan_free(scan);
+    return OPM_ERR_BADADDR;
+  }
 
-   node = libopm_node_create(scan);
-   libopm_list_add(scanner->queue, node);
+  node = libopm_node_create(scan);
+  libopm_list_add(scanner->queue, node);
 
-   return OPM_SUCCESS;
+  return OPM_SUCCESS;
 }
-
-
-
 
 /* opm_end
  *
@@ -542,53 +499,50 @@ OPM_ERR_T opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
  *    scanner: Scanner to end scan on
  *    remote: Pointer to remote struct to search for and end
  *
- * Return: 
+ * Return:
  *    No return. OPM_CALLBACK_END will still be called as normal.
  */
-
-void opm_end(OPM_T *scanner, OPM_REMOTE_T *remote)
+void
+opm_end(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
-   OPM_NODE_T *node1, *node2, *next1, *next2;
+  OPM_NODE_T *node1, *node2, *next1, *next2;
+  OPM_SCAN_T *scan;
+  OPM_CONNECTION_T *conn;
 
-   OPM_SCAN_T *scan;
-   OPM_CONNECTION_T *conn;
+  /* End active scans */
+  opm_endscan(scanner, remote);
 
-   /* End active scans */
-   opm_endscan(scanner, remote);
+  /*
+   * Secondly remove all traces of it in the queue. Once removed we have to call
+   * OPM_CALLBACK_END
+   */
+  LIST_FOREACH_SAFE(node1, next1, scanner->queue->head)
+  {
+    scan = node1->data;
 
-   /* Secondly remove all traces of it in the queue. Once removed we have to call 
-      OPM_CALLBACK_END */
-
-   LIST_FOREACH_SAFE(node1, next1, scanner->queue->head)
-   {
-      scan = node1->data;
-      if(scan->remote == remote)
+    if (scan->remote == remote)
+    {
+      /* Free all connections */
+      LIST_FOREACH_SAFE(node2, next2, scan->connections->head)
       {
-         /* Free all connections */
-         LIST_FOREACH_SAFE(node2, next2, scan->connections->head)
-         {
+        conn = node2->data;
 
-            conn = node2->data;
-
-            libopm_list_remove(scan->connections, node2);
-            libopm_connection_free(conn);
-            libopm_node_free(node2);
-            continue;
-         }
-
-         /* OPM_CALLBACK_END because check_closed normally handles this */
-         libopm_do_callback(scanner, scan->remote, OPM_CALLBACK_END, 0);
-
-         /* Free up the scan */
-         libopm_list_remove(scanner->queue, node1);
-         libopm_scan_free(scan);
-         libopm_node_free(node1);
+        libopm_list_remove(scan->connections, node2);
+        libopm_connection_free(conn);
+        libopm_node_free(node2);
+        continue;
       }
-   }
+
+      /* OPM_CALLBACK_END because check_closed normally handles this */
+      libopm_do_callback(scanner, scan->remote, OPM_CALLBACK_END, 0);
+
+      /* Free up the scan */
+      libopm_list_remove(scanner->queue, node1);
+      libopm_scan_free(scan);
+      libopm_node_free(node1);
+    }
+  }
 }
-
-
-
 
 /* opm_endscan
  *
@@ -603,38 +557,34 @@ void opm_end(OPM_T *scanner, OPM_REMOTE_T *remote)
  * Return:
  *    No return. OPM_CALLBACK_END will still be called as normal.
  */
-
-void opm_endscan(OPM_T *scanner, OPM_REMOTE_T *remote)
+void
+opm_endscan(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
-   OPM_NODE_T *node1, *node2;
+  OPM_NODE_T *node1, *node2;
+  OPM_SCAN_T *scan;
+  OPM_CONNECTION_T *conn;
 
-   OPM_SCAN_T *scan;
-   OPM_CONNECTION_T *conn;
-
-   /*
-     First check to see if it's in the queue, if it is set all connections closed
-     Next cycle of libopm_check_closed will take care of the garbage and handle
-     OPM_CALLBACK_END
+  /*
+   * First check to see if it's in the queue, if it is set all connections closed
+   * Next cycle of libopm_check_closed will take care of the garbage and handle
+   * OPM_CALLBACK_END
    */
-   LIST_FOREACH(node1, scanner->scans->head)
-   {
-      scan = node1->data;
+  LIST_FOREACH(node1, scanner->scans->head)
+  {
+    scan = node1->data;
 
-      if(scan->remote == remote)
+    if (scan->remote == remote)
+    {
+      LIST_FOREACH(node2, scan->connections->head)
       {
-         LIST_FOREACH(node2, scan->connections->head)
-         {
-            conn = (OPM_CONNECTION_T *) node2->data;
-            conn->state = OPM_STATE_CLOSED;
-         }
+        conn = (OPM_CONNECTION_T *) node2->data;
+        conn->state = OPM_STATE_CLOSED;
       }
-   }
+    }
+  }
 }
 
-
-
-
-/* opm_active 
+/* opm_active
 
       Return number of scans in a scanner left.
 
@@ -644,19 +594,17 @@ void opm_endscan(OPM_T *scanner, OPM_REMOTE_T *remote)
    Return:
       Number of active scans, both queued and active.
 */
-
-size_t opm_active(OPM_T *scanner)
+size_t
+opm_active(OPM_T *scanner)
 {
-    return LIST_SIZE(scanner->queue) + LIST_SIZE(scanner->scans);
+  return LIST_SIZE(scanner->queue) + LIST_SIZE(scanner->scans);
 }
-
-
 
 /* scan_create
  *
  *    Create new OPM_SCAN_T struct
  *
- * Parameters: 
+ * Parameters:
  *    scanner: Scanner the scan is being created for. This
  *             is needed to get information on currently set
  *             protocols/config.
@@ -666,52 +614,48 @@ size_t opm_active(OPM_T *scanner)
  * Return
  *    Address of new struct
  */
-static OPM_SCAN_T *libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
+static OPM_SCAN_T *
+libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
-   OPM_SCAN_T *ret;
-   OPM_CONNECTION_T *conn;
-   OPM_NODE_T *node, *p;
+  OPM_SCAN_T *ret;
+  OPM_CONNECTION_T *conn;
+  OPM_NODE_T *node, *p;
 
-   ret = xcalloc(sizeof *ret);
+  ret = xcalloc(sizeof *ret);
 
-   ret->remote = remote;
-   ret->connections = libopm_list_create();
- 
-   /* Setup list of connections, one for each protocol */ 
-   LIST_FOREACH(p, scanner->protocols->head)
-   {
-      conn = libopm_connection_create();
+  ret->remote = remote;
+  ret->connections = libopm_list_create();
 
-      conn->protocol = ((OPM_PROTOCOL_CONFIG_T *) p->data)->type;
-      conn->port     = ((OPM_PROTOCOL_CONFIG_T *) p->data)->port;
- 
-      node = libopm_node_create(conn);
+  /* Setup list of connections, one for each protocol */ 
+  LIST_FOREACH(p, scanner->protocols->head)
+  {
+    conn = libopm_connection_create();
 
-      libopm_list_add(ret->connections, node);
-   }
+    conn->protocol = ((OPM_PROTOCOL_CONFIG_T *) p->data)->type;
+    conn->port     = ((OPM_PROTOCOL_CONFIG_T *) p->data)->port;
 
-   /* Do the same for any specific protocols the remote struct might be configured
-      with */
+    node = libopm_node_create(conn);
 
-   LIST_FOREACH(p, remote->protocols->head)
-   {
-      conn = libopm_connection_create();
+    libopm_list_add(ret->connections, node);
+  }
 
-      conn->protocol = ((OPM_PROTOCOL_CONFIG_T *) p->data)->type;
-      conn->port     = ((OPM_PROTOCOL_CONFIG_T *) p->data)->port;
+  /*
+   * Do the same for any specific protocols the remote struct might be configured with
+   */
+  LIST_FOREACH(p, remote->protocols->head)
+  {
+    conn = libopm_connection_create();
 
-      node = libopm_node_create(conn);
+    conn->protocol = ((OPM_PROTOCOL_CONFIG_T *) p->data)->type;
+    conn->port     = ((OPM_PROTOCOL_CONFIG_T *) p->data)->port;
 
-      libopm_list_add(ret->connections, node);
-   }
+    node = libopm_node_create(conn);
+    libopm_list_add(ret->connections, node);
+  }
 
-   memset(&(ret->addr), 0, sizeof(opm_sockaddr));
-
-   return ret;
+  memset(&(ret->addr), 0, sizeof(opm_sockaddr));
+  return ret;
 }
-
-
-
 
 /* scan_free
  *
@@ -723,27 +667,25 @@ static OPM_SCAN_T *libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
  * Return:
  *    None
  */
-
-static void libopm_scan_free(OPM_SCAN_T *scan)
+static void
+libopm_scan_free(OPM_SCAN_T *scan)
 {
-   OPM_NODE_T *p, *next;
-   OPM_CONNECTION_T *conn;
+  OPM_NODE_T *p, *next;
+  OPM_CONNECTION_T *conn;
 
-   LIST_FOREACH_SAFE(p, next, scan->connections->head)
-   {
-      conn = p->data;
-      libopm_connection_free(conn);
+  LIST_FOREACH_SAFE(p, next, scan->connections->head)
+  {
+    conn = p->data;
 
-      libopm_list_remove(scan->connections, p);
-      libopm_node_free(p);
-   }
-   libopm_list_free(scan->connections);
+    libopm_connection_free(conn);
+    libopm_list_remove(scan->connections, p);
+    libopm_node_free(p);
+  }
 
-   MyFree(scan);
+  libopm_list_free(scan->connections);
+
+  MyFree(scan);
 }
-
-
-
 
 /* connection_create
  *
@@ -755,25 +697,23 @@ static void libopm_scan_free(OPM_SCAN_T *scan)
  * Return:
  *    Address of new OPM_CONNECTION_T
  */
-
-static OPM_CONNECTION_T *libopm_connection_create(void)
+static OPM_CONNECTION_T *
+libopm_connection_create(void)
 {
-   OPM_CONNECTION_T *ret;
-   ret = xcalloc(sizeof *ret);
+  OPM_CONNECTION_T *ret;
 
-   ret->fd         = 0;
-   ret->bytes_read = 0;
-   ret->readlen    = 0;
-   ret->protocol   = 0;
-   ret->port       = 0;
+  ret = xcalloc(sizeof *ret);
 
-   ret->state      = OPM_STATE_UNESTABLISHED;
+  ret->fd         = 0;
+  ret->bytes_read = 0;
+  ret->readlen    = 0;
+  ret->protocol   = 0;
+  ret->port       = 0;
 
-   return ret;
+  ret->state      = OPM_STATE_UNESTABLISHED;
+
+  return ret;
 }
-
-
-
 
 /* connection_free
  *
@@ -785,12 +725,11 @@ static OPM_CONNECTION_T *libopm_connection_create(void)
  * Return:
  *    None
  */
-
-static void libopm_connection_free(OPM_CONNECTION_T *conn)
+static void
+libopm_connection_free(OPM_CONNECTION_T *conn)
 {
-   MyFree(conn);
+  MyFree(conn);
 }
-
 
 /* opm_cycle
  *
@@ -801,17 +740,14 @@ static void libopm_connection_free(OPM_CONNECTION_T *conn)
  *  Return:
  *    None
  */
-
-void opm_cycle(OPM_T *scanner)
+void
+opm_cycle(OPM_T *scanner)
 {
-   libopm_check_queue(scanner);      /* Move scans from the queue to the live scan list */
-   libopm_check_establish(scanner);  /* Make new connections if possible                */
-   libopm_check_poll(scanner);       /* Poll connections for IO  and proxy test         */
-   libopm_check_closed(scanner);     /* Check for closed or timed out connections       */
+  libopm_check_queue(scanner);      /* Move scans from the queue to the live scan list */
+  libopm_check_establish(scanner);  /* Make new connections if possible                */
+  libopm_check_poll(scanner);       /* Poll connections for IO  and proxy test         */
+  libopm_check_closed(scanner);     /* Check for closed or timed out connections       */
 }
-
-
-
 
 /* check_queue
  *
@@ -824,8 +760,8 @@ void opm_cycle(OPM_T *scanner)
  * Return:
  *    None
  */
-
-static void libopm_check_queue(OPM_T *scanner)
+static void
+libopm_check_queue(OPM_T *scanner)
 {
    OPM_NODE_T *node;
    OPM_SCAN_T *scan;
@@ -861,9 +797,6 @@ static void libopm_check_queue(OPM_T *scanner)
 
 }
 
-
-
-
 /* check_establish
  *
  * Make new connections if there are free file descriptors and connections
@@ -874,41 +807,39 @@ static void libopm_check_queue(OPM_T *scanner)
  * Return:
  *   None
  */
-
-static void libopm_check_establish(OPM_T *scanner)
+static void
+libopm_check_establish(OPM_T *scanner)
 {
-   OPM_NODE_T *node1, *node2;
-   OPM_SCAN_T *scan;
-   OPM_CONNECTION_T *conn;
+  OPM_NODE_T *node1, *node2;
+  OPM_SCAN_T *scan;
+  OPM_CONNECTION_T *conn;
+  unsigned int fd_limit;
 
-   unsigned int fd_limit;
+  if (LIST_SIZE(scanner->scans) == 0)
+    return;
 
-   if(LIST_SIZE(scanner->scans) == 0)
-      return;
+  fd_limit = *(int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT);
 
-   fd_limit = *(int *) libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT);
+  if (scanner->fd_use >= fd_limit)
+    return;
 
-   if(scanner->fd_use >= fd_limit)
-      return;
+  LIST_FOREACH(node1, scanner->scans->head)
+  {
+    scan = node1->data;
 
-   LIST_FOREACH(node1, scanner->scans->head)
-   {
-      scan = node1->data;
-      LIST_FOREACH(node2, scan->connections->head)
-      {
-         /* Only scan if we have free file descriptors */
-         if(scanner->fd_use >= fd_limit)
-            return;
+    LIST_FOREACH(node2, scan->connections->head)
+    {
+      /* Only scan if we have free file descriptors */
+      if (scanner->fd_use >= fd_limit)
+        return;
 
-         conn = node2->data;
-         if(conn->state == OPM_STATE_UNESTABLISHED)
-            libopm_do_connect(scanner, scan, conn);
-      } 
-   }
+      conn = node2->data;
+
+      if (conn->state == OPM_STATE_UNESTABLISHED)
+        libopm_do_connect(scanner, scan, conn);
+    } 
+  }
 }
-
-
-
 
 /* check_closed
  * 
@@ -925,8 +856,8 @@ static void libopm_check_establish(OPM_T *scanner)
  * Return:
  *   None
  */
-
-static void libopm_check_closed(OPM_T *scanner)
+static void
+libopm_check_closed(OPM_T *scanner)
 {
 
    time_t present;
@@ -995,9 +926,6 @@ static void libopm_check_closed(OPM_T *scanner)
    }
 }
 
-
-
-
 /* do_connect
  *
  * Call socket() and connect() to start a scan.
@@ -1008,8 +936,8 @@ static void libopm_check_closed(OPM_T *scanner)
  * Return: 
  *    None
  */
-
-static void libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+static void
+libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
    opm_sockaddr *bind_ip;
 
@@ -1058,7 +986,6 @@ static void libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_
    time(&(conn->creation));   /* Stamp creation time, for timeout */
 }
 
-
 /* check_poll
  *
  * Check sockets for ready read/write
@@ -1068,8 +995,8 @@ static void libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_
  * Return:
  *    None
  */
-
-static void libopm_check_poll(OPM_T *scanner)
+static void
+libopm_check_poll(OPM_T *scanner)
 {
    OPM_NODE_T *node1, *node2;
    OPM_SCAN_T *scan;
@@ -1164,9 +1091,6 @@ static void libopm_check_poll(OPM_T *scanner)
    }
 }
 
-
-
-
 /* do_readready
  *
  *    Remote connection is read ready, read the data into a buffer and check it against 
@@ -1180,8 +1104,8 @@ static void libopm_check_poll(OPM_T *scanner)
  *    Return:
  *       None
  */
-
-static void libopm_do_readready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+static void
+libopm_do_readready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
 
    int max_read;
@@ -1244,15 +1168,12 @@ static void libopm_do_readready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION
    }
 }
 
-
-
-
 /* do_read
  *
  *    A line of data has been read from the socket, check it against
  *    target string.
  *
- *    
+ *
  *
  *    Parameters:
  *       scanner: Scanner doing the scan
@@ -1262,26 +1183,27 @@ static void libopm_do_readready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION
  *    Return:
  *       None
  */
-
-static void libopm_do_read(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+static void
+libopm_do_read(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   OPM_LIST_T *list;
-   OPM_NODE_T *node;
-   char *target_string;
+  OPM_LIST_T *list;
+  OPM_NODE_T *node;
+  char *target_string;
 
-   /* Check readbuf against target strings */
-   list = (OPM_LIST_T *) libopm_config(scanner->config, OPM_CONFIG_TARGET_STRING);
-   LIST_FOREACH(node, list->head)
-   {
-      target_string = node->data;
-      if(strstr(conn->readbuf, target_string))
-      {
-         libopm_do_openproxy(scanner, scan, conn);
-         break;
-      }
-   }
+  /* Check readbuf against target strings */
+  list = (OPM_LIST_T *)libopm_config(scanner->config, OPM_CONFIG_TARGET_STRING);
+
+  LIST_FOREACH(node, list->head)
+  {
+    target_string = node->data;
+
+    if (strstr(conn->readbuf, target_string))
+    {
+      libopm_do_openproxy(scanner, scan, conn);
+      break;
+    }
+  }
 }
-
 
 /* do_openproxy
  *
@@ -1296,22 +1218,19 @@ static void libopm_do_read(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *c
  *    Return:
  *       None
  */
-
-static void libopm_do_openproxy(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+static void
+libopm_do_openproxy(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   OPM_REMOTE_T *remote;
+  OPM_REMOTE_T *remote;
 
-   remote = scan->remote;
+  remote = scan->remote;
 
-   /* Mark the connection for close */
-   conn->state = OPM_STATE_CLOSED;
+  /* Mark the connection for close */
+  conn->state = OPM_STATE_CLOSED;
 
-   /* Call client's open proxy callback */
-   libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_OPENPROXY, 0);
+  /* Call client's open proxy callback */
+  libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_OPENPROXY, 0);
 }
-
-
-
 
 /*  do_writeready
  *
@@ -1326,23 +1245,20 @@ static void libopm_do_openproxy(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION
  *    Return:
  *       None
  */
-
-static void libopm_do_writeready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+static void
+libopm_do_writeready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   OPM_PROTOCOL_T *protocol;
+  OPM_PROTOCOL_T *protocol;
 
-   protocol = conn->protocol;
+  protocol = conn->protocol;
 
-   /* Call write function for specific protocol */
-   if(protocol->write_function)
-      protocol->write_function(scanner, scan, conn);
+  /* Call write function for specific protocol */
+  if (protocol->write_function)
+    protocol->write_function(scanner, scan, conn);
 
-   /* Flag as NEGSENT so we don't have to send data again*/
-   conn->state = OPM_STATE_NEGSENT;  
+  /* Flag as NEGSENT so we don't have to send data again*/
+  conn->state = OPM_STATE_NEGSENT;
 }
-
-
-
 
 /* do_hup
  *
@@ -1356,21 +1272,18 @@ static void libopm_do_writeready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTIO
  * Return:
  *       None
  */
-
-static void libopm_do_hup(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+static void
+libopm_do_hup(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   OPM_REMOTE_T *remote;
+  OPM_REMOTE_T *remote;
 
-   remote = scan->remote;
+  remote = scan->remote;
 
   /* Mark the connection for close */
-   conn->state = OPM_STATE_CLOSED;
+  conn->state = OPM_STATE_CLOSED;
 
-   libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_NEGFAIL, 0);
+  libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_NEGFAIL, 0);
 }
-
-
-
 
 /* do_callback
  * 
@@ -1384,19 +1297,16 @@ static void libopm_do_hup(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
  * Return:
  *    None
  */
-
-static void libopm_do_callback(OPM_T *scanner, OPM_REMOTE_T *remote, int type, int var)
+static void
+libopm_do_callback(OPM_T *scanner, OPM_REMOTE_T *remote, int type, int var)
 {
-   /* Callback is out of range */
-   if(type < 0 || type >= (CBLEN + 1))
-      return;
+  /* Callback is out of range */
+  if (type < 0 || type >= (CBLEN + 1))
+    return;
 
-   if(scanner->callbacks[type].func)
-      (scanner->callbacks[type].func) (scanner, remote, var, scanner->callbacks[type].data);
+  if (scanner->callbacks[type].func)
+    (scanner->callbacks[type].func)(scanner, remote, var, scanner->callbacks[type].data);
 }
-
-
-
 
 /* setup_remote
  *
@@ -1405,16 +1315,16 @@ static void libopm_do_callback(OPM_T *scanner, OPM_REMOTE_T *remote, int type, i
  *
  * Parameters:
  *    remote, conn
- * 
+ *
  * Return:
  *    remote
  */
-
-static OPM_REMOTE_T *libopm_setup_remote(OPM_REMOTE_T *remote, OPM_CONNECTION_T *conn)
+static OPM_REMOTE_T *
+libopm_setup_remote(OPM_REMOTE_T *remote, OPM_CONNECTION_T *conn)
 {
-   remote->port = conn->port;
-   remote->bytes_read = conn->bytes_read;
-   remote->protocol = conn->protocol->type;
+  remote->port = conn->port;
+  remote->bytes_read = conn->bytes_read;
+  remote->protocol = conn->protocol->type;
 
-   return remote;
+  return remote;
 }

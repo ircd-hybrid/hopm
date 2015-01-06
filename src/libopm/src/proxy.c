@@ -37,18 +37,18 @@
 
 static char SENDBUF[SENDBUFLEN + 1];
 
-int libopm_proxy_http_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+int
+libopm_proxy_http_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   snprintf(SENDBUF, SENDBUFLEN, "CONNECT %s:%d HTTP/1.0\r\n\r\n",
-      (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP), 
-      *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT));
- 
-   if(send(conn->fd, SENDBUF, strlen(SENDBUF), 0) == -1)
-      return 0; /* Return error code ? */
+  snprintf(SENDBUF, SENDBUFLEN, "CONNECT %s:%d HTTP/1.0\r\n\r\n",
+           (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP),
+           *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT));
 
-   return OPM_SUCCESS;
+  if (send(conn->fd, SENDBUF, strlen(SENDBUF), 0) == -1)
+    return 0;  /* Return error code ? */
+
+  return OPM_SUCCESS;
 }
-
 
 /*
  * CONNECT request byte order for socks4
@@ -60,33 +60,32 @@ int libopm_proxy_http_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *
  *
  *  VN = Version, CD = Command Code (1 is connect request)
  */
-
-int libopm_proxy_socks4_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+int
+libopm_proxy_socks4_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   struct in_addr addr;
-   unsigned long laddr;
-   int len, scan_port;
-   char *scan_ip;
-         
-   scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
-   scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+  struct in_addr addr;
+  unsigned long laddr;
+  int len, scan_port;
+  char *scan_ip;
 
-   if (inet_pton(AF_INET, scan_ip, &addr) <= 0)
-      ; /* handle error */ 
+  scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
-   laddr = htonl(addr.s_addr);
+  if (inet_pton(AF_INET, scan_ip, &addr) <= 0)
+    ;  /* handle error */
 
-   len = snprintf(SENDBUF, SENDBUFLEN, "%c%c%c%c%c%c%c%c%c",  4, 1,
-                 (((unsigned short) scan_port) >> 8) & 0xFF,
-                 (((unsigned short) scan_port) & 0xFF),
-                 (char) (laddr >> 24) & 0xFF, (char) (laddr >> 16) & 0xFF,
-                 (char) (laddr >> 8) & 0xFF, (char) laddr & 0xFF, 0);
+  laddr = htonl(addr.s_addr);
 
-   send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  len = snprintf(SENDBUF, SENDBUFLEN, "%c%c%c%c%c%c%c%c%c", 4, 1,
+                 (((unsigned short)scan_port) >> 8) & 0xFF,
+                 (((unsigned short)scan_port) & 0xFF),
+                 (char)(laddr >> 24) & 0xFF, (char)(laddr >> 16) & 0xFF,
+                 (char)(laddr >> 8) & 0xFF, (char)laddr & 0xFF, 0);
 
-   return OPM_SUCCESS;
+  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+
+  return OPM_SUCCESS;
 }
-
 
 /*
  * Send version authentication selection message to socks5
@@ -127,62 +126,62 @@ int libopm_proxy_socks4_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T
  *
  *
  */
-
-int libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+int
+libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   struct in_addr addr;
-   unsigned long laddr;
-   int len, scan_port;
-   char *scan_ip;
-   
-   scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
-   scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+  struct in_addr addr;
+  unsigned long laddr;
+  int len, scan_port;
+  char *scan_ip;
 
-   if (inet_pton(AF_INET, scan_ip, &addr) <= 0)
-      ; /* handle error */ 
+  scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
-   laddr = htonl(addr.s_addr);
+  if (inet_pton(AF_INET, scan_ip, &addr) <= 0)
+    ; /* handle error */
 
-   /* Form authentication string */
-   /* Version 5, 1 number of methods, 0 method (no auth). */
-   len = snprintf(SENDBUF, SENDBUFLEN, "%c%c%c", 5, 1, 0);
-   send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  laddr = htonl(addr.s_addr);
 
-   /* Form request string */
+  /* Form authentication string */
+  /* Version 5, 1 number of methods, 0 method (no auth). */
+  len = snprintf(SENDBUF, SENDBUFLEN, "%c%c%c", 5, 1, 0);
+  send(conn->fd, SENDBUF, (unsigned int)len, 0);
 
-   /* Will need to write ipv6 support here in future
-    * as socks5 is ipv6 compatible
-    */
-   len = snprintf(SENDBUF, SENDBUFLEN, "%c%c%c%c%c%c%c%c%c%c", 5, 1, 0, 1,
+  /* Form request string */
+
+  /*
+   * Will need to write ipv6 support here in future
+   * as socks5 is ipv6 compatible
+   */
+  len = snprintf(SENDBUF, SENDBUFLEN, "%c%c%c%c%c%c%c%c%c%c", 5, 1, 0, 1,
                  (char) (laddr >> 24) & 0xFF, (char) (laddr >> 16) & 0xFF,
                  (char) (laddr >> 8) & 0xFF, (char) laddr & 0xFF,
                  (((unsigned short) scan_port) >> 8) & 0xFF,
                  (((unsigned short) scan_port) & 0xFF));
 
-   send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, (unsigned int)len, 0);
 
-   return OPM_SUCCESS;
+  return OPM_SUCCESS;
 }
 
 /*
  * Open wingates require no authentication, they will send a prompt when
  * connect.
  */
-
-int libopm_proxy_wingate_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+int
+libopm_proxy_wingate_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   int scan_port, len;
-   char *scan_ip;
+  int scan_port, len;
+  char *scan_ip;
 
-   scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
-   scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+  scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
-   len = snprintf(SENDBUF, SENDBUFLEN, "%s:%d\r\n", scan_ip, scan_port);
-   send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  len = snprintf(SENDBUF, SENDBUFLEN, "%s:%d\r\n", scan_ip, scan_port);
+  send(conn->fd, SENDBUF, (unsigned int)len, 0);
 
-   return OPM_SUCCESS;
+  return OPM_SUCCESS;
 }
-
 
 /*
  * Cisco scanning
@@ -191,45 +190,44 @@ int libopm_proxy_wingate_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_
  * relay. Attempt to connect using cisco as a password, then give command for
  * telnet to the scanip/scanport
  */
-
-int libopm_proxy_router_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+int
+libopm_proxy_router_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   int len, scan_port;
-   char *scan_ip;
+  int len, scan_port;
+  char *scan_ip;
 
-   scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
-   scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+  scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
-   len = snprintf(SENDBUF, SENDBUFLEN, "cisco\r\n");
-   send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  len = snprintf(SENDBUF, SENDBUFLEN, "cisco\r\n");
+  send(conn->fd, SENDBUF, (unsigned int)len, 0);
 
-   len = snprintf(SENDBUF, SENDBUFLEN, "telnet %s %d\r\n", scan_ip, scan_port);
-   send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  len = snprintf(SENDBUF, SENDBUFLEN, "telnet %s %d\r\n", scan_ip, scan_port);
+  send(conn->fd, SENDBUF, (unsigned int)len, 0);
 
-   return OPM_SUCCESS;
+  return OPM_SUCCESS;
 }
-
 
 /*
  * HTTP POST Scanning
  *
  */
-
-int libopm_proxy_httppost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+int
+libopm_proxy_httppost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   int len, scan_port;
-   char *scan_ip;
+  int len, scan_port;
+  char *scan_ip;
 
-   scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
-   scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+  scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
-   len = snprintf(SENDBUF, SENDBUFLEN, "POST http://%s:%d/ HTTP/1.0\r\n"
-            "Content-type: text/plain\r\n"
-            "Content-length: 5\r\n\r\n"
-            "quit\r\n\r\n",
-            scan_ip, scan_port);
+  len = snprintf(SENDBUF, SENDBUFLEN,
+                 "POST http://%s:%d/ HTTP/1.0\r\n"
+                 "Content-type: text/plain\r\n"
+                 "Content-length: 5\r\n\r\n"
+                 "quit\r\n\r\n", scan_ip, scan_port);
 
-   send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, (unsigned int)len, 0);
 
-   return OPM_SUCCESS;
+  return OPM_SUCCESS;
 }
