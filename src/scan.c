@@ -113,15 +113,14 @@ scan_cycle(void)
 void
 scan_timer(void)
 {
-  static unsigned int nc_counter;
+  static time_t nc_counter;
 
   if (OptionsItem->negcache > 0)
   {
-    if (nc_counter++ >= NEG_CACHE_REBUILD)
+    if (nc_counter++ >= OptionsItem->negcache_rebuild)
     {
       /*
-       * Time to rebuild the negative
-       * cache.
+       * Time to rebuild the negative cache.
        */
       if (OPT_DEBUG)
         log_printf("SCAN -> Rebuilding negative cache");
