@@ -25,11 +25,4 @@
 
 /* Interval in how often we try to reconnect (in seconds) */
 #define RECONNECTINTERVAL 30
-
-/* How long (in seconds) between rebuilds of the negative cache.  The negcache
- * is only rebuilt to free up memory used by entries that are too old.  You
- * probably don't need to tweak this unless you have huge amounts of people
- * connecting (hundreds per minute).  Default is 12 hours.
- */
-#define NEG_CACHE_REBUILD (60 * 60 * 12)
 #endif /* OPTIONS_H */

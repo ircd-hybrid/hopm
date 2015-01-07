@@ -92,6 +92,7 @@ config_setup(void)
 
   /* Setup options block defaults */
   OptionsItem->negcache = 0;   /* 0 disabled negcache */
+  OptionsItem->negcache_rebuild = 43200;
   OptionsItem->pidfile = xstrdup("hopm.pid");
   OptionsItem->dns_fdlimit = 50;
   OptionsItem->scanlog = NULL;

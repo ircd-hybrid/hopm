@@ -55,6 +55,7 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 %token MODE
 %token NAME
 %token NEGCACHE
+%token NEGCACHE_REBUILD
 %token NICK
 %token NICKSERV
 %token OPER
@@ -135,6 +136,7 @@ options_items: options_items options_item |
                options_item;
 
 options_item: options_negcache |
+              options_negcache_rebuild |
               options_pidfile |
               options_dns_fdlimit |
               options_scanlog |
@@ -143,6 +145,11 @@ options_item: options_negcache |
 options_negcache: NEGCACHE '=' timespec ';'
 {
    OptionsItem->negcache = $3;
+};
+
+options_negcache_rebuild: NEGCACHE_REBUILD '=' timespec ';'
+{
+   OptionsItem->negcache_rebuild = $3;
 };
 
 options_pidfile: PIDFILE '=' STRING ';'

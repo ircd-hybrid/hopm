@@ -112,6 +112,7 @@ MAX_READ                { return MAX_READ;     }
 MODE                    { return MODE;         }
 NAME                    { return NAME;         }
 NEGCACHE                { return NEGCACHE;     }
+NEGCACHE_REBUILD        { return NEGCACHE_REBUILD; }
 NICK                    { return NICK;         }
 NICKSERV                { return NICKSERV;     }
 OPER                    { return OPER;         }
