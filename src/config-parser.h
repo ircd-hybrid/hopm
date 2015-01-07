@@ -67,41 +67,42 @@ extern int yydebug;
     MODE = 277,
     NAME = 278,
     NEGCACHE = 279,
-    NICK = 280,
-    NICKSERV = 281,
-    OPER = 282,
-    OPM = 283,
-    OPTIONS = 284,
-    PASSWORD = 285,
-    PERFORM = 286,
-    PIDFILE = 287,
-    PORT = 288,
-    PROTOCOL = 289,
-    READTIMEOUT = 290,
-    REALNAME = 291,
-    REPLY = 292,
-    SCANLOG = 293,
-    SCANNER = 294,
-    SECONDS = 295,
-    MINUTES = 296,
-    HOURS = 297,
-    DAYS = 298,
-    WEEKS = 299,
-    MONTHS = 300,
-    YEARS = 301,
-    SENDMAIL = 302,
-    SERVER = 303,
-    TARGET_IP = 304,
-    TARGET_PORT = 305,
-    TARGET_STRING = 306,
-    TIMEOUT = 307,
-    TYPE = 308,
-    USERNAME = 309,
-    USER = 310,
-    VHOST = 311,
-    NUMBER = 312,
-    STRING = 313,
-    PROTOCOLTYPE = 314
+    NEGCACHE_REBUILD = 280,
+    NICK = 281,
+    NICKSERV = 282,
+    OPER = 283,
+    OPM = 284,
+    OPTIONS = 285,
+    PASSWORD = 286,
+    PERFORM = 287,
+    PIDFILE = 288,
+    PORT = 289,
+    PROTOCOL = 290,
+    READTIMEOUT = 291,
+    REALNAME = 292,
+    REPLY = 293,
+    SCANLOG = 294,
+    SCANNER = 295,
+    SECONDS = 296,
+    MINUTES = 297,
+    HOURS = 298,
+    DAYS = 299,
+    WEEKS = 300,
+    MONTHS = 301,
+    YEARS = 302,
+    SENDMAIL = 303,
+    SERVER = 304,
+    TARGET_IP = 305,
+    TARGET_PORT = 306,
+    TARGET_STRING = 307,
+    TIMEOUT = 308,
+    TYPE = 309,
+    USERNAME = 310,
+    USER = 311,
+    VHOST = 312,
+    NUMBER = 313,
+    STRING = 314,
+    PROTOCOLTYPE = 315
   };
 #endif
 /* Tokens.  */
@@ -127,53 +128,54 @@ extern int yydebug;
 #define MODE 277
 #define NAME 278
 #define NEGCACHE 279
-#define NICK 280
-#define NICKSERV 281
-#define OPER 282
-#define OPM 283
-#define OPTIONS 284
-#define PASSWORD 285
-#define PERFORM 286
-#define PIDFILE 287
-#define PORT 288
-#define PROTOCOL 289
-#define READTIMEOUT 290
-#define REALNAME 291
-#define REPLY 292
-#define SCANLOG 293
-#define SCANNER 294
-#define SECONDS 295
-#define MINUTES 296
-#define HOURS 297
-#define DAYS 298
-#define WEEKS 299
-#define MONTHS 300
-#define YEARS 301
-#define SENDMAIL 302
-#define SERVER 303
-#define TARGET_IP 304
-#define TARGET_PORT 305
-#define TARGET_STRING 306
-#define TIMEOUT 307
-#define TYPE 308
-#define USERNAME 309
-#define USER 310
-#define VHOST 311
-#define NUMBER 312
-#define STRING 313
-#define PROTOCOLTYPE 314
+#define NEGCACHE_REBUILD 280
+#define NICK 281
+#define NICKSERV 282
+#define OPER 283
+#define OPM 284
+#define OPTIONS 285
+#define PASSWORD 286
+#define PERFORM 287
+#define PIDFILE 288
+#define PORT 289
+#define PROTOCOL 290
+#define READTIMEOUT 291
+#define REALNAME 292
+#define REPLY 293
+#define SCANLOG 294
+#define SCANNER 295
+#define SECONDS 296
+#define MINUTES 297
+#define HOURS 298
+#define DAYS 299
+#define WEEKS 300
+#define MONTHS 301
+#define YEARS 302
+#define SENDMAIL 303
+#define SERVER 304
+#define TARGET_IP 305
+#define TARGET_PORT 306
+#define TARGET_STRING 307
+#define TIMEOUT 308
+#define TYPE 309
+#define USERNAME 310
+#define USER 311
+#define VHOST 312
+#define NUMBER 313
+#define STRING 314
+#define PROTOCOLTYPE 315
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 86 "config-parser.y" /* yacc.c:1909  */
+#line 88 "config-parser.y" /* yacc.c:1909  */
 
         int number;
         char *string;
 
-#line 177 "config-parser.h" /* yacc.c:1909  */
+#line 179 "config-parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

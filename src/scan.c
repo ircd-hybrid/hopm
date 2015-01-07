@@ -47,7 +47,7 @@
 #include "options.h"
 #include "negcache.h"
 #include "main.h"
-#include "malloc.h"
+#include "memory.h"
 #include "match.h"
 #include "scan.h"
 

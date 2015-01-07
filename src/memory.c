@@ -24,7 +24,8 @@
 #include <malloc.h>
 #include <assert.h>
 #include <string.h>
-#include "malloc.h"
+
+#include "memory.h"
 
 
 /* xcalloc

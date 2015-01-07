@@ -29,7 +29,7 @@
 
 #include "config.h"
 #include "config-parser.h"
-#include "malloc.h"
+#include "memory.h"
 #include "log.h"
 #include "scan.h"
 #include "irc.h"

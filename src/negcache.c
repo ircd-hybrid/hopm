@@ -52,7 +52,7 @@ along with this program; if not, write to:
 #include "irc.h"
 #include "negcache.h"
 #include "config.h"
-#include "malloc.h"
+#include "memory.h"
 #include "log.h"
 
 

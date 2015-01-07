@@ -97,7 +97,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_hopm_OBJECTS = compat.$(OBJEXT) config.$(OBJEXT) \
 	config-parser.$(OBJEXT) config-lexer.$(OBJEXT) dnsbl.$(OBJEXT) \
 	firedns.$(OBJEXT) irc.$(OBJEXT) list.$(OBJEXT) log.$(OBJEXT) \
-	main.$(OBJEXT) malloc.$(OBJEXT) match.$(OBJEXT) misc.$(OBJEXT) \
+	main.$(OBJEXT) memory.$(OBJEXT) match.$(OBJEXT) misc.$(OBJEXT) \
 	negcache.$(OBJEXT) opercmd.$(OBJEXT) scan.$(OBJEXT) \
 	stats.$(OBJEXT)
 hopm_OBJECTS = $(am_hopm_OBJECTS)
@@ -371,8 +371,8 @@ hopm_SOURCES = compat.c        \
                log.h           \
                main.c          \
                main.h          \
-               malloc.c        \
-               malloc.h        \
+               memory.c        \
+               memory.h        \
                match.c         \
                match.h         \
                misc.c          \
@@ -512,8 +512,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/malloc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/match.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/negcache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opercmd.Po@am__quote@

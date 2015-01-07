@@ -45,7 +45,7 @@ along with this program; if not, write to the Free Software
 #include "stats.h"
 #include "negcache.h"
 #include "options.h"
-#include "malloc.h"
+#include "memory.h"
 #include "firedns.h"
 #include "main.h"
 

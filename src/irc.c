@@ -50,7 +50,7 @@
 #include "match.h"
 #include "compat.h"
 #include "negcache.h"
-#include "malloc.h"
+#include "memory.h"
 #include "main.h"
 
 

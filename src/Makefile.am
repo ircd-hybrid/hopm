@@ -23,8 +23,8 @@ hopm_SOURCES = compat.c        \
                log.h           \
                main.c          \
                main.h          \
-               malloc.c        \
-               malloc.h        \
+               memory.c        \
+               memory.h        \
                match.c         \
                match.h         \
                misc.c          \
