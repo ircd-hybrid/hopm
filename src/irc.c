@@ -491,7 +491,7 @@ irc_parse(void)
   while ((pos = strchr(pos, ' ')) && parc <= 17)
   {
     /* Avoid excessive spaces and end of IRC_RAW */
-    if (*(pos + 1) == ' ' && *(pos + 1) == '\0')
+    if (*(pos + 1) == ' ' || *(pos + 1) == '\0')
     {
       pos++;
       continue;
