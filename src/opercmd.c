@@ -36,7 +36,7 @@ along with this program; if not, write to the Free Software
 #include "opercmd.h"
 #include "scan.h"
 #include "config.h"
-#include "malloc.h"
+#include "memory.h"
 #include "list.h"
 #include "stats.h"
 

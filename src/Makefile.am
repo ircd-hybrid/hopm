@@ -6,10 +6,10 @@ AM_YFLAGS = -d
 
 hopm_SOURCES = compat.c        \
                compat.h        \
-               config.c        \
-               config.h        \
                config-parser.y \
                config-lexer.l  \
+               config.c        \
+               config.h        \
                dnsbl.c         \
                dnsbl.h         \
                extern.h        \
@@ -23,8 +23,8 @@ hopm_SOURCES = compat.c        \
                log.h           \
                main.c          \
                main.h          \
-               malloc.c        \
-               malloc.h        \
+               memory.c        \
+               memory.h        \
                match.c         \
                match.h         \
                misc.c          \

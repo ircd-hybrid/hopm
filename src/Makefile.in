@@ -94,10 +94,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_hopm_OBJECTS = compat.$(OBJEXT) config.$(OBJEXT) \
-	config-parser.$(OBJEXT) config-lexer.$(OBJEXT) dnsbl.$(OBJEXT) \
+am_hopm_OBJECTS = compat.$(OBJEXT) config-parser.$(OBJEXT) \
+	config-lexer.$(OBJEXT) config.$(OBJEXT) dnsbl.$(OBJEXT) \
 	firedns.$(OBJEXT) irc.$(OBJEXT) list.$(OBJEXT) log.$(OBJEXT) \
-	main.$(OBJEXT) malloc.$(OBJEXT) match.$(OBJEXT) misc.$(OBJEXT) \
+	main.$(OBJEXT) memory.$(OBJEXT) match.$(OBJEXT) misc.$(OBJEXT) \
 	negcache.$(OBJEXT) opercmd.$(OBJEXT) scan.$(OBJEXT) \
 	stats.$(OBJEXT)
 hopm_OBJECTS = $(am_hopm_OBJECTS)
@@ -354,10 +354,10 @@ AM_CPPFLAGS = -DHOPM_ETCDIR="\"$(sysconfdir)\"" -DHOPM_LOGDIR="\"$(localstatedir
 AM_YFLAGS = -d
 hopm_SOURCES = compat.c        \
                compat.h        \
-               config.c        \
-               config.h        \
                config-parser.y \
                config-lexer.l  \
+               config.c        \
+               config.h        \
                dnsbl.c         \
                dnsbl.h         \
                extern.h        \
@@ -371,8 +371,8 @@ hopm_SOURCES = compat.c        \
                log.h           \
                main.c          \
                main.h          \
-               malloc.c        \
-               malloc.h        \
+               memory.c        \
+               memory.h        \
                match.c         \
                match.h         \
                misc.c          \
@@ -512,8 +512,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/malloc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/match.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/negcache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opercmd.Po@am__quote@

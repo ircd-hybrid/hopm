@@ -21,7 +21,9 @@
  *
  */
 
-#include "malloc.h"
+#include <stdlib.h>
+
+#include "memory.h"
 #include "list.h"
 
 

@@ -39,7 +39,7 @@ along with this program; if not, write to the Free Software
 #include "list.h"
 #include "log.h"
 #include "main.h"
-#include "malloc.h"
+#include "memory.h"
 #include "match.h"
 #include "scan.h"
 #include "irc.h"
