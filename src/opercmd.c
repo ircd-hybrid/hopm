@@ -186,6 +186,7 @@ command_parse(char *command, char *msg, const struct ChannelConf *target,
       struct Command *cs = command_create(tab, param, source_p->irc_nick, target);
 
       list_add(COMMANDS, node_create(cs));
+      break;
     }
   }
 
