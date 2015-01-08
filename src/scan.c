@@ -66,15 +66,15 @@ static list_t *MASKS    = NULL;   /* Associative list of masks->scanners */
 
 
 /* Function declarations */
-static struct scan_struct *scan_create(char *[], char *);
+static struct scan_struct *scan_create(const char *[], const char *);
 static void scan_free(struct scan_struct *);
-static void scan_irckline(struct scan_struct *, const char *, const char *);
-static void scan_negative(struct scan_struct *);
+static void scan_irckline(const struct scan_struct *, const char *, const char *);
+static void scan_negative(const struct scan_struct *);
 static void scan_log(OPM_REMOTE_T *);
 
 /** Callbacks for LIBOPM */
-void scan_open_proxy(OPM_T *, OPM_REMOTE_T *, int, void *);
-void scan_negotiation_failed(OPM_T *, OPM_REMOTE_T *, int, void *);
+static void scan_open_proxy(OPM_T *, OPM_REMOTE_T *, int, void *);
+static void scan_negotiation_failed(OPM_T *, OPM_REMOTE_T *, int, void *);
 static void scan_timeout(OPM_T *, OPM_REMOTE_T *, int, void *);
 static void scan_end(OPM_T *, OPM_REMOTE_T *, int, void *);
 static void scan_handle_error(OPM_T *, OPM_REMOTE_T *, int, void *);
@@ -147,7 +147,7 @@ const char *
 scan_gettype(int protocol)
 {
   static const char *undef = "undefined";
-  static struct protocol_assoc protocols[] =
+  static const struct protocol_assoc protocols[] =
   {
     { OPM_TYPE_HTTP,     "HTTP"     },
     { OPM_TYPE_HTTPPOST, "HTTPPOST" },
@@ -300,7 +300,7 @@ scan_init(void)
  *
  */
 void
-scan_connect(char *user[], char *msg)
+scan_connect(const char *user[], const char *msg)
 {
   struct sockaddr_in ip;
   node_t *p, *p2;
@@ -424,9 +424,9 @@ scan_connect(char *user[], char *msg)
  *
  */
 static struct scan_struct *
-scan_create(char *user[], char *msg)
+scan_create(const char *user[], const char *msg)
 {
-  struct scan_struct *ss = xcalloc(sizeof *ss);
+  struct scan_struct *const ss = xcalloc(sizeof *ss);
 
   ss->irc_nick = xstrdup(user[0]);
   ss->irc_username = xstrdup(user[1]);
@@ -541,7 +541,7 @@ scan_positive(struct scan_struct *ss, const char *kline, const char *type)
  *
  * Return: NONE
  */
-void
+static void
 scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
   struct scan_struct *ss;
@@ -592,7 +592,7 @@ scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
  * Return: NONE
  *
  */
-void
+static void
 scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
 //struct scan_struct *ss;
@@ -750,7 +750,7 @@ scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
  *
  */
 static void
-scan_negative(struct scan_struct *ss)
+scan_negative(const struct scan_struct *ss)
 {
   /* Insert IP in negcache */
   if (OptionsItem->negcache > 0)
@@ -777,7 +777,7 @@ scan_negative(struct scan_struct *ss)
  *
  */
 static void
-scan_irckline(struct scan_struct *ss, const char *format, const char *type)
+scan_irckline(const struct scan_struct *ss, const char *format, const char *type)
 {
   char message[MSGLENMAX];  /* OUTPUT */
 
@@ -862,7 +862,7 @@ scan_irckline(struct scan_struct *ss, const char *format, const char *type)
  *    scan_struct contains a manual_target pointer.
  */
 void
-scan_manual(char *param, struct ChannelConf *target)
+scan_manual(char *param, const struct ChannelConf *target)
 {
   struct in_addr *addr;
   struct scan_struct *ss;

@@ -44,14 +44,14 @@ along with this program; if not, write to the Free Software
 static list_t *COMMANDS = NULL;  /* List of active commands */
 
 
-static struct Command *command_create(const struct OperCommandHash *, char *param, char *irc_nick, struct ChannelConf *target);
+static struct Command *command_create(const struct OperCommandHash *, char *param, char *irc_nick, const struct ChannelConf *target);
 static void command_free(struct Command *);
 
-static void cmd_check(char *, struct ChannelConf *);
-static void cmd_stat(char *, struct ChannelConf *);
-static void cmd_fdstat(char *, struct ChannelConf *);
+static void cmd_check(char *, const struct ChannelConf *);
+static void cmd_stat(char *, const struct ChannelConf *);
+static void cmd_fdstat(char *, const struct ChannelConf *);
 
-static struct OperCommandHash COMMAND_TABLE[] =
+static const struct OperCommandHash COMMAND_TABLE[] =
 {
   { "CHECK",  cmd_check  },
   { "SCAN",   cmd_check  },
@@ -132,8 +132,8 @@ command_timer(void)
  *
  */
 void
-command_parse(char *command, char *msg, struct ChannelConf *target,
-              struct UserInfo *source_p)
+command_parse(char *command, char *msg, const struct ChannelConf *target,
+              const struct UserInfo *source_p)
 {
   char *param;  /* Parsed parameters */
 
@@ -206,9 +206,10 @@ command_parse(char *command, char *msg, struct ChannelConf *target,
  *    Pointer to new Command
  */
 static struct Command *
-command_create(const struct OperCommandHash *tab, char *param, char *irc_nick, struct ChannelConf *target)
+command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
+               const struct ChannelConf *target)
 {
-  struct Command *ret = xcalloc(sizeof *ret);
+  struct Command *const ret = xcalloc(sizeof *ret);
 
   if (param)
     ret->param = xstrdup(param);
@@ -305,7 +306,7 @@ command_userhost(const char *reply)
  *
  */
 static void
-cmd_check(char *param, struct ChannelConf *target)
+cmd_check(char *param, const struct ChannelConf *target)
 {
   scan_manual(param, target);
 }
@@ -319,7 +320,7 @@ cmd_check(char *param, struct ChannelConf *target)
  *    target: channel command was sent to
  */
 static void
-cmd_stat(char *param, struct ChannelConf *target)
+cmd_stat(char *param, const struct ChannelConf *target)
 {
   stats_output(target->name);
 }
@@ -333,7 +334,7 @@ cmd_stat(char *param, struct ChannelConf *target)
  *    target: channel command was sent to
  */
 static void
-cmd_fdstat(char *param, struct ChannelConf *target)
+cmd_fdstat(char *param, const struct ChannelConf *target)
 {
   fdstats_output(target->name);
 }
