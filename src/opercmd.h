@@ -7,7 +7,7 @@
 struct OperCommandHash
 {
   const char *command;
-  void (*handler)(char *, struct ChannelConf *);
+  void (*handler)(char *, const struct ChannelConf *);
 };
 
 struct Command
@@ -27,7 +27,7 @@ struct Command
   char *irc_nick;
 
   /* Where the reply is to be sent. */
-  struct ChannelConf *target;
+  const struct ChannelConf *target;
 
   /*
    * When it was added, because we might need to remove it if it does
@@ -39,5 +39,5 @@ struct Command
 extern void command_init(void);
 extern void command_userhost(const char *);
 extern void command_timer(void);
-extern void command_parse(char *, char *, struct ChannelConf *, struct UserInfo *);
+extern void command_parse(char *, char *, const struct ChannelConf *, const struct UserInfo *);
 #endif

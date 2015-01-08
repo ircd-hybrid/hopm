@@ -16,7 +16,7 @@ struct UserInfo
 struct CommandHash
 {
   const char *command;
-  void (*handler)(char *[], unsigned int, char *, struct UserInfo *);
+  void (*handler)(char *[], unsigned int, char *, const struct UserInfo *);
 };
 
 extern void irc_send(const char *, ...);
