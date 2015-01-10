@@ -33,8 +33,6 @@ o Permission from your users to portscan them for open proxies.
 Compatibility
 -------------
 
-ircd-hybrid 8.2.1
-
 HOPM is designed for ircd-hybrid based ircds. It is easily suitable for any
 other ircd with little modification (connregex in hopm.conf). However, if an
 ircd does not send IP addresses in a connection notice, HOPM will not be
@@ -57,7 +55,7 @@ Operator Channel Commands
 -------------------------
 
 botnick check <host> [scanner]  -- Manually scan host for insecure proxies and output all errors.
-                                   If scanner is not given, hopm will scan on all scanners.
+                                   If scanner is not given, HOPM will scan on all scanners.
                                    NOTE: this will NOT add a kline (or whatever) if it finds a
                                    proxy.
 
@@ -72,7 +70,7 @@ for example !all stats.
 Rehashing HOPM
 --------------
 
-A /kill to hopm will cause the process to restart, rehashing the configuration file
+A /kill to HOPM will cause the process to restart, rehashing the configuration file
 and ending all queued scans.
 
 
