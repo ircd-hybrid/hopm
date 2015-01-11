@@ -43,12 +43,12 @@ significant factor to HOPM's efficiency.
 Command Line Options
 --------------------
 
--c <name>	Config name. By default HOPM reads hopm.conf, "-c foo"
-		will cause HOPM to read foo.conf. The primary use for
-		this is to run multiple HOPMs from one directory.
+-c <name>       Config name. By default HOPM reads hopm.conf, "-c foo"
+                will cause HOPM to read foo.conf. The primary use for
+                this is to run multiple HOPMs from one directory.
 
--d		Debug mode. HOPM will not fork, and will write logs to stderr.
-		Multiple -d increase debug level.
+-d              Debug mode. HOPM will not fork, and will write logs to stderr.
+                Multiple -d increase debug level.
 
 
 Operator Channel Commands

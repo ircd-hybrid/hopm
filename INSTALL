@@ -16,15 +16,15 @@ Make
 
     --prefix            Sets the root of HOPM's install. By default this
                         is $HOME/hopm, with binaries going in
-			$HOME/hopm/bin, config in $HOME/hopm/etc and logs
-			in $HOME/hopm/var.
+                        $HOME/hopm/bin, config in $HOME/hopm/etc and logs
+                        in $HOME/hopm/var.
 
     --bindir            Specify the place to install binaries. By default
                         this is $PREFIX/bin. (see --prefix, above)
 
     --localstatedir     Specify the place where logs and PID files will be
                         kept. By default this is $PREFIX/var. (see
-			--prefix, above)
+                        --prefix, above)
 
     configure has many other options, see ./configure --help for more
     details.
