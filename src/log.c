@@ -36,66 +36,66 @@
 FILE *logfile;
 FILE *scanlogfile;
 
-void log_open(char *filename)
+void
+log_open(char *filename)
 {
-   logfile = fopen(filename, "a");
+  logfile = fopen(filename, "a");
 
-   if(!logfile)
-   {
-      perror("Cannot open log file. Aborting.");
-      exit(EXIT_FAILURE);
-   }
-
+  if (logfile == NULL)
+  {
+    perror("Cannot open log file. Aborting.");
+    exit(EXIT_FAILURE);
+  }
 }
 
-void log_close(void)
+void
+log_close(void)
 {
-   fclose(logfile);
+  fclose(logfile);
 }
 
-void scanlog_open(char *filename)
+void
+scanlog_open(char *filename)
 {
-   scanlogfile = fopen(filename, "a");
+  scanlogfile = fopen(filename, "a");
 
-   if(!scanlogfile)
-   {
-      log_printf("Failed to open scan log file: %s", strerror(errno));
-   }
+  if (scanlogfile == NULL)
+    log_printf("Failed to open scan log file: %s", strerror(errno));
 }
 
-void scanlog_close(void)
+void
+scanlog_close(void)
 {
-   if(scanlogfile)
-      fclose(scanlogfile);
+  if (scanlogfile)
+    fclose(scanlogfile);
 }
 
-void log_printf(const char *data, ...)
+void
+log_printf(const char *data, ...)
 {
-   char data2[513];
-   char buf_present[25];
-   va_list arglist;
-   time_t present;
-   struct tm *tm_present;
+  char data2[513];
+  char buf_present[25];
+  va_list arglist;
+  time_t present;
+  struct tm *tm_present;
 
-   if(!OPT_DEBUG && !logfile)
-      return;
+  if (OPT_DEBUG == 0 && logfile == NULL)
+    return;
 
-   time(&present);
-   tm_present = gmtime(&present);
-   strftime(buf_present, sizeof(buf_present), "%b %d %H:%M:%S %Y", tm_present);
+  time(&present);
+  tm_present = gmtime(&present);
+  strftime(buf_present, sizeof(buf_present), "%b %d %H:%M:%S %Y", tm_present);
 
-   va_start(arglist, data);
-   vsnprintf(data2, 512, data, arglist);
-   va_end(arglist);
+  va_start(arglist, data);
+  vsnprintf(data2, 512, data, arglist);
+  va_end(arglist);
 
-   if(OPT_DEBUG)
-   {
-      fprintf(stderr, "[%s] %s\n", buf_present, data2);
-   }
-   else
-   {
-      fprintf(logfile, "[%s] %s\n", buf_present, data2);
-      fflush(logfile);
-   }
+  if (OPT_DEBUG)
+    fprintf(stderr, "[%s] %s\n", buf_present, data2);
+  else
+  {
+    fprintf(logfile, "[%s] %s\n", buf_present, data2);
+    fflush(logfile);
+  }
 }
 
