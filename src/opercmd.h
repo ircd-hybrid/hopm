@@ -59,5 +59,5 @@ struct Command
 extern void command_init(void);
 extern void command_userhost(const char *);
 extern void command_timer(void);
-extern void command_parse(char *, char *, const struct ChannelConf *, const struct UserInfo *);
+extern void command_parse(char *, const struct ChannelConf *, const struct UserInfo *);
 #endif
