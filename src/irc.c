@@ -209,8 +209,6 @@ irc_init(void)
   /* Bind */
   if (!EmptyString(IRCItem->vhost))
   {
-    int bindret = 0;
-
     if (inet_pton(AF_INET, IRCItem->vhost, &IRC_LOCAL.s_addr) <= 0)
     {
       log_printf("IRC -> bind(): %s is an invalid address", IRCItem->vhost);
@@ -221,9 +219,7 @@ irc_init(void)
     bsaddr.sin_family = AF_INET;
     bsaddr.sin_port = htons(0);
 
-    bindret = bind(IRC_FD, (struct sockaddr *)&bsaddr, sizeof(bsaddr));
-
-    if (bindret)
+    if (bind(IRC_FD, (struct sockaddr *)&bsaddr, sizeof(bsaddr)))
     {
       log_printf("IRC -> bind(): error binding to %s: %s", IRCItem->vhost, strerror(errno));
       exit(EXIT_FAILURE);
