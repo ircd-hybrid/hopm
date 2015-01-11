@@ -813,7 +813,7 @@ m_privmsg(char *parv[], unsigned int parc, char *msg, const struct UserInfo *sou
       strncasecmp(parv[3], "!all", 4) == 0)
   {
     /* XXX command_parse will alter parv[3]. */
-    command_parse(parv[3], msg, channel, source_p);
+    command_parse(parv[3], channel, source_p);
   }
 }
 

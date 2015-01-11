@@ -124,13 +124,12 @@ command_timer(void)
  *
  * Parameters:
  *    command: Command sent (including parameters)
- *    msg: Original PRIVMSG containing the command
  *    target: Channel command was sent to (we only got this far if there was only one recipient)
  *    source_p: Operator (hopefully) that sent the command.
  *
  */
 void
-command_parse(char *command, char *msg, const struct ChannelConf *target,
+command_parse(char *command, const struct ChannelConf *target,
               const struct UserInfo *source_p)
 {
   char *param;  /* Parsed parameters */
