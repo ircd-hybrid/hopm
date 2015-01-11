@@ -1,8 +1,6 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-#include <stdlib.h>
-
 #define MyFree(X) _MyFree((void **) &X)
 
 extern void *xcalloc(size_t bytes);
