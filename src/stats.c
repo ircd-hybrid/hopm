@@ -158,7 +158,7 @@ stats_output(const char *target)
 
   LIST_FOREACH(p, OpmItem->blacklists->head)
   {
-    struct BlacklistConf *bl = p->data;
+    const struct BlacklistConf *bl = p->data;
 
     if (bl->stats_recv > 0)
       irc_send("PRIVMSG %s :DNSBL: %u successful lookups from %s",
