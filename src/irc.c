@@ -26,6 +26,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <poll.h>
@@ -82,8 +83,7 @@ static char          IRC_RAW[MSGLENMAX];         /* Buffer to read data into    
 static unsigned int  IRC_RAW_LEN    = 0;         /* Position of IRC_RAW                   */
 static int           IRC_FD         = 0;         /* File descriptor for IRC client        */
 
-static struct sockaddr_in IRC_SVR;              /* Sock Address Struct for IRC server    */
-static struct in_addr IRC_LOCAL;                /* Sock Address Struct for Bind          */
+static struct sockaddr_storage IRC_SVR;          /* Sock Address Struct for IRC server    */
 
 static time_t IRC_LAST = 0;                      /* Last full line of data from irc server*/
 static time_t IRC_LASTRECONNECT = 0;             /* Time of last reconnection */
@@ -168,37 +168,39 @@ irc_cycle(void)
 static void
 irc_init(void)
 {
-  struct sockaddr_in bsaddr;
-  struct in_addr *irc_host;
+  const void *address = NULL;
 
   if (IRC_FD)
     close(IRC_FD);
 
   memset(&IRC_SVR, 0, sizeof(IRC_SVR));
-  memset(&IRC_LOCAL, 0, sizeof(IRC_LOCAL));
-  memset(&bsaddr, 0, sizeof(bsaddr));
 
   /* Resolve IRC host. */
-  if ((irc_host = firedns_resolveip4(IRCItem->server)) == NULL)
+  if ((address = firedns_resolveip6(IRCItem->server)))
   {
-    log_printf("IRC -> firedns_resolveip4(\"%s\"): %s", IRCItem->server,
+    struct sockaddr_in6 *in = (struct sockaddr_in6 *)&IRC_SVR;
+
+    IRC_SVR.ss_family = AF_INET6;
+    in->sin6_port = htons(IRCItem->port);
+    memcpy(&in->sin6_addr, address, sizeof(in->sin6_addr));
+  }
+  else if ((address = firedns_resolveip4(IRCItem->server)))
+  {
+    struct sockaddr_in *in = (struct sockaddr_in *)&IRC_SVR;
+
+    IRC_SVR.ss_family = AF_INET;
+    in->sin_port = htons(IRCItem->port);
+    memcpy(&in->sin_addr, address, sizeof(in->sin_addr));
+  }
+  else
+  {
+    log_printf("IRC -> firedns_resolveip(\"%s\"): %s", IRCItem->server,
                firedns_strerror(fdns_errno));
     exit(EXIT_FAILURE);
   }
 
-  IRC_SVR.sin_family = AF_INET;
-  IRC_SVR.sin_port = htons(IRCItem->port);
-  IRC_SVR.sin_addr = *irc_host;
-
-  if (IRC_SVR.sin_addr.s_addr == INADDR_NONE)
-  {
-    log_printf("IRC -> Unknown error resolving remote host (%s)",
-               IRCItem->server);
-    exit(EXIT_FAILURE);
-  }
-
   /* Request file desc for IRC client socket */
-  IRC_FD = socket(AF_INET, SOCK_STREAM, 0);
+  IRC_FD = socket(IRC_SVR.ss_family, SOCK_STREAM, 0);
 
   if (IRC_FD == -1)
   {
@@ -209,21 +211,26 @@ irc_init(void)
   /* Bind */
   if (!EmptyString(IRCItem->vhost))
   {
-    if (inet_pton(AF_INET, IRCItem->vhost, &IRC_LOCAL.s_addr) <= 0)
+    struct addrinfo hints, *res;
+
+    memset(&hints, 0, sizeof(hints));
+
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE | AI_NUMERICHOST;
+
+    if (getaddrinfo(IRCItem->vhost, NULL, &hints, &res))
     {
       log_printf("IRC -> bind(): %s is an invalid address", IRCItem->vhost);
       exit(EXIT_FAILURE);
     }
-
-    bsaddr.sin_addr.s_addr = IRC_LOCAL.s_addr;
-    bsaddr.sin_family = AF_INET;
-    bsaddr.sin_port = htons(0);
-
-    if (bind(IRC_FD, (struct sockaddr *)&bsaddr, sizeof(bsaddr)))
+    else if (bind(IRC_FD, res->ai_addr, res->ai_addrlen))
     {
       log_printf("IRC -> bind(): error binding to %s: %s", IRCItem->vhost, strerror(errno));
       exit(EXIT_FAILURE);
     }
+
+    freeaddrinfo(res);
   }
 }
 
