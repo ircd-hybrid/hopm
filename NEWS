@@ -1,7 +1,8 @@
--- Noteworthy changes in version 1.0.2 (2015-??-??)
+-- Noteworthy changes in version 1.0.2 (2015-01-12)
 o) Added options::negcache_rebuild configuration option
 o) Added basic IPv6 support allowing HOPM to bind and
    connect to IPv6 addresses
+o) Many code cleanups and optimizations
 
 
 -- Noteworthy changes in version 1.0.1 (2015-01-06)
