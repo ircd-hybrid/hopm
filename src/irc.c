@@ -668,7 +668,7 @@ m_perform(char *parv[], unsigned int parc, char *msg, const struct UserInfo *not
 {
   node_t *node;
 
-  log_printf("IRC -> Connected to %s:%d", IRCItem->server, IRCItem->port);
+  log_printf("IRC -> Connected to %s/%d", IRCItem->server, IRCItem->port);
 
   /* Identify to nickserv if needed */
   if (!EmptyString(IRCItem->nickserv))
