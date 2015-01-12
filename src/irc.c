@@ -315,32 +315,11 @@ irc_connect(void)
   /* Connect to IRC server as client. */
   if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, sizeof(IRC_SVR)) == -1)
   {
-    switch (errno)
-    {
-      case EISCONN:
-        /* Already connected */
-        return;
-      case ECONNREFUSED:
-        log_printf("IRC -> connect(): Connection refused by (%s)",
-                   IRCItem->server);
-        break;
-      case ETIMEDOUT:
-        log_printf("IRC -> connect(): Timed out connecting to (%s)",
-                   IRCItem->server);
-        break;
-      case ENETUNREACH:
-        log_printf("IRC -> connect(): Network unreachable");
-        break;
-      case EALREADY:
-        /* Previous attempt not complete */
-        return;
-      default:
-        log_printf("IRC -> connect(): Unknown error connecting to (%s)",
-                   IRCItem->server);
+    log_printf("IRC -> connect(): error connecting to %s: %s",
+               IRCItem->server, strerror(errno));
 
-        if (OPT_DEBUG >= 1)
-          log_printf("%s", strerror(errno));
-    }
+    if (errno == EISCONN /* Already connected */ || errno == EALREADY /* Previous attempt not complete */)
+      return;
 
     /* Try to connect again */
     irc_reconnect();
