@@ -861,10 +861,11 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
 void
 scan_manual(char *param, const struct ChannelConf *target)
 {
-  struct in_addr *addr;
+  char buf[INET6_ADDRSTRLEN];
+  const void *addr = NULL;
   struct scan_struct *ss;
   struct scanner_struct *scs;
-  char *ip;
+  const char *ip = NULL;
   char *scannername;
   node_t *p;
   int ret;
@@ -897,7 +898,11 @@ scan_manual(char *param, const struct ChannelConf *target)
   }
 
   /* IP = the resolved IP now (it was the ip OR hostname before) */
-  ip = inet_ntoa(*addr);
+  if ((ip = inet_ntop(AF_INET, addr, buf, sizeof(buf))) == NULL)
+  {
+    irc_send("PRIVMSG %s :CHECK -> invalid address: %s", strerror(errno));
+    return;
+  }
 
   ss = xcalloc(sizeof *ss);
   ss->ip = xstrdup(ip);
