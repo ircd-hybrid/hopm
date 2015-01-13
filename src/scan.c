@@ -900,7 +900,8 @@ scan_manual(char *param, const struct ChannelConf *target)
   /* IP = the resolved IP now (it was the ip OR hostname before) */
   if ((ip = inet_ntop(AF_INET, addr, buf, sizeof(buf))) == NULL)
   {
-    irc_send("PRIVMSG %s :CHECK -> invalid address: %s", strerror(errno));
+    irc_send("PRIVMSG %s :CHECK -> invalid address: %s",
+             target->name, strerror(errno));
     return;
   }
 
