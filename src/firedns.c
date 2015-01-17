@@ -48,16 +48,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define min(a,b) (a < b ? a : b)
 
 int fdns_errno = FDNS_ERR_NONE;
-unsigned int fdns_fdinuse = 0;
 
 /* Variables local to this file */
+static unsigned int fdns_fdinuse;
 
 /* up to FDNS_MAX nameservers; populated by firedns_init() */
 static struct in_addr servers4[FDNS_MAX];
+static struct in6_addr servers6[FDNS_MAX];
 /* actual count of nameservers; set by firedns_init() */
 static int i4;
 static int i6;
-static struct in6_addr servers6[FDNS_MAX];
 
 /*
  * Linked list of open DNS queries; populated by firedns_add_query(),
