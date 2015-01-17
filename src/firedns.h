@@ -23,10 +23,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifndef _FIREDNS_H
 #define _FIREDNS_H
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-
 /* max number of nameservers used */
 #define FDNS_MAX              8
 /* preferred firedns config file */

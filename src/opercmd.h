@@ -21,9 +21,6 @@
 #ifndef OPERCMD_H
 #define OPERCMD_H
 
-#include "config.h"
-
-
 struct OperCommandHash
 {
   const char *command;
