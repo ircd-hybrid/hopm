@@ -23,17 +23,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <netinet/in.h>
 #include <time.h>
 
 #include "options.h"
 #include "irc.h"
 #include "log.h"
 #include "main.h"
-#include "misc.h"
+#include "config.h"
 #include "opercmd.h"
 #include "scan.h"
-#include "config.h"
 #include "memory.h"
 #include "list.h"
 #include "stats.h"

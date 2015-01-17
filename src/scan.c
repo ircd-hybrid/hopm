@@ -38,7 +38,6 @@
 #include "config.h"
 #include "irc.h"
 #include "log.h"
-#include "opercmd.h"
 #include "stats.h"
 #include "dnsbl.h"
 #include "options.h"

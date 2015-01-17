@@ -37,10 +37,7 @@
 #include "irc.h"
 #include "log.h"
 #include "misc.h"
-#include "stats.h"
 #include "config.h"
-#include "opercmd.h"
-#include "scan.h"
 #include "stats.h"
 #include "libopm/src/opm_types.h"
 

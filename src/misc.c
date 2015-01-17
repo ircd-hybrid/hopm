@@ -22,10 +22,7 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <string.h>
 
-#include "compat.h"
-#include "config.h"
 #include "misc.h"
 
 

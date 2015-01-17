@@ -21,9 +21,6 @@
 #ifndef STATS_H
 #define STATS_H
 
-#include "irc.h"
-#include "config.h"
-
 struct StatsHash
 {
   int type;

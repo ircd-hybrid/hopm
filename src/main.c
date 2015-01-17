@@ -40,11 +40,8 @@
 #include "log.h"
 #include "opercmd.h"
 #include "scan.h"
-#include "stats.h"
-#include "negcache.h"
 #include "options.h"
 #include "memory.h"
-#include "firedns.h"
 #include "main.h"
 
 
