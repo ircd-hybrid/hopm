@@ -293,8 +293,7 @@ command_userhost(const char *reply)
 
 /* cmd_check
  *
- *    Start a manual scan on given IP. Parameter MUST be an IP. HOPM should not
- *    have to waste any time resolving a hostname.
+ *    Start a manual scan on given IP address/hostname.
  *
  * Parameters:
  *    param: Parameters of the command
