@@ -263,7 +263,7 @@ dnsbl_report(const struct scan_struct *ss)
   if ((fp = popen(cmdbuf, "w")) == NULL)
   {
     log_printf("DNSBL -> Failed to create pipe to '%s' for email report!", cmdbuf);
-    irc_send_channels("I was trying to create a pipe to'%s' to send a DNSBL "
+    irc_send_channels("I was trying to create a pipe to '%s' to send a DNSBL "
                       "report, and it failed! I'll give up for now.",
                       cmdbuf);
     return;
