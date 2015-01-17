@@ -64,26 +64,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /* Used with the above error values */
 extern int fdns_errno;
-extern unsigned int fdns_fdinuse;
 
-void firedns_init(void);
-
-struct firedns_result {
-   char text[1024];
-   char lookup[256];
-   void *info;
+struct firedns_result
+{
+  char text[1024];
+  char lookup[256];
+  void *info;
 };
 
 /* non-blocking functions */
-int firedns_getip(int type, const char * const name, void *info);
-struct firedns_result *firedns_getresult(const int fd);
+extern int firedns_getip(int type, const char * const name, void *info);
+extern struct firedns_result *firedns_getresult(const int fd);
 
 /* low-timeout blocking functions */
-char *firedns_resolveip(int type, const char * const name);
-struct in_addr *firedns_resolveip4(const char * const name);
-struct in6_addr *firedns_resolveip6(const char * const name);
+extern char *firedns_resolveip(int type, const char * const name);
+extern struct in_addr *firedns_resolveip4(const char * const name);
+extern struct in6_addr *firedns_resolveip6(const char * const name);
 
-void firedns_cycle(void);
+extern void firedns_init(void);
+extern void firedns_cycle(void);
 extern const char *firedns_strerror(int);
 
 #endif
