@@ -150,6 +150,8 @@ irc_cycle(void)
       /* Check if IRC data is available. */
       if (pfd.revents & POLLIN)
         irc_read();
+      else if (pfd.revents & (POLLERR | POLLHUP))
+        irc_reconnect();
 
       break;
   }
