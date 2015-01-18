@@ -45,12 +45,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "dnsbl.h"
 
 #define FIREDNS_TRIES 3
-#define min(a,b) (a < b ? a : b)
 
-int fdns_errno = FDNS_ERR_NONE;
+int firedns_errno = FDNS_ERR_NONE;
 
 /* Variables local to this file */
-static unsigned int fdns_fdinuse;
+static unsigned int firedns_fdinuse;
 
 /* up to FDNS_MAX nameservers; populated by firedns_init() */
 static struct in_addr servers4[FDNS_MAX];
@@ -287,18 +286,18 @@ firedns_resolveip(int type, const char *const name)
 
     result = firedns_getresult(fd);
 
-    if (fdns_errno == FDNS_ERR_NONE)
+    if (firedns_errno == FDNS_ERR_NONE)
       /*
        * Return is from static memory in getresult, so there is no need to
        * copy it until the next call to firedns.
        */
       return result->text;
-    else if (fdns_errno == FDNS_ERR_NXDOMAIN)
+    else if (firedns_errno == FDNS_ERR_NXDOMAIN)
       return NULL;
   }
 
-  if (fdns_errno == FDNS_ERR_NONE)
-    fdns_errno = FDNS_ERR_TIMEOUT;
+  if (firedns_errno == FDNS_ERR_NONE)
+    firedns_errno = FDNS_ERR_TIMEOUT;
 
   return NULL;
 }
@@ -320,9 +319,9 @@ firedns_getip(int type, const char * const name, void *info)
   s->info = info;
   strlcpy(s->lookup, name, sizeof(s->lookup));
 
-  if (fdns_fdinuse >= OptionsItem->dns_fdlimit)
+  if (firedns_fdinuse >= OptionsItem->dns_fdlimit)
   {
-    fdns_errno = FDNS_ERR_FDLIMIT;
+    firedns_errno = FDNS_ERR_FDLIMIT;
 
     /* Don't add to queue if there is no info */
     if (info == NULL)
@@ -377,7 +376,7 @@ firedns_doquery(struct s_connection *s)
 
   if (len == -1)
   {
-    fdns_errno = FDNS_ERR_FORMAT;
+    firedns_errno = FDNS_ERR_FORMAT;
     return -1;
   }
 
@@ -514,7 +513,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
 
     if (s->fd == -1)
     {
-      fdns_errno = FDNS_ERR_NETWORK;
+      firedns_errno = FDNS_ERR_NETWORK;
       return -1;
     }
   }
@@ -566,13 +565,13 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
   {
     close(s->fd);
     s->fd = -1;
-    fdns_errno = FDNS_ERR_NETWORK;
+    firedns_errno = FDNS_ERR_NETWORK;
     return -1;
   }
 
   time(&s->start);
-  fdns_fdinuse++;
-  fdns_errno = FDNS_ERR_NONE;
+  firedns_fdinuse++;
+  firedns_errno = FDNS_ERR_NONE;
 
   return s->fd;
 }
@@ -590,7 +589,7 @@ firedns_getresult(const int fd)
   char *src, *dst;
   int bytes;
 
-  fdns_errno = FDNS_ERR_OTHER;
+  firedns_errno = FDNS_ERR_OTHER;
   result.info = NULL;
 
   memset(result.text, 0, sizeof(result.text));
@@ -617,7 +616,7 @@ firedns_getresult(const int fd)
 
   if (l == -1)
   {
-    fdns_errno = FDNS_ERR_NETWORK;
+    firedns_errno = FDNS_ERR_NETWORK;
     goto cleanup;
   }
 
@@ -639,7 +638,7 @@ firedns_getresult(const int fd)
 
   if ((h.flags2 & FLAGS2_MASK_RCODE) != 0)
   {
-    fdns_errno = (h.flags2 & FLAGS2_MASK_RCODE);
+    firedns_errno = (h.flags2 & FLAGS2_MASK_RCODE);
     goto cleanup;
   }
 
@@ -647,7 +646,7 @@ firedns_getresult(const int fd)
 
   if (h.ancount < 1)
   {
-    fdns_errno = FDNS_ERR_NXDOMAIN;
+    firedns_errno = FDNS_ERR_NXDOMAIN;
     /* no sense going on if we don't have any answers */
     goto cleanup;
   }
@@ -745,7 +744,7 @@ firedns_getresult(const int fd)
   if (rr->rdlength > 1023)
     goto cleanup;
 
-  fdns_errno = FDNS_ERR_NONE;
+  firedns_errno = FDNS_ERR_NONE;
   memcpy(result.text, &h.payload[i], rr->rdlength);
   result.text[rr->rdlength] = '\0';
 
@@ -754,7 +753,7 @@ cleanup:
   list_remove(CONNECTIONS, node);
   node_free(node);
   close(c->fd);
-  fdns_fdinuse--;
+  firedns_fdinuse--;
   MyFree(c);
 
   return &result;
@@ -801,10 +800,10 @@ firedns_cycle(void)
       strlcpy(new_result.lookup, p->lookup, sizeof(new_result.lookup));
 
       close(p->fd);
-      fdns_fdinuse--;
+      firedns_fdinuse--;
       MyFree(p);
 
-      fdns_errno = FDNS_ERR_TIMEOUT;
+      firedns_errno = FDNS_ERR_TIMEOUT;
 
       if (new_result.info)
         dnsbl_result(&new_result);
@@ -847,7 +846,7 @@ firedns_cycle(void)
         }
       }
     }
-    else if (fdns_fdinuse < OptionsItem->dns_fdlimit)
+    else if (firedns_fdinuse < OptionsItem->dns_fdlimit)
       firedns_doquery(p);
   }
 }

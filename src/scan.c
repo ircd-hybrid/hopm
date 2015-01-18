@@ -892,7 +892,7 @@ scan_manual(char *param, const struct ChannelConf *target)
   if ((addr = firedns_resolveip4(ip)) == NULL)
   {
     irc_send("PRIVMSG %s :CHECK -> Error resolving host '%s': %s",
-             target->name, ip, firedns_strerror(fdns_errno));
+             target->name, ip, firedns_strerror(firedns_errno));
     return;
   }
 

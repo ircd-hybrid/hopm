@@ -87,9 +87,9 @@ dnsbl_add(struct scan_struct *ss)
 
     res = firedns_getip(FDNS_QRY_A, lookup, ds);
 
-    if (res == -1 && fdns_errno != FDNS_ERR_FDLIMIT)
+    if (res == -1 && firedns_errno != FDNS_ERR_FDLIMIT)
     {
-      log_printf("DNSBL -> Error sending dns lookup for '%s': %s", lookup, firedns_strerror(fdns_errno));
+      log_printf("DNSBL -> Error sending dns lookup for '%s': %s", lookup, firedns_strerror(firedns_errno));
       MyFree(ds);
     }
     else
@@ -178,7 +178,7 @@ dnsbl_result(struct firedns_result *res)
                  (unsigned char)res->text[0],
                  (unsigned char)res->text[1],
                  (unsigned char)res->text[2],
-                 (unsigned char)res->text[3], fdns_errno);
+                 (unsigned char)res->text[3], firedns_errno);
     else
       log_printf("DNSBL -> Lookup result for %s!%s@%s (%s) %d.%d.%d.%d (error: %d)",
                  ds->ss->irc_nick,
@@ -188,11 +188,11 @@ dnsbl_result(struct firedns_result *res)
                  (unsigned char)res->text[0],
                  (unsigned char)res->text[1],
                  (unsigned char)res->text[2],
-                 (unsigned char)res->text[3], fdns_errno);
+                 (unsigned char)res->text[3], firedns_errno);
   }
 
   /* Everything is OK */
-  if (res->text[0] == '\0' && fdns_errno == FDNS_ERR_NXDOMAIN)
+  if (res->text[0] == '\0' && firedns_errno == FDNS_ERR_NXDOMAIN)
   {
     if (ds->ss->manual_target)
       irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s does not appear in BL zone %s",
@@ -206,16 +206,16 @@ dnsbl_result(struct firedns_result *res)
   }
 
   /* Either an error, or a positive lookup */
-  if (fdns_errno == FDNS_ERR_NONE)
+  if (firedns_errno == FDNS_ERR_NONE)
     dnsbl_positive(ds->ss, ds->bl, (unsigned char)res->text[3]);
   else
   {
     log_printf("DNSBL -> Lookup error on %s: %s", res->lookup,
-               firedns_strerror(fdns_errno));
+               firedns_strerror(firedns_errno));
 
-    if (fdns_errno != FDNS_ERR_TIMEOUT)
+    if (firedns_errno != FDNS_ERR_TIMEOUT)
       irc_send_channels("DNSBL -> Lookup error on %s: %s", res->lookup,
-                        firedns_strerror(fdns_errno));
+                        firedns_strerror(firedns_errno));
   }
 
   /* Check if ss has any remaining scans */
