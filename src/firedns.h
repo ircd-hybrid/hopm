@@ -63,7 +63,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define FDNS_ERR_OTHER       9
 
 /* Used with the above error values */
-extern int fdns_errno;
+extern int firedns_errno;
 
 struct firedns_result
 {

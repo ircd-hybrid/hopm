@@ -197,7 +197,7 @@ irc_init(void)
   else
   {
     log_printf("IRC -> firedns_resolveip(\"%s\"): %s", IRCItem->server,
-               firedns_strerror(fdns_errno));
+               firedns_strerror(firedns_errno));
     exit(EXIT_FAILURE);
   }
 
