@@ -1,3 +1,7 @@
+-- Noteworthy changes in version 1.0.3 (2015-??-??)
+o) Added irc::notice configuration option
+
+
 -- Noteworthy changes in version 1.0.2 (2015-01-12)
 o) Added options::negcache_rebuild configuration option
 o) Added basic IPv6 support allowing HOPM to bind and
