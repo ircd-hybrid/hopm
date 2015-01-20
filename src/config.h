@@ -51,6 +51,7 @@ struct IRCConf
   char *kline;
   list_t *channels;  /* List of ChannelConf */
   list_t *performs;  /* List of char * */
+  list_t *notices;   /* List of char * */
 };
 
 struct ChannelConf

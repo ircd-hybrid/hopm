@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.3.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -70,39 +70,40 @@ extern int yydebug;
     NEGCACHE_REBUILD = 280,
     NICK = 281,
     NICKSERV = 282,
-    OPER = 283,
-    OPM = 284,
-    OPTIONS = 285,
-    PASSWORD = 286,
-    PERFORM = 287,
-    PIDFILE = 288,
-    PORT = 289,
-    PROTOCOL = 290,
-    READTIMEOUT = 291,
-    REALNAME = 292,
-    REPLY = 293,
-    SCANLOG = 294,
-    SCANNER = 295,
-    SECONDS = 296,
-    MINUTES = 297,
-    HOURS = 298,
-    DAYS = 299,
-    WEEKS = 300,
-    MONTHS = 301,
-    YEARS = 302,
-    SENDMAIL = 303,
-    SERVER = 304,
-    TARGET_IP = 305,
-    TARGET_PORT = 306,
-    TARGET_STRING = 307,
-    TIMEOUT = 308,
-    TYPE = 309,
-    USERNAME = 310,
-    USER = 311,
-    VHOST = 312,
-    NUMBER = 313,
-    STRING = 314,
-    PROTOCOLTYPE = 315
+    NOTICE = 283,
+    OPER = 284,
+    OPM = 285,
+    OPTIONS = 286,
+    PASSWORD = 287,
+    PERFORM = 288,
+    PIDFILE = 289,
+    PORT = 290,
+    PROTOCOL = 291,
+    READTIMEOUT = 292,
+    REALNAME = 293,
+    REPLY = 294,
+    SCANLOG = 295,
+    SCANNER = 296,
+    SECONDS = 297,
+    MINUTES = 298,
+    HOURS = 299,
+    DAYS = 300,
+    WEEKS = 301,
+    MONTHS = 302,
+    YEARS = 303,
+    SENDMAIL = 304,
+    SERVER = 305,
+    TARGET_IP = 306,
+    TARGET_PORT = 307,
+    TARGET_STRING = 308,
+    TIMEOUT = 309,
+    TYPE = 310,
+    USERNAME = 311,
+    USER = 312,
+    VHOST = 313,
+    NUMBER = 314,
+    STRING = 315,
+    PROTOCOLTYPE = 316
   };
 #endif
 /* Tokens.  */
@@ -131,52 +132,55 @@ extern int yydebug;
 #define NEGCACHE_REBUILD 280
 #define NICK 281
 #define NICKSERV 282
-#define OPER 283
-#define OPM 284
-#define OPTIONS 285
-#define PASSWORD 286
-#define PERFORM 287
-#define PIDFILE 288
-#define PORT 289
-#define PROTOCOL 290
-#define READTIMEOUT 291
-#define REALNAME 292
-#define REPLY 293
-#define SCANLOG 294
-#define SCANNER 295
-#define SECONDS 296
-#define MINUTES 297
-#define HOURS 298
-#define DAYS 299
-#define WEEKS 300
-#define MONTHS 301
-#define YEARS 302
-#define SENDMAIL 303
-#define SERVER 304
-#define TARGET_IP 305
-#define TARGET_PORT 306
-#define TARGET_STRING 307
-#define TIMEOUT 308
-#define TYPE 309
-#define USERNAME 310
-#define USER 311
-#define VHOST 312
-#define NUMBER 313
-#define STRING 314
-#define PROTOCOLTYPE 315
+#define NOTICE 283
+#define OPER 284
+#define OPM 285
+#define OPTIONS 286
+#define PASSWORD 287
+#define PERFORM 288
+#define PIDFILE 289
+#define PORT 290
+#define PROTOCOL 291
+#define READTIMEOUT 292
+#define REALNAME 293
+#define REPLY 294
+#define SCANLOG 295
+#define SCANNER 296
+#define SECONDS 297
+#define MINUTES 298
+#define HOURS 299
+#define DAYS 300
+#define WEEKS 301
+#define MONTHS 302
+#define YEARS 303
+#define SENDMAIL 304
+#define SERVER 305
+#define TARGET_IP 306
+#define TARGET_PORT 307
+#define TARGET_STRING 308
+#define TIMEOUT 309
+#define TYPE 310
+#define USERNAME 311
+#define USER 312
+#define VHOST 313
+#define NUMBER 314
+#define STRING 315
+#define PROTOCOLTYPE 316
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
-#line 84 "config-parser.y" /* yacc.c:1909  */
+#line 85 "config-parser.y" /* yacc.c:1909  */
 
         int number;
         char *string;
 
-#line 179 "config-parser.h" /* yacc.c:1909  */
+#line 181 "config-parser.h" /* yacc.c:1909  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
