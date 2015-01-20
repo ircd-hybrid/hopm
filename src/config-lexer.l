@@ -109,6 +109,7 @@ NEGCACHE                { return NEGCACHE;     }
 NEGCACHE_REBUILD        { return NEGCACHE_REBUILD; }
 NICK                    { return NICK;         }
 NICKSERV                { return NICKSERV;     }
+NOTICE                  { return NOTICE;       }
 OPER                    { return OPER;         }
 OPM                     { return OPM;          }
 OPTIONS                 { return OPTIONS;      }

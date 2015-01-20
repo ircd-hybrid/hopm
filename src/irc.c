@@ -838,6 +838,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
   regmatch_t pmatch[5];
   int errnum;
   const char *user[4];
+  const node_t *node;
 
   /* Not interested in notices from users */
   if (source_p)
@@ -899,6 +900,9 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
   /*FIXME (reminder) In the case of any rehash to the regex, preg MUST be freed first.
       regfree(preg);
    */
+
+  LIST_FOREACH(node, IRCItem->notices->head)
+    irc_send("NOTICE %s :%s", user[0], node->data);
 
   /* Pass this information off to scan.c */
   scan_connect(user, msg);

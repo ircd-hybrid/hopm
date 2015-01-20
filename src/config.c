@@ -53,6 +53,7 @@ config_init(void)
   IRCItem = xcalloc(sizeof *IRCItem);
   IRCItem->channels = list_create();
   IRCItem->performs = list_create();
+  IRCItem->notices  = list_create();
 
   /* Init Options block */
   OptionsItem = xcalloc(sizeof *OptionsItem);

@@ -55,6 +55,7 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 %token NEGCACHE_REBUILD
 %token NICK
 %token NICKSERV
+%token NOTICE
 %token OPER
 %token OPM
 %token OPTIONS
@@ -188,6 +189,7 @@ irc_item: irc_away        |
           irc_username    |
           irc_vhost       |
           irc_perform     |
+          irc_notice      |
           channel_entry   |
           error;
 
@@ -239,6 +241,14 @@ irc_perform: PERFORM '=' STRING ';'
    node = node_create(xstrdup($3));
 
    list_add(IRCItem->performs, node);
+};
+
+irc_notice: NOTICE '=' STRING ';'
+{
+   node_t *node;
+   node = node_create(xstrdup($3));
+
+   list_add(IRCItem->notices, node);
 };
 
 irc_port: PORT '=' NUMBER ';'
