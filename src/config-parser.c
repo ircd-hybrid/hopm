@@ -1,4 +1,4 @@
-/* A Bison parser, made by GNU Bison 3.0.3.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.3"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -1688,7 +1688,7 @@ yyreduce:
   case 37:
 #line 154 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(OptionsItem->pidfile);
+   xfree(OptionsItem->pidfile);
    OptionsItem->pidfile = xstrdup((yyvsp[-1].string));
 }
 #line 1695 "config-parser.c" /* yacc.c:1646  */
@@ -1705,7 +1705,7 @@ yyreduce:
   case 39:
 #line 165 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(OptionsItem->scanlog);
+   xfree(OptionsItem->scanlog);
    OptionsItem->scanlog = xstrdup((yyvsp[-1].string));
 }
 #line 1712 "config-parser.c" /* yacc.c:1646  */
@@ -1714,7 +1714,7 @@ yyreduce:
   case 61:
 #line 197 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->away);
+   xfree(IRCItem->away);
    IRCItem->away = xstrdup((yyvsp[-1].string));
 }
 #line 1721 "config-parser.c" /* yacc.c:1646  */
@@ -1723,7 +1723,7 @@ yyreduce:
   case 62:
 #line 203 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->kline);
+   xfree(IRCItem->kline);
    IRCItem->kline = xstrdup((yyvsp[-1].string));
 }
 #line 1730 "config-parser.c" /* yacc.c:1646  */
@@ -1732,7 +1732,7 @@ yyreduce:
   case 63:
 #line 209 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->mode);
+   xfree(IRCItem->mode);
    IRCItem->mode = xstrdup((yyvsp[-1].string));
 }
 #line 1739 "config-parser.c" /* yacc.c:1646  */
@@ -1741,7 +1741,7 @@ yyreduce:
   case 64:
 #line 215 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->nick);
+   xfree(IRCItem->nick);
    IRCItem->nick = xstrdup((yyvsp[-1].string));
 }
 #line 1748 "config-parser.c" /* yacc.c:1646  */
@@ -1750,7 +1750,7 @@ yyreduce:
   case 65:
 #line 221 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->nickserv);
+   xfree(IRCItem->nickserv);
    IRCItem->nickserv = xstrdup((yyvsp[-1].string));
 }
 #line 1757 "config-parser.c" /* yacc.c:1646  */
@@ -1759,7 +1759,7 @@ yyreduce:
   case 66:
 #line 227 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->oper);
+   xfree(IRCItem->oper);
    IRCItem->oper = xstrdup((yyvsp[-1].string));
 }
 #line 1766 "config-parser.c" /* yacc.c:1646  */
@@ -1768,7 +1768,7 @@ yyreduce:
   case 67:
 #line 233 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->password);
+   xfree(IRCItem->password);
    IRCItem->password = xstrdup((yyvsp[-1].string));
 }
 #line 1775 "config-parser.c" /* yacc.c:1646  */
@@ -1815,7 +1815,7 @@ yyreduce:
   case 72:
 #line 265 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->realname);
+   xfree(IRCItem->realname);
    IRCItem->realname = xstrdup((yyvsp[-1].string));
 }
 #line 1822 "config-parser.c" /* yacc.c:1646  */
@@ -1824,7 +1824,7 @@ yyreduce:
   case 73:
 #line 271 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->server);
+   xfree(IRCItem->server);
    IRCItem->server = xstrdup((yyvsp[-1].string));
 }
 #line 1831 "config-parser.c" /* yacc.c:1646  */
@@ -1833,7 +1833,7 @@ yyreduce:
   case 74:
 #line 277 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->username);
+   xfree(IRCItem->username);
    IRCItem->username = xstrdup((yyvsp[-1].string));
 }
 #line 1840 "config-parser.c" /* yacc.c:1646  */
@@ -1842,7 +1842,7 @@ yyreduce:
   case 75:
 #line 283 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->vhost);
+   xfree(IRCItem->vhost);
    IRCItem->vhost = xstrdup((yyvsp[-1].string));
 }
 #line 1849 "config-parser.c" /* yacc.c:1646  */
@@ -1851,7 +1851,7 @@ yyreduce:
   case 76:
 #line 289 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(IRCItem->connregex);
+   xfree(IRCItem->connregex);
    IRCItem->connregex = xstrdup((yyvsp[-1].string));
 }
 #line 1858 "config-parser.c" /* yacc.c:1646  */
@@ -1882,7 +1882,7 @@ yyreduce:
     {
    struct ChannelConf *item = tmp;
 
-   MyFree(item->name);
+   xfree(item->name);
    item->name = xstrdup((yyvsp[-1].string));
 }
 #line 1889 "config-parser.c" /* yacc.c:1646  */
@@ -1893,7 +1893,7 @@ yyreduce:
     {
    struct ChannelConf *item = tmp;
 
-   MyFree(item->key);
+   xfree(item->key);
    item->key = xstrdup((yyvsp[-1].string));
 }
 #line 1900 "config-parser.c" /* yacc.c:1646  */
@@ -1904,7 +1904,7 @@ yyreduce:
     {
    struct ChannelConf *item = tmp;
 
-   MyFree(item->invite);
+   xfree(item->invite);
    item->invite = xstrdup((yyvsp[-1].string));
 }
 #line 1911 "config-parser.c" /* yacc.c:1646  */
@@ -2007,7 +2007,7 @@ yyreduce:
 #line 455 "config-parser.y" /* yacc.c:1646  */
     {
    struct ScannerConf *item = tmp;
-   MyFree(item->name);
+   xfree(item->name);
    item->name = xstrdup((yyvsp[-1].string));
 }
 #line 2014 "config-parser.c" /* yacc.c:1646  */
@@ -2017,7 +2017,7 @@ yyreduce:
 #line 462 "config-parser.y" /* yacc.c:1646  */
     {
    struct ScannerConf *item = tmp;
-   MyFree(item->vhost);
+   xfree(item->vhost);
    item->vhost = xstrdup((yyvsp[-1].string));
 }
 #line 2024 "config-parser.c" /* yacc.c:1646  */
@@ -2027,7 +2027,7 @@ yyreduce:
 #line 469 "config-parser.y" /* yacc.c:1646  */
     {
    struct ScannerConf *item = tmp;
-   MyFree(item->target_ip);
+   xfree(item->target_ip);
    item->target_ip = xstrdup((yyvsp[-1].string));
 }
 #line 2034 "config-parser.c" /* yacc.c:1646  */
@@ -2111,7 +2111,7 @@ yyreduce:
   case 127:
 #line 546 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(OpmItem->dnsbl_from);
+   xfree(OpmItem->dnsbl_from);
    OpmItem->dnsbl_from = xstrdup((yyvsp[-1].string));
 }
 #line 2118 "config-parser.c" /* yacc.c:1646  */
@@ -2120,7 +2120,7 @@ yyreduce:
   case 128:
 #line 552 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(OpmItem->dnsbl_to);
+   xfree(OpmItem->dnsbl_to);
    OpmItem->dnsbl_to = xstrdup((yyvsp[-1].string));
 }
 #line 2127 "config-parser.c" /* yacc.c:1646  */
@@ -2129,7 +2129,7 @@ yyreduce:
   case 129:
 #line 558 "config-parser.y" /* yacc.c:1646  */
     {
-   MyFree(OpmItem->sendmail);
+   xfree(OpmItem->sendmail);
    OpmItem->sendmail = xstrdup((yyvsp[-1].string));
 }
 #line 2136 "config-parser.c" /* yacc.c:1646  */
@@ -2162,7 +2162,7 @@ yyreduce:
     {
    struct BlacklistConf *item = tmp;
 
-   MyFree(item->name);
+   xfree(item->name);
    item->name = xstrdup((yyvsp[-1].string));
 }
 #line 2169 "config-parser.c" /* yacc.c:1646  */
@@ -2173,7 +2173,7 @@ yyreduce:
     {
    struct BlacklistConf *item = tmp;
 
-   MyFree(item->kline);
+   xfree(item->kline);
    item->kline = xstrdup((yyvsp[-1].string));
 }
 #line 2180 "config-parser.c" /* yacc.c:1646  */
