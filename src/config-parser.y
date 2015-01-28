@@ -152,7 +152,7 @@ options_negcache_rebuild: NEGCACHE_REBUILD '=' timespec ';'
 
 options_pidfile: PIDFILE '=' STRING ';'
 {
-   MyFree(OptionsItem->pidfile);
+   xfree(OptionsItem->pidfile);
    OptionsItem->pidfile = xstrdup($3);
 };
 
@@ -163,7 +163,7 @@ options_dns_fdlimit: DNS_FDLIMIT '=' NUMBER ';'
 
 options_scanlog: SCANLOG '=' STRING ';'
 {
-   MyFree(OptionsItem->scanlog);
+   xfree(OptionsItem->scanlog);
    OptionsItem->scanlog = xstrdup($3);
 };
 
@@ -195,43 +195,43 @@ irc_item: irc_away        |
 
 irc_away: AWAY '=' STRING ';'
 {
-   MyFree(IRCItem->away);
+   xfree(IRCItem->away);
    IRCItem->away = xstrdup($3);
 };
 
 irc_kline: KLINE '=' STRING ';'
 {
-   MyFree(IRCItem->kline);
+   xfree(IRCItem->kline);
    IRCItem->kline = xstrdup($3);
 };
 
 irc_mode: MODE '=' STRING ';'
 {
-   MyFree(IRCItem->mode);
+   xfree(IRCItem->mode);
    IRCItem->mode = xstrdup($3);
 };
 
 irc_nick: NICK '=' STRING ';'
 {
-   MyFree(IRCItem->nick);
+   xfree(IRCItem->nick);
    IRCItem->nick = xstrdup($3);
 };
 
 irc_nickserv: NICKSERV '=' STRING ';'
 {
-   MyFree(IRCItem->nickserv);
+   xfree(IRCItem->nickserv);
    IRCItem->nickserv = xstrdup($3);
 };
 
 irc_oper: OPER '=' STRING ';'
 {
-   MyFree(IRCItem->oper);
+   xfree(IRCItem->oper);
    IRCItem->oper = xstrdup($3);
 };
 
 irc_password: PASSWORD '=' STRING ';'
 {
-   MyFree(IRCItem->password);
+   xfree(IRCItem->password);
    IRCItem->password = xstrdup($3);
 };
 
@@ -263,31 +263,31 @@ irc_readtimeout: READTIMEOUT '=' timespec ';'
 
 irc_realname: REALNAME '=' STRING ';'
 {
-   MyFree(IRCItem->realname);
+   xfree(IRCItem->realname);
    IRCItem->realname = xstrdup($3);
 };
 
 irc_server: SERVER '=' STRING ';'
 {
-   MyFree(IRCItem->server);
+   xfree(IRCItem->server);
    IRCItem->server = xstrdup($3);
 };
 
 irc_username: USERNAME '=' STRING ';'
 {
-   MyFree(IRCItem->username);
+   xfree(IRCItem->username);
    IRCItem->username = xstrdup($3);
 };
 
 irc_vhost: VHOST '=' STRING ';'
 {
-   MyFree(IRCItem->vhost);
+   xfree(IRCItem->vhost);
    IRCItem->vhost = xstrdup($3);
 };
 
 irc_connregex: CONNREGEX '=' STRING ';'
 {
-   MyFree(IRCItem->connregex);
+   xfree(IRCItem->connregex);
    IRCItem->connregex = xstrdup($3);
 };
 
@@ -323,7 +323,7 @@ channel_name: NAME '=' STRING ';'
 {
    struct ChannelConf *item = tmp;
 
-   MyFree(item->name);
+   xfree(item->name);
    item->name = xstrdup($3);
 };
 
@@ -331,7 +331,7 @@ channel_key: KEY '=' STRING ';'
 {
    struct ChannelConf *item = tmp;
 
-   MyFree(item->key);
+   xfree(item->key);
    item->key = xstrdup($3);
 };
 
@@ -339,7 +339,7 @@ channel_invite: INVITE '=' STRING ';'
 {
    struct ChannelConf *item = tmp;
 
-   MyFree(item->invite);
+   xfree(item->invite);
    item->invite = xstrdup($3);
 };
 
@@ -454,21 +454,21 @@ scanner_item: scanner_name          |
 scanner_name: NAME '=' STRING ';'
 {
    struct ScannerConf *item = tmp;
-   MyFree(item->name);
+   xfree(item->name);
    item->name = xstrdup($3);
 };
 
 scanner_vhost: VHOST '=' STRING ';'
 {
    struct ScannerConf *item = tmp;
-   MyFree(item->vhost);
+   xfree(item->vhost);
    item->vhost = xstrdup($3);
 };
 
 scanner_target_ip: TARGET_IP '=' STRING ';'
 {
    struct ScannerConf *item = tmp;
-   MyFree(item->target_ip);
+   xfree(item->target_ip);
    item->target_ip = xstrdup($3);
 };
 
@@ -544,19 +544,19 @@ opm_item: opm_dnsbl_from      |
 
 opm_dnsbl_from: DNSBL_FROM '=' STRING ';'
 {
-   MyFree(OpmItem->dnsbl_from);
+   xfree(OpmItem->dnsbl_from);
    OpmItem->dnsbl_from = xstrdup($3);
 };
 
 opm_dnsbl_to: DNSBL_TO '=' STRING ';'
 {
-   MyFree(OpmItem->dnsbl_to);
+   xfree(OpmItem->dnsbl_to);
    OpmItem->dnsbl_to = xstrdup($3);
 };
 
 opm_sendmail: SENDMAIL '=' STRING ';'
 {
-   MyFree(OpmItem->sendmail);
+   xfree(OpmItem->sendmail);
    OpmItem->sendmail = xstrdup($3);
 };
 
@@ -595,14 +595,14 @@ blacklist_item: blacklist_name        |
 blacklist_name: NAME '=' STRING ';' {
    struct BlacklistConf *item = tmp;
 
-   MyFree(item->name);
+   xfree(item->name);
    item->name = xstrdup($3);
 };
 
 blacklist_kline: KLINE '=' STRING ';' {
    struct BlacklistConf *item = tmp;
 
-   MyFree(item->kline);
+   xfree(item->kline);
    item->kline = xstrdup($3);
 };
 

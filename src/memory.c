@@ -47,7 +47,7 @@ void *xcalloc(size_t bytes)
 
 
 
-/*  MyFree
+/*  xfree
  *
  *  Free memory allocated with xcalloc
  *
@@ -58,13 +58,9 @@ void *xcalloc(size_t bytes)
  *     None
  */
 
-void _MyFree(void **var)
+void xfree(void *ptr)
 {
-   assert(var != NULL);
-
-   if(*var != NULL)
-      free(*var);
-   *var = NULL;
+  free(ptr);
 }
 
 void *

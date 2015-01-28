@@ -618,7 +618,7 @@ userinfo_create(char *source)
 
   if (nick == NULL || username == NULL || hostname == NULL)
   {
-    MyFree(tmp);
+    xfree(tmp);
     return NULL;
   }
 
@@ -627,7 +627,7 @@ userinfo_create(char *source)
   ret->irc_username = xstrdup(username);
   ret->irc_hostname = xstrdup(hostname);
 
-  MyFree(tmp);
+  xfree(tmp);
 
   return ret;
 };
@@ -647,10 +647,10 @@ userinfo_free(struct UserInfo *source_p)
   if (source_p == NULL)
     return;
 
-  MyFree(source_p->irc_nick);
-  MyFree(source_p->irc_username);
-  MyFree(source_p->irc_hostname);
-  MyFree(source_p);
+  xfree(source_p->irc_nick);
+  xfree(source_p->irc_username);
+  xfree(source_p->irc_hostname);
+  xfree(source_p);
 }
 
 /* m_perform
@@ -838,6 +838,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
   regmatch_t pmatch[5];
   int errnum;
   const char *user[4];
+  const node_t *node;
 
   /* Not interested in notices from users */
   if (source_p)
@@ -859,7 +860,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
       log_printf("IRC REGEX -> Error when compiling regular expression");
       log_printf("IRC REGEX -> %s", errmsg);
 
-      MyFree(preg);
+      xfree(preg);
       preg = NULL;
       return;
     }
@@ -899,6 +900,9 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
   /*FIXME (reminder) In the case of any rehash to the regex, preg MUST be freed first.
       regfree(preg);
    */
+
+  LIST_FOREACH(node, IRCItem->notices->head)
+    irc_send("NOTICE %s :%s", user[0], node->data);
 
   /* Pass this information off to scan.c */
   scan_connect(user, msg);

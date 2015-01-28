@@ -451,14 +451,14 @@ scan_free(struct scan_struct *ss)
   if (ss == NULL)
     return;
 
-  MyFree(ss->irc_nick);
-  MyFree(ss->irc_username);
-  MyFree(ss->irc_hostname);
-  MyFree(ss->ip);
-  MyFree(ss->proof);
+  xfree(ss->irc_nick);
+  xfree(ss->irc_username);
+  xfree(ss->irc_hostname);
+  xfree(ss->ip);
+  xfree(ss->proof);
 
   opm_remote_free(ss->remote);
-  MyFree(ss);
+  xfree(ss);
 }
 
 /* scan_checkfinished

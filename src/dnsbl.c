@@ -90,7 +90,7 @@ dnsbl_add(struct scan_struct *ss)
     if (res == -1 && firedns_errno != FDNS_ERR_FDLIMIT)
     {
       log_printf("DNSBL -> Error sending dns lookup for '%s': %s", lookup, firedns_strerror(firedns_errno));
-      MyFree(ds);
+      xfree(ds);
     }
     else
       ++ss->scans;  /* Increase scan count - one for each blacklist */
@@ -201,7 +201,7 @@ dnsbl_result(struct firedns_result *res)
 
     --ds->ss->scans;  /* We are done with ss here */
     scan_checkfinished(ds->ss);  /* This could free ss, don't use ss after this point */
-    MyFree(ds);  /* No longer need our information */
+    xfree(ds);  /* No longer need our information */
     return;
   }
 
@@ -221,7 +221,7 @@ dnsbl_result(struct firedns_result *res)
   /* Check if ss has any remaining scans */
   --ds->ss->scans;  /* We are done with ss here */
   scan_checkfinished(ds->ss);  /* This could free ss, don't use ss after this point */
-  MyFree(ds);  /* Finished with dnsbl_scan too */
+  xfree(ds);  /* Finished with dnsbl_scan too */
 }
 
 void
