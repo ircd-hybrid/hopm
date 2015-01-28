@@ -103,10 +103,10 @@ node_t *list_remove(list_t *list, node_t *node)
 
 void list_free(list_t *list)
 {
-   MyFree(list);
+   xfree(list);
 }
 
 void node_free(node_t *node)
 {
-   MyFree(node);
+   xfree(node);
 }

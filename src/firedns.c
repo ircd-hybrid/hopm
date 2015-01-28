@@ -325,7 +325,7 @@ firedns_getip(int type, const char * const name, void *info)
 
     /* Don't add to queue if there is no info */
     if (info == NULL)
-      MyFree(s);
+      xfree(s);
     else
     {
       node = node_create(s);
@@ -339,7 +339,7 @@ firedns_getip(int type, const char * const name, void *info)
 
   if (fd == -1)
   {
-    MyFree(s);
+    xfree(s);
     return -1;
   }
 
@@ -754,7 +754,7 @@ cleanup:
   node_free(node);
   close(c->fd);
   firedns_fdinuse--;
-  MyFree(c);
+  xfree(c);
 
   return &result;
 }
@@ -801,7 +801,7 @@ firedns_cycle(void)
 
       close(p->fd);
       firedns_fdinuse--;
-      MyFree(p);
+      xfree(p);
 
       firedns_errno = FDNS_ERR_TIMEOUT;
 

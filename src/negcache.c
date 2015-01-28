@@ -267,7 +267,7 @@ static void nc_rebuild(struct cnode *old_head, struct cnode *new_head,
    }
 
    /* Safe to free() this node now. */
-   MyFree(n);
+   xfree(n);
 }
 
 /*
@@ -283,6 +283,6 @@ void negcache_rebuild(void)
 
    nc_init(&new_head);
    nc_rebuild(nc_head, new_head, NULL, now);
-   MyFree(nc_head);
+   xfree(nc_head);
    nc_head = new_head;
 }

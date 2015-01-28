@@ -232,10 +232,10 @@ static void
 command_free(struct Command *command)
 {
   if (command->param)
-    MyFree(command->param);
+    xfree(command->param);
 
-  MyFree(command->irc_nick);
-  MyFree(command);
+  xfree(command->irc_nick);
+  xfree(command);
 }
 
 /* command_userhost

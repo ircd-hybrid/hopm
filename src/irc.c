@@ -618,7 +618,7 @@ userinfo_create(char *source)
 
   if (nick == NULL || username == NULL || hostname == NULL)
   {
-    MyFree(tmp);
+    xfree(tmp);
     return NULL;
   }
 
@@ -627,7 +627,7 @@ userinfo_create(char *source)
   ret->irc_username = xstrdup(username);
   ret->irc_hostname = xstrdup(hostname);
 
-  MyFree(tmp);
+  xfree(tmp);
 
   return ret;
 };
@@ -647,10 +647,10 @@ userinfo_free(struct UserInfo *source_p)
   if (source_p == NULL)
     return;
 
-  MyFree(source_p->irc_nick);
-  MyFree(source_p->irc_username);
-  MyFree(source_p->irc_hostname);
-  MyFree(source_p);
+  xfree(source_p->irc_nick);
+  xfree(source_p->irc_username);
+  xfree(source_p->irc_hostname);
+  xfree(source_p);
 }
 
 /* m_perform
@@ -860,7 +860,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
       log_printf("IRC REGEX -> Error when compiling regular expression");
       log_printf("IRC REGEX -> %s", errmsg);
 
-      MyFree(preg);
+      xfree(preg);
       preg = NULL;
       return;
     }
