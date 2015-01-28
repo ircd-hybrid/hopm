@@ -140,8 +140,8 @@ irc_cycle(void)
   pfd.fd = IRC_FD;
   pfd.events = POLLIN;
 
-  /* Block .025 seconds to avoid excessive CPU use on poll(). */
-  switch (poll(&pfd, 1, 25))
+  /* Block .050 seconds to avoid excessive CPU use on poll(). */
+  switch (poll(&pfd, 1, 50))
   {
     case  0:
     case -1:
