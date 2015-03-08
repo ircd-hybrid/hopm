@@ -37,7 +37,7 @@ FILE *logfile;
 FILE *scanlogfile;
 
 void
-log_open(char *filename)
+log_open(const char *filename)
 {
   logfile = fopen(filename, "a");
 
@@ -55,7 +55,7 @@ log_close(void)
 }
 
 void
-scanlog_open(char *filename)
+scanlog_open(const char *filename)
 {
   scanlogfile = fopen(filename, "a");
 
@@ -98,4 +98,3 @@ log_printf(const char *data, ...)
     fflush(logfile);
   }
 }
-
