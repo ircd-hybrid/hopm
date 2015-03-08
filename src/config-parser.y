@@ -81,10 +81,10 @@ void *tmp;        /* Variable to temporarily hold nodes before insertion to list
 %token USER
 %token VHOST
 
-%union 
+%union
 {
-        int number;
-        char *string;
+  int number;
+  char *string;
 }
 
 %token <number> NUMBER
@@ -142,34 +142,34 @@ options_item: options_negcache |
 
 options_negcache: NEGCACHE '=' timespec ';'
 {
-   OptionsItem->negcache = $3;
+  OptionsItem->negcache = $3;
 };
 
 options_negcache_rebuild: NEGCACHE_REBUILD '=' timespec ';'
 {
-   OptionsItem->negcache_rebuild = $3;
+  OptionsItem->negcache_rebuild = $3;
 };
 
 options_pidfile: PIDFILE '=' STRING ';'
 {
-   xfree(OptionsItem->pidfile);
-   OptionsItem->pidfile = xstrdup($3);
+  xfree(OptionsItem->pidfile);
+  OptionsItem->pidfile = xstrdup($3);
 };
 
 options_dns_fdlimit: DNS_FDLIMIT '=' NUMBER ';'
 {
-   OptionsItem->dns_fdlimit = $3;
+  OptionsItem->dns_fdlimit = $3;
 };
 
 options_scanlog: SCANLOG '=' STRING ';'
 {
-   xfree(OptionsItem->scanlog);
-   OptionsItem->scanlog = xstrdup($3);
+  xfree(OptionsItem->scanlog);
+  OptionsItem->scanlog = xstrdup($3);
 };
 
 /*************************** IRC BLOCK ***************************/
 
-irc_entry: IRC '{' irc_items  '}' ';';
+irc_entry: IRC '{' irc_items '}' ';';
 
 irc_items: irc_items irc_item |
            irc_item;
@@ -182,7 +182,7 @@ irc_item: irc_away        |
           irc_mode        |
           irc_oper        |
           irc_password    |
-          irc_port        | 
+          irc_port        |
           irc_readtimeout |
           irc_realname    |
           irc_server      |
@@ -195,120 +195,119 @@ irc_item: irc_away        |
 
 irc_away: AWAY '=' STRING ';'
 {
-   xfree(IRCItem->away);
-   IRCItem->away = xstrdup($3);
+  xfree(IRCItem->away);
+  IRCItem->away = xstrdup($3);
 };
 
 irc_kline: KLINE '=' STRING ';'
 {
-   xfree(IRCItem->kline);
-   IRCItem->kline = xstrdup($3);
+  xfree(IRCItem->kline);
+  IRCItem->kline = xstrdup($3);
 };
 
 irc_mode: MODE '=' STRING ';'
 {
-   xfree(IRCItem->mode);
-   IRCItem->mode = xstrdup($3);
+  xfree(IRCItem->mode);
+  IRCItem->mode = xstrdup($3);
 };
 
 irc_nick: NICK '=' STRING ';'
 {
-   xfree(IRCItem->nick);
-   IRCItem->nick = xstrdup($3);
+  xfree(IRCItem->nick);
+  IRCItem->nick = xstrdup($3);
 };
 
 irc_nickserv: NICKSERV '=' STRING ';'
 {
-   xfree(IRCItem->nickserv);
-   IRCItem->nickserv = xstrdup($3);
+  xfree(IRCItem->nickserv);
+  IRCItem->nickserv = xstrdup($3);
 };
 
 irc_oper: OPER '=' STRING ';'
 {
-   xfree(IRCItem->oper);
-   IRCItem->oper = xstrdup($3);
+  xfree(IRCItem->oper);
+  IRCItem->oper = xstrdup($3);
 };
 
 irc_password: PASSWORD '=' STRING ';'
 {
-   xfree(IRCItem->password);
-   IRCItem->password = xstrdup($3);
+  xfree(IRCItem->password);
+  IRCItem->password = xstrdup($3);
 };
 
 irc_perform: PERFORM '=' STRING ';'
 {
-   node_t *node;
-   node = node_create(xstrdup($3));
+  node_t *node;
 
-   list_add(IRCItem->performs, node);
+  node = node_create(xstrdup($3));
+  list_add(IRCItem->performs, node);
 };
 
 irc_notice: NOTICE '=' STRING ';'
 {
-   node_t *node;
-   node = node_create(xstrdup($3));
+  node_t *node;
 
-   list_add(IRCItem->notices, node);
+  node = node_create(xstrdup($3));
+  list_add(IRCItem->notices, node);
 };
 
 irc_port: PORT '=' NUMBER ';'
 {
-   IRCItem->port = $3;
+  IRCItem->port = $3;
 };
 
 irc_readtimeout: READTIMEOUT '=' timespec ';'
 {
-   IRCItem->readtimeout = $3;
+  IRCItem->readtimeout = $3;
 };
 
 irc_realname: REALNAME '=' STRING ';'
 {
-   xfree(IRCItem->realname);
-   IRCItem->realname = xstrdup($3);
+  xfree(IRCItem->realname);
+  IRCItem->realname = xstrdup($3);
 };
 
 irc_server: SERVER '=' STRING ';'
 {
-   xfree(IRCItem->server);
-   IRCItem->server = xstrdup($3);
+  xfree(IRCItem->server);
+  IRCItem->server = xstrdup($3);
 };
 
 irc_username: USERNAME '=' STRING ';'
 {
-   xfree(IRCItem->username);
-   IRCItem->username = xstrdup($3);
+  xfree(IRCItem->username);
+  IRCItem->username = xstrdup($3);
 };
 
 irc_vhost: VHOST '=' STRING ';'
 {
-   xfree(IRCItem->vhost);
-   IRCItem->vhost = xstrdup($3);
+  xfree(IRCItem->vhost);
+  IRCItem->vhost = xstrdup($3);
 };
 
 irc_connregex: CONNREGEX '=' STRING ';'
 {
-   xfree(IRCItem->connregex);
-   IRCItem->connregex = xstrdup($3);
+  xfree(IRCItem->connregex);
+  IRCItem->connregex = xstrdup($3);
 };
 
 
 /************************** CHANNEL BLOCK *************************/
 
-channel_entry: 
+channel_entry:
 {
-   node_t *node;
-   struct ChannelConf *item;
+  node_t *node;
+  struct ChannelConf *item;
 
-   item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof *item);
+  item->name = xstrdup("");
+  item->key = xstrdup("");
+  item->invite = xstrdup("");
 
-   item->name = xstrdup("");
-   item->key = xstrdup("");
-   item->invite = xstrdup("");
+  node = node_create(item);
 
-   node = node_create(item);
-   list_add(IRCItem->channels, node);
-
-   tmp = item;
+  list_add(IRCItem->channels, node);
+  tmp = item;
 }
 CHANNEL '{' channel_items '}' ';';
 
@@ -321,121 +320,118 @@ channel_item:  channel_name  |
 
 channel_name: NAME '=' STRING ';'
 {
-   struct ChannelConf *item = tmp;
+  struct ChannelConf *item = tmp;
 
-   xfree(item->name);
-   item->name = xstrdup($3);
+  xfree(item->name);
+  item->name = xstrdup($3);
 };
 
 channel_key: KEY '=' STRING ';'
 {
-   struct ChannelConf *item = tmp;
+  struct ChannelConf *item = tmp;
 
-   xfree(item->key);
-   item->key = xstrdup($3);
+  xfree(item->key);
+  item->key = xstrdup($3);
 };
 
 channel_invite: INVITE '=' STRING ';'
 {
-   struct ChannelConf *item = tmp;
+  struct ChannelConf *item = tmp;
 
-   xfree(item->invite);
-   item->invite = xstrdup($3);
+  xfree(item->invite);
+  item->invite = xstrdup($3);
 };
 
 /*************************** USER BLOCK ***************************/
 
-user_entry: 
+user_entry:
 {
-   node_t *node;
-   struct UserConf *item;
+  node_t *node;
+  struct UserConf *item;
 
-   item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof *item);
+  item->masks = list_create();
+  item->scanners = list_create();
 
-   item->masks = list_create();
-   item->scanners = list_create();
+  node = node_create(item);
 
-   node = node_create(item);
-   list_add(UserItemList, node);
-
-   tmp = item; 
-} 
-USER '{' user_items  '}' ';' ;
+  list_add(UserItemList, node);
+  tmp = item;
+}
+USER '{' user_items '}' ';' ;
 
 user_items: user_items user_item |
-           user_item;
+            user_item;
 
 user_item: user_mask     |
            user_scanner  |
-          error;
+           error;
 
 user_mask: MASK '=' STRING ';'
 {
-   struct UserConf *item = tmp;
-   node_t *node;
+  struct UserConf *item = tmp;
+  node_t *node;
 
-   node = node_create(xstrdup($3));
+  node = node_create(xstrdup($3));
 
-   list_add(item->masks, node);
+  list_add(item->masks, node);
 };
 
 user_scanner: SCANNER '=' STRING ';'
 {
-   struct UserConf *item = tmp;
-   node_t *node;
+  struct UserConf *item = tmp;
+  node_t *node;
 
-   node = node_create(xstrdup($3));
+  node = node_create(xstrdup($3));
 
-   list_add(item->scanners, node);
+  list_add(item->scanners, node);
 };
 
 /*************************** SCANNER BLOCK ***************************/
 
 scanner_entry:
 {
-   node_t *node;
-   struct ScannerConf *item, *olditem;
+  node_t *node;
+  struct ScannerConf *item, *olditem;
 
-   item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof *item);
 
-   /* Setup ScannerConf defaults */
-   item->name = xstrdup("undefined");
+  /* Setup ScannerConf defaults */
+  item->name = xstrdup("undefined");
 
-	if(LIST_SIZE(ScannerItemList) > 0)
-	{
-	   olditem = ScannerItemList->tail->data;
+  if (LIST_SIZE(ScannerItemList) > 0)
+  {
+    olditem = ScannerItemList->tail->data;
 
-		item->vhost = xstrdup(olditem->vhost);
-		item->fd = olditem->fd;
-		item->target_ip = xstrdup(olditem->target_ip);
-		item->target_port = olditem->target_port;
-		item->timeout = olditem->timeout;
-		item->max_read = olditem->max_read;
+    item->vhost = xstrdup(olditem->vhost);
+    item->fd = olditem->fd;
+    item->target_ip = xstrdup(olditem->target_ip);
+    item->target_port = olditem->target_port;
+    item->timeout = olditem->timeout;
+    item->max_read = olditem->max_read;
+    item->target_string = olditem->target_string;
+    item->target_string_created = 0;
+  }
+  else
+  {
+    item->vhost = xstrdup("0.0.0.0");
+    item->fd = 512;
+    item->target_ip = xstrdup("127.0.0.1");
+    item->target_port = 6667;
+    item->timeout = 30;
+    item->max_read = 4096;
+    item->target_string = list_create();
+    item->target_string_created = 1;
+  }
 
-		item->target_string = olditem->target_string;
-		item->target_string_created = 0;
-	}
-	else
-	{
-	   item->vhost = xstrdup("0.0.0.0");
-      item->fd = 512;
-      item->target_ip = xstrdup("127.0.0.1");
-      item->target_port = 6667;
-      item->timeout = 30;
-      item->max_read = 4096;
-		
-		item->target_string = list_create();
-		item->target_string_created = 1;
-	}
-	
-   item->protocols = list_create();
+  item->protocols = list_create();
 
-   node = node_create(item);
+  node = node_create(item);
 
-   list_add(ScannerItemList, node);
-   tmp = item;
+  list_add(ScannerItemList, node);
+  tmp = item;
 }
-SCANNER '{' scanner_items  '}' ';' ;
+SCANNER '{' scanner_items '}' ';' ;
 
 scanner_items: scanner_items scanner_item |
                scanner_item;
@@ -453,85 +449,92 @@ scanner_item: scanner_name          |
 
 scanner_name: NAME '=' STRING ';'
 {
-   struct ScannerConf *item = tmp;
-   xfree(item->name);
-   item->name = xstrdup($3);
+  struct ScannerConf *item = tmp;
+
+  xfree(item->name);
+  item->name = xstrdup($3);
 };
 
 scanner_vhost: VHOST '=' STRING ';'
 {
-   struct ScannerConf *item = tmp;
-   xfree(item->vhost);
-   item->vhost = xstrdup($3);
+  struct ScannerConf *item = tmp;
+
+  xfree(item->vhost);
+  item->vhost = xstrdup($3);
 };
 
 scanner_target_ip: TARGET_IP '=' STRING ';'
 {
-   struct ScannerConf *item = tmp;
-   xfree(item->target_ip);
-   item->target_ip = xstrdup($3);
+  struct ScannerConf *item = tmp;
+
+  xfree(item->target_ip);
+  item->target_ip = xstrdup($3);
 };
 
 scanner_target_string: TARGET_STRING '=' STRING ';'
 {
-   struct ScannerConf *item = tmp;
+  struct ScannerConf *item = tmp;
+  node_t *node;
 
-   node_t *node;
-   node = node_create($3);
+  node = node_create($3);
 
-	if(item->target_string_created == 0)
-	{
-	   item->target_string = list_create();
-		item->target_string_created = 1;
-	}
+  if (item->target_string_created == 0)
+  {
+    item->target_string = list_create();
+    item->target_string_created = 1;
+  }
 
-   list_add(item->target_string, node);
+  list_add(item->target_string, node);
 };
 
 scanner_fd: FD '=' NUMBER ';'
 {
-   struct ScannerConf *item = tmp;
-   item->fd = $3;
+  struct ScannerConf *item = tmp;
+
+  item->fd = $3;
 };
 
 scanner_target_port: TARGET_PORT '=' NUMBER ';'
 {
-   struct ScannerConf *item = tmp;
-   item->target_port = $3;
+  struct ScannerConf *item = tmp;
+
+  item->target_port = $3;
 };
 
 scanner_timeout: TIMEOUT '=' timespec ';'
 {
-   struct ScannerConf *item = tmp;
-   item->timeout = $3;
+  struct ScannerConf *item = tmp;
+
+  item->timeout = $3;
 };
 
 scanner_max_read: MAX_READ '=' sizespec ';'
 {
-   struct ScannerConf *item = tmp;
-   item->max_read = $3;
+  struct ScannerConf *item = tmp;
+
+  item->max_read = $3;
 };
 
 scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
 {
-   struct ProtocolConf *item;
-   struct ScannerConf  *item2;
+  struct ProtocolConf *item;
+  struct ScannerConf *item2;
 
-   node_t *node;
- 
-   item = xcalloc(sizeof *item);
-   item->type = $3;
-   item->port = $5;
+  node_t *node;
 
-   item2 = tmp;
+  item = xcalloc(sizeof *item);
+  item->type = $3;
+  item->port = $5;
 
-   node = node_create(item);
-   list_add(item2->protocols, node);
+  item2 = tmp;
+
+  node = node_create(item);
+  list_add(item2->protocols, node);
 };
 
 /*************************** OPM BLOCK ***************************/
 
-opm_entry: OPM '{' opm_items  '}' ';' ;
+opm_entry: OPM '{' opm_items '}' ';' ;
 
 opm_items: opm_items opm_item |
            opm_item;
@@ -544,41 +547,41 @@ opm_item: opm_dnsbl_from      |
 
 opm_dnsbl_from: DNSBL_FROM '=' STRING ';'
 {
-   xfree(OpmItem->dnsbl_from);
-   OpmItem->dnsbl_from = xstrdup($3);
+  xfree(OpmItem->dnsbl_from);
+  OpmItem->dnsbl_from = xstrdup($3);
 };
 
 opm_dnsbl_to: DNSBL_TO '=' STRING ';'
 {
-   xfree(OpmItem->dnsbl_to);
-   OpmItem->dnsbl_to = xstrdup($3);
+  xfree(OpmItem->dnsbl_to);
+  OpmItem->dnsbl_to = xstrdup($3);
 };
 
 opm_sendmail: SENDMAIL '=' STRING ';'
 {
-   xfree(OpmItem->sendmail);
-   OpmItem->sendmail = xstrdup($3);
+  xfree(OpmItem->sendmail);
+  OpmItem->sendmail = xstrdup($3);
 };
 
 /************************** BLACKLIST BLOCK *************************/
 
 opm_blacklist_entry:
 {
-   node_t *node;
-   struct BlacklistConf *item;
+  node_t *node;
+  struct BlacklistConf *item;
 
-   item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof *item);
 
-   item->name = xstrdup("");
-   item->kline = xstrdup("");
-   item->ban_unknown = 0;
-   item->type = A_BITMASK;
-   item->reply = list_create();
+  item->name = xstrdup("");
+  item->kline = xstrdup("");
+  item->ban_unknown = 0;
+  item->type = A_BITMASK;
+  item->reply = list_create();
 
-   node = node_create(item);
-   list_add(OpmItem->blacklists, node);
+  node = node_create(item);
+  list_add(OpmItem->blacklists, node);
 
-   tmp = item;
+  tmp = item;
 }
 BLACKLIST '{' blacklist_items '}' ';';
 
@@ -592,32 +595,36 @@ blacklist_item: blacklist_name        |
                 blacklist_reply       |
                 error;
 
-blacklist_name: NAME '=' STRING ';' {
-   struct BlacklistConf *item = tmp;
+blacklist_name: NAME '=' STRING ';'
+{
+  struct BlacklistConf *item = tmp;
 
-   xfree(item->name);
-   item->name = xstrdup($3);
+  xfree(item->name);
+  item->name = xstrdup($3);
 };
 
-blacklist_kline: KLINE '=' STRING ';' {
-   struct BlacklistConf *item = tmp;
+blacklist_kline: KLINE '=' STRING ';'
+{
+  struct BlacklistConf *item = tmp;
 
-   xfree(item->kline);
-   item->kline = xstrdup($3);
+  xfree(item->kline);
+  item->kline = xstrdup($3);
 };
 
-blacklist_type: TYPE '=' STRING ';' {
-   struct BlacklistConf *item = tmp;
-   
-   if(strcmp("A record bitmask", $3) == 0)
-      item->type = A_BITMASK;
-   else if(strcmp("A record reply", $3) == 0)
-      item->type = A_REPLY;
-   else
-      yyerror("Unknown blacklist type defined");
+blacklist_type: TYPE '=' STRING ';'
+{
+  struct BlacklistConf *item = tmp;
+
+  if (strcmp("A record bitmask", $3) == 0)
+    item->type = A_BITMASK;
+  else if (strcmp("A record reply", $3) == 0)
+    item->type = A_REPLY;
+  else
+    yyerror("Unknown blacklist type defined");
 };
 
-blacklist_ban_unknown: BAN_UNKNOWN '=' NUMBER ';' {
+blacklist_ban_unknown: BAN_UNKNOWN '=' NUMBER ';'
+{
    struct BlacklistConf *item = tmp;
 
    item->ban_unknown = $3;
@@ -630,23 +637,23 @@ blacklist_reply_items: blacklist_reply_items blacklist_reply_item |
 
 blacklist_reply_item: NUMBER '=' STRING ';'
 {
-   struct BlacklistReplyConf *item;
-   struct BlacklistConf *blacklist = tmp;
-   node_t *node;
+  struct BlacklistReplyConf *item;
+  struct BlacklistConf *blacklist = tmp;
+  node_t *node;
 
-   item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof *item);
 
-   item->number = $1;
-   item->type = xstrdup($3);
+  item->number = $1;
+  item->type = xstrdup($3);
 
-   node = node_create(item);
-   list_add(blacklist->reply, node);
+  node = node_create(item);
+  list_add(blacklist->reply, node);
 };
 
 /*************************** EXEMPT BLOCK ***************************/
 
 
-exempt_entry: EXEMPT '{' exempt_items  '}' ';' ;
+exempt_entry: EXEMPT '{' exempt_items '}' ';' ;
 
 exempt_items: exempt_items exempt_item |
               exempt_item;
@@ -656,10 +663,10 @@ exempt_item: exempt_mask  |
 
 exempt_mask: MASK '=' STRING ';'
 {
-   node_t *node;
-   node = node_create(xstrdup($3));
+  node_t *node;
+  node = node_create(xstrdup($3));
 
-   list_add(ExemptItem->masks, node);
+  list_add(ExemptItem->masks, node);
 };
 
 %%
