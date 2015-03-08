@@ -33,6 +33,14 @@ o Permission from your users to portscan them for open proxies.
 Compatibility
 -------------
 
+ircd-hybrid 8.2.x
+ircd-ratbox 3.0.x
+InspIRCd 2.0.x
+UnrealIRCd 3.2.x
+ngIRCd 22
+Bahamut 2.0.x
+Charybdis 3.4.x
+
 HOPM is designed for ircd-hybrid based ircds. It is easily suitable for any
 other ircd with little modification (connregex in hopm.conf). However, if an
 ircd does not send IP addresses in a connection notice, HOPM will not be
