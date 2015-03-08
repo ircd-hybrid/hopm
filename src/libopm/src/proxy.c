@@ -40,11 +40,11 @@ static char SENDBUF[SENDBUFLEN + 1];
 int
 libopm_proxy_http_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  snprintf(SENDBUF, SENDBUFLEN, "CONNECT %s:%d HTTP/1.0\r\n\r\n",
-           (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP),
-           *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT));
+  size_t len = snprintf(SENDBUF, SENDBUFLEN, "CONNECT %s:%d HTTP/1.0\r\n\r\n",
+                        (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP),
+                        *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT));
 
-  if (send(conn->fd, SENDBUF, strlen(SENDBUF), 0) == -1)
+  if (send(conn->fd, SENDBUF, len, 0) == -1)
     return 0;  /* Return error code ? */
 
   return OPM_SUCCESS;
@@ -63,9 +63,10 @@ libopm_proxy_http_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn
 int
 libopm_proxy_socks4_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
+  size_t len;
   struct in_addr addr;
   unsigned long laddr;
-  int len, scan_port;
+  int scan_port;
   char *scan_ip;
 
   scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
@@ -82,7 +83,7 @@ libopm_proxy_socks4_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
                  (char)(laddr >> 24) & 0xFF, (char)(laddr >> 16) & 0xFF,
                  (char)(laddr >> 8) & 0xFF, (char)laddr & 0xFF, 0);
 
-  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, len, 0);
 
   return OPM_SUCCESS;
 }
@@ -129,9 +130,10 @@ libopm_proxy_socks4_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
 int
 libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
+  size_t len;
   struct in_addr addr;
   unsigned long laddr;
-  int len, scan_port;
+  int scan_port;
   char *scan_ip;
 
   scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
@@ -145,7 +147,7 @@ libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
   /* Form authentication string */
   /* Version 5, 1 number of methods, 0 method (no auth). */
   len = snprintf(SENDBUF, SENDBUFLEN, "%c%c%c", 5, 1, 0);
-  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, len, 0);
 
   /* Form request string */
 
@@ -171,14 +173,15 @@ libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
 int
 libopm_proxy_wingate_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  int scan_port, len;
+  size_t len;
+  int scan_port;
   char *scan_ip;
 
   scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
   scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
   len = snprintf(SENDBUF, SENDBUFLEN, "%s:%d\r\n", scan_ip, scan_port);
-  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, len, 0);
 
   return OPM_SUCCESS;
 }
@@ -193,17 +196,18 @@ libopm_proxy_wingate_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *c
 int
 libopm_proxy_router_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  int len, scan_port;
+  size_t len;
+  int scan_port;
   char *scan_ip;
 
   scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
   scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
   len = snprintf(SENDBUF, SENDBUFLEN, "cisco\r\n");
-  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, len, 0);
 
   len = snprintf(SENDBUF, SENDBUFLEN, "telnet %s %d\r\n", scan_ip, scan_port);
-  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, len, 0);
 
   return OPM_SUCCESS;
 }
@@ -215,7 +219,8 @@ libopm_proxy_router_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
 int
 libopm_proxy_httppost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  int len, scan_port;
+  size_t len;
+  int scan_port;
   char *scan_ip;
 
   scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
@@ -227,7 +232,7 @@ libopm_proxy_httppost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *
                  "Content-length: 5\r\n\r\n"
                  "quit\r\n\r\n", scan_ip, scan_port);
 
-  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, len, 0);
 
   return OPM_SUCCESS;
 }
