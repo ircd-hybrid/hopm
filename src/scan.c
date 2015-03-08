@@ -1013,17 +1013,15 @@ scan_checkexempt(const char *mask, const char *ipmask)
 static void
 scan_log(OPM_REMOTE_T *remote)
 {
-  char buf_present[25];
-  time_t present;
-  struct tm *tm_present;
+  char buf_present[32];
+  time_t present = 0;
   struct scan_struct *ss = remote->data;
 
   if (!(OptionsItem->scanlog && scanlogfile))
     return;
 
   time(&present);
-  tm_present = gmtime(&present);
-  strftime(buf_present, sizeof(buf_present), "%b %d %H:%M:%S %Y", tm_present);
+  strftime(buf_present, sizeof(buf_present), "%FT%H:%M:%S%z", localtime(&present));
 
   fprintf(scanlogfile, "[%s] %s:%d (%s) \"%s\"\n", buf_present, remote->ip,
           remote->port, scan_gettype(remote->protocol), ss->proof);

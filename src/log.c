@@ -76,15 +76,13 @@ log_printf(const char *data, ...)
   char data2[513];
   char buf_present[25];
   va_list arglist;
-  time_t present;
-  struct tm *tm_present;
+  time_t present = 0;
 
   if (OPT_DEBUG == 0 && logfile == NULL)
     return;
 
   time(&present);
-  tm_present = gmtime(&present);
-  strftime(buf_present, sizeof(buf_present), "%b %d %H:%M:%S %Y", tm_present);
+  strftime(buf_present, sizeof(buf_present), "%FT%H:%M:%S%z", localtime(&present));
 
   va_start(arglist, data);
   vsnprintf(data2, 512, data, arglist);
