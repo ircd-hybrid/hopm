@@ -161,7 +161,7 @@ libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
                  (((unsigned short) scan_port) >> 8) & 0xFF,
                  (((unsigned short) scan_port) & 0xFF));
 
-  send(conn->fd, SENDBUF, (unsigned int)len, 0);
+  send(conn->fd, SENDBUF, len, 0);
 
   return OPM_SUCCESS;
 }
@@ -223,8 +223,8 @@ libopm_proxy_httppost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *
   int scan_port;
   char *scan_ip;
 
-  scan_ip = (char *) libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
-  scan_port = *(int *) libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+  scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
   len = snprintf(SENDBUF, SENDBUFLEN,
                  "POST http://%s:%d/ HTTP/1.0\r\n"
