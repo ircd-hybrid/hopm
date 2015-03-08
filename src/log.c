@@ -74,7 +74,7 @@ void
 log_printf(const char *data, ...)
 {
   char data2[513];
-  char buf_present[25];
+  char buf_present[32];
   va_list arglist;
   time_t present = 0;
 
