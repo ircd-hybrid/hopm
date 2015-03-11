@@ -174,8 +174,8 @@ union YYSTYPE
 {
 #line 85 "config-parser.y" /* yacc.c:1909  */
 
-        int number;
-        char *string;
+  int number;
+  char *string;
 
 #line 181 "config-parser.h" /* yacc.c:1909  */
 };
