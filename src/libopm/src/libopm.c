@@ -197,7 +197,7 @@ opm_remote_free(OPM_REMOTE_T *remote)
 OPM_ERR_T
 opm_callback(OPM_T *scanner, int type, OPM_CALLBACK_FUNC *function, void *data)
 {
-  if (type < 0 || type >= (CBLEN + 1))
+  if (type < 0 || type >= CBLEN)
     return OPM_ERR_CBNOTFOUND;
 
   scanner->callbacks[type].func = function;
@@ -1276,7 +1276,7 @@ static void
 libopm_do_callback(OPM_T *scanner, OPM_REMOTE_T *remote, int type, int var)
 {
   /* Callback is out of range */
-  if (type < 0 || type >= (CBLEN + 1))
+  if (type < 0 || type >= CBLEN)
     return;
 
   if (scanner->callbacks[type].func)
