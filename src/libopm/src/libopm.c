@@ -295,12 +295,10 @@ opm_config(OPM_T *scanner, int key, const void *value)
 OPM_ERR_T
 opm_addtype(OPM_T *scanner, int type, unsigned short int port)
 {
-  unsigned int i;
-
   OPM_NODE_T *node;
   OPM_PROTOCOL_CONFIG_T *protocol_config;
 
-  for (i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); i++)
+  for (unsigned int i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); ++i)
   {
     if (type == OPM_PROTOCOLS[i].type)
     {
@@ -333,12 +331,10 @@ opm_addtype(OPM_T *scanner, int type, unsigned short int port)
  */
 OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *remote, int type, unsigned short int port)
 {
-  unsigned int i;
-
   OPM_NODE_T *node;
   OPM_PROTOCOL_CONFIG_T *protocol_config;
 
-  for (i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); i++)
+  for (unsigned int i = 0; i < sizeof(OPM_PROTOCOLS) / sizeof(OPM_PROTOCOL_T); ++i)
   {
     if (type == OPM_PROTOCOLS[i].type)
     {
@@ -419,6 +415,7 @@ static OPM_PROTOCOL_CONFIG_T *
 libopm_protocol_config_create(void)
 {
   OPM_PROTOCOL_CONFIG_T *ret;
+
   ret = xcalloc(sizeof *ret);
 
   return ret;
@@ -468,7 +465,7 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
 
   scan = libopm_scan_create(scanner, remote);
 
-  if (inet_pton(AF_INET, remote->ip, &(scan->addr.sa4.sin_addr) ) <= 0)
+  if (inet_pton(AF_INET, remote->ip, &(scan->addr.sa4.sin_addr)) <= 0)
   {
     libopm_scan_free(scan);
     return OPM_ERR_BADADDR;
@@ -615,16 +612,15 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
   ret->remote = remote;
   ret->connections = libopm_list_create();
 
-  /* Setup list of connections, one for each protocol */ 
+  /* Setup list of connections, one for each protocol */
   LIST_FOREACH(p, scanner->protocols->head)
   {
     conn = libopm_connection_create();
 
-    conn->protocol = ((OPM_PROTOCOL_CONFIG_T *) p->data)->type;
-    conn->port     = ((OPM_PROTOCOL_CONFIG_T *) p->data)->port;
+    conn->protocol = ((OPM_PROTOCOL_CONFIG_T *)p->data)->type;
+    conn->port     = ((OPM_PROTOCOL_CONFIG_T *)p->data)->port;
 
     node = libopm_node_create(conn);
-
     libopm_list_add(ret->connections, node);
   }
 
@@ -635,8 +631,8 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
   {
     conn = libopm_connection_create();
 
-    conn->protocol = ((OPM_PROTOCOL_CONFIG_T *) p->data)->type;
-    conn->port     = ((OPM_PROTOCOL_CONFIG_T *) p->data)->port;
+    conn->protocol = ((OPM_PROTOCOL_CONFIG_T *)p->data)->type;
+    conn->port     = ((OPM_PROTOCOL_CONFIG_T *)p->data)->port;
 
     node = libopm_node_create(conn);
     libopm_list_add(ret->connections, node);
@@ -752,38 +748,38 @@ opm_cycle(OPM_T *scanner)
 static void
 libopm_check_queue(OPM_T *scanner)
 {
-   OPM_NODE_T *node;
-   OPM_SCAN_T *scan;
+  OPM_NODE_T *node;
+  OPM_SCAN_T *scan;
+  unsigned int protocols, projected, fd_limit;
 
-   unsigned int protocols, projected, fd_limit;
+  if (LIST_SIZE(scanner->queue) == 0)
+    return;
 
-   if(LIST_SIZE(scanner->queue) == 0)
-      return;
+  fd_limit = *(int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT);
+  projected = scanner->fd_use;
 
-   fd_limit = *(int *) libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT);
+  /*
+   * We want to keep the live scan list as small as possible, so only move
+   * queued scans to the live list if they will not push above fd_limit
+   */
+  while (LIST_SIZE(scanner->queue) > 0)
+  {
+    /* Grab the top scan */
+    scan = scanner->queue->head->data;
+    protocols = LIST_SIZE(scan->connections);
 
-   projected = scanner->fd_use;
+    /* Check if it will fit in the live scan list */
+    if ((protocols + projected) > fd_limit)
+      break;
 
-   /* We want to keep the live scan list as small as possible, so only
-      move queued scans to the live list if they will not push above fd_limit */
-   while(LIST_SIZE(scanner->queue) > 0)
-   {
-
-      /* Grab the top scan */
-      scan = scanner->queue->head->data;      
-      protocols = LIST_SIZE(scan->connections);
-
-      /* Check if it will fit in the live scan list */
-      if((protocols + projected) > fd_limit)
-         break;
-
-      /* Scans on the top of the queue were added first, swap the head off the
-         top of the queue and add it to the tail of the live scan list */
-      node = libopm_list_remove(scanner->queue, scanner->queue->head);
-      libopm_list_add(scanner->scans, node);
-      projected += protocols;
-   }
-
+    /*
+     * Scans on the top of the queue were added first, swap the head off the
+     * top of the queue and add it to the tail of the live scan list
+     */
+    node = libopm_list_remove(scanner->queue, scanner->queue->head);
+    libopm_list_add(scanner->scans, node);
+    projected += protocols;
+  }
 }
 
 /* check_establish
@@ -826,7 +822,7 @@ libopm_check_establish(OPM_T *scanner)
 
       if (conn->state == OPM_STATE_UNESTABLISHED)
         libopm_do_connect(scanner, scan, conn);
-    } 
+    }
   }
 }
 
@@ -848,71 +844,64 @@ libopm_check_establish(OPM_T *scanner)
 static void
 libopm_check_closed(OPM_T *scanner)
 {
+  time_t present;
+  int timeout;
+  OPM_NODE_T *node1, *node2, *next1, *next2;
+  OPM_SCAN_T *scan;
+  OPM_CONNECTION_T *conn;
 
-   time_t present;
-   OPM_NODE_T *node1, *node2, *next1, *next2;
-   int timeout;
+  if (LIST_SIZE(scanner->scans) == 0)
+    return;
 
-   OPM_SCAN_T *scan;
-   OPM_CONNECTION_T *conn;
+  time(&present);
+  timeout = *(int *)libopm_config(scanner->config, OPM_CONFIG_TIMEOUT);
 
-   if(LIST_SIZE(scanner->scans) == 0)
-      return;
+  LIST_FOREACH_SAFE(node1, next1, scanner->scans->head)
+  {
+    scan = node1->data;
 
-   time(&present);
+    LIST_FOREACH_SAFE(node2, next2, scan->connections->head)
+    {
+      conn = node2->data;
 
-   timeout = *(int *) libopm_config(scanner->config, OPM_CONFIG_TIMEOUT);
-
-   LIST_FOREACH_SAFE(node1, next1, scanner->scans->head)
-   {
-      scan = node1->data;
-      LIST_FOREACH_SAFE(node2, next2, scan->connections->head)
+      if (conn->state == OPM_STATE_CLOSED)
       {
+        if (conn->fd > 0)
+          close(conn->fd);
 
-         conn = node2->data;
+        scanner->fd_use--;
 
-         if(conn->state == OPM_STATE_CLOSED)
-         {
-              if(conn->fd > 0)
-                 close(conn->fd);
-
-              scanner->fd_use--;
-
-              libopm_list_remove(scan->connections, node2);
-              libopm_connection_free(conn);
-              libopm_node_free(node2);
-              continue;
-         }
-
-         if(((present - conn->creation) >= timeout) && 
-              conn->state != OPM_STATE_UNESTABLISHED)
-         {
-             
-              close(conn->fd);
-              scanner->fd_use--;         
-
-              libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_TIMEOUT, 0);
-
-              libopm_list_remove(scan->connections, node2);
-              libopm_connection_free(conn);
-              libopm_node_free(node2);
-             
-              continue;
-         }
+        libopm_list_remove(scan->connections, node2);
+        libopm_connection_free(conn);
+        libopm_node_free(node2);
+        continue;
       }
 
-      /* No more connections left in this scan, let the
-         client know the scan has ended, then remove the
-         scan from the scanner, and free it up */
-      if(LIST_SIZE(scan->connections) == 0)
+      if (((present - conn->creation) >= timeout) && conn->state != OPM_STATE_UNESTABLISHED)
       {
-         libopm_do_callback(scanner, scan->remote, OPM_CALLBACK_END, 0);
+        close(conn->fd);
+        scanner->fd_use--;
 
-         libopm_list_remove(scanner->scans, node1);
-         libopm_scan_free(scan);
-         libopm_node_free(node1);
+        libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_TIMEOUT, 0);
+        libopm_list_remove(scan->connections, node2);
+        libopm_connection_free(conn);
+        libopm_node_free(node2);
+        continue;
       }
-   }
+    }
+
+    /*
+     * No more connections left in this scan, let the client know the scan has
+     * ended, then remove the scan from the scanner, and free it up.
+     */
+    if (LIST_SIZE(scan->connections) == 0)
+    {
+      libopm_do_callback(scanner, scan->remote, OPM_CALLBACK_END, 0);
+      libopm_list_remove(scanner->scans, node1);
+      libopm_scan_free(scan);
+      libopm_node_free(node1);
+    }
+  }
 }
 
 /* do_connect
@@ -928,51 +917,49 @@ libopm_check_closed(OPM_T *scanner)
 static void
 libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-   opm_sockaddr *bind_ip;
+  opm_sockaddr *bind_ip;
+  struct sockaddr_in *addr;  /* Outgoing host */
+  struct sockaddr_in local_addr;  /* For binding */
 
-   struct sockaddr_in *addr;   /* Outgoing host */
-   struct sockaddr_in local_addr; /* For binding */
- 
-   addr = (struct sockaddr_in *) &(scan->addr.sa4); /* Already have the IP in byte format from opm_scan */
+  addr = (struct sockaddr_in *)&(scan->addr.sa4);  /* Already have the IP in byte format from opm_scan */
+  addr->sin_family = AF_INET;
+  addr->sin_port   = htons(conn->port);
 
-   addr->sin_family   = AF_INET;
-   addr->sin_port     = htons(conn->port);
+  bind_ip = (opm_sockaddr *)libopm_config(scanner->config, OPM_CONFIG_BIND_IP);
 
+  conn->fd = socket(PF_INET, SOCK_STREAM, 0);
+  scanner->fd_use++;  /* Increase file descriptor use */
 
-   bind_ip = (opm_sockaddr *) libopm_config(scanner->config, OPM_CONFIG_BIND_IP);   
+  if (conn->fd == -1)
+  {
+    libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_NOFD);
+    conn->state = OPM_STATE_CLOSED;
+    return;
+  }
 
-   conn->fd = socket(PF_INET, SOCK_STREAM, 0);
-   scanner->fd_use++;         /* Increase file descriptor use */
+  if (bind_ip)
+  {
+    memset(&local_addr, 0, sizeof(local_addr));
 
-   if(conn->fd == -1)
-   {
-      libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_NOFD);
+    local_addr.sin_addr.s_addr = bind_ip->sa4.sin_addr.s_addr;
+    local_addr.sin_family = AF_INET;
+    local_addr.sin_port = htons(0);
+
+    if (bind(conn->fd, (struct sockaddr *)&(local_addr), sizeof(local_addr)) == -1)
+    {
+      libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_BIND);
       conn->state = OPM_STATE_CLOSED;
       return;
-   }
+    }
+  }
 
-   if(bind_ip != NULL)
-   {
-      memset(&local_addr, 0, sizeof(local_addr));
-      local_addr.sin_addr.s_addr = bind_ip->sa4.sin_addr.s_addr;
-      local_addr.sin_family = AF_INET;
-      local_addr.sin_port = htons(0);
+  /* Set socket non blocking */
+  fcntl(conn->fd, F_SETFL, O_NONBLOCK);
 
-      if(bind(conn->fd, (struct sockaddr *) &(local_addr), sizeof(local_addr)) == -1)
-      {
-         libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_BIND);
-         conn->state = OPM_STATE_CLOSED;
-         return;
-      }
-   }
- 
-   /* Set socket non blocking */
-   fcntl(conn->fd, F_SETFL, O_NONBLOCK);
+  connect(conn->fd, (struct sockaddr *)addr, sizeof(*addr));
 
-   connect(conn->fd, (struct sockaddr *) addr, sizeof(*addr));
-
-   conn->state = OPM_STATE_ESTABLISHED;
-   time(&(conn->creation));   /* Stamp creation time, for timeout */
+  conn->state = OPM_STATE_ESTABLISHED;
+  time(&conn->creation);  /* Stamp creation time, for timeout */
 }
 
 /* check_poll
@@ -987,97 +974,97 @@ libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 static void
 libopm_check_poll(OPM_T *scanner)
 {
-   OPM_NODE_T *node1, *node2;
-   OPM_SCAN_T *scan;
-   OPM_CONNECTION_T *conn;
+  OPM_NODE_T *node1, *node2;
+  OPM_SCAN_T *scan;
+  OPM_CONNECTION_T *conn;
+  unsigned int size = 0;
+  static unsigned int ufds_size;
+  static struct pollfd *ufds = NULL;
 
-   static unsigned int ufds_size;  
-   static struct pollfd *ufds = NULL; 
+  /* Grow pollfd array (ufds) as needed */
+  if (ufds_size < (*(unsigned int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT)))
+  {
+    MyFree(ufds);
 
-   unsigned int size, i;
-   size = 0;
+    ufds = xcalloc((sizeof *ufds) * (*(unsigned int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT)));
+    ufds_size = (*(unsigned int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT));
+  }
 
-   /* Grow pollfd array (ufds) as needed */
-   if(ufds_size < (*(unsigned int *) libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT)))
-   {
-      MyFree(ufds);
-      ufds = xcalloc((sizeof *ufds) * (*(unsigned int *) libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT)));
-      ufds_size = (*(unsigned int *) libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT));
-   }
+  if (LIST_SIZE(scanner->scans) == 0)
+    return;
 
-   if(LIST_SIZE(scanner->scans) == 0)
+  LIST_FOREACH(node1, scanner->scans->head)
+  {
+    scan = node1->data;
+
+    LIST_FOREACH(node2, scan->connections->head)
+    {
+      if (size >= ufds_size)
+        break;
+
+      conn = node2->data;
+
+      if (conn->state < OPM_STATE_ESTABLISHED ||
+          conn->state == OPM_STATE_CLOSED)
+        continue;
+
+      ufds[size].events = 0;
+      ufds[size].revents = 0;
+      ufds[size].fd = conn->fd;
+
+      /* Check for HUNG UP. */
+      ufds[size].events |= POLLHUP;
+      /* Check for INVALID FD */
+      ufds[size].events |= POLLNVAL;
+
+      switch (conn->state)
+      {
+        case OPM_STATE_ESTABLISHED:
+          ufds[size].events |= POLLOUT;
+          break;
+        case OPM_STATE_NEGSENT:
+          ufds[size].events |= POLLIN;
+          break;
+      }
+
+      size++;
+    }
+  }
+
+  switch (poll(ufds, size, 0))
+  {
+    case -1:
+      /* error in select/poll */
+      return;
+    case 0:
+      /* Nothing to do */
       return;
 
-   LIST_FOREACH(node1, scanner->scans->head)
-   {
-      scan = node1->data;
-      LIST_FOREACH(node2, scan->connections->head)
+    /* Pass pointer to connection to handler. */
+  }
+
+  LIST_FOREACH(node1, scanner->scans->head)
+  {
+    scan = node1->data;
+
+    LIST_FOREACH(node2, scan->connections->head)
+    {
+      conn = node2->data;
+
+      for (unsigned int i = 0; i < size; ++i)
       {
-         if(size >= ufds_size)
-            break;
-
-         conn = node2->data;
-       
-         if(conn->state < OPM_STATE_ESTABLISHED ||
-            conn->state == OPM_STATE_CLOSED)
-               continue;            
-
-         ufds[size].events = 0;
-         ufds[size].revents = 0;
-         ufds[size].fd = conn->fd;
-
-         /* Check for HUNG UP. */
-         ufds[size].events |= POLLHUP;
-         /* Check for INVALID FD */
-         ufds[size].events |= POLLNVAL;
-
-         switch(conn->state)
-         {
-            case OPM_STATE_ESTABLISHED:
-               ufds[size].events |= POLLOUT;
-               break;
-            case OPM_STATE_NEGSENT:
-               ufds[size].events |= POLLIN;
-               break;
-         }
-         size++;
+        if ((ufds[i].fd == conn->fd) && (conn->state != OPM_STATE_CLOSED))
+        {
+          if (ufds[i].revents & POLLIN)
+            libopm_do_readready(scanner, scan, conn);
+          if (ufds[i].revents & POLLOUT)
+            libopm_do_writeready(scanner, scan, conn);
+          if (ufds[i].revents & POLLHUP)
+            libopm_do_hup(scanner, scan, conn);
+        }
       }
-
-   }
-
-   switch (poll(ufds, size, 0))
-   {
-        case -1:
-                /* error in select/poll */
-                return;
-        case 0:
-                /* Nothing to do */
-                return;
-                /* Pass pointer to connection to handler. */
-   }
-
-   LIST_FOREACH(node1, scanner->scans->head)
-   {
-      scan = (OPM_SCAN_T *) node1->data;
- 
-      LIST_FOREACH(node2, scan->connections->head)
-      {
-         conn = (OPM_CONNECTION_T *) node2->data;
-
-         for(i = 0; i < size; i++)
-         {
-            if((ufds[i].fd == conn->fd) && (conn->state != OPM_STATE_CLOSED))
-            {
-               if(ufds[i].revents & POLLIN)
-                  libopm_do_readready(scanner, scan, conn);
-               if(ufds[i].revents & POLLOUT)
-                  libopm_do_writeready(scanner, scan, conn);
-               if(ufds[i].revents & POLLHUP)
-                  libopm_do_hup(scanner, scan, conn);
-            }
-         }
-      }
-   }
+    }
+  }
 }
 
 /* do_readready
@@ -1096,65 +1083,64 @@ libopm_check_poll(OPM_T *scanner)
 static void
 libopm_do_readready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
+  int max_read;
+  char c;
 
-   int max_read;
-   char c;
+  /*
+   * If protocol has a specific read function, call that instead of
+   * reading data from here.
+   */
+  if (conn->protocol->read_function)
+  {
+    conn->protocol->read_function(scanner, scan, conn);
+    return;
+  }
 
-   /* If protocol has a specific read function, call that instead of
-      reading data from here. */
-   if(conn->protocol->read_function)
-   {
-      conn->protocol->read_function(scanner, scan, conn);
-      return;
-   }
+  max_read = *(int *)libopm_config(scanner->config, OPM_CONFIG_MAX_READ);
 
-   max_read = *(int *) libopm_config(scanner->config, OPM_CONFIG_MAX_READ);
+  while (1)
+  {
+    switch (read(conn->fd, &c, 1))
+    {
+      case 0:
+        libopm_do_hup(scanner, scan, conn);
+        return;
 
-   while(1)
-   {
-      switch (read(conn->fd, &c, 1))
-      {
-         case  0:
-	     libopm_do_hup(scanner, scan, conn);
-	     return;
+      case -1:
+        if (errno != EAGAIN)
+          libopm_do_hup(scanner, scan, conn);
+        return;
 
-         case -1:
-	    if(errno != EAGAIN)
-		libopm_do_hup(scanner, scan, conn);
+      default:
+        conn->bytes_read++;
+
+        if (conn->bytes_read >= max_read)
+        {
+          libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_MAX_READ);
+          conn->state = OPM_STATE_CLOSED;
+          return;
+        }
+
+        if (c == '\0' || c == '\r')
+          continue;
+
+        if (c == '\n')
+        {
+          conn->readbuf[conn->readlen] = '\0';
+          conn->readlen = 0;
+
+          libopm_do_read(scanner, scan, conn);
+
+          if (conn->state == OPM_STATE_CLOSED)
             return;
 
-         default:
+          continue;
+        }
 
-            conn->bytes_read++;
-
-            if(conn->bytes_read >= max_read)
-            {
-               libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_MAX_READ);
-               conn->state = OPM_STATE_CLOSED;
-               return;
-            }
-
-            if(c == '\0' || c == '\r')
-               continue;
-
-            if(c == '\n')
-            {
-               conn->readbuf[conn->readlen] = '\0';
-               conn->readlen = 0;
-               libopm_do_read(scanner, scan, conn);
-
-               if(conn->state == OPM_STATE_CLOSED)
-                  return;
-
-               continue;
-            }
-             
-            if(conn->readlen < READBUFLEN) 
-            {  /* -1 to pad for null term */
-               conn->readbuf[++(conn->readlen) - 1] = c;
-            }
-      }
-   }
+        if (conn->readlen < READBUFLEN)
+          conn->readbuf[++(conn->readlen) - 1] = c;  /* -1 to pad for null term */
+    }
+  }
 }
 
 /* do_read
