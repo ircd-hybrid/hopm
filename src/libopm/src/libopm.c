@@ -146,18 +146,7 @@ opm_remote_create(const char *ip)
   OPM_REMOTE_T *ret;
 
   ret = xcalloc(sizeof *ret);
-
-  /* Do initializations */
-  if (ip == NULL)
-    return NULL;
-
   ret->ip = libopm_xstrdup(ip);
-
-  ret->port          = 0;
-  ret->protocol      = 0;
-  ret->bytes_read    = 0;
-  ret->data          = NULL;
-
   ret->protocols = libopm_list_create();  /* Setup protocol list */
 
   return ret;
