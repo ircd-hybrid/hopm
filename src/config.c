@@ -46,7 +46,7 @@ list_t *ScannerItemList = NULL;
 
 
 /* Malloc and initialize configuration data to NULL */
-void
+static void
 config_init(void)
 {
   /* Init IRC block */
@@ -74,7 +74,7 @@ config_init(void)
 }
 
 /* Setup structs that hold configuration data and then reset default values */
-void
+static void
 config_setup(void)
 {
   /* Setup IRC Block Defaults */
