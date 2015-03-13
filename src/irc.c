@@ -58,7 +58,7 @@ static void irc_reconnect(void);
 static void irc_read(void);
 static void irc_parse(void);
 
-static struct ChannelConf *get_channel(const char *);
+static const struct ChannelConf *get_channel(const char *);
 
 static struct UserInfo *userinfo_create(char *);
 static void userinfo_free(struct UserInfo *source);
