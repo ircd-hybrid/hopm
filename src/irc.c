@@ -377,7 +377,7 @@ irc_reconnect(void)
 
 /* irc_read
  *
- *    irc_read is called my irc_cycle when new data is ready to be
+ *    irc_read is called by irc_cycle when new data is ready to be
  *    read from the irc server.
  *
  * Parameters: NONE
