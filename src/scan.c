@@ -431,7 +431,6 @@ scan_create(const char *user[], const char *msg)
   ss->proof = xstrdup(msg);
   ss->remote = opm_remote_create(ss->ip);
 
-  assert(ss->remote);
   return ss;
 }
 
@@ -909,8 +908,6 @@ scan_manual(char *param, const struct ChannelConf *target)
   ss->remote = opm_remote_create(ss->ip);
   ss->remote->data = ss;
   ss->manual_target = target;
-
-  assert(ss->remote);
 
   if (scannername)
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies [%s]",
