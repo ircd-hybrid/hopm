@@ -559,7 +559,7 @@ irc_timer(void)
  *
  * Return: Pointer to ChannelConf containing the channel
  */
-static struct ChannelConf *
+static const struct ChannelConf *
 get_channel(const char *channel)
 {
   node_t *node;
@@ -739,7 +739,7 @@ m_ping(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *
 static void
 m_invite(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
 {
-  struct ChannelConf *channel = NULL;
+  const struct ChannelConf *channel = NULL;
 
   if (parc < 4)
     return;
@@ -765,7 +765,7 @@ m_invite(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
 static void
 m_privmsg(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
 {
-  struct ChannelConf *channel = NULL;
+  const struct ChannelConf *channel = NULL;
   size_t nick_len;
 
   if (source_p == NULL)
