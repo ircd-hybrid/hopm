@@ -92,7 +92,7 @@ static time_t IRC_LASTRECONNECT = 0;             /* Time of last reconnection */
  * Table should be ordered with most occuring (or priority)
  * commands at the top of the list.
  */
-static struct CommandHash COMMAND_TABLE[] =
+static const struct CommandHash COMMAND_TABLE[] =
 {
   { "NOTICE",   m_notice      },
   { "PRIVMSG",  m_privmsg     },
