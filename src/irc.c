@@ -60,7 +60,7 @@ static void irc_parse(void);
 
 static const struct ChannelConf *get_channel(const char *);
 
-static struct UserInfo *userinfo_create(char *);
+static struct UserInfo *userinfo_create(const char *);
 static void userinfo_free(struct UserInfo *source);
 
 static void m_ping(char *[], unsigned int, const char *, const struct UserInfo *);
@@ -587,18 +587,16 @@ get_channel(const char *channel)
  *    pointer to new UserInfo struct, or NULL if parsing failed
  */
 static struct UserInfo *
-userinfo_create(char *source)
+userinfo_create(const char *source)
 {
   struct UserInfo *ret;
-  char *nick;
-  char *username;
-  char *hostname;
-  char *tmp;
-  int i, len;
+  char *nick = NULL;
+  char *username = NULL;
+  char *hostname = NULL;
+  char tmp[MSGLENMAX];
+  size_t i, len;
 
-  nick = username = hostname = NULL;
-  tmp = xstrdup(source);
-  len = strlen(tmp);
+  len = strlcpy(tmp, source, sizeof(tmp));
   nick = tmp;
 
   for (i = 0; i < len; ++i)
@@ -616,18 +614,13 @@ userinfo_create(char *source)
     }
   }
 
-  if (nick == NULL || username == NULL || hostname == NULL)
-  {
-    xfree(tmp);
+  if (username == NULL || hostname == NULL)
     return NULL;
-  }
 
   ret = xcalloc(sizeof *ret);
   ret->irc_nick     = xstrdup(nick);
   ret->irc_username = xstrdup(username);
   ret->irc_hostname = xstrdup(hostname);
-
-  xfree(tmp);
 
   return ret;
 };
