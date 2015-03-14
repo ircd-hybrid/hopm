@@ -764,7 +764,7 @@ char *yytext;
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
  *  USA
  */
-#line 26 "config-lexer.l"
+#line 27 "config-lexer.l"
 #include <stdio.h>
 #include <string.h>
 
@@ -985,7 +985,7 @@ YY_DECL
 		}
 
 	{
-#line 45 "config-lexer.l"
+#line 46 "config-lexer.l"
 
 
 #line 992 "config-lexer.c"
@@ -1027,16 +1027,12 @@ yy_match:
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 732 );
+		while ( yy_current_state != 363 );
+		yy_cp = (yy_last_accepting_cpos);
+		yy_current_state = (yy_last_accepting_state);
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
-		if ( yy_act == 0 )
-			{ /* have to back up */
-			yy_cp = (yy_last_accepting_cpos);
-			yy_current_state = (yy_last_accepting_state);
-			yy_act = yy_accept[yy_current_state];
-			}
 
 		YY_DO_BEFORE_ACTION;
 
@@ -1053,18 +1049,18 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 47 "config-lexer.l"
+#line 48 "config-lexer.l"
 { ccomment(); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 49 "config-lexer.l"
+#line 50 "config-lexer.l"
 ;
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 51 "config-lexer.l"
+#line 52 "config-lexer.l"
 {
                            /* QSTRING from Hybrid7. Why re-invent the wheel? */
 
@@ -1106,367 +1102,367 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 90 "config-lexer.l"
+#line 91 "config-lexer.l"
 { return AWAY;         }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 91 "config-lexer.l"
+#line 92 "config-lexer.l"
 { return BAN_UNKNOWN;  }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 92 "config-lexer.l"
+#line 93 "config-lexer.l"
 { return BLACKLIST;    }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 93 "config-lexer.l"
+#line 94 "config-lexer.l"
 { return CHANNEL;      }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 94 "config-lexer.l"
+#line 95 "config-lexer.l"
 { return CONNREGEX;    }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 95 "config-lexer.l"
+#line 96 "config-lexer.l"
 { return DNS_FDLIMIT;  }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 96 "config-lexer.l"
+#line 97 "config-lexer.l"
 { return DNSBL_FROM;   }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 97 "config-lexer.l"
+#line 98 "config-lexer.l"
 { return DNSBL_TO;     }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 98 "config-lexer.l"
+#line 99 "config-lexer.l"
 { return EXEMPT;       }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 99 "config-lexer.l"
+#line 100 "config-lexer.l"
 { return FD;           }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 100 "config-lexer.l"
+#line 101 "config-lexer.l"
 { return INVITE;       }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 101 "config-lexer.l"
+#line 102 "config-lexer.l"
 { return IRC;          }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 102 "config-lexer.l"
+#line 103 "config-lexer.l"
 { return KLINE;        }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 103 "config-lexer.l"
+#line 104 "config-lexer.l"
 { return KEY;          }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 104 "config-lexer.l"
+#line 105 "config-lexer.l"
 { return MASK;         }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 105 "config-lexer.l"
+#line 106 "config-lexer.l"
 { return MAX_READ;     }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 106 "config-lexer.l"
+#line 107 "config-lexer.l"
 { return MODE;         }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 107 "config-lexer.l"
+#line 108 "config-lexer.l"
 { return NAME;         }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 108 "config-lexer.l"
+#line 109 "config-lexer.l"
 { return NEGCACHE;     }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 109 "config-lexer.l"
+#line 110 "config-lexer.l"
 { return NEGCACHE_REBUILD; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 110 "config-lexer.l"
+#line 111 "config-lexer.l"
 { return NICK;         }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 111 "config-lexer.l"
+#line 112 "config-lexer.l"
 { return NICKSERV;     }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 112 "config-lexer.l"
+#line 113 "config-lexer.l"
 { return NOTICE;       }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 113 "config-lexer.l"
+#line 114 "config-lexer.l"
 { return OPER;         }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 114 "config-lexer.l"
+#line 115 "config-lexer.l"
 { return OPM;          }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 115 "config-lexer.l"
+#line 116 "config-lexer.l"
 { return OPTIONS;      }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 116 "config-lexer.l"
+#line 117 "config-lexer.l"
 { return PASSWORD;     }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 117 "config-lexer.l"
+#line 118 "config-lexer.l"
 { return PERFORM;      }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 118 "config-lexer.l"
+#line 119 "config-lexer.l"
 { return PIDFILE;      }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 119 "config-lexer.l"
+#line 120 "config-lexer.l"
 { return PORT;         }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 120 "config-lexer.l"
+#line 121 "config-lexer.l"
 { return PROTOCOL;     }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 121 "config-lexer.l"
+#line 122 "config-lexer.l"
 { return READTIMEOUT;  }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 122 "config-lexer.l"
+#line 123 "config-lexer.l"
 { return REALNAME;     }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 123 "config-lexer.l"
+#line 124 "config-lexer.l"
 { return REPLY;        }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 124 "config-lexer.l"
+#line 125 "config-lexer.l"
 { return SCANLOG;      }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 125 "config-lexer.l"
+#line 126 "config-lexer.l"
 { return SCANNER;      }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 126 "config-lexer.l"
+#line 127 "config-lexer.l"
 { return SENDMAIL;     }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 127 "config-lexer.l"
+#line 128 "config-lexer.l"
 { return SERVER;       }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 128 "config-lexer.l"
+#line 129 "config-lexer.l"
 { return TARGET_IP;    }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 129 "config-lexer.l"
+#line 130 "config-lexer.l"
 { return TARGET_PORT;  }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 130 "config-lexer.l"
+#line 131 "config-lexer.l"
 { return TARGET_STRING;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 131 "config-lexer.l"
+#line 132 "config-lexer.l"
 { return TIMEOUT;      }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 132 "config-lexer.l"
+#line 133 "config-lexer.l"
 { return TYPE;         }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 133 "config-lexer.l"
+#line 134 "config-lexer.l"
 { return USER;         }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 134 "config-lexer.l"
+#line 135 "config-lexer.l"
 { return USERNAME;     }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 135 "config-lexer.l"
+#line 136 "config-lexer.l"
 { return VHOST;        }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 137 "config-lexer.l"
+#line 138 "config-lexer.l"
 { return YEARS; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 138 "config-lexer.l"
+#line 139 "config-lexer.l"
 { return YEARS; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 139 "config-lexer.l"
+#line 140 "config-lexer.l"
 { return MONTHS; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 140 "config-lexer.l"
+#line 141 "config-lexer.l"
 { return MONTHS; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 141 "config-lexer.l"
+#line 142 "config-lexer.l"
 { return WEEKS; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 142 "config-lexer.l"
+#line 143 "config-lexer.l"
 { return WEEKS; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 143 "config-lexer.l"
+#line 144 "config-lexer.l"
 { return DAYS; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 144 "config-lexer.l"
+#line 145 "config-lexer.l"
 { return DAYS; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 145 "config-lexer.l"
+#line 146 "config-lexer.l"
 { return HOURS; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 146 "config-lexer.l"
+#line 147 "config-lexer.l"
 { return HOURS; }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 147 "config-lexer.l"
+#line 148 "config-lexer.l"
 { return MINUTES; }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 148 "config-lexer.l"
+#line 149 "config-lexer.l"
 { return MINUTES; }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 149 "config-lexer.l"
+#line 150 "config-lexer.l"
 { return SECONDS; }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 150 "config-lexer.l"
+#line 151 "config-lexer.l"
 { return SECONDS; }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 152 "config-lexer.l"
+#line 153 "config-lexer.l"
 { return BYTES; }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 153 "config-lexer.l"
+#line 154 "config-lexer.l"
 { return BYTES; }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 154 "config-lexer.l"
+#line 155 "config-lexer.l"
 { return KBYTES; }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 155 "config-lexer.l"
+#line 156 "config-lexer.l"
 { return KBYTES; }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 156 "config-lexer.l"
+#line 157 "config-lexer.l"
 { return KBYTES; }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 157 "config-lexer.l"
+#line 158 "config-lexer.l"
 { return KBYTES; }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 158 "config-lexer.l"
+#line 159 "config-lexer.l"
 { return KBYTES; }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 159 "config-lexer.l"
+#line 160 "config-lexer.l"
 { return MBYTES; }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 160 "config-lexer.l"
+#line 161 "config-lexer.l"
 { return MBYTES; }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 161 "config-lexer.l"
+#line 162 "config-lexer.l"
 { return MBYTES; }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 162 "config-lexer.l"
+#line 163 "config-lexer.l"
 { return MBYTES; }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 163 "config-lexer.l"
+#line 164 "config-lexer.l"
 { return MBYTES; }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 165 "config-lexer.l"
+#line 166 "config-lexer.l"
 {
                           yylval.number = OPM_TYPE_HTTP;
                           return PROTOCOLTYPE;
@@ -1474,7 +1470,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 170 "config-lexer.l"
+#line 171 "config-lexer.l"
 {
                           yylval.number = OPM_TYPE_HTTPPOST;
                           return PROTOCOLTYPE;
@@ -1482,7 +1478,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 175 "config-lexer.l"
+#line 176 "config-lexer.l"
 {
                           yylval.number = OPM_TYPE_SOCKS4;
                           return PROTOCOLTYPE;
@@ -1490,7 +1486,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 180 "config-lexer.l"
+#line 181 "config-lexer.l"
 {
                           yylval.number = OPM_TYPE_SOCKS5;
                           return PROTOCOLTYPE;
@@ -1498,7 +1494,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 185 "config-lexer.l"
+#line 186 "config-lexer.l"
 {
                           yylval.number = OPM_TYPE_WINGATE;
                           return PROTOCOLTYPE;
@@ -1506,7 +1502,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 190 "config-lexer.l"
+#line 191 "config-lexer.l"
 {
                           yylval.number = OPM_TYPE_ROUTER;
                           return PROTOCOLTYPE;
@@ -1514,7 +1510,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 196 "config-lexer.l"
+#line 197 "config-lexer.l"
 {
                            yylval.number=atoi(yytext); 
                            return NUMBER;
@@ -1522,7 +1518,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 205 "config-lexer.l"
+#line 206 "config-lexer.l"
 {
                            yylval.number=1;
                            return NUMBER;
@@ -1530,7 +1526,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 209 "config-lexer.l"
+#line 210 "config-lexer.l"
 {
                            yylval.number=1;
                            return NUMBER;
@@ -1538,7 +1534,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 213 "config-lexer.l"
+#line 214 "config-lexer.l"
 {
                            yylval.number=1;
                            return NUMBER;
@@ -1546,7 +1542,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 220 "config-lexer.l"
+#line 221 "config-lexer.l"
 {
                            yylval.number=0;
                            return NUMBER;
@@ -1554,7 +1550,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 225 "config-lexer.l"
+#line 226 "config-lexer.l"
 {
                            yylval.number=0;
                            return NUMBER;
@@ -1562,7 +1558,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 230 "config-lexer.l"
+#line 231 "config-lexer.l"
 {
                            yylval.number=0;
                            return NUMBER;
@@ -1571,7 +1567,7 @@ YY_RULE_SETUP
 case 89:
 /* rule 89 can match eol */
 YY_RULE_SETUP
-#line 236 "config-lexer.l"
+#line 237 "config-lexer.l"
 {
                            strlcpy(linebuf, yytext + 1, sizeof(linebuf));
                            ++linenum;
@@ -1580,20 +1576,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 242 "config-lexer.l"
+#line 243 "config-lexer.l"
 /* ignore whitespace */;
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 244 "config-lexer.l"
+#line 245 "config-lexer.l"
 return yytext[0]; 
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 246 "config-lexer.l"
+#line 247 "config-lexer.l"
 ECHO;
 	YY_BREAK
-#line 1597 "config-lexer.c"
+#line 1593 "config-lexer.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1660,7 +1656,8 @@ case YY_STATE_EOF(INITIAL):
 
 			else
 				{
-				yy_cp = (yy_c_buf_p);
+				yy_cp = (yy_last_accepting_cpos);
+				yy_current_state = (yy_last_accepting_state);
 				goto yy_find_action;
 				}
 			}
@@ -2130,7 +2127,7 @@ static void yy_load_buffer_state  (void)
         b->yy_bs_column = 0;
     }
 
-        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+        b->yy_is_interactive = 0;
     
 	errno = oerrno;
 }
@@ -2551,7 +2548,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 246 "config-lexer.l"
+#line 247 "config-lexer.l"
 
 
 

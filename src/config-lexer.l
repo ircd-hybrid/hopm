@@ -21,6 +21,7 @@
 %option case-insensitive
 %option noyywrap
 %option nounput
+%option never-interactive
 
 %{
 #include <stdio.h>
