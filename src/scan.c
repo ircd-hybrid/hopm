@@ -57,8 +57,8 @@
 
 /* GLOBAL LISTS */
 
-static list_t *SCANNERS = NULL;   /* List of OPM_T */
-static list_t *MASKS    = NULL;   /* Associative list of masks->scanners */
+static list_t *SCANNERS;  /* List of OPM_T */
+static list_t *MASKS;     /* Associative list of masks->scanners */
 
 
 /* Function declarations */
@@ -178,8 +178,6 @@ scan_init(void)
   struct ScannerConf *sc;
   struct ProtocolConf *pc;
   struct scanner_struct *scs;
-  char *mask;
-  char *scannername;
 
   /* FIXME: If rehash code is ever added, cleanup would need done here. */
 
@@ -248,14 +246,14 @@ scan_init(void)
 
       LIST_FOREACH(p3, uc->scanners->head)
       {
-        scannername = p3->data;
+        const char *scannername = p3->data;
 
         /* Add all these masks to scanner */
         if (strcasecmp(scannername, scs->name) == 0)
         {
           LIST_FOREACH(p4, uc->masks->head)
           {
-            mask = p4->data;
+            const char *mask = p4->data;
 
             if (OPT_DEBUG)
               log_printf("SCAN -> Linking the mask [%s] to scanner [%s]", mask, scannername);
@@ -302,7 +300,6 @@ scan_connect(const char *user[], const char *msg)
   node_t *p, *p2;
   struct scan_struct *ss;
   struct scanner_struct *scs;
-  char *scsmask;
   int ret;
 
   /*
@@ -364,7 +361,7 @@ scan_connect(const char *user[], const char *msg)
 
     LIST_FOREACH(p2, scs->masks->head)
     {
-      scsmask = p2->data;
+      const char *scsmask = p2->data;
 
       if (!match(scsmask, mask))
       {

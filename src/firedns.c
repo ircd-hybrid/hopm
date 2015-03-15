@@ -816,7 +816,7 @@ firedns_cycle(void)
     ufds[size].fd = p->fd;
     ufds[size].events = POLLIN;
 
-    size++;
+    ++size;
   }
 
   switch (poll(ufds, size, 0))
@@ -826,13 +826,13 @@ firedns_cycle(void)
       return;
   }
 
-  LIST_FOREACH_SAFE(node, next, CONNECTIONS->head)
+  LIST_FOREACH_SAFE(node, node_next, CONNECTIONS->head)
   {
     p = node->data;
 
     if (p->fd > 0)
     {
-      for (i = 0; i < size; i++)
+      for (i = 0; i < size; ++i)
       {
         if ((ufds[i].revents & POLLIN) && ufds[i].fd == p->fd)
         {
