@@ -167,10 +167,8 @@ command_parse(char *command, const struct ChannelConf *target,
     *param = '\0';
     param++;
   }
-  else
-    param = "";
 
-  log_printf("COMMAND -> parsed [%s] [%s]", command, param);
+  log_printf("COMMAND -> parsed [%s] [%s]", command, param ? param : "");
 
   /* Lookup the command in the table */
   for (const struct OperCommandHash *tab = COMMAND_TABLE; tab->command; ++tab)
