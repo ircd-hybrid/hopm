@@ -78,15 +78,13 @@ static void m_kill(char *[], unsigned int, const char *, const struct UserInfo *
  * Certain variables we don't want to allocate memory for over and over
  * again so global scope is given.
  */
+static char         IRC_RAW[MSGLENMAX];  /* Buffer to read data into               */
+static unsigned int IRC_RAW_LEN;         /* Position of IRC_RAW                    */
+static int          IRC_FD;              /* File descriptor for IRC client         */
 
-static char          IRC_RAW[MSGLENMAX];         /* Buffer to read data into              */
-static unsigned int  IRC_RAW_LEN    = 0;         /* Position of IRC_RAW                   */
-static int           IRC_FD         = 0;         /* File descriptor for IRC client        */
-
-static struct sockaddr_storage IRC_SVR;          /* Sock Address Struct for IRC server    */
-
-static time_t IRC_LAST = 0;                      /* Last full line of data from irc server*/
-static time_t IRC_LASTRECONNECT = 0;             /* Time of last reconnection */
+static struct sockaddr_storage IRC_SVR;  /* Sock Address Struct for IRC server     */
+static time_t IRC_LAST;                  /* Last full line of data from irc server */
+static time_t IRC_LASTRECONNECT;         /* Time of last reconnection              */
 
 /*
  * Table should be ordered with most occuring (or priority)
@@ -126,7 +124,7 @@ irc_cycle(void)
   if (IRC_FD <= 0)
   {
     /* Initialise negative cache. */
-    if (OptionsItem->negcache > 0)
+    if (OptionsItem->negcache)
       nc_init(&nc_head);
 
     /* Resolve remote host. */
@@ -594,12 +592,12 @@ userinfo_create(const char *source)
   char *username = NULL;
   char *hostname = NULL;
   char tmp[MSGLENMAX];
-  size_t i, len;
+  size_t len;
 
   len = strlcpy(tmp, source, sizeof(tmp));
   nick = tmp;
 
-  for (i = 0; i < len; ++i)
+  for (size_t i = 0; i < len; ++i)
   {
     if (tmp[i] == '!')
     {

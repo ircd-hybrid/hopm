@@ -762,7 +762,7 @@ cleanup:
 void
 firedns_cycle(void)
 {
-  node_t *node, *next;
+  node_t *node, *node_next;
   struct s_connection *p;
   struct firedns_result *res, new_result;
   static struct pollfd *ufds = NULL;
@@ -779,7 +779,7 @@ firedns_cycle(void)
   time(&timenow);
   size = 0;
 
-  LIST_FOREACH_SAFE(node, next, CONNECTIONS->head)
+  LIST_FOREACH_SAFE(node, node_next, CONNECTIONS->head)
   {
     if (size >= OptionsItem->dns_fdlimit)
       break;

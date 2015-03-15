@@ -174,7 +174,7 @@ struct cnode *check_neg_cache(const unsigned long ip)
    time_t now;
    struct cnode *n;
 
-   if (OptionsItem->negcache <= 0)
+   if (OptionsItem->negcache == 0)
       return(NULL);
 
    n = nc_search(nc_head, ip);
