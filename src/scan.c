@@ -85,15 +85,15 @@ extern FILE *scanlogfile;
 void
 scan_cycle(void)
 {
-  node_t *p;
+  node_t *node;
 
   /* Cycle through the blacklist first.. */
   dnsbl_cycle();
 
   /* Cycle each scanner object */
-  LIST_FOREACH(p, SCANNERS->head)
+  LIST_FOREACH(node, SCANNERS->head)
   {
-    struct scanner_struct *scs = p->data;
+    struct scanner_struct *scs = node->data;
     opm_cycle(scs->scanner);
   }
 }
@@ -111,7 +111,7 @@ scan_timer(void)
 {
   static time_t nc_counter;
 
-  if (OptionsItem->negcache > 0)
+  if (OptionsItem->negcache)
   {
     if (nc_counter++ >= OptionsItem->negcache_rebuild)
     {
@@ -271,7 +271,7 @@ scan_init(void)
   }
 
   /* Initialise negative cache */
-  if (OptionsItem->negcache > 0)
+  if (OptionsItem->negcache)
   {
     if (OPT_DEBUG >= 2)
       log_printf("SCAN -> Initializing negative cache");
@@ -314,7 +314,7 @@ scan_connect(const char *user[], const char *msg)
   char ipmask[MSGLENMAX];
 
   /* Check negcache before anything */
-  if (OptionsItem->negcache > 0)
+  if (OptionsItem->negcache)
   {
     if (inet_pton(AF_INET, user[3], &ip.sin_addr) <= 0)
     {
@@ -748,7 +748,7 @@ static void
 scan_negative(const struct scan_struct *ss)
 {
   /* Insert IP in negcache */
-  if (OptionsItem->negcache > 0)
+  if (OptionsItem->negcache)
   {
     if (OPT_DEBUG >= 2)
       log_printf("SCAN -> Adding %s to negative cache", ss->ip);
@@ -865,7 +865,7 @@ scan_manual(char *param, const struct ChannelConf *target)
   struct scanner_struct *scs;
   const char *ip = NULL;
   char *scannername;
-  node_t *p;
+  node_t *node;
   int ret;
 
   /* If there were no parameters sent, simply alert the user and return */
@@ -920,9 +920,9 @@ scan_manual(char *param, const struct ChannelConf *target)
     dnsbl_add(ss);
 
   /* Add ss->remote to all scanners */
-  LIST_FOREACH(p, SCANNERS->head)
+  LIST_FOREACH(node, SCANNERS->head)
   {
-    scs = p->data;
+    scs = node->data;
 
     /*
      * If we have a scannername, only allow that scanner

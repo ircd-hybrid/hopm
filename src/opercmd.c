@@ -87,7 +87,7 @@ void
 command_timer(void)
 {
   static unsigned int interval;
-  node_t *node, *next;
+  node_t *node, *node_next;
   time_t present;
 
   /* Only perform command removal every COMMANDINTERVAL seconds */
@@ -98,7 +98,7 @@ command_timer(void)
 
   time(&present);
 
-  LIST_FOREACH_SAFE(node, next, COMMANDS->head)
+  LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
   {
     struct Command *cs = node->data;
 
@@ -108,7 +108,7 @@ command_timer(void)
       list_remove(COMMANDS, node);
       node_free(node);
     }
-    else   /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
+    else  /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
       return;
   }
 }
@@ -214,7 +214,7 @@ command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
   ret->irc_nick = xstrdup(irc_nick);
   ret->target = target;  /* FIXME: This needs fixed if rehash is implemented */
 
-  time(&(ret->added));
+  time(&ret->added);
 
   return ret;
 }
@@ -253,7 +253,7 @@ command_free(struct Command *command)
 void
 command_userhost(const char *reply)
 {
-  node_t *node, *next;
+  node_t *node, *node_next;
   char *tmp;
   int oper = 0;
 
@@ -274,7 +274,7 @@ command_userhost(const char *reply)
     *(tmp) = '\0';
 
   /* Find any queued commands that match this user */
-  LIST_FOREACH_SAFE(node, next, COMMANDS->head)
+  LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
   {
     struct Command *cs = node->data;
 

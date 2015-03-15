@@ -53,7 +53,7 @@ dnsbl_add(struct scan_struct *ss)
   struct in_addr in;
   unsigned char a, b, c, d;
   char lookup[128];
-  node_t *p;
+  node_t *node;
   int res;
   struct dnsbl_scan *ds;
 
@@ -68,9 +68,9 @@ dnsbl_add(struct scan_struct *ss)
   b = (unsigned char)(in.s_addr >>  8) & 0xFF;
   a = (unsigned char) in.s_addr & 0xFF;
 
-  LIST_FOREACH(p, OpmItem->blacklists->head)
+  LIST_FOREACH(node, OpmItem->blacklists->head)
   {
-    struct BlacklistConf *bl = p->data;
+    struct BlacklistConf *bl = node->data;
 
 #ifdef WORDS_BIGENDIAN
     snprintf(lookup, sizeof(lookup), "%d.%d.%d.%d.%s", a, b, c, d, bl->name);
@@ -101,13 +101,13 @@ static void
 dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char type)
 {
   char text_type[128] = "";
-  node_t *p;
+  node_t *node;
 
   if (bl->type == A_BITMASK)
   {
-    LIST_FOREACH(p, bl->reply->head)
+    LIST_FOREACH(node, bl->reply->head)
     {
-      const struct BlacklistReplyConf *item = p->data;
+      const struct BlacklistReplyConf *item = node->data;
 
       if (item->number & type)
       {
@@ -124,9 +124,9 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
   }
   else
   {
-    LIST_FOREACH(p, bl->reply->head)
+    LIST_FOREACH(node, bl->reply->head)
     {
-      const struct BlacklistReplyConf *item = p->data;
+      const struct BlacklistReplyConf *item = node->data;
 
       if (item->number == type)
       {
