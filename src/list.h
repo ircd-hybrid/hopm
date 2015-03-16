@@ -31,31 +31,24 @@ typedef struct _list list_t;
 
 struct _list
 {
-
-   struct _node *head;
-   struct _node *tail;
-
-   int elements;
+  struct _node *head;
+  struct _node *tail;
+  int elements;
 };
 
 struct _node
 {
-
-   struct _node *next;
-   struct _node *prev;
-
-   void *data;
+  struct _node *next;
+  struct _node *prev;
+  void *data;
 };
 
+extern node_t *node_create(void *);
+extern list_t *list_create(void);
 
+extern node_t *list_add(list_t *, node_t *);
+extern node_t *list_remove(list_t *, node_t *);
 
-node_t *node_create(void *);
-list_t *list_create(void);
-
-node_t *list_add(list_t *, node_t *);
-node_t *list_remove(list_t *, node_t *);
-
-void list_free(list_t *);
-void node_free(node_t *);
-
+extern void list_free(list_t *);
+extern void node_free(node_t *);
 #endif /* LIST_H */

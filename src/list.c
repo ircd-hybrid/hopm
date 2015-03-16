@@ -24,82 +24,87 @@
 #include "list.h"
 
 
-node_t *node_create(void *data)
+node_t *
+node_create(void *data)
 {
-   node_t *node = xcalloc(sizeof *node);
+  node_t *node = xcalloc(sizeof *node);
 
-   node->data = data;
+  node->data = data;
 
-   return node;
+  return node;
 }
 
-list_t *list_create()
+list_t *
+list_create(void)
 {
-   list_t *list = xcalloc(sizeof *list);
-   return list;
+  list_t *list = xcalloc(sizeof *list);
+  return list;
 }
 
-node_t *list_add(list_t *list, node_t *node)
+node_t *
+list_add(list_t *list, node_t *node)
 {
+  if (list == NULL || node == NULL)
+    return NULL;
 
-   if(list == NULL || node == NULL)
-      return NULL;
+  if (list->tail == NULL)
+  {
+    list->head = node;
+    list->tail = node;
 
-   if(list->tail == NULL)
-   {
-      list->head = node;
-      list->tail = node;
+    node->next = NULL;
+    node->prev = NULL;
+  }
+  else
+  {
+    node->prev = list->tail;
+    list->tail->next = node;
+    list->tail = node;
+    node->next = NULL;
+  }
 
-      node->next = NULL;
-      node->prev = NULL;
-   }
-   else
-   {
-      node->prev = list->tail;
-      list->tail->next = node;
-      list->tail = node;
-      node->next = NULL;
-   }
-
-   list->elements++;
-   return node;
+  ++list->elements;
+  return node;
 }
 
-node_t *list_remove(list_t *list, node_t *node)
+node_t *
+list_remove(list_t *list, node_t *node)
 {
-   if(list == NULL || node == NULL)
-      return NULL;
+  if (list == NULL || node == NULL)
+    return NULL;
 
-   if(node == list->head)
-   {
-      list->head = node->next;
+  if (node == list->head)
+  {
+    list->head = node->next;
 
-      if(node->next)
-         node->next->prev = NULL;
-      else
-         list->tail = NULL;
-   }
-   else if(node == list->tail)
-   {
-      list->tail = list->tail->prev;
-      list->tail->next = NULL;
-   }
-   else
-   {
-      node->prev->next = node->next;
-      node->next->prev = node->prev;
-   }
+    if (node->next)
+      node->next->prev = NULL;
+    else
+      list->tail = NULL;
+  }
+  else if (node == list->tail)
+  {
+    list->tail = list->tail->prev;
+    list->tail->next = NULL;
+  }
+  else
+  {
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+  }
 
-   list->elements--;
-   return node;
+  --list->elements;
+  return node;
 }
 
-void list_free(list_t *list)
+void
+list_free(list_t *list)
 {
-   xfree(list);
+  xfree(list);
 }
 
-void node_free(node_t *node)
+void
+node_free(node_t *node)
 {
    xfree(node);
 }
