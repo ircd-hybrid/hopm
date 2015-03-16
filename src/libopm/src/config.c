@@ -92,7 +92,6 @@ libopm_config_create(void)
 
       case OPM_TYPE_ADDRESS:
         ret->vars[i] = xcalloc(sizeof(opm_sockaddr));
-        memset((opm_sockaddr *) ret->vars[i], 0, sizeof(opm_sockaddr));
         break;
 
       case OPM_TYPE_STRINGLIST:
