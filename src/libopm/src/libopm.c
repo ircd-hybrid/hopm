@@ -608,7 +608,6 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
   OPM_NODE_T *node, *p;
 
   ret = xcalloc(sizeof *ret);
-
   ret->remote = remote;
   ret->connections = libopm_list_create();
 
@@ -638,7 +637,6 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
     libopm_list_add(ret->connections, node);
   }
 
-  memset(&(ret->addr), 0, sizeof(opm_sockaddr));
   return ret;
 }
 
