@@ -27,9 +27,8 @@
 node_t *node_create(void *data)
 {
    node_t *node = xcalloc(sizeof *node);
-   node->next = NULL;
-   node->prev = NULL;
-   node->data = (void *) data;
+
+   node->data = data;
 
    return node;
 }
@@ -37,12 +36,6 @@ node_t *node_create(void *data)
 list_t *list_create()
 {
    list_t *list = xcalloc(sizeof *list);
-
-   list->head = NULL;
-   list->tail = NULL;
-
-   list->elements = 0;
-
    return list;
 }
 
