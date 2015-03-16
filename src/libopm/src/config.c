@@ -59,7 +59,7 @@ static OPM_CONFIG_HASH_T HASH[] =
 OPM_CONFIG_T *
 libopm_config_create(void)
 {
-  int num;
+  unsigned int num;
   OPM_CONFIG_T *ret;
 
   num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
@@ -77,7 +77,7 @@ libopm_config_create(void)
    * OPM_TYPE_ADDRESS = 0.0.0.0
    * OPM_TYPE_STRINGLIST = empty list
    */
-  for (int i = 0; i < num; i++)
+  for (unsigned int i = 0; i < num; ++i)
   {
     switch (libopm_config_gettype(i))
     {
@@ -119,13 +119,13 @@ libopm_config_create(void)
 void
 libopm_config_free(OPM_CONFIG_T *config)
 {
-  int num;
+  unsigned int num;
   OPM_NODE_T *p, *next;
   OPM_LIST_T *list;
 
   num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
 
-  for (int i = 0; i < num; i++)
+  for (unsigned int i = 0; i < num; i++)
   {
     if (config->vars[i] == NULL)
       continue;
@@ -222,9 +222,9 @@ libopm_config_set(OPM_CONFIG_T *config, int key, const void *value)
 int
 libopm_config_gettype(int key)
 {
-  int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
+  unsigned int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
 
-  for (int i = 0; i < num; i++)
+  for (unsigned int i = 0; i < num; ++i)
     if (HASH[i].key == key)
       return HASH[i].type;
 
