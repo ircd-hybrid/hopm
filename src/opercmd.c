@@ -46,16 +46,18 @@ static void command_free(struct Command *);
 static void cmd_check(char *, const struct ChannelConf *);
 static void cmd_stat(char *, const struct ChannelConf *);
 static void cmd_fdstat(char *, const struct ChannelConf *);
+static void cmd_protocols(char *, const struct ChannelConf *);
 
 static const struct OperCommandHash COMMAND_TABLE[] =
 {
-  { "CHECK",  cmd_check  },
-  { "SCAN",   cmd_check  },
-  { "STAT",   cmd_stat   },
-  { "STATS",  cmd_stat   },
-  { "STATUS", cmd_stat   },
-  { "FDSTAT", cmd_fdstat },
-  { NULL,     NULL       }
+  { "CHECK",     cmd_check  },
+  { "SCAN",      cmd_check  },
+  { "STAT",      cmd_stat   },
+  { "STATS",     cmd_stat   },
+  { "STATUS",    cmd_stat   },
+  { "FDSTAT",    cmd_fdstat },
+  { "PROTOCOLS", cmd_fdstat },
+  { NULL,        NULL       }
 };
 
 
@@ -330,4 +332,22 @@ static void
 cmd_fdstat(char *param, const struct ChannelConf *target)
 {
   fdstats_output(target->name);
+}
+
+static void
+cmd_protocols(char *param, const struct ChannelConf *target)
+{
+  node_t *node, *node2;
+
+  LIST_FOREACH(node, ScannerItemList->head)
+  {
+    const struct ScannerConf *sc = node->data;
+    irc_send("PRIVMSG %s :Scanner: '%s'", target->name, sc->name);
+
+    LIST_FOREACH(node2, sc->protocols->head)
+    {
+      const struct ProtocolConf *proto = node2->data;
+      irc_send("PRIVMSG %s : %s:%d", target->name, scan_gettype(proto->type), proto->port);
+    }
+  }
 }
