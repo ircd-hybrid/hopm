@@ -1,3 +1,10 @@
+-- Noteworthy changes in version 1.0.4 (2015-03-17)
+o) Log timestamp format is ISO8601 now
+o) Added 'protocols' command which dumps a list of configured scanners
+   and their associated protocols/ports to a channel
+o) Code cleanups and performance improvements
+
+
 -- Noteworthy changes in version 1.0.3 (2015-01-28)
 o) Fixed bug where HOPM wouldn't try re-connecting to the server in
    case the connection got lost.

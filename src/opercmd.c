@@ -50,14 +50,14 @@ static void cmd_protocols(char *, const struct ChannelConf *);
 
 static const struct OperCommandHash COMMAND_TABLE[] =
 {
-  { "CHECK",     cmd_check  },
-  { "SCAN",      cmd_check  },
-  { "STAT",      cmd_stat   },
-  { "STATS",     cmd_stat   },
-  { "STATUS",    cmd_stat   },
-  { "FDSTAT",    cmd_fdstat },
-  { "PROTOCOLS", cmd_fdstat },
-  { NULL,        NULL       }
+  { "CHECK",     cmd_check     },
+  { "SCAN",      cmd_check     },
+  { "STAT",      cmd_stat      },
+  { "STATS",     cmd_stat      },
+  { "STATUS",    cmd_stat      },
+  { "FDSTAT",    cmd_fdstat    },
+  { "PROTOCOLS", cmd_protocols },
+  { NULL,        NULL          }
 };
 
 
