@@ -4,5 +4,5 @@
  */
 
 #ifndef PATCHLEVEL
-#define PATCHLEVEL   "hopm-1.0.3"
+#define PATCHLEVEL   "hopm-1.0.4"
 #endif
