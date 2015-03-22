@@ -136,8 +136,7 @@ main(int argc, char *argv[])
     }
 
     /* Reset file mode. */
-    /* shasta: o+w is BAD, mmkay? */
-    umask(002);
+    umask(077);  /* umask 077: u=rwx,g=,o= */
 
     /* Close file descriptors. */
     close(STDIN_FILENO);
