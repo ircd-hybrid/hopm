@@ -212,7 +212,7 @@ command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
 
   ret->tab = tab;
   ret->irc_nick = xstrdup(irc_nick);
-  ret->target = target;  /* FIXME: This needs fixed if rehash is implemented */
+  ret->target = target;
 
   time(&ret->added);
 

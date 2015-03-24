@@ -97,7 +97,7 @@ config_setup(void)
   OptionsItem->scanlog = NULL;
 }
 
-/* Rehash or load new configuration from filename, via flex/bison parser */
+/* Load configuration from filename, via flex/bison parser */
 void
 config_load(const char *filename)
 {
