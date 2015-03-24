@@ -179,8 +179,6 @@ scan_init(void)
   struct ProtocolConf *pc;
   struct scanner_struct *scs;
 
-  /* FIXME: If rehash code is ever added, cleanup would need done here. */
-
   SCANNERS = list_create();
   MASKS    = list_create();
 
@@ -892,7 +890,7 @@ scan_manual(char *param, const struct ChannelConf *target)
     return;
   }
 
-  /* IP = the resolved IP now (it was the ip OR hostname before) */
+  /* IP = the resolved IP now (it was the IP or hostname before) */
   if ((ip = inet_ntop(AF_INET, addr, buf, sizeof(buf))) == NULL)
   {
     irc_send("PRIVMSG %s :CHECK -> invalid address: %s",

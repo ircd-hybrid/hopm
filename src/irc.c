@@ -888,10 +888,6 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
     log_printf("IRC REGEX -> Parsed %s!%s@%s [%s] from connection notice.",
                user[0], user[1], user[2], user[3]);
 
-  /*FIXME (reminder) In the case of any rehash to the regex, preg MUST be freed first.
-      regfree(preg);
-   */
-
   LIST_FOREACH(node, IRCItem->notices->head)
     irc_send("NOTICE %s :%s", user[0], node->data);
 
