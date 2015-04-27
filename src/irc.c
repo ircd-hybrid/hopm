@@ -83,6 +83,7 @@ static unsigned int IRC_RAW_LEN;         /* Position of IRC_RAW                 
 static int          IRC_FD;              /* File descriptor for IRC client         */
 
 static struct sockaddr_storage IRC_SVR;  /* Sock Address Struct for IRC server     */
+static socklen_t svr_addrlen;
 static time_t IRC_LAST;                  /* Last full line of data from irc server */
 static time_t IRC_LASTRECONNECT;         /* Time of last reconnection              */
 
@@ -180,6 +181,7 @@ irc_init(void)
   {
     struct sockaddr_in6 *in = (struct sockaddr_in6 *)&IRC_SVR;
 
+    svr_addrlen = sizeof(struct sockaddr_in6);
     IRC_SVR.ss_family = AF_INET6;
     in->sin6_port = htons(IRCItem->port);
     memcpy(&in->sin6_addr, address, sizeof(in->sin6_addr));
@@ -188,6 +190,7 @@ irc_init(void)
   {
     struct sockaddr_in *in = (struct sockaddr_in *)&IRC_SVR;
 
+    svr_addrlen = sizeof(struct sockaddr_in);
     IRC_SVR.ss_family = AF_INET;
     in->sin_port = htons(IRCItem->port);
     memcpy(&in->sin_addr, address, sizeof(in->sin_addr));
@@ -313,7 +316,7 @@ static void
 irc_connect(void)
 {
   /* Connect to IRC server as client. */
-  if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, sizeof(IRC_SVR)) == -1)
+  if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, svr_addrlen) == -1)
   {
     log_printf("IRC -> connect(): error connecting to %s: %s",
                IRCItem->server, strerror(errno));
