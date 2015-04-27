@@ -1,5 +1,6 @@
 -- Noteworthy changes in version 1.0.5 (2015-??-??)
-o) Fixed bug where connect() always fails on some OS
+o) Fixed bug where HOPM couldn't connect to the server specified
+   in the irc {} block on some OS
 
 
 -- Noteworthy changes in version 1.0.4 (2015-03-17)
