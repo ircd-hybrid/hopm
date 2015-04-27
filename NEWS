@@ -1,3 +1,7 @@
+-- Noteworthy changes in version 1.0.5 (2015-??-??)
+o) Fixed bug where connect() always fails on some OS
+
+
 -- Noteworthy changes in version 1.0.4 (2015-03-17)
 o) Log timestamp format is ISO8601 now
 o) Added 'protocols' command which dumps a list of configured scanners
