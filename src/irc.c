@@ -434,7 +434,6 @@ irc_read(void)
 static void
 irc_parse(void)
 {
-  struct UserInfo *source_p;
   char *pos;
 
   /*
@@ -496,9 +495,6 @@ irc_parse(void)
     pos++;
   }
 
-  /* Generate a UserInfo struct from the source */
-  source_p = userinfo_create(parv[0]);
-
   /*
    * Determine which command this is from the command table
    * and let the handler for that command take control
@@ -507,12 +503,14 @@ irc_parse(void)
   {
     if (strcasecmp(cmd->command, parv[1]) == 0)
     {
+      /* Generate a UserInfo struct from the source */
+      struct UserInfo *source_p = userinfo_create(parv[0]);
+
       cmd->handler(parv, parc, msg, source_p);
+      userinfo_free(source_p);
       break;
     }
   }
-
-  userinfo_free(source_p);
 }
 
 /* irc_timer
