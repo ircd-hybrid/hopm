@@ -160,9 +160,9 @@ irc_cycle(void)
  *
  *    Resolve IRC host and perform other initialization.
  *
- * Parameters: 
+ * Parameters:
  *    None
- * 
+ *
  * Return:
  *    None
  */
@@ -244,7 +244,7 @@ irc_init(void)
  * Parameters:
  *    data: Format of data to send
  *    ...: varargs to format with
- * 
+ *
  * Return: NONE
  */
 void

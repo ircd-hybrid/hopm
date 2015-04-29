@@ -85,7 +85,6 @@ whitespace             [ \t\r]*
                                  return STRING;
                               }
                            }
-             
                         }
 
 AWAY                    { return AWAY;         }
@@ -195,7 +194,7 @@ ROUTER                  {
 
 
 [0-9]+                  {
-                           yylval.number=atoi(yytext); 
+                           yylval.number=atoi(yytext);
                            return NUMBER;
                         }
 
@@ -242,7 +241,7 @@ OFF                      {
 
 {whitespace}            /* ignore whitespace */;
 
-.                       return yytext[0]; 
+.                       return yytext[0];
 
 %%
 

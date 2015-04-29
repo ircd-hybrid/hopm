@@ -62,7 +62,7 @@ static const struct OperCommandHash COMMAND_TABLE[] =
 
 
 /* command_init
- * 
+ *
  *    Do command initialization
  *
  * Parameters: NONE
@@ -81,7 +81,7 @@ command_init(void)
  *    Perform ~1 second actions.
  *
  * Parameters: NONE
- * 
+ *
  * Return: NONE
  *
  */
@@ -189,9 +189,9 @@ command_parse(char *command, const struct ChannelConf *target,
 }
 
 /* command_create
- * 
+ *
  *    Create a Command struct.
- *  
+ *
  * Parameters:
  *    type: Index in COMMAND_TABLE
  *    param: Parameters to the command (NULL if there are not any)
@@ -220,12 +220,12 @@ command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
 }
 
 /* command_free
- * 
+ *
  *   Free a command struct
  *
  * Parameters:
  *   command: Command struct to free
- *   
+ *
  * Return: NONE
  */
 static void
@@ -243,12 +243,12 @@ command_free(struct Command *command)
  *    A 302 reply was received. The reply is parsed to check if the
  *    user was an operator. If so any commands they had queued are
  *    executed.
- *  
+ *
  * Parameters:
  *    reply: Reply to USERHOST    (ex: :grifferz*=+goats@pc-62-30-219-54-pb.blueyonder.co.uk)
  *
  * Return: NONE
- * 
+ *
  */
 void
 command_userhost(const char *reply)
