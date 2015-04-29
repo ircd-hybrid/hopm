@@ -99,7 +99,7 @@ scan_cycle(void)
 }
 
 /* scan_timer
- *   
+ *
  *    Perform actions that are to be performed every ~1 second.
  *
  * Parameters: NONE
@@ -166,7 +166,7 @@ scan_gettype(int protocol)
 
    Parameters:
       None
-   
+
    Return:
       None
 */
@@ -754,7 +754,7 @@ scan_negative(const struct scan_struct *ss)
 
 /* scan_irckline
  *
- *    ss has been found as a positive host and is to be klined. 
+ *    ss has been found as a positive host and is to be klined.
  *    Format a kline message using the kline message provided
  *    as a format, then pass it to irc_send() to be sent to the remote server.
  *
@@ -762,9 +762,8 @@ scan_negative(const struct scan_struct *ss)
  *    ss: scan_struct containing information regarding host to be klined
  *    format: kline message to format
  *    type: type of proxy found (%t format character)
- * 
- * Return: NONE
  *
+ * Return: NONE
  */
 static void
 scan_irckline(const struct scan_struct *ss, const char *format, const char *type)
@@ -968,15 +967,15 @@ scan_manual(char *param, const struct ChannelConf *target)
 }
 
 /* scan_checkexempt
- * 
+ *
  *    Check mask against exempt list.
- * 
+ *
  * Parameters:
  *     mask: Mask to check
- * 
+ *
  * Return:
  *     1 if mask is in list
- *     0 if mask is not in list 
+ *     0 if mask is not in list
  */
 int
 scan_checkexempt(const char *mask, const char *ipmask)
