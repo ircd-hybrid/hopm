@@ -122,7 +122,7 @@ struct BlacklistConf
 
 struct BlacklistReplyConf
 {
-  char number;
+  unsigned char number;
   char *type;
 };
 
