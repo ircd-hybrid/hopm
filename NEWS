@@ -1,4 +1,4 @@
--- Noteworthy changes in version 1.0.5 (2015-??-??)
+-- Noteworthy changes in version 1.0.5 (2015-05-04)
 o) Fixed bug where HOPM couldn't connect to the server specified
    in the irc {} block on some OS
 
