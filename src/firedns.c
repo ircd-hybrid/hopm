@@ -167,8 +167,8 @@ firedns_init(void)
   CONNECTIONS = list_create();
 
   srand((unsigned int)time(NULL));
-  memset(servers4, 0, sizeof(struct in_addr) * FDNS_MAX);
-  memset(servers6, 0, sizeof(struct in6_addr) * FDNS_MAX);
+  memset(servers4, 0, sizeof(servers4));
+  memset(servers6, 0, sizeof(servers6));
 
   /* read etc/firedns.conf if we've got it, otherwise parse /etc/resolv.conf */
   f = fopen(FDNS_CONFIG_PREF, "r");
