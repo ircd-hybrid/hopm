@@ -143,7 +143,7 @@ libopm_proxy_socks5_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *co
   scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
 
   if (inet_pton(AF_INET, scan_ip, &addr) <= 0)
-    ; /* handle error */
+    ;  /* handle error */
 
   laddr = htonl(addr.s_addr);
 

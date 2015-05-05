@@ -18,7 +18,7 @@
  *       59 Temple Place - Suite 330
  *       Boston, MA  02111-1307, USA.
  *
- *                  
+ *
  */
 
 #include "setup.h"
@@ -594,9 +594,9 @@ opm_active(OPM_T *scanner)
  *    scanner: Scanner the scan is being created for. This
  *             is needed to get information on currently set
  *             protocols/config.
- *             
+ *
  *    remote: Remote host this scan will be scanning
- *    
+ *
  * Return
  *    Address of new struct
  */
@@ -646,7 +646,7 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
  *
  * Parametsr:
  *    scan: Scan struct to free
- * 
+ *
  * Return:
  *    None
  */
@@ -737,7 +737,7 @@ opm_cycle(OPM_T *scanner)
  * Move scans from the queue to the live scan list as long as there is
  * room.
  *
- * Parameters: 
+ * Parameters:
  *    scanner: Scanner to check queue on
  *
  * Return:
@@ -825,7 +825,7 @@ libopm_check_establish(OPM_T *scanner)
 }
 
 /* check_closed
- * 
+ *
  * Check for connections which have timed out or are
  * closed. Connections timed out still need to be closed.
  *
@@ -909,7 +909,7 @@ libopm_check_closed(OPM_T *scanner)
  * Parametsr:
  *    scan: Scan struct containing the connection
  *    conn: Connection to establish
- * Return: 
+ * Return:
  *    None
  */
 static void
@@ -1067,8 +1067,8 @@ libopm_check_poll(OPM_T *scanner)
 
 /* do_readready
  *
- *    Remote connection is read ready, read the data into a buffer and check it against 
- *    the target_string if neccessary 
+ *    Remote connection is read ready, read the data into a buffer and check it against
+ *    the target_string if neccessary
  *
  *    Parameters:
  *       scanner: Scanner doing the scan
@@ -1180,7 +1180,7 @@ libopm_do_read(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 
 /* do_openproxy
  *
- *    An open proxy was found on connection conn. Cleanup the connection and 
+ *    An open proxy was found on connection conn. Cleanup the connection and
  *    call the appropriate callback to let the client know the proxy was found.
  *
  *    Parameters:
@@ -1259,7 +1259,7 @@ libopm_do_hup(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 }
 
 /* do_callback
- * 
+ *
  *    Call callback
  *
  * Parameters:
