@@ -83,7 +83,6 @@ libopm_config_create(void)
     {
       case OPM_TYPE_INT:
         ret->vars[i] = xcalloc(sizeof(int));
-        *(int *)ret->vars[i] = 0;
         break;
 
       case OPM_TYPE_STRING:
@@ -97,6 +96,7 @@ libopm_config_create(void)
       case OPM_TYPE_STRINGLIST:
         ret->vars[i] = libopm_list_create();
         break;
+
       default:
         ret->vars[i] = NULL;
     }
