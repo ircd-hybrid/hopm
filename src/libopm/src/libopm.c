@@ -114,16 +114,9 @@ opm_create(void)
   ret->scans = libopm_list_create();
   ret->queue = libopm_list_create();
   ret->protocols = libopm_list_create();
-  ret->fd_use = 0;
 
   /* Setup callbacks */
   ret->callbacks = xcalloc(sizeof(OPM_CALLBACK_T) * CBLEN);
-
-  for (i = 0; i < CBLEN; i++)
-  {
-    ret->callbacks[i].func = NULL;
-    ret->callbacks[i].data = NULL;
-  }
 
   return ret;
 }
@@ -686,14 +679,7 @@ libopm_connection_create(void)
   OPM_CONNECTION_T *ret;
 
   ret = xcalloc(sizeof *ret);
-
-  ret->fd         = 0;
-  ret->bytes_read = 0;
-  ret->readlen    = 0;
-  ret->protocol   = 0;
-  ret->port       = 0;
-
-  ret->state      = OPM_STATE_UNESTABLISHED;
+  ret->state = OPM_STATE_UNESTABLISHED;
 
   return ret;
 }
