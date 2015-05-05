@@ -47,6 +47,9 @@ libopm_proxy_http_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn
   if (send(conn->fd, SENDBUF, len, 0) == -1)
     return 0;  /* Return error code ? */
 
+  /* extra linefeed required for MikroTik HttpProxy, must be separate send() */
+  send(conn->fd, "\r\n", 2, 0);
+
   return OPM_SUCCESS;
 }
 
