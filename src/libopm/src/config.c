@@ -132,7 +132,7 @@ libopm_config_free(OPM_CONFIG_T *config)
     switch (libopm_config_gettype(i))
     {
       case OPM_TYPE_STRINGLIST:
-        list = (OPM_LIST_T *)config->vars[i];
+        list = config->vars[i];
 
         LIST_FOREACH_SAFE(p, next, list->head)
         {
@@ -180,7 +180,7 @@ libopm_config_set(OPM_CONFIG_T *config, int key, const void *value)
   switch (libopm_config_gettype(key))
   {
     case OPM_TYPE_STRING:
-      if ((char *) config->vars[key])
+      if (config->vars[key])
         MyFree(config->vars[key]);
 
       config->vars[key] = libopm_xstrdup(value);
@@ -198,7 +198,7 @@ libopm_config_set(OPM_CONFIG_T *config, int key, const void *value)
 
     case OPM_TYPE_STRINGLIST:
       node = libopm_node_create(libopm_xstrdup(value));
-      libopm_list_add((OPM_LIST_T *)config->vars[key], node);
+      libopm_list_add(config->vars[key], node);
       break;
 
     default:

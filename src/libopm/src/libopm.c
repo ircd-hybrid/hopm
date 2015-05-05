@@ -563,7 +563,7 @@ opm_endscan(OPM_T *scanner, OPM_REMOTE_T *remote)
     {
       LIST_FOREACH(node2, scan->connections->head)
       {
-        conn = (OPM_CONNECTION_T *) node2->data;
+        conn = node2->data;
         conn->state = OPM_STATE_CLOSED;
       }
     }
