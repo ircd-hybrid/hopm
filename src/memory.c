@@ -36,16 +36,14 @@
  * Return:
  *    Pointer to allocated memory
  */
-
-void *xcalloc(size_t bytes)
+void *
+xcalloc(size_t bytes)
 {
    void *ret = calloc(1, bytes);
    assert(ret);
 
    return ret;
 }
-
-
 
 /*  xfree
  *
@@ -57,8 +55,8 @@ void *xcalloc(size_t bytes)
  *  Return:
  *     None
  */
-
-void xfree(void *ptr)
+void
+xfree(void *ptr)
 {
   free(ptr);
 }
