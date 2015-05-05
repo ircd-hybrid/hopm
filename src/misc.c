@@ -30,7 +30,7 @@
  * Split a time_t into an English-language explanation of how
  * much time it represents, e.g. "2 hours 45 minutes 8 seconds"
  */
-char *
+const char *
 dissect_time(time_t time)
 {
   static char buf[64];
