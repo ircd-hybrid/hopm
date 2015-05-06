@@ -167,14 +167,14 @@ libopm_config_free(OPM_CONFIG_T *config)
  */
 
 OPM_ERR_T
-libopm_config_set(OPM_CONFIG_T *config, int key, const void *value)
+libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
 {
-  int num;
+  unsigned int num;
   OPM_NODE_T *node;
 
   num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
 
-  if (key < 0 || key >= num)
+  if (key >= num)
     return OPM_ERR_BADKEY;  /* Return appropriate error code eventually */
 
   switch (libopm_config_gettype(key))
@@ -246,7 +246,7 @@ libopm_config_gettype(int key)
  *    will have to be cast on the return end to be any use.
  */
 void *
-libopm_config(OPM_CONFIG_T *config, int key)
+libopm_config(OPM_CONFIG_T *config, unsigned int key)
 {
   return config->vars[key];
 }
