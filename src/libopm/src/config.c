@@ -187,7 +187,7 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
       break;
 
     case OPM_TYPE_INT:
-      *(int *) config->vars[key] = *(const int *) value;
+      *(int *)config->vars[key] = *(const int *)value;
       break;
 
     case OPM_TYPE_ADDRESS:
