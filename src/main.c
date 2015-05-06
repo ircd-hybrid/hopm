@@ -53,7 +53,7 @@ static struct sigaction ALARMACTION;
 static struct sigaction INTACTION;
 static struct sigaction USR1ACTION;
 
-static char *CONFNAME = DEFAULTNAME;
+static const char *CONFNAME = DEFAULTNAME;
 static const char *CONFDIR = HOPM_ETCDIR;
 static const char *LOGDIR = HOPM_LOGDIR;
 static char *CONFFILE, *LOGFILE;
