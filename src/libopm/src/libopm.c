@@ -105,11 +105,9 @@ static OPM_PROTOCOL_T OPM_PROTOCOLS[] =
 OPM_T *
 opm_create(void)
 {
-  int i;
   OPM_T *ret;
 
   ret = xcalloc(sizeof *ret);
-
   ret->config = libopm_config_create();
   ret->scans = libopm_list_create();
   ret->queue = libopm_list_create();
@@ -1180,10 +1178,6 @@ libopm_do_read(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 static void
 libopm_do_openproxy(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  OPM_REMOTE_T *remote;
-
-  remote = scan->remote;
-
   /* Mark the connection for close */
   conn->state = OPM_STATE_CLOSED;
 
@@ -1234,10 +1228,6 @@ libopm_do_writeready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 static void
 libopm_do_hup(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  OPM_REMOTE_T *remote;
-
-  remote = scan->remote;
-
   /* Mark the connection for close */
   conn->state = OPM_STATE_CLOSED;
 
