@@ -446,9 +446,6 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
   OPM_SCAN_T *scan;  /* New scan for OPM_T */
   OPM_NODE_T *node;  /* Node we'll add scan to when we link it to scans */
-  unsigned int fd_limit;
-
-  fd_limit = *(int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT);
 
   if (LIST_SIZE(scanner->protocols) == 0 &&
       LIST_SIZE(remote->protocols) == 0)
