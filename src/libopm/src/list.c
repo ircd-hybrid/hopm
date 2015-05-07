@@ -25,7 +25,7 @@
 
 #include "opm_common.h"
 #include "list.h"
-#include "malloc.h"
+#include "memory.h"
 #include "opm.h"
 
 

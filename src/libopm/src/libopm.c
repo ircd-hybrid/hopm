@@ -25,7 +25,7 @@
 
 #include "config.h"
 #include "libopm.h"
-#include "malloc.h"
+#include "memory.h"
 #include "opm_error.h"
 #include "opm_types.h"
 #include "opm_common.h"
