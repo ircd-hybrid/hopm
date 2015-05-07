@@ -7,8 +7,8 @@ libopm_la_SOURCES = config.c     \
                     libopm.h     \
                     list.c       \
                     list.h       \
-                    malloc.c     \
-                    malloc.h     \
+                    memory.c     \
+                    memory.h     \
                     opm_common.h \
                     opm_error.h  \
                     opm.h        \

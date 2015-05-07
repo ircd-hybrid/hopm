@@ -25,7 +25,7 @@
 #include <string.h>
 #include "setup.h"
 
-#include "malloc.h"
+#include "memory.h"
 #include "opm.h"
 
 
