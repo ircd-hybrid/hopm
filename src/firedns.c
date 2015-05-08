@@ -457,7 +457,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
 
   if (i6 > 0)
   {
-    s->fd = socket(PF_INET6, SOCK_DGRAM, 0);
+    s->fd = socket(AF_INET6, SOCK_DGRAM, 0);
 
     if (s->fd != -1)
     {
@@ -482,7 +482,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
 
   if (s->v6 == 0)
   {
-    s->fd = socket(PF_INET, SOCK_DGRAM, 0);
+    s->fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     if (s->fd != -1)
     {
