@@ -470,8 +470,6 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
 
     if (s->fd != -1)
     {
-      struct sockaddr_in6 addr6;
-
       memset(&addr6, 0, sizeof(addr6));
       addr6.sin6_family = AF_INET6;
 
@@ -497,14 +495,12 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
 
     if (s->fd != -1)
     {
-      struct sockaddr_in addr;
+      memset(&addr4, 0, sizeof(addr4));
+      addr4.sin_family = AF_INET;
+      addr4.sin_port = 0;
+      addr4.sin_addr.s_addr = INADDR_ANY;
 
-      memset(&addr, 0, sizeof(addr));
-      addr.sin_family = AF_INET;
-      addr.sin_port = 0;
-      addr.sin_addr.s_addr = INADDR_ANY;
-
-      if (bind(s->fd, (struct sockaddr *)&addr, sizeof(addr)) != 0)
+      if (bind(s->fd, (struct sockaddr *)&addr4, sizeof(addr4)) != 0)
       {
         close(s->fd);
         s->fd = -1;
