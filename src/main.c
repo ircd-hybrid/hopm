@@ -215,7 +215,7 @@ main(int argc, char *argv[])
       if (execv(argv[0], argv) == -1)
         log_printf("MAIN RESTART -> Execution of \"%s\" failed. ERROR: %s", argv[0], strerror(errno));
 
-      /* Should only get here if execve failed */
+      /* Should only get here if execv() failed */
       RESTART = 0;
     }
 
