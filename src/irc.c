@@ -50,6 +50,7 @@
 #include "negcache.h"
 #include "memory.h"
 #include "main.h"
+#include "serno.h"
 
 
 static void irc_init(void);
@@ -807,8 +808,8 @@ static void
 m_ctcp(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
 {
   if (strncasecmp(parv[3], "\001VERSION\001", 9) == 0)
-    irc_send("NOTICE %s :\001VERSION Hybrid Open Proxy Monitor %s\001",
-             source_p->irc_nick, VERSION);
+    irc_send("NOTICE %s :\001VERSION Hybrid Open Proxy Monitor %s(%s)\001",
+             source_p->irc_nick, VERSION, SERIALNUM);
 }
 
 /* m_notice
