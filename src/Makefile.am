@@ -37,6 +37,7 @@ hopm_SOURCES = compat.c        \
                patchlevel.h    \
                scan.c          \
                scan.h          \
+               serno.h         \
                stats.c         \
                stats.h
 
