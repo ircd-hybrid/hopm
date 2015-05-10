@@ -212,7 +212,7 @@ main(int argc, char *argv[])
         fcntl(i, F_SETFD, FD_CLOEXEC);
 
       /* execute new process */
-      if (execve(argv[0], argv, NULL) == -1)
+      if (execv(argv[0], argv) == -1)
         log_printf("MAIN RESTART -> Execution of \"%s\" failed. ERROR: %s", argv[0], strerror(errno));
 
       /* Should only get here if execve failed */
