@@ -30,13 +30,13 @@
 #define LIST_SIZE(list) list->elements
 /* End Copyright */
 
-OPM_NODE_T *libopm_node_create(void *);
-OPM_LIST_T *libopm_list_create(void);
+extern OPM_NODE_T *libopm_node_create(void *);
+extern OPM_LIST_T *libopm_list_create(void);
 
-OPM_NODE_T *libopm_list_add(OPM_LIST_T *, OPM_NODE_T *);
-OPM_NODE_T *libopm_list_remove(OPM_LIST_T *, OPM_NODE_T *);
+extern OPM_NODE_T *libopm_list_add(OPM_LIST_T *, OPM_NODE_T *);
+extern OPM_NODE_T *libopm_list_remove(OPM_LIST_T *, OPM_NODE_T *);
 
-void libopm_list_free(OPM_LIST_T *);
-void libopm_node_free(OPM_NODE_T *);
+extern void libopm_list_free(OPM_LIST_T *);
+extern void libopm_node_free(OPM_NODE_T *);
 
 #endif /* LIST_H */

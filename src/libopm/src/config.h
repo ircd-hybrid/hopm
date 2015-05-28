@@ -11,9 +11,9 @@ struct _opm_config_hash
   int type;
 };
 
-void libopm_config_free(OPM_CONFIG_T *);
-void *libopm_config(OPM_CONFIG_T *, unsigned int);
-int libopm_config_gettype(int);
-OPM_CONFIG_T *libopm_config_create(void);
-OPM_ERR_T libopm_config_set(OPM_CONFIG_T *, unsigned int , const void *);
+extern void libopm_config_free(OPM_CONFIG_T *);
+extern void *libopm_config(OPM_CONFIG_T *, unsigned int);
+extern int libopm_config_gettype(int);
+extern OPM_CONFIG_T *libopm_config_create(void);
+extern OPM_ERR_T libopm_config_set(OPM_CONFIG_T *, unsigned int , const void *);
 #endif /* CONFIG_H */
