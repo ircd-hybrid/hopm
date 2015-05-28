@@ -239,3 +239,34 @@ libopm_proxy_httppost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *
 
   return OPM_SUCCESS;
 }
+
+/*
+ * Dreambox scanning
+ *
+ * Some dreambox machines have 'dreambox' as the password, and would allow
+ * full root access to telnet or install bouncers.
+ */
+int
+libopm_proxy_dreambox_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+{
+  size_t len;
+  int scan_port;
+  char *scan_ip;
+
+  scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+
+  len = snprintf(SENDBUF, SENDBUFLEN, "root\r\n");
+  send(conn->fd, SENDBUF, len, 0);
+
+  len = snprintf(SENDBUF, SENDBUFLEN, "dreambox\r\n");
+  send(conn->fd, SENDBUF, len, 0);
+
+  len = snprintf(SENDBUF, SENDBUFLEN, "telnet %s %d\r\n", scan_ip, scan_port);
+  send(conn->fd, SENDBUF, len, 0);
+
+  len = snprintf(SENDBUF, SENDBUFLEN, "nc %s %d\r\n", scan_ip, scan_port);
+  send(conn->fd, SENDBUF, len, 0);
+
+  return OPM_SUCCESS;
+}

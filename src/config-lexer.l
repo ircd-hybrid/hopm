@@ -192,6 +192,12 @@ ROUTER                  {
                           return PROTOCOLTYPE;
                         }
 
+DREAMBOX                {
+                          yylval.number = OPM_TYPE_DREAMBOX;
+                          return PROTOCOLTYPE;
+                        }
+
+
 
 [0-9]+                  {
                            yylval.number=atoi(yytext);
