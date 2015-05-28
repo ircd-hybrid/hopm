@@ -49,22 +49,22 @@ struct _OPM_REMOTE
   void                 *data;           /* Arbitrary data that the client can point to for any purpose*/
 };
 
-OPM_T *opm_create(void);
-void opm_free(OPM_T *);
+extern OPM_T *opm_create(void);
+extern void opm_free(OPM_T *);
 
-OPM_REMOTE_T *opm_remote_create(const char *);
-void opm_remote_free(OPM_REMOTE_T *);
+extern OPM_REMOTE_T *opm_remote_create(const char *);
+extern void opm_remote_free(OPM_REMOTE_T *);
 
-OPM_ERR_T opm_config(OPM_T *, int, const void *);
-OPM_ERR_T opm_scan(OPM_T *, OPM_REMOTE_T *);
-void opm_end(OPM_T *, OPM_REMOTE_T *);
-void opm_endscan(OPM_T *, OPM_REMOTE_T *);
+extern OPM_ERR_T opm_config(OPM_T *, int, const void *);
+extern OPM_ERR_T opm_scan(OPM_T *, OPM_REMOTE_T *);
+extern void opm_end(OPM_T *, OPM_REMOTE_T *);
+extern void opm_endscan(OPM_T *, OPM_REMOTE_T *);
 
-OPM_ERR_T opm_addtype(OPM_T *, int, unsigned short int);
-OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *, int, unsigned short int);
-OPM_ERR_T opm_callback(OPM_T *, int, OPM_CALLBACK_FUNC *, void *);
+extern OPM_ERR_T opm_addtype(OPM_T *, int, unsigned short int);
+extern OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *, int, unsigned short int);
+extern OPM_ERR_T opm_callback(OPM_T *, int, OPM_CALLBACK_FUNC *, void *);
 
-void opm_cycle(OPM_T *);
+extern void opm_cycle(OPM_T *);
 
-size_t opm_active(OPM_T *);
+extern size_t opm_active(OPM_T *);
 #endif /* OPM_H */
