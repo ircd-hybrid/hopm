@@ -46,8 +46,8 @@ o) hopm now uses poll() for I/O event notification instead of select()
 
 -- Noteworthy changes in version 1.0.0beta1 (2014-12-25)
 ########################################################################
-o) NOTE: this is the first release of the hybrid open proxy monitor (HOPM)
-   fully based off the discontinued blitzed open proxy monitor (BOPM)
+o) NOTE:  this is the first release of the hybrid open proxy monitor (HOPM)
+   fully based off the discontinued blitzed open proxy monitor (BOPM) 3.1.3
 ########################################################################
 o) Modernized and cleaned up build system
 o) Modernized the example configuration file. Removed/updated blacklist entries.
@@ -64,7 +64,7 @@ o) The irc::away configuration option is now optional
 
 BUG REPORTS: If you run this code and encounter problems, you must report
  the bug by EMAIL to bugs@ircd-hybrid.org
- Please include a gdb backtrace and a copy of your config.h and
+ Please include a gdb backtrace and a copy of your setup.h and
  hopm.conf with any report (with passwords and other sensitive
  information masked).
 
