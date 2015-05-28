@@ -150,7 +150,8 @@ scan_gettype(int protocol)
     { OPM_TYPE_SOCKS4,   "SOCKS4"   },
     { OPM_TYPE_SOCKS5,   "SOCKS5"   },
     { OPM_TYPE_WINGATE,  "WINGATE"  },
-    { OPM_TYPE_ROUTER,   "ROUTER"   }
+    { OPM_TYPE_ROUTER,   "ROUTER"   },
+    { OPM_TYPE_DREAMBOX, "DREAMBOX" }
   };
 
   for (unsigned int i = 0; i < (sizeof(protocols) / sizeof(struct protocol_assoc)); ++i)

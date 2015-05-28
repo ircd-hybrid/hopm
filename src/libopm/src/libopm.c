@@ -89,7 +89,8 @@ static OPM_PROTOCOL_T OPM_PROTOCOLS[] =
   { OPM_TYPE_SOCKS5,   libopm_proxy_socks5_write,   NULL },
   { OPM_TYPE_ROUTER,   libopm_proxy_router_write,   NULL },
   { OPM_TYPE_WINGATE,  libopm_proxy_wingate_write,  NULL },
-  { OPM_TYPE_HTTPPOST, libopm_proxy_httppost_write, NULL }
+  { OPM_TYPE_HTTPPOST, libopm_proxy_httppost_write, NULL },
+  { OPM_TYPE_DREAMBOX, libopm_proxy_dreambox_write, NULL }
 };
 
 /* opm_create
