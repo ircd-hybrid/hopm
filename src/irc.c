@@ -768,14 +768,14 @@ m_privmsg(char *parv[], unsigned int parc, const char *msg, const struct UserInf
     return;
 
   /* CTCP */
-  if (parv[3][0] == '\001')
+  if (*parv[3] == '\001')
   {
     m_ctcp(parv, parc, msg, source_p);
     return;
   }
 
   /* Only interested in privmsg to channels */
-  if (parv[2][0] != '#' && parv[2][0] != '&')
+  if (*parv[2] != '#' && *parv[2] != '&')
     return;
 
   /* Get a target */
