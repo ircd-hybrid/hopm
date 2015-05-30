@@ -853,8 +853,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
       char errmsg[256];
 
       regerror(errnum, preg, errmsg, sizeof(errmsg));
-      log_printf("IRC REGEX -> Error when compiling regular expression");
-      log_printf("IRC REGEX -> %s", errmsg);
+      log_printf("IRC REGEX -> Error when compiling regular expression: %s", errmsg);
 
       xfree(preg);
       preg = NULL;
