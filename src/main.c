@@ -165,7 +165,7 @@ main(int argc, char *argv[])
   }
   else
   {
-    log_printf("MAIN -> Error opening %s: %s", OptionsItem->pidfile,
+    log_printf("MAIN -> Error opening pid file %s: %s", OptionsItem->pidfile,
                strerror(errno));
     exit(EXIT_FAILURE);
   }
