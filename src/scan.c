@@ -331,8 +331,8 @@ scan_connect(const char *user[], const char *msg)
   }
 
   /* Generate user mask */
-  snprintf(mask, MSGLENMAX, "%s!%s@%s", user[0], user[1], user[2]);
-  snprintf(ipmask, MSGLENMAX, "%s!%s@%s", user[0], user[1], user[3]);
+  snprintf(mask, sizeof(mask), "%s!%s@%s", user[0], user[1], user[2]);
+  snprintf(ipmask, sizeof(ipmask), "%s!%s@%s", user[0], user[1], user[3]);
 
   /* Check exempt list now that we have a mask */
   if (scan_checkexempt(mask, ipmask))
