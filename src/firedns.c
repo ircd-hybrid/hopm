@@ -70,16 +70,16 @@ static list_t *CONNECTIONS;
  */
 static const char *errors[] =
 {
-  "Success",
-  "Format error",
-  "Server failure",
-  "Name error",
-  "Not implemented",
-  "Refused",
-  "Timeout",
-  "Network error",
-  "FD Limit reached",
-  "Unknown error"
+  [FDNS_ERR_NONE] = "Success",
+  [FDNS_ERR_FORMAT] = "Format error",
+  [FDNS_ERR_SERVFAIL] = "Server failure",
+  [FDNS_ERR_NXDOMAIN] = "Name error",
+  [FDNS_ERR_NOIMPT] = "Not implemented",
+  [FDNS_ERR_REFUSED] = "Refused",
+  [FDNS_ERR_TIMEOUT] = "Timeout",
+  [FDNS_ERR_NETWORK] = "Network error",
+  [FDNS_ERR_FDLIMIT] = "FD Limit reached",
+  [FDNS_ERR_OTHER] = "Unknown error"
 };
 
 /* Structures */
