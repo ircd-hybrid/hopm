@@ -777,7 +777,7 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
   struct kline_format_assoc
   {
     const char key;
-    const void *data;
+    const char *data;
   } table[] =
   {
     { 'i',  NULL },
