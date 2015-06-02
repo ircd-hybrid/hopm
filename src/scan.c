@@ -780,11 +780,12 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
     const void *data;
   } table[] =
   {
-    { 'i', NULL },
-    { 'h', NULL },
-    { 'u', NULL },
-    { 'n', NULL },
-    { 't', NULL }
+    { 'i',  NULL },
+    { 'h',  NULL },
+    { 'u',  NULL },
+    { 'n',  NULL },
+    { 't',  NULL },
+    { '\0', NULL }
   };
 
   table[0].data = ss->ip;
