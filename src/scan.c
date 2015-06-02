@@ -774,18 +774,18 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
   unsigned int pos = 0;   /* position in format */
   unsigned int len = 0;   /* position in message */
   unsigned int size = 0;  /* temporary size buffer */
-  unsigned int i;
   struct kline_format_assoc
   {
     const char key;
     const void *data;
   } table[] =
   {
-    { 'i', NULL },
-    { 'h', NULL },
-    { 'u', NULL },
-    { 'n', NULL },
-    { 't', NULL }
+    { 'i',  NULL },
+    { 'h',  NULL },
+    { 'u',  NULL },
+    { 'n',  NULL },
+    { 't',  NULL },
+    { '\0', NULL }
   };
 
   table[0].data = ss->ip;
@@ -816,18 +816,18 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
         }
 
         /* Safe to check against table now */
-        for (i = 0; i < (sizeof(table) / sizeof(struct kline_format_assoc)); ++i)
+        for (const struct kline_format_assoc *tab = table; tab->key; ++tab)
         {
-          if (table[i].key == format[pos + 1])
+          if (tab->key == format[pos + 1])
           {
-            size = strlen(table[i].data);
+            size = strlen(tab->data);
 
             /* Check if the new string can fit! */
             if ((size + len) > (MSGLENMAX - 1))
               break;
             else
             {
-              strlcat(message, table[i].data, sizeof(message));
+              strlcat(message, tab->data, sizeof(message));
               len += size;
             }
           }
