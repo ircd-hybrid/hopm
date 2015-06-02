@@ -84,8 +84,13 @@ void
 stats_openproxy(int type)
 {
   for (unsigned int i = 0; i < (sizeof(STATS_PROXIES) / sizeof(struct StatsHash)); ++i)
+  {
     if (STATS_PROXIES[i].type == type)
+    {
       ++STATS_PROXIES[i].count;
+      break;
+    }
+  }
 }
 
 /* stats_connect
