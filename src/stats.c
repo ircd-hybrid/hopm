@@ -53,7 +53,8 @@ static struct StatsHash STATS_PROXIES[] =
   { OPM_TYPE_SOCKS5,   0, "SOCKS5"   },
   { OPM_TYPE_ROUTER,   0, "ROUTER"   },
   { OPM_TYPE_WINGATE,  0, "WINGATE"  },
-  { OPM_TYPE_DREAMBOX, 0, "DREAMBOX" }
+  { OPM_TYPE_DREAMBOX, 0, "DREAMBOX" },
+  { 0, 0, NULL }
 };
 
 
@@ -83,11 +84,11 @@ stats_init(void)
 void
 stats_openproxy(int type)
 {
-  for (unsigned int i = 0; i < (sizeof(STATS_PROXIES) / sizeof(struct StatsHash)); ++i)
+  for (struct StatsHash *tab = STATS_PROXIES; tab->name; ++tab)
   {
-    if (STATS_PROXIES[i].type == type)
+    if (tab->type == type)
     {
-      ++STATS_PROXIES[i].count;
+      ++tab->count;
       break;
     }
   }
@@ -170,10 +171,10 @@ stats_output(const char *target)
     irc_send("PRIVMSG %s :DNSBL: %u reports sent", target,
              STATS_DNSBLSENT);
 
-  for (unsigned int i = 0; i < (sizeof(STATS_PROXIES) / sizeof(struct StatsHash)); ++i)
-    if (STATS_PROXIES[i].count > 0)
+  for (const struct StatsHash *tab = STATS_PROXIES; tab->name; ++tab)
+    if (tab->count)
       irc_send("PRIVMSG %s :Found %u (%s) open.", target,
-               STATS_PROXIES[i].count, STATS_PROXIES[i].name);
+               tab->count, tab->name);
 
    irc_send("PRIVMSG %s :Number of connects: %u (%.2f/minute)",
             target, STATS_CONNECTIONS, STATS_CONNECTIONS ?
