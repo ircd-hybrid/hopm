@@ -52,12 +52,6 @@ struct protocol_assoc
   const char *name;
 };
 
-struct kline_format_assoc
-{
-  char key;
-  const void *data;
-};
-
 extern void scan_init(void);
 extern const char *scan_gettype(int);
 extern void scan_cycle(void);
