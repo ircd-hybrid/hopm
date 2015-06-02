@@ -775,13 +775,17 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
   unsigned int len = 0;   /* position in message */
   unsigned int size = 0;  /* temporary size buffer */
   unsigned int i;
-  struct kline_format_assoc table[] =
+  struct kline_format_assoc
   {
-    {'i', NULL },
-    {'h', NULL },
-    {'u', NULL },
-    {'n', NULL },
-    {'t', NULL }
+    const char key;
+    const void *data;
+  } table[] =
+  {
+    { 'i', NULL },
+    { 'h', NULL },
+    { 'u', NULL },
+    { 'n', NULL },
+    { 't', NULL }
   };
 
   table[0].data = ss->ip;
