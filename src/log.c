@@ -27,8 +27,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "compat.h"
-#include "config.h"
 #include "log.h"
 #include "main.h"
 
