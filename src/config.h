@@ -27,7 +27,7 @@
 #include "libopm/src/opm_types.h"
 
 extern char linebuf[512];
-extern int  linenum;
+extern unsigned int linenum;
 
 extern void yyerror(const char *);
 extern void config_load(const char *);

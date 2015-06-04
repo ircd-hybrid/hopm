@@ -34,7 +34,7 @@
 
 void ccomment(void);
 
-int linenum = 1;
+unsigned int linenum = 1;
 char linebuf[512];
 
 %}
