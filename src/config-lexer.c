@@ -779,9 +779,9 @@ char *yytext;
 #include "config-parser.h"
 
 
-void ccomment(void);
+static void ccomment(void);
 
-int linenum = 1;
+unsigned int linenum = 1;
 char linebuf[512];
 
 #line 788 "config-lexer.c"
@@ -2567,34 +2567,40 @@ void yyfree (void * ptr )
 
 
 /* C-comment ignoring routine -kre*/
-void ccomment(void)
+static void
+ccomment(void)
 {
-  int c;
+  int c = 0;
 
   /* log(L_NOTICE, "got comment"); */
   while (1)
   {
-     while ((c = input()) != '*' && c != EOF)
-        if (c == '\n') ++linenum;
-     if (c == '*')
-     {
-        while ((c = input()) == '*');
-        if (c == '/') break;
-        else if (c == '\n')
-          ++linenum;
-     }
+    while ((c = input()) != '*' && c != EOF)
+      if (c == '\n')
+        ++linenum;
+
+    if (c == '*')
+    {
+      while ((c = input()) == '*')
+        /* Nothing */ ;
+      if (c == '/')
+        break;
+      else if (c == '\n')
+        ++linenum;
+    }
+
     if (c == EOF)
     {
-       YY_FATAL_ERROR("EOF in comment");
-       /* XXX hack alert this disables
-        * the stupid unused function warning
-        * gcc generates
-        */
-       if(1 == 0)
-          yy_fatal_error("EOF in comment");
-       break;
+      YY_FATAL_ERROR("EOF in comment");
+
+      /* XXX hack alert this disables
+       * the stupid unused function warning
+       * gcc generates
+       */
+      if (1 == 0)
+        yy_fatal_error("EOF in comment");
+      break;
     }
   }
 }
-
 
