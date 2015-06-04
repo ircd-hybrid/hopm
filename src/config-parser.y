@@ -27,8 +27,7 @@
 
 int yylex(void);
 
-int yydebug=0;
-void *tmp;        /* Variable to temporarily hold nodes before insertion to list */
+static void *tmp;  /* Variable to temporarily hold nodes before insertion to list */
 
 %}
 
@@ -119,25 +118,25 @@ timespec:  NUMBER timespec_         { $$ = $1 + $2; } |
            NUMBER YEARS timespec_   { $$ = $1 * 60 * 60 * 24 * 365 + $3; }
            ;
 
-sizespec_:  { $$ = 0; } | sizespec;
-sizespec:   NUMBER sizespec_ { $$ = $1 + $2; } |
-            NUMBER BYTES sizespec_ { $$ = $1 + $3; } |
-            NUMBER KBYTES sizespec_ { $$ = $1 * 1024 + $3; } |
-            NUMBER MBYTES sizespec_ { $$ = $1 * 1024 * 1024 + $3; }
-            ;
+sizespec_: { $$ = 0; } | sizespec;
+sizespec:  NUMBER sizespec_        { $$ = $1 + $2; } |
+           NUMBER BYTES sizespec_  { $$ = $1 + $3; } |
+           NUMBER KBYTES sizespec_ { $$ = $1 * 1024 + $3; } |
+           NUMBER MBYTES sizespec_ { $$ = $1 * 1024 * 1024 + $3; }
+           ;
+
 
 /*************************** OPTIONS BLOCK ***********************/
-
 options_entry: OPTIONS '{' options_items '}' ';';
 
 options_items: options_items options_item |
                options_item;
 
-options_item: options_negcache |
+options_item: options_negcache         |
               options_negcache_rebuild |
-              options_pidfile |
-              options_dns_fdlimit |
-              options_scanlog |
+              options_pidfile          |
+              options_dns_fdlimit      |
+              options_scanlog          |
               error;
 
 options_negcache: NEGCACHE '=' timespec ';'
@@ -167,8 +166,8 @@ options_scanlog: SCANLOG '=' STRING ';'
   OptionsItem->scanlog = xstrdup($3);
 };
 
-/*************************** IRC BLOCK ***************************/
 
+/*************************** IRC BLOCK ***************************/
 irc_entry: IRC '{' irc_items '}' ';';
 
 irc_items: irc_items irc_item |
@@ -293,7 +292,6 @@ irc_connregex: CONNREGEX '=' STRING ';'
 
 
 /************************** CHANNEL BLOCK *************************/
-
 channel_entry:
 {
   node_t *node;
@@ -342,8 +340,8 @@ channel_invite: INVITE '=' STRING ';'
   item->invite = xstrdup($3);
 };
 
-/*************************** USER BLOCK ***************************/
 
+/*************************** USER BLOCK ***************************/
 user_entry:
 {
   node_t *node;
@@ -387,8 +385,8 @@ user_scanner: SCANNER '=' STRING ';'
   list_add(item->scanners, node);
 };
 
-/*************************** SCANNER BLOCK ***************************/
 
+/*************************** SCANNER BLOCK ***************************/
 scanner_entry:
 {
   node_t *node;
@@ -532,8 +530,8 @@ scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
   list_add(item2->protocols, node);
 };
 
-/*************************** OPM BLOCK ***************************/
 
+/*************************** OPM BLOCK ***************************/
 opm_entry: OPM '{' opm_items '}' ';' ;
 
 opm_items: opm_items opm_item |
@@ -563,8 +561,8 @@ opm_sendmail: SENDMAIL '=' STRING ';'
   OpmItem->sendmail = xstrdup($3);
 };
 
-/************************** BLACKLIST BLOCK *************************/
 
+/************************** BLACKLIST BLOCK *************************/
 opm_blacklist_entry:
 {
   node_t *node;
@@ -625,9 +623,9 @@ blacklist_type: TYPE '=' STRING ';'
 
 blacklist_ban_unknown: BAN_UNKNOWN '=' NUMBER ';'
 {
-   struct BlacklistConf *item = tmp;
+  struct BlacklistConf *item = tmp;
 
-   item->ban_unknown = $3;
+  item->ban_unknown = $3;
 };
 
 blacklist_reply: REPLY '{' blacklist_reply_items '}' ';';
@@ -650,15 +648,14 @@ blacklist_reply_item: NUMBER '=' STRING ';'
   list_add(blacklist->reply, node);
 };
 
+
 /*************************** EXEMPT BLOCK ***************************/
-
-
 exempt_entry: EXEMPT '{' exempt_items '}' ';' ;
 
 exempt_items: exempt_items exempt_item |
               exempt_item;
 
-exempt_item: exempt_mask  |
+exempt_item: exempt_mask |
              error;
 
 exempt_mask: MASK '=' STRING ';'
