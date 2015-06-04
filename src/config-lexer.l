@@ -32,7 +32,7 @@
 #include "config-parser.h"
 
 
-void ccomment(void);
+static void ccomment(void);
 
 unsigned int linenum = 1;
 char linebuf[512];
@@ -253,7 +253,7 @@ OFF                      {
 
 
 /* C-comment ignoring routine -kre*/
-void
+static void
 ccomment(void)
 {
   int c = 0;
