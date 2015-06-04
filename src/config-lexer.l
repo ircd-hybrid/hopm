@@ -266,6 +266,8 @@ void ccomment(void)
      {
         while ((c = input()) == '*');
         if (c == '/') break;
+        else if (c == '\n')
+          ++linenum;
      }
     if (c == EOF)
     {
