@@ -21,7 +21,7 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-extern void *xcalloc(size_t bytes);
+extern void *xcalloc(size_t);
 extern void xfree(void *);
 extern void *xstrdup(const char *);
 
