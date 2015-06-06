@@ -39,11 +39,13 @@
 
 static list_t *COMMANDS = NULL;  /* List of active commands */
 
-
 static struct Command *command_create(const struct OperCommandHash *, char *param, char *irc_nick, const struct ChannelConf *target);
 static void command_free(struct Command *);
 
 static void cmd_check(char *, const struct ChannelConf *);
+static void cmd_restart(char *, const struct ChannelConf *);
+static void cmd_die(char *, const struct ChannelConf *);
+static void cmd_help(char *, const struct ChannelConf *);
 static void cmd_stat(char *, const struct ChannelConf *);
 static void cmd_fdstat(char *, const struct ChannelConf *);
 static void cmd_protocols(char *, const struct ChannelConf *);
@@ -51,6 +53,10 @@ static void cmd_protocols(char *, const struct ChannelConf *);
 static const struct OperCommandHash COMMAND_TABLE[] =
 {
   { "CHECK",     cmd_check     },
+  { "RESTART",   cmd_restart   },
+  { "KILL",      cmd_die       },
+  { "DIE",       cmd_die       },
+  { "HELP",      cmd_help      },
   { "SCAN",      cmd_check     },
   { "STAT",      cmd_stat      },
   { "STATS",     cmd_stat      },
@@ -306,6 +312,46 @@ cmd_check(char *param, const struct ChannelConf *target)
   scan_manual(param, target);
 }
 
+/* cmd_restart
+ *
+ *    Restart the HOPM
+ *
+ */
+static void
+cmd_restart(char *param, const struct ChannelConf *target)
+{
+  main_restart();
+}
+
+/* cmd_die
+ *
+ *    Kills the bot
+ *
+ */
+static void
+cmd_die(char *param, const struct ChannelConf *target)
+{
+  irc_send("Quit Recieved DIE Command");
+  log_printf("DIE -> Recieved DIE Command");
+  exit(0);
+}
+
+/* cmd_help
+ *
+ *    Shows a basic, yet useful commands list
+ *
+ */
+static void
+cmd_help(char *param, const struct ChannelConf *target)
+{
+  irc_send("PRIVMSG %s :Check/Scan <Nick/IP>: Manually scan for open proxies", target->name);
+  irc_send("PRIVMSG %s :Restart: Restart and Rehash the HOPM", target->name);
+  irc_send("PRIVMSG %s :Kill/Die: Kills the bot", target->name);
+  irc_send("PRIVMSG %s :Stat/Stats/Status: Shows the HOPM's current status", target->name);
+  irc_send("PRIVMSG %s :Fdstat: Shows information on the HOPM's current file descriptor status", target->name);
+  irc_send("PRIVMSG %s :Protocols: Shows protocol information", target->name);
+}
+
 /* cmd_stat
  *
  *   Send output of stats to channel.
@@ -351,3 +397,4 @@ cmd_protocols(char *param, const struct ChannelConf *target)
     }
   }
 }
+
