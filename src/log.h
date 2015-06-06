@@ -26,8 +26,8 @@ extern void log_close(void);
 extern void scanlog_open(const char *);
 extern void scanlog_close(void);
 #ifdef __GNUC__
-extern void log_printf(const char *data, ...) __attribute__((format(printf,1,2)));
+extern void log_printf(const char *, ...) __attribute__((format(printf,1,2)));
 #else
-extern void log_printf(const char *data, ...);
+extern void log_printf(const char *, ...);
 #endif
 #endif
