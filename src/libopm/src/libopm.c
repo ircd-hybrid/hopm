@@ -925,7 +925,7 @@ libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
     local_addr.sin_family = AF_INET;
     local_addr.sin_port = htons(0);
 
-    if (bind(conn->fd, (struct sockaddr *)&(local_addr), sizeof(local_addr)) == -1)
+    if (bind(conn->fd, (struct sockaddr *)&local_addr, sizeof(local_addr)) == -1)
     {
       libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_BIND);
       conn->state = OPM_STATE_CLOSED;
