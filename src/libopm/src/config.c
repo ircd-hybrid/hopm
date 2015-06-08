@@ -34,7 +34,7 @@
 #include "list.h"
 
 
-static OPM_CONFIG_HASH_T HASH[] =
+static const OPM_CONFIG_HASH_T HASH[] =
 {
   { OPM_CONFIG_FD_LIMIT,      OPM_TYPE_INT        },
   { OPM_CONFIG_BIND_IP ,      OPM_TYPE_ADDRESS    },
@@ -43,7 +43,7 @@ static OPM_CONFIG_HASH_T HASH[] =
   { OPM_CONFIG_SCAN_IP,       OPM_TYPE_STRING     },
   { OPM_CONFIG_SCAN_PORT,     OPM_TYPE_INT        },
   { OPM_CONFIG_MAX_READ,      OPM_TYPE_INT        },
-  { OPM_CONFIG_TIMEOUT,       OPM_TYPE_INT        },
+  { OPM_CONFIG_TIMEOUT,       OPM_TYPE_INT        }
 };
 
 /* config_create
