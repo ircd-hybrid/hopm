@@ -268,7 +268,7 @@ opm_free(OPM_T *scanner)
 OPM_ERR_T
 opm_config(OPM_T *scanner, int key, const void *value)
 {
-  return libopm_config_set((scanner->config), key, value);
+  return libopm_config_set(scanner->config, key, value);
 }
 
 /* opm_addtype
