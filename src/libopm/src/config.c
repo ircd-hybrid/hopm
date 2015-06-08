@@ -59,10 +59,8 @@ static OPM_CONFIG_HASH_T HASH[] =
 OPM_CONFIG_T *
 libopm_config_create(void)
 {
-  unsigned int num;
+  const unsigned int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
   OPM_CONFIG_T *ret;
-
-  num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
 
   ret = xcalloc(sizeof(OPM_CONFIG_T));
   ret->vars = xcalloc(sizeof(void *) * num);
@@ -118,13 +116,11 @@ libopm_config_create(void)
 void
 libopm_config_free(OPM_CONFIG_T *config)
 {
-  unsigned int num;
+  const unsigned int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
   OPM_NODE_T *p, *next;
   OPM_LIST_T *list;
 
-  num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
-
-  for (unsigned int i = 0; i < num; i++)
+  for (unsigned int i = 0; i < num; ++i)
   {
     if (config->vars[i] == NULL)
       continue;
@@ -169,10 +165,8 @@ libopm_config_free(OPM_CONFIG_T *config)
 OPM_ERR_T
 libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
 {
-  unsigned int num;
+  const unsigned int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
   OPM_NODE_T *node;
-
-  num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
 
   if (key >= num)
     return OPM_ERR_BADKEY;  /* Return appropriate error code eventually */
@@ -221,7 +215,7 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
 int
 libopm_config_gettype(int key)
 {
-  unsigned int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
+  const unsigned int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
 
   for (unsigned int i = 0; i < num; ++i)
     if (HASH[i].key == key)
