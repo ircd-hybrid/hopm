@@ -1143,14 +1143,13 @@ libopm_do_read(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
   OPM_LIST_T *list;
   OPM_NODE_T *node;
-  char *target_string;
 
   /* Check readbuf against target strings */
   list = (OPM_LIST_T *)libopm_config(scanner->config, OPM_CONFIG_TARGET_STRING);
 
   LIST_FOREACH(node, list->head)
   {
-    target_string = node->data;
+    const char *target_string = node->data;
 
     if (strstr(conn->readbuf, target_string))
     {
