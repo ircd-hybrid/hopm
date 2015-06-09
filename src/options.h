@@ -22,7 +22,4 @@
 
 /* Timeout of commands (in seconds) */
 #define COMMANDTIMEOUT 180
-
-/* Interval in how often we try to reconnect (in seconds) */
-#define RECONNECTINTERVAL 30
 #endif /* OPTIONS_H */

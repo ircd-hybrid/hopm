@@ -82,6 +82,7 @@ config_setup(void)
   IRCItem->nick = xstrdup("hopm");
   IRCItem->port = 6667;
   IRCItem->readtimeout = 900;
+  IRCItem->reconnectinterval = 30;
   IRCItem->oper = xstrdup("undefined");
   IRCItem->username = xstrdup("hopm");
   IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");

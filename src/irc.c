@@ -358,8 +358,8 @@ irc_reconnect(void)
 
   time(&present);
 
-  /* Only try to reconnect every RECONNECT_INTERVAL seconds */
-  if ((present - IRC_LASTRECONNECT) < RECONNECTINTERVAL)
+  /* Only try to reconnect every IRCItem->reconnectinterval seconds */
+  if ((present - IRC_LASTRECONNECT) < IRCItem->reconnectinterval)
   {
     /* Sleep to avoid excessive CPU */
     sleep(1);

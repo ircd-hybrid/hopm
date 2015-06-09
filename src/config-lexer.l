@@ -120,6 +120,7 @@ PORT                    { return PORT;         }
 PROTOCOL                { return PROTOCOL;     }
 READTIMEOUT             { return READTIMEOUT;  }
 REALNAME                { return REALNAME;     }
+RECONNECTINTERVAL       { return RECONNECTINTERVAL; }
 REPLY                   { return REPLY;        }
 SCANLOG                 { return SCANLOG;      }
 SCANNER                 { return SCANNER;      }
