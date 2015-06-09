@@ -11,9 +11,6 @@
 /* log file */
 #define LOGEXT "log"
 
-/* PID file */
-#define PIDEXT "pid"
-
 /* Maximum commands to queue */
 #define COMMANDMAX 64
 
