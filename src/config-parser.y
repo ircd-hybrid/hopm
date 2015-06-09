@@ -65,6 +65,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token PROTOCOL
 %token READTIMEOUT
 %token REALNAME
+%token RECONNECTINTERVAL
 %token REPLY
 %token SCANLOG
 %token SCANNER
@@ -173,23 +174,24 @@ irc_entry: IRC '{' irc_items '}' ';';
 irc_items: irc_items irc_item |
            irc_item;
 
-irc_item: irc_away        |
-          irc_connregex   |
-          irc_kline       |
-          irc_nick        |
-          irc_nickserv    |
-          irc_mode        |
-          irc_oper        |
-          irc_password    |
-          irc_port        |
-          irc_readtimeout |
-          irc_realname    |
-          irc_server      |
-          irc_username    |
-          irc_vhost       |
-          irc_perform     |
-          irc_notice      |
-          channel_entry   |
+irc_item: irc_away              |
+          irc_connregex         |
+          irc_kline             |
+          irc_nick              |
+          irc_nickserv          |
+          irc_mode              |
+          irc_oper              |
+          irc_password          |
+          irc_port              |
+          irc_readtimeout       |
+          irc_reconnectinterval |
+          irc_realname          |
+          irc_server            |
+          irc_username          |
+          irc_vhost             |
+          irc_perform           |
+          irc_notice            |
+          channel_entry         |
           error;
 
 irc_away: AWAY '=' STRING ';'
@@ -258,6 +260,11 @@ irc_port: PORT '=' NUMBER ';'
 irc_readtimeout: READTIMEOUT '=' timespec ';'
 {
   IRCItem->readtimeout = $3;
+};
+
+irc_reconnectinterval: RECONNECTINTERVAL '=' timespec ';'
+{
+  IRCItem->reconnectinterval = $3;
 };
 
 irc_realname: REALNAME '=' STRING ';'

@@ -41,6 +41,7 @@ struct IRCConf
   char *server;
   int port;
   time_t readtimeout;
+  time_t reconnectinterval;
   char *password;
   char *vhost;
   char *nickserv;
