@@ -81,29 +81,30 @@ extern int yydebug;
     PROTOCOL = 291,
     READTIMEOUT = 292,
     REALNAME = 293,
-    REPLY = 294,
-    SCANLOG = 295,
-    SCANNER = 296,
-    SECONDS = 297,
-    MINUTES = 298,
-    HOURS = 299,
-    DAYS = 300,
-    WEEKS = 301,
-    MONTHS = 302,
-    YEARS = 303,
-    SENDMAIL = 304,
-    SERVER = 305,
-    TARGET_IP = 306,
-    TARGET_PORT = 307,
-    TARGET_STRING = 308,
-    TIMEOUT = 309,
-    TYPE = 310,
-    USERNAME = 311,
-    USER = 312,
-    VHOST = 313,
-    NUMBER = 314,
-    STRING = 315,
-    PROTOCOLTYPE = 316
+    RECONNECTINTERVAL = 294,
+    REPLY = 295,
+    SCANLOG = 296,
+    SCANNER = 297,
+    SECONDS = 298,
+    MINUTES = 299,
+    HOURS = 300,
+    DAYS = 301,
+    WEEKS = 302,
+    MONTHS = 303,
+    YEARS = 304,
+    SENDMAIL = 305,
+    SERVER = 306,
+    TARGET_IP = 307,
+    TARGET_PORT = 308,
+    TARGET_STRING = 309,
+    TIMEOUT = 310,
+    TYPE = 311,
+    USERNAME = 312,
+    USER = 313,
+    VHOST = 314,
+    NUMBER = 315,
+    STRING = 316,
+    PROTOCOLTYPE = 317
   };
 #endif
 /* Tokens.  */
@@ -143,41 +144,42 @@ extern int yydebug;
 #define PROTOCOL 291
 #define READTIMEOUT 292
 #define REALNAME 293
-#define REPLY 294
-#define SCANLOG 295
-#define SCANNER 296
-#define SECONDS 297
-#define MINUTES 298
-#define HOURS 299
-#define DAYS 300
-#define WEEKS 301
-#define MONTHS 302
-#define YEARS 303
-#define SENDMAIL 304
-#define SERVER 305
-#define TARGET_IP 306
-#define TARGET_PORT 307
-#define TARGET_STRING 308
-#define TIMEOUT 309
-#define TYPE 310
-#define USERNAME 311
-#define USER 312
-#define VHOST 313
-#define NUMBER 314
-#define STRING 315
-#define PROTOCOLTYPE 316
+#define RECONNECTINTERVAL 294
+#define REPLY 295
+#define SCANLOG 296
+#define SCANNER 297
+#define SECONDS 298
+#define MINUTES 299
+#define HOURS 300
+#define DAYS 301
+#define WEEKS 302
+#define MONTHS 303
+#define YEARS 304
+#define SENDMAIL 305
+#define SERVER 306
+#define TARGET_IP 307
+#define TARGET_PORT 308
+#define TARGET_STRING 309
+#define TIMEOUT 310
+#define TYPE 311
+#define USERNAME 312
+#define USER 313
+#define VHOST 314
+#define NUMBER 315
+#define STRING 316
+#define PROTOCOLTYPE 317
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 84 "config-parser.y" /* yacc.c:1909  */
+#line 85 "config-parser.y" /* yacc.c:1909  */
 
   int number;
   char *string;
 
-#line 181 "config-parser.h" /* yacc.c:1909  */
+#line 183 "config-parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
