@@ -64,7 +64,7 @@ struct ChannelConf
 
 struct OptionsConf
 {
-  int negcache;
+  time_t negcache;
   time_t negcache_rebuild;
   unsigned int dns_fdlimit;
   char *pidfile;
