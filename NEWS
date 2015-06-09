@@ -1,3 +1,15 @@
+-- Noteworthy changes in version 1.0.8 (2015-??-??)
+o) Added options::reconnectinterval configuration option
+
+
+-- Noteworthy changes in version 1.0.7 (2015-06-06)
+o) HOPM can now detect Dreamboxes with default root passwords
+o) Fixed bug where the configuration parser would report syntax errors
+   with invalid line numbers when there are multi-line C-style
+   comments in the config file
+o) Minor code cleanups
+
+
 -- Noteworthy changes in version 1.0.6 (2015-05-27)
 o) HOPM now catches MikroTik HttpProxies
 
