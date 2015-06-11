@@ -1,5 +1,10 @@
 -- Noteworthy changes in version 1.0.8 (2015-??-??)
 o) Added options::reconnectinterval configuration option
+o) Further cleanups to the build system
+o) HOPM now compiles with -fstack-protector-strong and -fstack-protector,
+   respectively, depending on what the compiler supports
+o) Added new --enable-assert switch to ./configure. assert() statements are now
+   disabled by default and can be enabled with ./configure --enable-assert
 
 
 -- Noteworthy changes in version 1.0.7 (2015-06-06)
