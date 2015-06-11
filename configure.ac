@@ -15,7 +15,7 @@ dnl Checks for programs.
 AC_PROG_CC_C99
 AS_IF([test "$ac_cv_prog_cc_c99" = "no"],
     [AC_MSG_ERROR([no suitable C99 compiler found. Aborting.])])
-AC_PROG_LIBTOOL
+LT_INIT
 
 dnl check for yacc
 AC_PROG_INSTALL
