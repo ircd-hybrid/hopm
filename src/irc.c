@@ -590,27 +590,27 @@ static struct UserInfo *
 userinfo_create(const char *source)
 {
   struct UserInfo *ret;
-  char *nick = NULL;
+  char tmp[MSGLENMAX];
+  char *nick = tmp;
   char *username = NULL;
   char *hostname = NULL;
-  char tmp[MSGLENMAX];
-  size_t len;
 
-  len = strlcpy(tmp, source, sizeof(tmp));
-  nick = tmp;
+  strlcpy(tmp, source, sizeof(tmp));
 
-  for (size_t i = 0; i < len; ++i)
+  for (char *p = tmp; *p; ++p)
   {
-    if (tmp[i] == '!')
+    if (*p == '!')
     {
-      tmp[i] = '\0';
-      username = tmp + i + 1;
+      *p = '\0';
+      username = p + 1;
+      continue;
     }
 
-    if (tmp[i] == '@')
+    if (*p == '@')
     {
-      tmp[i] = '\0';
-      hostname = tmp + i + 1;
+      *p = '\0';
+      hostname = p + 1;
+      continue;
     }
   }
 
