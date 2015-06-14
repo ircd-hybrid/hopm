@@ -133,18 +133,18 @@ static struct Command *
 command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
                const struct ChannelConf *target)
 {
-  struct Command *const ret = xcalloc(sizeof *ret);
+  struct Command *command = xcalloc(sizeof *command);
 
   if (param)
-    ret->param = xstrdup(param);
+    command->param = xstrdup(param);
 
-  ret->tab = tab;
-  ret->irc_nick = xstrdup(irc_nick);
-  ret->target = target;
+  command->tab = tab;
+  command->irc_nick = xstrdup(irc_nick);
+  command->target = target;
 
-  time(&ret->added);
+  time(&command->added);
 
-  return ret;
+  return command;
 }
 
 /* command_free
