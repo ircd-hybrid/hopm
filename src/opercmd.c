@@ -133,7 +133,7 @@ static struct Command *
 command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
                const struct ChannelConf *target)
 {
-  struct Command *command = xcalloc(sizeof *command);
+  struct Command *command = xcalloc(sizeof(*command));
 
   if (param)
     command->param = xstrdup(param);
@@ -238,9 +238,9 @@ command_parse(char *command, const struct ChannelConf *target,
     if (strcasecmp(command, tab->command) == 0)
     {
       /* Queue this command */
-      struct Command *cs = command_create(tab, param, source_p->irc_nick, target);
+      struct Command *command = command_create(tab, param, source_p->irc_nick, target);
 
-      list_add(COMMANDS, node_create(cs));
+      list_add(COMMANDS, node_create(command));
       break;
     }
   }
@@ -274,11 +274,11 @@ command_timer(void)
 
   LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
   {
-    struct Command *cs = node->data;
+    struct Command *command = node->data;
 
-    if ((present - cs->added) > COMMANDTIMEOUT)
+    if ((present - command->added) > COMMANDTIMEOUT)
     {
-      command_free(cs);
+      command_free(command);
       list_remove(COMMANDS, node);
       node_free(node);
     }
@@ -325,15 +325,15 @@ command_userhost(const char *reply)
   /* Find any queued commands that match this user */
   LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
   {
-    struct Command *cs = node->data;
+    struct Command *command = node->data;
 
-    if (strcmp(cs->irc_nick, reply) == 0)
+    if (strcmp(command->irc_nick, reply) == 0)
     {
       if (oper)
-        cs->tab->handler(cs->param, cs->target);
+        command->tab->handler(command->param, command->target);
 
       /* Cleanup the command */
-      command_free(cs);
+      command_free(command);
       list_remove(COMMANDS, node);
       node_free(node);
     }

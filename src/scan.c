@@ -187,7 +187,7 @@ scan_init(void)
   LIST_FOREACH(p, ScannerItemList->head)
   {
     sc = p->data;
-    scs = xcalloc(sizeof *scs);
+    scs = xcalloc(sizeof(*scs));
 
     if (OPT_DEBUG)
       log_printf("SCAN -> Setting up scanner [%s]", sc->name);
@@ -418,7 +418,7 @@ scan_connect(const char *user[], const char *msg)
 static struct scan_struct *
 scan_create(const char *user[], const char *msg)
 {
-  struct scan_struct *const ss = xcalloc(sizeof *ss);
+  struct scan_struct *ss = xcalloc(sizeof(*ss));
 
   ss->irc_nick = xstrdup(user[0]);
   ss->irc_username = xstrdup(user[1]);
@@ -902,7 +902,7 @@ scan_manual(char *param, const struct ChannelConf *target)
     return;
   }
 
-  ss = xcalloc(sizeof *ss);
+  ss = xcalloc(sizeof(*ss));
   ss->ip = xstrdup(ip);
   ss->remote = opm_remote_create(ss->ip);
   ss->remote->data = ss;

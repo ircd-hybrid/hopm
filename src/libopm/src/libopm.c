@@ -108,7 +108,7 @@ opm_create(void)
 {
   OPM_T *ret;
 
-  ret = xcalloc(sizeof *ret);
+  ret = xcalloc(sizeof(*ret));
   ret->config = libopm_config_create();
   ret->scans = libopm_list_create();
   ret->queue = libopm_list_create();
@@ -137,7 +137,7 @@ opm_remote_create(const char *ip)
 {
   OPM_REMOTE_T *ret;
 
-  ret = xcalloc(sizeof *ret);
+  ret = xcalloc(sizeof(*ret));
   ret->ip = libopm_xstrdup(ip);
   ret->protocols = libopm_list_create();  /* Setup protocol list */
 
@@ -360,7 +360,7 @@ OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *remote, int type, unsigned short int 
 static OPM_PROTOCOL_T *libopm_protocol_create(void)
 {
   OPM_PROTOCOL_T *ret;
-  ret = xcalloc(sizeof(OPM_PROTOCOL_T));
+  ret = xcalloc(sizeof(*ret));
 
   ret->type           = 0;
   ret->write_function = NULL;
@@ -408,7 +408,7 @@ libopm_protocol_config_create(void)
 {
   OPM_PROTOCOL_CONFIG_T *ret;
 
-  ret = xcalloc(sizeof *ret);
+  ret = xcalloc(sizeof(*ret));
 
   return ret;
 }
@@ -596,7 +596,7 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
   OPM_CONNECTION_T *conn;
   OPM_NODE_T *node, *p;
 
-  ret = xcalloc(sizeof *ret);
+  ret = xcalloc(sizeof(*ret));
   ret->remote = remote;
   ret->connections = libopm_list_create();
 
@@ -674,7 +674,7 @@ libopm_connection_create(void)
 {
   OPM_CONNECTION_T *ret;
 
-  ret = xcalloc(sizeof *ret);
+  ret = xcalloc(sizeof(*ret));
   ret->state = OPM_STATE_UNESTABLISHED;
 
   return ret;

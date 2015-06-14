@@ -304,7 +304,7 @@ channel_entry:
   node_t *node;
   struct ChannelConf *item;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
   item->name = xstrdup("");
   item->key = xstrdup("");
   item->invite = xstrdup("");
@@ -354,7 +354,7 @@ user_entry:
   node_t *node;
   struct UserConf *item;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
   item->masks = list_create();
   item->scanners = list_create();
 
@@ -399,7 +399,7 @@ scanner_entry:
   node_t *node;
   struct ScannerConf *item, *olditem;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
 
   /* Setup ScannerConf defaults */
   item->name = xstrdup("undefined");
@@ -524,10 +524,9 @@ scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
 {
   struct ProtocolConf *item;
   struct ScannerConf *item2;
-
   node_t *node;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
   item->type = $3;
   item->port = $5;
 
@@ -575,8 +574,7 @@ opm_blacklist_entry:
   node_t *node;
   struct BlacklistConf *item;
 
-  item = xcalloc(sizeof *item);
-
+  item = xcalloc(sizeof(*item));
   item->name = xstrdup("");
   item->kline = xstrdup("");
   item->ban_unknown = 0;
@@ -646,8 +644,7 @@ blacklist_reply_item: NUMBER '=' STRING ';'
   struct BlacklistConf *blacklist = tmp;
   node_t *node;
 
-  item = xcalloc(sizeof *item);
-
+  item = xcalloc(sizeof(*item));
   item->number = $1;
   item->type = xstrdup($3);
 
