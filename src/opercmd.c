@@ -64,7 +64,7 @@ cmd_check(char *param, const struct ChannelConf *target)
  *    target: channel command was sent to
  */
 static void
-cmd_stat(char *param, const struct ChannelConf *target)
+cmd_stats(char *param, const struct ChannelConf *target)
 {
   stats_output(target->name);
 }
@@ -188,7 +188,7 @@ command_parse(char *command, const struct ChannelConf *target,
   {
     { "CHECK",     cmd_check     },
     { "SCAN",      cmd_check     },
-    { "STATS",     cmd_stat      },
+    { "STATS",     cmd_stats     },
     { "FDSTAT",    cmd_fdstat    },
     { "PROTOCOLS", cmd_protocols },
     { NULL,        NULL          }
