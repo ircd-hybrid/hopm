@@ -37,29 +37,69 @@
 #include "stats.h"
 
 
-static list_t *COMMANDS = NULL;  /* List of active commands */
+static list_t *COMMANDS;  /* List of active commands */
 
 
-static struct Command *command_create(const struct OperCommandHash *, char *param, char *irc_nick, const struct ChannelConf *target);
-static void command_free(struct Command *);
-
-static void cmd_check(char *, const struct ChannelConf *);
-static void cmd_stat(char *, const struct ChannelConf *);
-static void cmd_fdstat(char *, const struct ChannelConf *);
-static void cmd_protocols(char *, const struct ChannelConf *);
-
-static const struct OperCommandHash COMMAND_TABLE[] =
+/* cmd_check
+ *
+ *    Start a manual scan on given IP address/hostname.
+ *
+ * Parameters:
+ *    param: Parameters of the command
+ *    target: channel command was sent to
+ *
+ */
+static void
+cmd_check(char *param, const struct ChannelConf *target)
 {
-  { "CHECK",     cmd_check     },
-  { "SCAN",      cmd_check     },
-  { "STAT",      cmd_stat      },
-  { "STATS",     cmd_stat      },
-  { "STATUS",    cmd_stat      },
-  { "FDSTAT",    cmd_fdstat    },
-  { "PROTOCOLS", cmd_protocols },
-  { NULL,        NULL          }
-};
+  scan_manual(param, target);
+}
 
+/* cmd_stat
+ *
+ *   Send output of stats to channel.
+ *
+ * Parameters:
+ *    param: Parameters of the command
+ *    target: channel command was sent to
+ */
+static void
+cmd_stat(char *param, const struct ChannelConf *target)
+{
+  stats_output(target->name);
+}
+
+/* cmd_fdstat
+ *
+ *   Send output of stats to channel.
+ *
+ * Parameters:
+ *    param: Parameters of the command
+ *    target: channel command was sent to
+ */
+static void
+cmd_fdstat(char *param, const struct ChannelConf *target)
+{
+  fdstats_output(target->name);
+}
+
+static void
+cmd_protocols(char *param, const struct ChannelConf *target)
+{
+  node_t *node, *node2;
+
+  LIST_FOREACH(node, ScannerItemList->head)
+  {
+    const struct ScannerConf *sc = node->data;
+    irc_send("PRIVMSG %s :Scanner: '%s'", target->name, sc->name);
+
+    LIST_FOREACH(node2, sc->protocols->head)
+    {
+      const struct ProtocolConf *proto = node2->data;
+      irc_send("PRIVMSG %s : %s:%d", target->name, scan_gettype(proto->type), proto->port);
+    }
+  }
+}
 
 /* command_init
  *
@@ -76,44 +116,67 @@ command_init(void)
     COMMANDS = list_create();
 }
 
-/* command_timer
+/* command_create
  *
- *    Perform ~1 second actions.
+ *    Create a Command struct.
  *
- * Parameters: NONE
+ * Parameters:
+ *    type: Index in COMMAND_TABLE
+ *    param: Parameters to the command (NULL if there are not any)
+ *    irc_nick: Nickname of user that initiated the command
+ *    target: Target channel (target is ALWAYS a channel)
+ *
+ * Return:
+ *    Pointer to new Command
+ */
+static struct Command *
+command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
+               const struct ChannelConf *target)
+{
+  struct Command *const ret = xcalloc(sizeof *ret);
+
+  if (param)
+    ret->param = xstrdup(param);
+
+  ret->tab = tab;
+  ret->irc_nick = xstrdup(irc_nick);
+  ret->target = target;
+
+  time(&ret->added);
+
+  return ret;
+}
+
+/* command_free
+ *
+ *   Free a command struct
+ *
+ * Parameters:
+ *   command: Command struct to free
  *
  * Return: NONE
- *
  */
-void
-command_timer(void)
+static void
+command_free(struct Command *command)
 {
-  static unsigned int interval;
-  node_t *node, *node_next;
-  time_t present;
+  if (command->param)
+    xfree(command->param);
 
-  /* Only perform command removal every COMMANDINTERVAL seconds */
-  if (interval++ < COMMANDINTERVAL)
-    return;
-  else
-    interval = 0;
-
-  time(&present);
-
-  LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
-  {
-    struct Command *cs = node->data;
-
-    if ((present - cs->added) > COMMANDTIMEOUT)
-    {
-      command_free(cs);
-      list_remove(COMMANDS, node);
-      node_free(node);
-    }
-    else  /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
-      return;
-  }
+  xfree(command->irc_nick);
+  xfree(command);
 }
+
+static const struct OperCommandHash COMMAND_TABLE[] =
+{
+  { "CHECK",     cmd_check     },
+  { "SCAN",      cmd_check     },
+  { "STAT",      cmd_stat      },
+  { "STATS",     cmd_stat      },
+  { "STATUS",    cmd_stat      },
+  { "FDSTAT",    cmd_fdstat    },
+  { "PROTOCOLS", cmd_protocols },
+  { NULL,        NULL          }
+};
 
 /* command_parse
  *
@@ -188,54 +251,43 @@ command_parse(char *command, const struct ChannelConf *target,
   irc_send("USERHOST %s", source_p->irc_nick);
 }
 
-/* command_create
+/* command_timer
  *
- *    Create a Command struct.
+ *    Perform ~1 second actions.
  *
- * Parameters:
- *    type: Index in COMMAND_TABLE
- *    param: Parameters to the command (NULL if there are not any)
- *    irc_nick: Nickname of user that initiated the command
- *    target: Target channel (target is ALWAYS a channel)
- *
- * Return:
- *    Pointer to new Command
- */
-static struct Command *
-command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
-               const struct ChannelConf *target)
-{
-  struct Command *const ret = xcalloc(sizeof *ret);
-
-  if (param)
-    ret->param = xstrdup(param);
-
-  ret->tab = tab;
-  ret->irc_nick = xstrdup(irc_nick);
-  ret->target = target;
-
-  time(&ret->added);
-
-  return ret;
-}
-
-/* command_free
- *
- *   Free a command struct
- *
- * Parameters:
- *   command: Command struct to free
+ * Parameters: NONE
  *
  * Return: NONE
+ *
  */
-static void
-command_free(struct Command *command)
+void
+command_timer(void)
 {
-  if (command->param)
-    xfree(command->param);
+  static unsigned int interval;
+  node_t *node, *node_next;
+  time_t present;
 
-  xfree(command->irc_nick);
-  xfree(command);
+  /* Only perform command removal every COMMANDINTERVAL seconds */
+  if (interval++ < COMMANDINTERVAL)
+    return;
+  else
+    interval = 0;
+
+  time(&present);
+
+  LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
+  {
+    struct Command *cs = node->data;
+
+    if ((present - cs->added) > COMMANDTIMEOUT)
+    {
+      command_free(cs);
+      list_remove(COMMANDS, node);
+      node_free(node);
+    }
+    else  /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
+      return;
+  }
 }
 
 /* command_userhost
@@ -287,67 +339,6 @@ command_userhost(const char *reply)
       command_free(cs);
       list_remove(COMMANDS, node);
       node_free(node);
-    }
-  }
-}
-
-/* cmd_check
- *
- *    Start a manual scan on given IP address/hostname.
- *
- * Parameters:
- *    param: Parameters of the command
- *    target: channel command was sent to
- *
- */
-static void
-cmd_check(char *param, const struct ChannelConf *target)
-{
-  scan_manual(param, target);
-}
-
-/* cmd_stat
- *
- *   Send output of stats to channel.
- *
- * Parameters:
- *    param: Parameters of the command
- *    target: channel command was sent to
- */
-static void
-cmd_stat(char *param, const struct ChannelConf *target)
-{
-  stats_output(target->name);
-}
-
-/* cmd_fdstat
- *
- *   Send output of stats to channel.
- *
- * Parameters:
- *    param: Parameters of the command
- *    target: channel command was sent to
- */
-static void
-cmd_fdstat(char *param, const struct ChannelConf *target)
-{
-  fdstats_output(target->name);
-}
-
-static void
-cmd_protocols(char *param, const struct ChannelConf *target)
-{
-  node_t *node, *node2;
-
-  LIST_FOREACH(node, ScannerItemList->head)
-  {
-    const struct ScannerConf *sc = node->data;
-    irc_send("PRIVMSG %s :Scanner: '%s'", target->name, sc->name);
-
-    LIST_FOREACH(node2, sc->protocols->head)
-    {
-      const struct ProtocolConf *proto = node2->data;
-      irc_send("PRIVMSG %s : %s:%d", target->name, scan_gettype(proto->type), proto->port);
     }
   }
 }
