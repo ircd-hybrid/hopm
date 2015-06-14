@@ -356,7 +356,7 @@ firedns_add_query(void)
   struct s_connection *s;
 
   /* create new connection object */
-  s = xcalloc(sizeof *s);
+  s = xcalloc(sizeof(*s));
 
   /* verified by firedns_getresult() */
   s->id[0] = rand() % 255;
@@ -606,7 +606,7 @@ firedns_getresult(const int fd)
     return &result;
 
   /* query found -- we remove in cleanup */
-  l = recv(c->fd, &h,sizeof(struct s_header), 0);
+  l = recv(c->fd, &h, sizeof(struct s_header), 0);
   result.info = c->info;
   strlcpy(result.lookup, c->lookup, sizeof(result.lookup));
 
@@ -770,7 +770,7 @@ firedns_cycle(void)
     return;
 
   if (ufds == NULL)
-    ufds = xcalloc((sizeof *ufds) * OptionsItem->dns_fdlimit);
+    ufds = xcalloc(sizeof(*ufds) * OptionsItem->dns_fdlimit);
 
   time(&timenow);
   size = 0;

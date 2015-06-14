@@ -29,10 +29,6 @@
 extern char linebuf[512];
 extern unsigned int linenum;
 
-extern void yyerror(const char *);
-extern void config_load(const char *);
-
-
 struct IRCConf
 {
   char *nick;
@@ -141,4 +137,6 @@ extern struct ExemptConf *ExemptItem;
 extern list_t *UserItemList;
 extern list_t *ScannerItemList;
 
+extern void yyerror(const char *);
+extern void config_load(const char *);
 #endif /* CONFIG_H */
