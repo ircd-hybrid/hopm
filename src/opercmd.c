@@ -188,9 +188,7 @@ command_parse(char *command, const struct ChannelConf *target,
   {
     { "CHECK",     cmd_check     },
     { "SCAN",      cmd_check     },
-    { "STAT",      cmd_stat      },
     { "STATS",     cmd_stat      },
-    { "STATUS",    cmd_stat      },
     { "FDSTAT",    cmd_fdstat    },
     { "PROTOCOLS", cmd_protocols },
     { NULL,        NULL          }
