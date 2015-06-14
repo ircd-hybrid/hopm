@@ -166,18 +166,6 @@ command_free(struct Command *command)
   xfree(command);
 }
 
-static const struct OperCommandHash COMMAND_TABLE[] =
-{
-  { "CHECK",     cmd_check     },
-  { "SCAN",      cmd_check     },
-  { "STAT",      cmd_stat      },
-  { "STATS",     cmd_stat      },
-  { "STATUS",    cmd_stat      },
-  { "FDSTAT",    cmd_fdstat    },
-  { "PROTOCOLS", cmd_protocols },
-  { NULL,        NULL          }
-};
-
 /* command_parse
  *
  *    Parse a command to hopm (sent to a channel hopm is on). The command is parsed
@@ -196,6 +184,17 @@ command_parse(char *command, const struct ChannelConf *target,
               const struct UserInfo *source_p)
 {
   char *param;  /* Parsed parameters */
+  static const struct OperCommandHash COMMAND_TABLE[] =
+  {
+    { "CHECK",     cmd_check     },
+    { "SCAN",      cmd_check     },
+    { "STAT",      cmd_stat      },
+    { "STATS",     cmd_stat      },
+    { "STATUS",    cmd_stat      },
+    { "FDSTAT",    cmd_fdstat    },
+    { "PROTOCOLS", cmd_protocols },
+    { NULL,        NULL          }
+  };
 
   if (OPT_DEBUG)
     log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
