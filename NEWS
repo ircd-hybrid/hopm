@@ -1,6 +1,6 @@
 -- Noteworthy changes in version 1.0.8 (2015-??-??)
 o) Added options::reconnectinterval configuration option
-o) Further cleanups to the build system
+o) Further modernizations and cleanups to the build system
 o) HOPM now compiles with -fstack-protector-strong and -fstack-protector,
    respectively, depending on what the compiler supports
 o) Added new --enable-assert switch to ./configure. assert() statements are now
@@ -33,7 +33,7 @@ o) Code cleanups and performance improvements
 
 -- Noteworthy changes in version 1.0.3 (2015-01-28)
 o) Fixed bug where HOPM wouldn't try re-connecting to the server in
-   case the connection got lost.
+   case the connection got lost
 o) Added irc::notice configuration option
 
 
@@ -58,7 +58,7 @@ o) Added irc::readtimeout configuration option
 o) Many code cleanups and optimizations
 o) Worked towards IPv6 support
 o) Fixed reference.conf from causing syntax errors
-o) hopm now uses poll() for I/O event notification instead of select()
+o) HOPM now uses poll() for I/O event notification instead of select()
 
 
 -- Noteworthy changes in version 1.0.0beta1 (2014-12-25)
