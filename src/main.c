@@ -191,7 +191,7 @@ main(int argc, char *argv[])
     irc_cycle();
     scan_cycle();
 
-    /* Restart bopm if main_restart() was called (usually happens by m_kill in irc.c) */
+    /* Restart HOPM if main_restart() was called (usually happens by m_kill in irc.c) */
     if (RESTART)
     {
       /* If restarted in debug mode, die */

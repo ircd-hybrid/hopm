@@ -56,7 +56,7 @@ static struct StatsHash STATS_PROXIES[] =
 
 /* stats_init
  *
- *    Perform initialization of bopm stats
+ *    Perform initialization of HOPM stats
  *
  * Parameters: NONE
  * Return: NONE
