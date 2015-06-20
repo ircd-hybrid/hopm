@@ -97,7 +97,7 @@ Execution
 
     Further debugging can be enabled by using one or more -d switches. One or
     more -d switches will cause the bot to not fork on startup, and it will
-    send all log messages to stederr (i.e., your terminal) instead of its
+    send all log messages to stderr (i.e., your terminal) instead of its
     logfile. It will also cause extra debugging information that is not
     normally of interest to be sent to stderr. Two or more -d switches will
     enable logging of all IRC traffic received and sent.
