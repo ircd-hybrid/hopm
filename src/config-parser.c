@@ -576,10 +576,10 @@ static const yytype_uint16 yyrline[] =
      353,   368,   369,   371,   372,   373,   375,   385,   398,   398,
      441,   442,   444,   445,   446,   447,   448,   449,   450,   451,
      452,   453,   455,   463,   471,   479,   495,   502,   509,   516,
-     523,   542,   544,   545,   547,   548,   549,   550,   551,   553,
-     559,   565,   574,   574,   593,   594,   596,   597,   598,   599,
-     600,   601,   603,   611,   619,   631,   638,   640,   641,   643,
-     660,   662,   663,   665,   666,   668
+     523,   541,   543,   544,   546,   547,   548,   549,   550,   552,
+     558,   564,   573,   573,   591,   592,   594,   595,   596,   597,
+     598,   599,   601,   609,   617,   629,   636,   638,   639,   641,
+     657,   659,   660,   662,   663,   665
 };
 #endif
 
@@ -1876,7 +1876,7 @@ yyreduce:
   node_t *node;
   struct ChannelConf *item;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
   item->name = xstrdup("");
   item->key = xstrdup("");
   item->invite = xstrdup("");
@@ -1928,7 +1928,7 @@ yyreduce:
   node_t *node;
   struct UserConf *item;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
   item->masks = list_create();
   item->scanners = list_create();
 
@@ -1972,7 +1972,7 @@ yyreduce:
   node_t *node;
   struct ScannerConf *item, *olditem;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
 
   /* Setup ScannerConf defaults */
   item->name = xstrdup("undefined");
@@ -2109,10 +2109,9 @@ yyreduce:
     {
   struct ProtocolConf *item;
   struct ScannerConf *item2;
-
   node_t *node;
 
-  item = xcalloc(sizeof *item);
+  item = xcalloc(sizeof(*item));
   item->type = (yyvsp[-3].number);
   item->port = (yyvsp[-1].number);
 
@@ -2121,44 +2120,43 @@ yyreduce:
   node = node_create(item);
   list_add(item2->protocols, node);
 }
-#line 2125 "config-parser.c" /* yacc.c:1646  */
+#line 2124 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 554 "config-parser.y" /* yacc.c:1646  */
+#line 553 "config-parser.y" /* yacc.c:1646  */
     {
   xfree(OpmItem->dnsbl_from);
   OpmItem->dnsbl_from = xstrdup((yyvsp[-1].string));
 }
-#line 2134 "config-parser.c" /* yacc.c:1646  */
+#line 2133 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 130:
-#line 560 "config-parser.y" /* yacc.c:1646  */
+#line 559 "config-parser.y" /* yacc.c:1646  */
     {
   xfree(OpmItem->dnsbl_to);
   OpmItem->dnsbl_to = xstrdup((yyvsp[-1].string));
 }
-#line 2143 "config-parser.c" /* yacc.c:1646  */
+#line 2142 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 566 "config-parser.y" /* yacc.c:1646  */
+#line 565 "config-parser.y" /* yacc.c:1646  */
     {
   xfree(OpmItem->sendmail);
   OpmItem->sendmail = xstrdup((yyvsp[-1].string));
 }
-#line 2152 "config-parser.c" /* yacc.c:1646  */
+#line 2151 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 574 "config-parser.y" /* yacc.c:1646  */
+#line 573 "config-parser.y" /* yacc.c:1646  */
     {
   node_t *node;
   struct BlacklistConf *item;
 
-  item = xcalloc(sizeof *item);
-
+  item = xcalloc(sizeof(*item));
   item->name = xstrdup("");
   item->kline = xstrdup("");
   item->ban_unknown = 0;
@@ -2170,33 +2168,33 @@ yyreduce:
 
   tmp = item;
 }
-#line 2174 "config-parser.c" /* yacc.c:1646  */
+#line 2172 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 604 "config-parser.y" /* yacc.c:1646  */
+#line 602 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   xfree(item->name);
   item->name = xstrdup((yyvsp[-1].string));
 }
-#line 2185 "config-parser.c" /* yacc.c:1646  */
+#line 2183 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 143:
-#line 612 "config-parser.y" /* yacc.c:1646  */
+#line 610 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   xfree(item->kline);
   item->kline = xstrdup((yyvsp[-1].string));
 }
-#line 2196 "config-parser.c" /* yacc.c:1646  */
+#line 2194 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 620 "config-parser.y" /* yacc.c:1646  */
+#line 618 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
@@ -2207,50 +2205,49 @@ yyreduce:
   else
     yyerror("Unknown blacklist type defined");
 }
-#line 2211 "config-parser.c" /* yacc.c:1646  */
+#line 2209 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 632 "config-parser.y" /* yacc.c:1646  */
+#line 630 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   item->ban_unknown = (yyvsp[-1].number);
 }
-#line 2221 "config-parser.c" /* yacc.c:1646  */
+#line 2219 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 149:
-#line 644 "config-parser.y" /* yacc.c:1646  */
+#line 642 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistReplyConf *item;
   struct BlacklistConf *blacklist = tmp;
   node_t *node;
 
-  item = xcalloc(sizeof *item);
-
+  item = xcalloc(sizeof(*item));
   item->number = (yyvsp[-3].number);
   item->type = xstrdup((yyvsp[-1].string));
 
   node = node_create(item);
   list_add(blacklist->reply, node);
 }
-#line 2239 "config-parser.c" /* yacc.c:1646  */
+#line 2236 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 155:
-#line 669 "config-parser.y" /* yacc.c:1646  */
+#line 666 "config-parser.y" /* yacc.c:1646  */
     {
   node_t *node;
   node = node_create(xstrdup((yyvsp[-1].string)));
 
   list_add(ExemptItem->masks, node);
 }
-#line 2250 "config-parser.c" /* yacc.c:1646  */
+#line 2247 "config-parser.c" /* yacc.c:1646  */
     break;
 
 
-#line 2254 "config-parser.c" /* yacc.c:1646  */
+#line 2251 "config-parser.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2478,5 +2475,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 676 "config-parser.y" /* yacc.c:1906  */
+#line 673 "config-parser.y" /* yacc.c:1906  */
 
