@@ -37,7 +37,7 @@
 #include "stats.h"
 
 
-static list_t *COMMANDS;  /* List of active commands */
+static list_t COMMANDS;  /* List of active commands */
 
 
 /* cmd_check
@@ -99,21 +99,6 @@ cmd_protocols(char *param, const struct ChannelConf *target)
       irc_send("PRIVMSG %s : %s:%d", target->name, scan_gettype(proto->type), proto->port);
     }
   }
-}
-
-/* command_init
- *
- *    Do command initialization
- *
- * Parameters: NONE
- * Return: NONE
- *
- */
-void
-command_init(void)
-{
-  if (COMMANDS == NULL)
-    COMMANDS = list_create();
 }
 
 /* command_create
@@ -199,7 +184,7 @@ command_parse(char *command, const struct ChannelConf *target,
                source_p->irc_nick, target->name);
 
   /* Only allow COMMANDMAX commands in the queue */
-  if (LIST_SIZE(COMMANDS) >= COMMANDMAX)
+  if (LIST_SIZE(&COMMANDS) >= COMMANDMAX)
     return;
 
   /*
@@ -240,7 +225,7 @@ command_parse(char *command, const struct ChannelConf *target,
       /* Queue this command */
       struct Command *command = command_create(tab, param, source_p->irc_nick, target);
 
-      list_add(COMMANDS, node_create(command));
+      list_add(&COMMANDS, node_create(command));
       break;
     }
   }
@@ -272,14 +257,14 @@ command_timer(void)
 
   time(&present);
 
-  LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
+  LIST_FOREACH_SAFE(node, node_next, COMMANDS.head)
   {
     struct Command *command = node->data;
 
     if ((present - command->added) > COMMANDTIMEOUT)
     {
       command_free(command);
-      list_remove(COMMANDS, node);
+      list_remove(&COMMANDS, node);
       node_free(node);
     }
     else  /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
@@ -323,7 +308,7 @@ command_userhost(const char *reply)
     *(tmp) = '\0';
 
   /* Find any queued commands that match this user */
-  LIST_FOREACH_SAFE(node, node_next, COMMANDS->head)
+  LIST_FOREACH_SAFE(node, node_next, COMMANDS.head)
   {
     struct Command *command = node->data;
 
@@ -334,7 +319,7 @@ command_userhost(const char *reply)
 
       /* Cleanup the command */
       command_free(command);
-      list_remove(COMMANDS, node);
+      list_remove(&COMMANDS, node);
       node_free(node);
     }
   }
