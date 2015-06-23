@@ -223,9 +223,9 @@ command_parse(char *command, const struct ChannelConf *target,
     if (strcasecmp(command, tab->command) == 0)
     {
       /* Queue this command */
-      struct Command *command = command_create(tab, param, source_p->irc_nick, target);
+      struct Command *cmd = command_create(tab, param, source_p->irc_nick, target);
 
-      list_add(&COMMANDS, node_create(command));
+      list_add(&COMMANDS, node_create(cmd));
       break;
     }
   }
