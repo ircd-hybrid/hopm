@@ -4,8 +4,10 @@ o) Added options::reconnectinterval configuration option. See doc/reference.conf
 o) Further modernizations and cleanups to the build system
 o) HOPM now compiles with -fstack-protector-strong and -fstack-protector,
    respectively, depending on what the compiler supports
-o) Added new --enable-assert switch to ./configure. assert() statements are now
+o) Added --enable-assert switch to ./configure. assert() statements are now
    disabled by default and can be enabled with ./configure --enable-assert
+o) Added --enable-warnings switch to ./configure, which enables various
+   compiler warnings if supported by the compiler
 o) Added options::dns_timeout configuration option. See doc/reference.conf
    for more information.
 
