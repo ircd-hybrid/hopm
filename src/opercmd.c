@@ -115,7 +115,7 @@ cmd_protocols(char *param, const struct ChannelConf *target)
  *    Pointer to new Command
  */
 static struct Command *
-command_create(const struct OperCommandHash *tab, char *param, char *irc_nick,
+command_create(const struct OperCommandHash *tab, char *param, const char *irc_nick,
                const struct ChannelConf *target)
 {
   struct Command *command = xcalloc(sizeof(*command));
@@ -165,8 +165,7 @@ command_free(struct Command *command)
  *
  */
 void
-command_parse(char *command, const struct ChannelConf *target,
-              const struct UserInfo *source_p)
+command_parse(char *command, const struct ChannelConf *target, const char *source_p)
 {
   char *param;  /* Parsed parameters */
   static const struct OperCommandHash COMMAND_TABLE[] =
@@ -181,7 +180,7 @@ command_parse(char *command, const struct ChannelConf *target,
 
   if (OPT_DEBUG)
     log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
-               source_p->irc_nick, target->name);
+               source_p, target->name);
 
   /* Only allow COMMANDMAX commands in the queue */
   if (LIST_SIZE(&COMMANDS) >= COMMANDMAX)
@@ -223,14 +222,14 @@ command_parse(char *command, const struct ChannelConf *target,
     if (strcasecmp(command, tab->command) == 0)
     {
       /* Queue this command */
-      struct Command *cmd = command_create(tab, param, source_p->irc_nick, target);
+      struct Command *cmd = command_create(tab, param, source_p, target);
 
       list_add(&COMMANDS, node_create(cmd));
       break;
     }
   }
 
-  irc_send("USERHOST %s", source_p->irc_nick);
+  irc_send("USERHOST %s", source_p);
 }
 
 /* command_timer
