@@ -78,7 +78,7 @@ stats_init(void)
  *
  */
 void
-stats_openproxy(int type)
+stats_openproxy(unsigned int type)
 {
   for (struct StatsHash *tab = STATS_PROXIES; tab->name; ++tab)
   {

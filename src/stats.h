@@ -23,13 +23,13 @@
 
 struct StatsHash
 {
-  int type;
+  const unsigned int type;
   unsigned int count;
   const char *name;
 };
 
 extern void stats_init(void);
-extern void stats_openproxy(int);
+extern void stats_openproxy(unsigned int);
 extern void stats_connect(void);
 extern void stats_dnsblrecv(struct BlacklistConf *);
 extern void stats_dnsblsend(void);
