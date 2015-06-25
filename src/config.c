@@ -95,6 +95,7 @@ config_setup(void)
   OptionsItem->negcache_rebuild = 43200;
   OptionsItem->pidfile = xstrdup("hopm.pid");
   OptionsItem->dns_fdlimit = 50;
+  OptionsItem->dns_timeout = 5;
   OptionsItem->scanlog = NULL;
 }
 

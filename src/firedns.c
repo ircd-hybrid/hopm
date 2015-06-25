@@ -785,7 +785,7 @@ firedns_cycle(void)
     if (p->fd < 0)
       continue;
 
-    if (p->fd > 0 && (p->start + FDNS_TIMEOUT) < timenow)
+    if (p->fd > 0 && (p->start + OptionsItem->dns_timeout) < timenow)
     {
       /* Timed out - remove from list */
       list_remove(CONNECTIONS, node);

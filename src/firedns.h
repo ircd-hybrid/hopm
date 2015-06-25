@@ -29,8 +29,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define FDNS_CONFIG_PREF     HOPM_ETCDIR "/firedns.conf"
 /* fallback config file */
 #define FDNS_CONFIG_FBCK     "/etc/resolv.conf"
-/* Number of seconds to wait for a reply */
-#define FDNS_TIMEOUT         5
 /* DNS well known port */
 #define FDNS_PORT            53
 /* name to IPv4 address */
