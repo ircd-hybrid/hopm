@@ -38,6 +38,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token CHANNEL
 %token CONNREGEX
 %token DNS_FDLIMIT
+%token DNS_TIMEOUT
 %token DNSBL_FROM
 %token DNSBL_TO
 %token EXEMPT
@@ -137,6 +138,7 @@ options_item: options_negcache         |
               options_negcache_rebuild |
               options_pidfile          |
               options_dns_fdlimit      |
+              options_dns_timeout      |
               options_scanlog          |
               error;
 
@@ -159,6 +161,11 @@ options_pidfile: PIDFILE '=' STRING ';'
 options_dns_fdlimit: DNS_FDLIMIT '=' NUMBER ';'
 {
   OptionsItem->dns_fdlimit = $3;
+};
+
+options_dns_timeout: DNS_TIMEOUT '=' timespec ';'
+{
+  OptionsItem->dns_timeout = $3;
 };
 
 options_scanlog: SCANLOG '=' STRING ';'

@@ -63,6 +63,7 @@ struct OptionsConf
   time_t negcache;
   time_t negcache_rebuild;
   unsigned int dns_fdlimit;
+  time_t dns_timeout;
   char *pidfile;
   char *scanlog;
 };

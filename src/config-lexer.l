@@ -93,6 +93,7 @@ BLACKLIST               { return BLACKLIST;    }
 CHANNEL                 { return CHANNEL;      }
 CONNREGEX               { return CONNREGEX;    }
 DNS_FDLIMIT             { return DNS_FDLIMIT;  }
+DNS_TIMEOUT             { return DNS_TIMEOUT;  }
 DNSBL_FROM              { return DNSBL_FROM;   }
 DNSBL_TO                { return DNSBL_TO;     }
 EXEMPT                  { return EXEMPT;       }
