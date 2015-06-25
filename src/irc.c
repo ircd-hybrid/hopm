@@ -106,7 +106,7 @@ get_channel(const char *channel)
  * the source (parv[0]) is a server.
  */
 static void
-m_perform(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *notused)
+m_perform(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   node_t *node;
 
@@ -155,7 +155,7 @@ m_perform(char *parv[], unsigned int parc, const char *msg, const struct UserInf
  * the source (parv[0]) is a server.
  */
 static void
-m_ping(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_ping(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   if (parc < 3)
     return;
@@ -177,7 +177,7 @@ m_ping(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *
  * the source (parv[0]) is a server.
  */
 static void
-m_invite(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_invite(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   const struct ChannelConf *channel = NULL;
 
@@ -202,11 +202,11 @@ m_invite(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
  * the source (parv[0]) is a server.
  */
 static void
-m_ctcp(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_ctcp(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   if (strncasecmp(parv[3], "\001VERSION\001", 9) == 0)
     irc_send("NOTICE %s :\001VERSION Hybrid Open Proxy Monitor %s(%s)\001",
-             source_p->irc_nick, VERSION, SERIALNUM);
+             source_p, VERSION, SERIALNUM);
 }
 
 /* m_privmsg
@@ -220,7 +220,7 @@ m_ctcp(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *
  * the source (parv[0]) is a server.
  */
 static void
-m_privmsg(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   const struct ChannelConf *channel = NULL;
   size_t nick_len;
@@ -273,7 +273,7 @@ m_privmsg(char *parv[], unsigned int parc, const char *msg, const struct UserInf
  * the source (parv[0]) is a server.
  */
 static void
-m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_notice(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   static regex_t *preg = NULL;
   regmatch_t pmatch[5];
@@ -359,7 +359,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const struct UserInfo
  * the source (parv[0]) is a server.
  */
 static void
-m_userhost(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_userhost(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   if (parc < 4)
     return;
@@ -376,7 +376,7 @@ m_userhost(char *parv[], unsigned int parc, const char *msg, const struct UserIn
  * parv[4]  = error text
  */
 static void
-m_cannot_join(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_cannot_join(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   const struct ChannelConf *channel = NULL;
 
@@ -402,7 +402,7 @@ m_cannot_join(char *parv[], unsigned int parc, const char *msg, const struct Use
  * parv[4]  = error text
  */
 static void
-m_kill(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *source_p)
+m_kill(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   /* Restart hopm to rehash */
   main_restart();
@@ -419,65 +419,35 @@ m_kill(char *parv[], unsigned int parc, const char *msg, const struct UserInfo *
  * Return:
  *    pointer to new UserInfo struct, or NULL if parsing failed
  */
-static struct UserInfo *
+static const char *
 userinfo_create(const char *source)
 {
-  struct UserInfo *ret;
-  char tmp[MSGLENMAX];
-  char *nick = tmp;
-  char *username = NULL;
-  char *hostname = NULL;
+  static char name[MSGLENMAX];
+  unsigned int has_user = 0;
+  unsigned int has_host = 0;
 
-  strlcpy(tmp, source, sizeof(tmp));
+  strlcpy(name, source, sizeof(name));
 
-  for (char *p = tmp; *p; ++p)
+  for (char *p = name; *p; ++p)
   {
     if (*p == '!')
     {
       *p = '\0';
-      username = p + 1;
+      ++has_user;
       continue;
     }
 
-    if (*p == '@')
+    if (*p == '@' && has_user)
     {
-      *p = '\0';
-      hostname = p + 1;
+      ++has_host;
       continue;
     }
   }
 
-  if (username == NULL || hostname == NULL)
-    return NULL;
-
-  ret = xcalloc(sizeof(*ret));
-  ret->irc_nick     = xstrdup(nick);
-  ret->irc_username = xstrdup(username);
-  ret->irc_hostname = xstrdup(hostname);
-
-  return ret;
+  if (has_user == 1 && has_host == 1)
+    return name;
+  return NULL;
 };
-
-/* userinfo_free
- *
- *    Free a UserInfo struct created with userinfo_create.
- *
- * Parameters:
- *    source: struct to free
- *
- * Return: None
- */
-static void
-userinfo_free(struct UserInfo *source_p)
-{
-  if (source_p == NULL)
-    return;
-
-  xfree(source_p->irc_nick);
-  xfree(source_p->irc_username);
-  xfree(source_p->irc_hostname);
-  xfree(source_p);
-}
 
 /* irc_init
  *
@@ -732,11 +702,7 @@ irc_parse(void)
   {
     if (strcasecmp(cmd->command, parv[1]) == 0)
     {
-      /* Generate a UserInfo struct from the source */
-      struct UserInfo *source_p = userinfo_create(parv[0]);
-
-      cmd->handler(parv, parc, msg, source_p);
-      userinfo_free(source_p);
+      cmd->handler(parv, parc, msg, userinfo_create(parv[0]));
       break;
     }
   }
