@@ -115,12 +115,11 @@ config_load(const char *filename)
   }
 
   yyparse();
+  fclose(yyin);
 
   scan_init();     /* Initialize the scanners once we have the configuration */
   stats_init();    /* Initialize stats (UPTIME) */
   firedns_init();  /* Initialize adns */
-
-  fclose(yyin);
 }
 
 void
