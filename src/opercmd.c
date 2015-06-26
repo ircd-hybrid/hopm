@@ -115,7 +115,7 @@ cmd_protocols(char *param, const struct ChannelConf *target)
  *    Pointer to new Command
  */
 static struct Command *
-command_create(const struct OperCommandHash *tab, char *param, const char *irc_nick,
+command_create(const struct OperCommandHash *tab, const char *param, const char *irc_nick,
                const struct ChannelConf *target)
 {
   struct Command *command = xcalloc(sizeof(*command));
@@ -165,7 +165,7 @@ command_free(struct Command *command)
  *
  */
 void
-command_parse(char *command, const struct ChannelConf *target, const char *source_p)
+command_parse(const char *command, const struct ChannelConf *target, const char *source_p)
 {
   char *param;  /* Parsed parameters */
   static const struct OperCommandHash COMMAND_TABLE[] =
