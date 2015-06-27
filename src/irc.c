@@ -36,6 +36,7 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <regex.h>
+#include <assert.h>
 
 #include "config.h"
 #include "irc.h"
@@ -59,7 +60,7 @@
  */
 static char         IRC_RAW[MSGLENMAX];  /* Buffer to read data into               */
 static unsigned int IRC_RAW_LEN;         /* Position of IRC_RAW                    */
-static int          IRC_FD;              /* File descriptor for IRC client         */
+static int          IRC_FD = -1;         /* File descriptor for IRC client         */
 
 static struct sockaddr_storage IRC_SVR;  /* Sock Address Struct for IRC server     */
 static socklen_t svr_addrlen;
@@ -464,8 +465,7 @@ irc_init(void)
 {
   const void *address = NULL;
 
-  if (IRC_FD)
-    close(IRC_FD);
+  assert(IRC_FD == -1);
 
   memset(&IRC_SVR, 0, sizeof(IRC_SVR));
 
@@ -555,11 +555,11 @@ irc_reconnect(void)
 
   time(&IRC_LASTRECONNECT);
 
-  if (IRC_FD > 0)
+  if (IRC_FD > -1)
+  {
     close(IRC_FD);
-
-  /* Set IRC_FD 0 for reconnection on next irc_cycle(). */
-  IRC_FD = 0;
+    IRC_FD = -1;  /* Set IRC_FD -1 for reconnection on next irc_cycle(). */
+  }
 
   log_printf("IRC -> Connection to (%s) failed, reconnecting.", IRCItem->server);
 }
@@ -770,7 +770,7 @@ irc_cycle(void)
 {
   static struct pollfd pfd;
 
-  if (IRC_FD <= 0)
+  if (IRC_FD == -1)
   {
     /* Initialise negative cache. */
     if (OptionsItem->negcache)
