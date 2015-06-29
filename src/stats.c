@@ -209,7 +209,7 @@ fdstats_output(const char *target)
   {
     int newfd = dup(i);
 
-    if (newfd > 0)
+    if (newfd > -1)
     {
       ++total_fd_use;
       close(newfd);
