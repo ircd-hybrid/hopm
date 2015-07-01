@@ -39,6 +39,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <poll.h>
+#ifdef HAVE_LIBCRYPTO
+#include <openssl/ssl.h>
+#endif
 
 
 static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void);
@@ -66,6 +69,7 @@ static void libopm_check_queue(OPM_T *);
 
 static void libopm_do_connect(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_readready(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
+static int libopm_do_readready_tls(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_writeready(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_hup(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_read(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
@@ -84,13 +88,15 @@ static OPM_REMOTE_T *libopm_setup_remote(OPM_REMOTE_T *, OPM_CONNECTION_T *);
  */
 static OPM_PROTOCOL_T OPM_PROTOCOLS[] =
 {
-  { OPM_TYPE_HTTP,     libopm_proxy_http_write,     NULL },
-  { OPM_TYPE_SOCKS4,   libopm_proxy_socks4_write,   NULL },
-  { OPM_TYPE_SOCKS5,   libopm_proxy_socks5_write,   NULL },
-  { OPM_TYPE_ROUTER,   libopm_proxy_router_write,   NULL },
-  { OPM_TYPE_WINGATE,  libopm_proxy_wingate_write,  NULL },
-  { OPM_TYPE_HTTPPOST, libopm_proxy_httppost_write, NULL },
-  { OPM_TYPE_DREAMBOX, libopm_proxy_dreambox_write, NULL }
+  { OPM_TYPE_HTTP,      libopm_proxy_http_write,      NULL, 0 },
+  { OPM_TYPE_SOCKS4,    libopm_proxy_socks4_write,    NULL, 0 },
+  { OPM_TYPE_SOCKS5,    libopm_proxy_socks5_write,    NULL, 0 },
+  { OPM_TYPE_ROUTER,    libopm_proxy_router_write,    NULL, 0 },
+  { OPM_TYPE_WINGATE,   libopm_proxy_wingate_write,   NULL, 0 },
+  { OPM_TYPE_HTTPPOST,  libopm_proxy_httppost_write,  NULL, 0 },
+  { OPM_TYPE_DREAMBOX,  libopm_proxy_dreambox_write,  NULL, 0 },
+  { OPM_TYPE_HTTPS,     libopm_proxy_https_write,     libopm_do_readready_tls, 1 },
+  { OPM_TYPE_HTTPSPOST, libopm_proxy_httpspost_write, libopm_do_readready_tls, 1 }
 };
 
 /* opm_create
@@ -294,6 +300,10 @@ opm_addtype(OPM_T *scanner, int type, unsigned short int port)
   {
     if (type == OPM_PROTOCOLS[i].type)
     {
+#ifndef HAVE_LIBCRYPTO
+      if (OPM_PROTOCOLS[i].use_tls)
+        return OPM_ERR_BADPROTOCOL;
+#endif
       protocol_config = libopm_protocol_config_create();
       protocol_config->type = &OPM_PROTOCOLS[i];
       protocol_config->port = port;
@@ -330,6 +340,10 @@ OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *remote, int type, unsigned short int 
   {
     if (type == OPM_PROTOCOLS[i].type)
     {
+#ifndef HAVE_LIBCRYPTO
+      if (OPM_PROTOCOLS[i].use_tls)
+        return OPM_ERR_BADPROTOCOL;
+#endif
       protocol_config = libopm_protocol_config_create();
       protocol_config->type = &OPM_PROTOCOLS[i];
       protocol_config->port = port;
@@ -595,6 +609,20 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
   OPM_SCAN_T *ret;
   OPM_CONNECTION_T *conn;
   OPM_NODE_T *node, *p;
+#ifdef HAVE_LIBCRYPTO
+  static int tls_init = 0;
+  static SSL_CTX *ctx_client;
+
+  if (!tls_init)
+  {
+    tls_init = 1;
+    SSLeay_add_ssl_algorithms();
+
+    ctx_client = SSL_CTX_new(SSLv23_client_method());
+    if (!ctx_client)
+      exit(EXIT_FAILURE);
+  }
+#endif
 
   ret = xcalloc(sizeof(*ret));
   ret->remote = remote;
@@ -607,6 +635,12 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
 
     conn->protocol = ((OPM_PROTOCOL_CONFIG_T *)p->data)->type;
     conn->port     = ((OPM_PROTOCOL_CONFIG_T *)p->data)->port;
+
+#ifdef HAVE_LIBCRYPTO
+    if (conn->protocol->use_tls)
+      /* SSL_new does only fail if OOM in which case HOPM exits anyway */
+      conn->tls_handle = SSL_new(ctx_client);
+#endif
 
     node = libopm_node_create(conn);
     libopm_list_add(ret->connections, node);
@@ -621,6 +655,12 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
 
     conn->protocol = ((OPM_PROTOCOL_CONFIG_T *)p->data)->type;
     conn->port     = ((OPM_PROTOCOL_CONFIG_T *)p->data)->port;
+
+#ifdef HAVE_LIBCRYPTO
+    if (conn->protocol->use_tls)
+      /* SSL_new does only fail if OOM in which case HOPM exits anyway */
+      conn->tls_handle = SSL_new(ctx_client);
+#endif
 
     node = libopm_node_create(conn);
     libopm_list_add(ret->connections, node);
@@ -846,6 +886,15 @@ libopm_check_closed(OPM_T *scanner)
 
       if (conn->state == OPM_STATE_CLOSED)
       {
+#ifdef HAVE_LIBCRYPTO
+        if (conn->protocol->use_tls)
+        {
+          SSL_set_shutdown(conn->tls_handle, SSL_RECEIVED_SHUTDOWN);
+          if (!SSL_shutdown(conn->tls_handle))
+            SSL_shutdown(conn->tls_handle);
+          SSL_free(conn->tls_handle);
+        }
+#endif
         if (conn->fd > 0)
           close(conn->fd);
 
@@ -859,6 +908,15 @@ libopm_check_closed(OPM_T *scanner)
 
       if (((present - conn->creation) >= timeout) && conn->state != OPM_STATE_UNESTABLISHED)
       {
+#ifdef HAVE_LIBCRYPTO
+        if (conn->protocol->use_tls)
+        {
+          SSL_set_shutdown(conn->tls_handle, SSL_RECEIVED_SHUTDOWN);
+          if (!SSL_shutdown(conn->tls_handle))
+            SSL_shutdown(conn->tls_handle);
+          SSL_free(conn->tls_handle);
+        }
+#endif
         close(conn->fd);
         scanner->fd_use--;
 
@@ -937,6 +995,11 @@ libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
   fcntl(conn->fd, F_SETFL, O_NONBLOCK);
 
   connect(conn->fd, (struct sockaddr *)addr, sizeof(*addr));
+
+#ifdef HAVE_LIBCRYPTO
+  if (conn->protocol->use_tls)
+    SSL_set_fd(conn->tls_handle, conn->fd);
+#endif
 
   conn->state = OPM_STATE_ESTABLISHED;
   time(&conn->creation);  /* Stamp creation time, for timeout */
@@ -1045,6 +1108,63 @@ libopm_check_poll(OPM_T *scanner)
       }
     }
   }
+}
+
+static int
+libopm_do_readready_tls(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+{
+#ifdef HAVE_LIBCRYPTO
+  int max_read, length;
+  char readbuf[LIBOPM_TLS_RECORD_SIZE];
+
+  if (!SSL_is_init_finished(conn->tls_handle))
+    return 0;
+
+  if ((length = SSL_read(conn->tls_handle, readbuf, sizeof(readbuf))) <= 0)
+  {
+    switch (SSL_get_error(conn->tls_handle, length))
+    {
+      /* TBD: possibly could recover here from some errors */ 
+      default:
+        libopm_do_hup(scanner, scan, conn);
+        return 0;
+    }
+  }
+
+  max_read = *(int *)libopm_config(scanner->config, OPM_CONFIG_MAX_READ);
+
+  for (const char *p = readbuf, *end = readbuf + length; p < end; ++p)
+  {
+    conn->bytes_read++;
+
+    if (conn->bytes_read >= max_read)
+    {
+      libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_MAX_READ);
+      conn->state = OPM_STATE_CLOSED;
+      return 0;
+    }
+
+    if (*p == '\0' || *p == '\r')
+      continue;
+
+    if (*p == '\n')
+    {
+      conn->readbuf[conn->readlen] = '\0';
+      conn->readlen = 0;
+
+      libopm_do_read(scanner, scan, conn);
+
+      if (conn->state == OPM_STATE_CLOSED)
+        return 0;
+
+      continue;
+    }
+
+    if (conn->readlen < READBUFLEN)
+      conn->readbuf[++(conn->readlen) - 1] = *p;  /* -1 to pad for null term */
+  }
+#endif
+  return 0;
 }
 
 /* do_readready
@@ -1199,6 +1319,17 @@ static void
 libopm_do_writeready(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
   OPM_PROTOCOL_T *protocol;
+
+#ifdef HAVE_LIBCRYPTO
+  if (conn->protocol->use_tls)
+  {
+    if (!SSL_is_init_finished(conn->tls_handle))
+    {
+      SSL_connect(conn->tls_handle);
+      return;
+    }
+  }
+#endif
 
   protocol = conn->protocol;
 

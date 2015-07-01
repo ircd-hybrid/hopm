@@ -9,6 +9,7 @@
 #define CBLEN 5         /* Number of callback functions  */
 #define READBUFLEN 128  /* Size of conn->readbuf         */
 #define SENDBUFLEN 512  /* Size of sendbuffer in proxy.c */
+#define LIBOPM_TLS_RECORD_SIZE 16384
 
 typedef struct  _OPM_SCAN             OPM_SCAN_T;
 typedef struct  _OPM_CONNECTION       OPM_CONNECTION_T;
@@ -39,6 +40,7 @@ struct _OPM_CONNECTION
   unsigned short int readlen;          /* Length of readbuf */
   unsigned short int state;            /* State of connection */
   time_t             creation;         /* When this connection was established */
+  void *tls_handle;                    /* SSL structure created by SSL_new() */
 };
 
 struct _OPM_PROTOCOL_CONFIG
@@ -52,5 +54,6 @@ struct _OPM_PROTOCOL
   int type;                            /* Protocol type */
   OPM_PROXYWRITE_T *write_function;    /* Write function handler for this protocol */
   OPM_PROXYREAD_T  *read_function;     /* Read function handler for this protocol */
+  int use_tls;                         /* TLS/SSL-enabled protocol such as HTTPS */
 };
 #endif /* LIBOPM_H */

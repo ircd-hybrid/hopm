@@ -174,6 +174,16 @@ HTTPPOST                {
                           return PROTOCOLTYPE;
                         }
 
+HTTPS                   {
+                          yylval.number = OPM_TYPE_HTTPS;
+                          return PROTOCOLTYPE;
+                        }
+
+HTTPSPOST               {
+                          yylval.number = OPM_TYPE_HTTPSPOST;
+                          return PROTOCOLTYPE;
+                        }
+
 SOCKS4                  {
                           yylval.number = OPM_TYPE_SOCKS4;
                           return PROTOCOLTYPE;

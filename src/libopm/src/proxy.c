@@ -25,6 +25,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_LIBCRYPTO
+#include <openssl/ssl.h>
+#endif
 
 #include "inet.h"
 #include "config.h"
@@ -268,5 +271,47 @@ libopm_proxy_dreambox_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *
   len = snprintf(SENDBUF, SENDBUFLEN, "nc %s %d\r\n", scan_ip, scan_port);
   send(conn->fd, SENDBUF, len, 0);
 
+  return OPM_SUCCESS;
+}
+
+int
+libopm_proxy_https_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+{
+#ifdef HAVE_LIBCRYPTO
+  size_t len = snprintf(SENDBUF, SENDBUFLEN, "CONNECT %s:%d HTTP/1.0\r\n\r\n",
+                        (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP),
+                        *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT));
+
+  SSL_write(conn->tls_handle, SENDBUF, len);
+
+  /* extra linefeed required for MikroTik HttpProxy, must be separate send() */
+  SSL_write(conn->tls_handle, "\r\n", 2);
+#endif
+  return OPM_SUCCESS;
+}
+
+/*
+ * HTTPS POST Scanning
+ *
+ */
+int
+libopm_proxy_httpspost_write(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
+{
+#ifdef HAVE_LIBCRYPTO
+  size_t len;
+  int scan_port;
+  char *scan_ip;
+
+  scan_ip = (char *)libopm_config(scanner->config, OPM_CONFIG_SCAN_IP);
+  scan_port = *(int *)libopm_config(scanner->config, OPM_CONFIG_SCAN_PORT);
+
+  len = snprintf(SENDBUF, SENDBUFLEN,
+                 "POST http://%s:%d/ HTTP/1.0\r\n"
+                 "Content-type: text/plain\r\n"
+                 "Content-length: 5\r\n\r\n"
+                 "quit\r\n\r\n", scan_ip, scan_port);
+
+  SSL_write(conn->tls_handle, SENDBUF, len);
+#endif
   return OPM_SUCCESS;
 }

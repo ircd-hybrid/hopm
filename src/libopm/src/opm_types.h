@@ -25,6 +25,9 @@
 #define OPM_TYPE_ROUTER          5
 #define OPM_TYPE_HTTPPOST        6
 #define OPM_TYPE_DREAMBOX        7
+#define OPM_TYPE_HTTPS           8
+#define OPM_TYPE_HTTPSPOST       9
+
 
 /* States */
 #define OPM_STATE_UNESTABLISHED  1

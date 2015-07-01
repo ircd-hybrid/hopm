@@ -43,13 +43,17 @@ static unsigned int STATS_DNSBLSENT;
 
 static struct StatsHash STATS_PROXIES[] =
 {
-  { OPM_TYPE_HTTP,     0, "HTTP"     },
-  { OPM_TYPE_HTTPPOST, 0, "HTTPPOST" },
-  { OPM_TYPE_SOCKS4,   0, "SOCKS4"   },
-  { OPM_TYPE_SOCKS5,   0, "SOCKS5"   },
-  { OPM_TYPE_ROUTER,   0, "ROUTER"   },
-  { OPM_TYPE_WINGATE,  0, "WINGATE"  },
-  { OPM_TYPE_DREAMBOX, 0, "DREAMBOX" },
+  { OPM_TYPE_HTTP,      0, "HTTP"      },
+  { OPM_TYPE_HTTPPOST,  0, "HTTPPOST"  },
+#ifdef HAVE_LIBCRYPTO
+  { OPM_TYPE_HTTPS,     0, "HTTPS"     },
+  { OPM_TYPE_HTTPSPOST, 0, "HTTPSPOST" },
+#endif
+  { OPM_TYPE_SOCKS4,    0, "SOCKS4"    },
+  { OPM_TYPE_SOCKS5,    0, "SOCKS5"    },
+  { OPM_TYPE_ROUTER,    0, "ROUTER"    },
+  { OPM_TYPE_WINGATE,   0, "WINGATE"   },
+  { OPM_TYPE_DREAMBOX,  0, "DREAMBOX"  },
   { 0, 0, NULL }
 };
 

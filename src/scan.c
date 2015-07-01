@@ -145,13 +145,15 @@ scan_gettype(int protocol)
   static const char *undef = "undefined";
   static const struct protocol_assoc protocols[] =
   {
-    { OPM_TYPE_HTTP,     "HTTP"     },
-    { OPM_TYPE_HTTPPOST, "HTTPPOST" },
-    { OPM_TYPE_SOCKS4,   "SOCKS4"   },
-    { OPM_TYPE_SOCKS5,   "SOCKS5"   },
-    { OPM_TYPE_WINGATE,  "WINGATE"  },
-    { OPM_TYPE_ROUTER,   "ROUTER"   },
-    { OPM_TYPE_DREAMBOX, "DREAMBOX" }
+    { OPM_TYPE_HTTP,      "HTTP"      },
+    { OPM_TYPE_HTTPPOST,  "HTTPPOST"  },
+    { OPM_TYPE_SOCKS4,    "SOCKS4"    },
+    { OPM_TYPE_SOCKS5,    "SOCKS5"    },
+    { OPM_TYPE_WINGATE,   "WINGATE"   },
+    { OPM_TYPE_ROUTER,    "ROUTER"    },
+    { OPM_TYPE_HTTPS,     "HTTPS"     },
+    { OPM_TYPE_HTTPSPOST, "HTTPSPOST" },
+    { OPM_TYPE_DREAMBOX,  "DREAMBOX"  }
   };
 
   for (unsigned int i = 0; i < (sizeof(protocols) / sizeof(struct protocol_assoc)); ++i)
