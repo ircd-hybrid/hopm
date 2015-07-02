@@ -895,7 +895,7 @@ libopm_check_closed(OPM_T *scanner)
           SSL_free(conn->tls_handle);
         }
 #endif
-        if (conn->fd > 0)
+        if (conn->fd > -1)
           close(conn->fd);
 
         scanner->fd_use--;
@@ -917,7 +917,9 @@ libopm_check_closed(OPM_T *scanner)
           SSL_free(conn->tls_handle);
         }
 #endif
-        close(conn->fd);
+        if (conn->fd > -1)
+          close(conn->fd);
+
         scanner->fd_use--;
 
         libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_TIMEOUT, 0);
