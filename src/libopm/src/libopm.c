@@ -47,15 +47,6 @@
 static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void);
 static void libopm_protocol_config_free(OPM_PROTOCOL_CONFIG_T *);
 
-/*
- * XXX - does not appear to be used anywhere?
- * -grifferz
- */
-#if 0
-static OPM_PROTOCOL_T *libopm_protocol_create(void);
-static void libopm_protocol_free(OPM_PROTOCOL_T *);
-#endif
-
 static OPM_SCAN_T *libopm_scan_create(OPM_T *, OPM_REMOTE_T *);
 static void libopm_scan_free(OPM_SCAN_T *);
 
@@ -357,55 +348,6 @@ OPM_ERR_T opm_remote_addtype(OPM_REMOTE_T *remote, int type, unsigned short int 
 
   return OPM_ERR_BADPROTOCOL;
 }
-
-/* libopm_protocol_create
- *
- *    Create OPM_PROTOCOL_T struct.
- *
- * Parameters:
- *    None
- * Return:
- *    Pointer to new struct
- *
- * XXX - does not appear to be used anywhere?
- * -grifferz
- */
-#if 0
-static OPM_PROTOCOL_T *libopm_protocol_create(void)
-{
-  OPM_PROTOCOL_T *ret;
-  ret = xcalloc(sizeof(*ret));
-
-  ret->type           = 0;
-  ret->write_function = NULL;
-  ret->read_function  = NULL;
-
-  return ret;
-}
-#endif
-
-/* libopm_protocol_free
- *
- *    Free an OPM_PROTOCOL_T struct. Assume that if
- *    format is not NULL, it is pointed to dynamically
- *    allocated memory and free it.
- *
- * Parameters:
- *    protocol: struct to free
- *
- * Return:
- *    None
- *
- * XXX - apparently no longer used?
- *  -grifferz
- */
-#if 0
-static void
-libopm_protocol_free(OPM_PROTOCOL_T *protocol)
-{
-  MyFree(protocol);
-}
-#endif
 
 /* libopm_protocol_config_create
  *
