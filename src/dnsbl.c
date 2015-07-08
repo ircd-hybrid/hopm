@@ -111,11 +111,8 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
 
       if (item->number & type)
       {
-        strncat(text_type, item->type, sizeof(text_type) - strlen(text_type) - 2);
-        text_type[sizeof(text_type) - 2] = '\0';
-
-        strncat(text_type, ", ", sizeof(text_type) - strlen(text_type) - 1);
-        text_type[sizeof(text_type) - 1] = '\0';
+        strlcat(text_type, item->type, sizeof(text_type));
+        strlcat(text_type, ", ", sizeof(text_type));
       }
     }
 
