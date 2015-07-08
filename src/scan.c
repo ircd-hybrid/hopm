@@ -771,7 +771,7 @@ scan_negative(const struct scan_struct *ss)
 static void
 scan_irckline(const struct scan_struct *ss, const char *format, const char *type)
 {
-  char message[MSGLENMAX];  /* OUTPUT */
+  char message[MSGLENMAX] = "";  /* OUTPUT */
 
   unsigned int pos = 0;   /* position in format */
   unsigned int len = 0;   /* position in message */
