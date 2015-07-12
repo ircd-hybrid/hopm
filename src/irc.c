@@ -719,7 +719,7 @@ irc_parse(void)
 static void
 irc_read(void)
 {
-  int len;
+  ssize_t len;
   char c;
 
   while ((len = read(IRC_FD, &c, 1)) > 0)
