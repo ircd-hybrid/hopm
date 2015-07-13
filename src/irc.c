@@ -746,9 +746,10 @@ irc_read(void)
 
   if ((len <= 0) && (errno != EAGAIN))
   {
-    log_printf("IRC -> Error reading data from server: %s", strerror(errno));
-    irc_reconnect();
+    if (errno != EINTR)
+      log_printf("IRC -> Error reading data from server: %s", strerror(errno));
 
+    irc_reconnect();
     IRC_RAW_LEN = 0;
     return;
   }
