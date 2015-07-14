@@ -508,6 +508,7 @@ irc_init(void)
   if (!EmptyString(IRCItem->vhost))
   {
     struct addrinfo hints, *res;
+    int n;
 
     memset(&hints, 0, sizeof(hints));
 
@@ -515,14 +516,14 @@ irc_init(void)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE | AI_NUMERICHOST;
 
-    if (getaddrinfo(IRCItem->vhost, NULL, &hints, &res))
+    if ((n = getaddrinfo(IRCItem->vhost, NULL, &hints, &res)))
     {
-      log_printf("IRC -> bind(): %s is an invalid address", IRCItem->vhost);
+      log_printf("IRC -> error binding to %s: %s", IRCItem->vhost, gai_strerror(n));
       exit(EXIT_FAILURE);
     }
     else if (bind(IRC_FD, res->ai_addr, res->ai_addrlen))
     {
-      log_printf("IRC -> bind(): error binding to %s: %s", IRCItem->vhost, strerror(errno));
+      log_printf("IRC -> error binding to %s: %s", IRCItem->vhost, strerror(errno));
       exit(EXIT_FAILURE);
     }
 
