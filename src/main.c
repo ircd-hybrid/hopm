@@ -117,6 +117,12 @@ main(int argc, char *argv[])
   snprintf(CONFFILE, lenc, "%s/%s.%s", CONFDIR, CONFNAME, CONFEXT);
   snprintf(LOGFILE, lenl, "%s/%s.%s", LOGDIR, CONFNAME, LOGEXT);
 
+  if (chdir(HOPM_PREFIX))
+  {
+    perror("chdir");
+    exit(EXIT_FAILURE);
+  }
+
   /* Fork off. */
   if (OPT_DEBUG == 0)
   {
