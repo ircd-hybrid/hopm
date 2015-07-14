@@ -804,7 +804,8 @@ uninstall-am:
 
 
 install-data-local:
-	$(INSTALL) -d $(DESTDIR)${localstatedir}
+	$(INSTALL) -d $(DESTDIR)${localstatedir}/log
+	$(INSTALL) -d $(DESTDIR)${localstatedir}/run
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
