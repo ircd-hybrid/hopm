@@ -1,3 +1,7 @@
+-- Noteworthy changes in version 1.1.0 (????-??-??)
+o) options::pidfile and options::scanlog can now be relative pathnames
+
+
 -- Noteworthy changes in version 1.1.0beta1 (2015-07-02)
 o) Added HTTPS support for SSL/TLS-enabled HTTP proxies which seem to be
    used quite a lot on IRC nowadays. LibreSSL or OpenSSL 0.9.8o and above
