@@ -1,7 +1,7 @@
 SUBDIRS = libopm
 bin_PROGRAMS = hopm
 
-AM_CPPFLAGS = -DHOPM_ETCDIR="\"$(sysconfdir)\"" -DHOPM_LOGDIR="\"$(localstatedir)/log\""
+AM_CPPFLAGS = -DHOPM_PREFIX="\"$(prefix)\"" -DHOPM_ETCDIR="\"$(sysconfdir)\"" -DHOPM_LOGDIR="\"$(localstatedir)/log\""
 AM_YFLAGS = -d
 
 hopm_SOURCES = compat.c        \
