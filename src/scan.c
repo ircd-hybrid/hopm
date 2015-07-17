@@ -755,19 +755,13 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
     const char *data;
   } table[] =
   {
-    { 'i',  NULL },
-    { 'h',  NULL },
-    { 'u',  NULL },
-    { 'n',  NULL },
-    { 't',  NULL },
-    { '\0', NULL }
+    { 'i',  ss->ip           },
+    { 'h',  ss->irc_hostname },
+    { 'u',  ss->irc_username },
+    { 'n',  ss->irc_nick     },
+    { 't',  type             },
+    { '\0', NULL             }
   };
-
-  table[0].data = ss->ip;
-  table[1].data = ss->irc_hostname;
-  table[2].data = ss->irc_username;
-  table[3].data = ss->irc_nick;
-  table[4].data = type;
 
   /*
    * Copy format to message character by character, inserting any matching
