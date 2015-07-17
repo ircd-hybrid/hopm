@@ -70,8 +70,6 @@ botnick stats                   -- Output scan stats, uptime and client connecti
 
 botnick fdstat                  -- Output some info about file descriptors in use.
 
-botnick protocols               -- Output configured scanners and their associated protocols/ports.
-
 Also if several HOPMs are present in one channel they will all respond to !all,
 for example !all stats.
 
