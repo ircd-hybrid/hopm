@@ -306,8 +306,8 @@ scan_connect(const char *user[], const char *msg)
    * username/hostname can be.  Some ircds use really mad values for
    * these.
    */
-  char mask[MSGLENMAX];
-  char ipmask[MSGLENMAX];
+  char hostmask[MSGLENMAX];
+  char addrmask[MSGLENMAX];
 
   /* Check negcache before anything */
   if (OptionsItem->negcache)
@@ -333,14 +333,14 @@ scan_connect(const char *user[], const char *msg)
   }
 
   /* Generate user mask */
-  snprintf(mask, sizeof(mask), "%s!%s@%s", user[0], user[1], user[2]);
-  snprintf(ipmask, sizeof(ipmask), "%s!%s@%s", user[0], user[1], user[3]);
+  snprintf(hostmask, sizeof(hostmask), "%s!%s@%s", user[0], user[1], user[2]);
+  snprintf(addrmask, sizeof(addrmask), "%s!%s@%s", user[0], user[1], user[3]);
 
   /* Check exempt list now that we have a mask */
-  if (scan_checkexempt(mask, ipmask))
+  if (scan_checkexempt(hostmask, addrmask))
   {
     if (OPT_DEBUG)
-      log_printf("SCAN -> %s is exempt from scanning", mask);
+      log_printf("SCAN -> %s (%s) is exempt from scanning", hostmask, addrmask);
 
     return;
   }
@@ -364,10 +364,10 @@ scan_connect(const char *user[], const char *msg)
     {
       const char *scsmask = p2->data;
 
-      if (!match(scsmask, mask))
+      if (!match(scsmask, hostmask))
       {
         if (OPT_DEBUG)
-          log_printf("SCAN -> Passing %s to scanner [%s]", mask, scs->name);
+          log_printf("SCAN -> Passing %s to scanner [%s]", hostmask, scs->name);
 
         if ((ret = opm_scan(scs->scanner, ss->remote)) != OPM_SUCCESS)
         {
