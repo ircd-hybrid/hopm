@@ -1,5 +1,6 @@
 -- Noteworthy changes in version 1.1.0 (????-??-??)
 o) options::pidfile and options::scanlog can now be relative pathnames
+o) Due to security reasons the PROTOCOLS command has been removed again
 
 
 -- Noteworthy changes in version 1.1.0beta1 (2015-07-02)
