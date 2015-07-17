@@ -319,16 +319,13 @@ scan_connect(const char *user[], const char *msg)
       log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
       return;
     }
-    else
+
+    if (check_neg_cache(ip.sin_addr.s_addr))
     {
-      if (check_neg_cache(ip.sin_addr.s_addr))
-      {
-        if (OPT_DEBUG)
-          log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. "
-                     "Skipping all tests.", user[0], user[1], user[2],
-                     user[3]);
-        return;
-      }
+      if (OPT_DEBUG)
+        log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. Skipping all tests.",
+                   user[0], user[1], user[2], user[3]);
+      return;
     }
   }
 
@@ -345,14 +342,14 @@ scan_connect(const char *user[], const char *msg)
     return;
   }
 
-  /* create scan_struct */
+  /* Create scan_struct */
   ss = scan_create(user, msg);
 
   /* Store ss in the remote struct, so that in callbacks we have ss */
   ss->remote->data = ss;
 
   /* Start checking our DNSBLs */
-  if (LIST_SIZE(OpmItem->blacklists) > 0)
+  if (LIST_SIZE(OpmItem->blacklists))
     dnsbl_add(ss);
 
   /* Add ss->remote to all matching scanners */
