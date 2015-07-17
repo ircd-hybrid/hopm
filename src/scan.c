@@ -584,26 +584,15 @@ scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 static void
 scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
-//struct scan_struct *ss;
-  struct scanner_struct *scs;
+  const struct scanner_struct *scs = data;
 
   /* Record that a scan happened */
   scan_log(remote);
 
-  scs = data;
-//ss = remote->data;
-
   if (OPT_DEBUG)
     log_printf("SCAN -> Negotiation failed %s:%d (%s) [%s] (%d bytes read)",
-               remote->ip, remote->port, scan_gettype(remote->protocol),
-               scs->name, remote->bytes_read);
-/*
-  if (ss->manual_target)
-    irc_send("PRIVMSG %s :CHECK -> Negotiation failed %s:%d (%s) [%s] "
-             "(%d bytes read)", ss->manual_target->name, remote->ip,
-             remote->port, scan_gettype(remote->protocol), scs->name,
-             remote->bytes_read);
-*/
+               remote->ip, remote->port, scan_gettype(remote->protocol), scs->name,
+               remote->bytes_read);
 }
 
 /* scan_timeout CALLBACK
@@ -620,27 +609,15 @@ scan_negotiation_failed(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void 
 static void
 scan_timeout(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
-//struct scan_struct *ss;
-  struct scanner_struct *scs;
+  const struct scanner_struct *scs = data;
 
   /* Record that a scan happened */
   scan_log(remote);
 
-  scs = data;
-//ss = remote->data;
-
   if (OPT_DEBUG)
     log_printf("SCAN -> Negotiation timed out %s:%d (%s) [%s] (%d bytes read)",
-               remote->ip, remote->port,
-               scan_gettype(remote->protocol), scs->name,
+               remote->ip, remote->port, scan_gettype(remote->protocol), scs->name,
                remote->bytes_read);
-/*
-  if (ss->manual_target)
-    irc_send("PRIVMSG %s :CHECK -> Negotiation timed out %s:%d (%s) [%s] "
-             "(%d bytes read)", ss->manual_target->name, remote->ip,
-             remote->port, scan_gettype(remote->protocol), scs->name,
-             remote->bytes_read);
-*/
 }
 
 /* scan_end CALLBACK
