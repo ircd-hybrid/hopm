@@ -296,7 +296,6 @@ scan_init(void)
 void
 scan_connect(const char *user[], const char *msg)
 {
-  struct sockaddr_in ip;
   node_t *p, *p2;
   struct scan_struct *ss;
   struct scanner_struct *scs;
@@ -313,6 +312,8 @@ scan_connect(const char *user[], const char *msg)
   /* Check negcache before anything */
   if (OptionsItem->negcache)
   {
+    struct sockaddr_in ip;
+
     if (inet_pton(AF_INET, user[3], &ip.sin_addr) <= 0)
     {
       log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
