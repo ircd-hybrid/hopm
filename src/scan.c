@@ -444,9 +444,6 @@ scan_create(const char *user[], const char *msg)
 static void
 scan_free(struct scan_struct *ss)
 {
-  if (ss == NULL)
-    return;
-
   xfree(ss->irc_nick);
   xfree(ss->irc_username);
   xfree(ss->irc_hostname);
