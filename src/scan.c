@@ -162,6 +162,33 @@ scan_gettype(int protocol)
   return undef;
 }
 
+/* scan_checkexempt
+ *
+ *    Check mask against exempt list.
+ *
+ * Parameters:
+ *     mask: Mask to check
+ *
+ * Return:
+ *     1 if mask is in list
+ *     0 if mask is not in list
+ */
+static int
+scan_checkexempt(const char *mask, const char *ipmask)
+{
+  node_t *node;
+
+  LIST_FOREACH(node, ExemptItem->masks->head)
+  {
+    const char *exempt_mask = node->data;
+
+    if (!match(exempt_mask, mask) || !match(exempt_mask, ipmask))
+      return 1;
+  }
+
+  return 0;
+}
+
 /* scan_init
 
       Initialize scanner and masks list based on configuration.
@@ -936,33 +963,6 @@ scan_manual(char *param, const struct ChannelConf *target)
              ss->manual_target->name, ss->ip);
     scan_free(ss);
   }
-}
-
-/* scan_checkexempt
- *
- *    Check mask against exempt list.
- *
- * Parameters:
- *     mask: Mask to check
- *
- * Return:
- *     1 if mask is in list
- *     0 if mask is not in list
- */
-int
-scan_checkexempt(const char *mask, const char *ipmask)
-{
-  node_t *node;
-
-  LIST_FOREACH(node, ExemptItem->masks->head)
-  {
-    const char *exempt_mask = node->data;
-
-    if (!match(exempt_mask, mask) || !match(exempt_mask, ipmask))
-      return 1;
-  }
-
-  return 0;
 }
 
 /* scan_log
