@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_REVISION([$Id$])
 AC_PREREQ(2.69)
 
-AC_INIT([hopm], [1.1.0beta1], [bugs@ircd-hybrid.org])
+AC_INIT([hopm], [1.1.0], [bugs@ircd-hybrid.org])
 AM_INIT_AUTOMAKE(1.15)
 AM_MAINTAINER_MODE
 AC_CONFIG_SRCDIR(src/opercmd.h)
