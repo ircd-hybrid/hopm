@@ -1,23 +1,24 @@
 Introduction
 ------------
 
-HOPM (Hybrid Open Proxy Monitor) is an open proxy monitoring bot designed for
-Hybrid based ircds. The bot is designed to monitor an individual server (all
-servers on the network have to run their own bot) with a local operator {}
-block and monitor connections. When a client connects to the server, HOPM will
-scan the connection for insecure proxies. Insecure proxies are determined by
-attempting to connect the proxy back to another host (usually the IRC server in
-question).
+HOPM (Hybrid Open Proxy Monitor) is an open proxy monitoring bot designed to
+monitor an individual server (all servers on the network have to run their own
+bot if the IRCD doesn't support 'farconnect' user mode) with a local
+operator {} block and monitor connections. When a client connects to a server,
+HOPM will scan the connection for insecure proxies. Insecure proxies are
+determined by attempting to connect the proxy back to another host (usually the
+IRC server in question).
 
-HOPM is written ground-up in C language, concept derived from wgmon. It
+HOPM is written ground-up in C language and it is an improved fork of BOPM
+(blitzed open proxy monitor) which is a concept derived from wgmon. It
 improves on wgmon with HTTP support, faster scanning (it can scan clients
-simultaneously), better layout (scalability), and dnsbl support.
+simultaneously), better layout (scalability), and DNSBL support.
 
 
 Requirements
 ------------
 
-o An IRCd which presents connection notices in a format which HOPM
+o An IRCD which presents connection notices in a format which HOPM
   recognises (see below).
 
 o A host with full connectivity for all the ports you wish to scan. i.e. is
@@ -42,9 +43,9 @@ ngIRCd 22
 Bahamut 2.0.x
 Charybdis 3.4.x
 
-HOPM is designed for ircd-hybrid based ircds. It is easily suitable for any
-other ircd with little modification (connregex in hopm.conf). However, if an
-ircd does not send IP addresses in a connection notice, HOPM will not work.
+HOPM is easily suitable for any other IRCD with little modification (connregex
+in hopm.conf). However, if an IRCD does not send IP addresses in a connection
+notice, HOPM will not work.
 
 
 Command Line Options
@@ -77,8 +78,8 @@ for example !all stats.
 Rehashing HOPM
 --------------
 
-A /kill to HOPM will cause the process to restart, rehashing the configuration file
-and ending all queued scans.
+A /quote KILL to HOPM will cause the process to restart, rehashing the
+configuration file and ending all queued scans.
 
 
 Logging
