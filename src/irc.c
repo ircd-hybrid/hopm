@@ -843,7 +843,7 @@ irc_send(const char *data, ...)
   }
 }
 
-/* irc_send
+/* irc_send_channels
  *
  *    Send privmsg to all channels.
  *
