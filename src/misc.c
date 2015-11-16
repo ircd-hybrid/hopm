@@ -31,30 +31,30 @@
  * much time it represents, e.g. "2 hours 45 minutes 8 seconds"
  */
 const char *
-dissect_time(time_t time)
+dissect_time(time_t duration)
 {
   static char buf[64];
   unsigned int days = 0, hours = 0, minutes = 0, seconds = 0;
 
-  while (time >= 60 * 60 * 24)
+  while (duration >= 60 * 60 * 24)
   {
-    time -= 60 * 60 * 24;
+    duration -= 60 * 60 * 24;
     ++days;
   }
 
-  while (time >= 60 * 60)
+  while (duration >= 60 * 60)
   {
-    time -= 60 * 60;
+    duration -= 60 * 60;
     ++hours;
   }
 
-  while (time >= 60)
+  while (duration >= 60)
   {
-    time -= 60;
+    duration -= 60;
     ++minutes;
   }
 
-  seconds = time;
+  seconds = duration;
 
   snprintf(buf, sizeof(buf), "%u day%s, %02u:%02u:%02u",
            days, days == 1 ? "" : "s", hours, minutes, seconds);
