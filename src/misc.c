@@ -31,9 +31,9 @@
  * much time it represents, e.g. "2 hours 45 minutes 8 seconds"
  */
 const char *
-dissect_time(time_t duration)
+time_dissect(time_t duration)
 {
-  static char buf[64];
+  static char buf[32];  /* 32 = sizeof("9999999999999999 days, 23:59:59") */
   unsigned int days = 0, hours = 0, minutes = 0, seconds = 0;
 
   while (duration >= 60 * 60 * 24)
