@@ -154,7 +154,7 @@ stats_output(const char *target)
   time(&present);
   uptime = present - STATS_UPTIME;
 
-  irc_send("PRIVMSG %s :Uptime: %s", target, dissect_time(uptime));
+  irc_send("PRIVMSG %s :Uptime: %s", target, time_dissect(uptime));
 
   LIST_FOREACH(p, OpmItem->blacklists->head)
   {
