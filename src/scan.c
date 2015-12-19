@@ -44,6 +44,7 @@
 #include "main.h"
 #include "memory.h"
 #include "match.h"
+#include "misc.h"
 #include "scan.h"
 
 /* Libopm */
@@ -976,17 +977,12 @@ scan_manual(char *param, const struct ChannelConf *target)
 static void
 scan_log(OPM_REMOTE_T *remote)
 {
-  char buf_present[32];
-  time_t present = 0;
   struct scan_struct *ss = remote->data;
 
   if (!(OptionsItem->scanlog && scanlogfile))
     return;
 
-  time(&present);
-  strftime(buf_present, sizeof(buf_present), "%FT%H:%M:%S%z", localtime(&present));
-
-  fprintf(scanlogfile, "[%s] %s:%d (%s) \"%s\"\n", buf_present, remote->ip,
+  fprintf(scanlogfile, "[%s] %s:%d (%s) \"%s\"\n", date_iso8601(0), remote->ip,
           remote->port, scan_gettype(remote->protocol), ss->proof);
   fflush(scanlogfile);
 }

@@ -21,5 +21,6 @@
 #ifndef MISC_H
 #define MISC_H
 
+extern const char *date_iso8601(time_t);
 extern const char *time_dissect(time_t);
 #endif
