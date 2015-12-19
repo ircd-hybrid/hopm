@@ -29,6 +29,7 @@
 
 #include "log.h"
 #include "main.h"
+#include "misc.h"
 
 
 FILE *logfile;
@@ -72,25 +73,20 @@ void
 log_printf(const char *data, ...)
 {
   char data2[513];
-  char buf_present[32];
   va_list arglist;
-  time_t present = 0;
 
   if (OPT_DEBUG == 0 && logfile == NULL)
     return;
-
-  time(&present);
-  strftime(buf_present, sizeof(buf_present), "%FT%H:%M:%S%z", localtime(&present));
 
   va_start(arglist, data);
   vsnprintf(data2, 512, data, arglist);
   va_end(arglist);
 
   if (OPT_DEBUG)
-    fprintf(stderr, "[%s] %s\n", buf_present, data2);
+    fprintf(stderr, "[%s] %s\n", date_iso8601(0), data2);
   else
   {
-    fprintf(logfile, "[%s] %s\n", buf_present, data2);
+    fprintf(logfile, "[%s] %s\n", date_iso8601(0), data2);
     fflush(logfile);
   }
 }

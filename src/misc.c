@@ -26,6 +26,24 @@
 #include "misc.h"
 
 
+const char *
+date_iso8601(time_t lclock)
+{
+  static char buf[32];
+  static time_t lclock_last;
+
+  if (!lclock)
+    lclock = time(0);
+
+  if (lclock_last != lclock)
+  {
+    lclock_last = lclock;
+    strftime(buf, sizeof(buf), "%FT%T%z", localtime(&lclock));
+  }
+
+  return buf;
+}
+
 /*
  * Split a time_t into an English-language explanation of how
  * much time it represents, e.g. "2 hours 45 minutes 8 seconds"
