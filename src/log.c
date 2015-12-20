@@ -70,23 +70,23 @@ scanlog_close(void)
 }
 
 void
-log_printf(const char *data, ...)
+log_printf(const char *fmt, ...)
 {
-  char data2[513];
-  va_list arglist;
+  char buf[512];
+  va_list args;
 
   if (OPT_DEBUG == 0 && logfile == NULL)
     return;
 
-  va_start(arglist, data);
-  vsnprintf(data2, 512, data, arglist);
-  va_end(arglist);
+  va_start(args, fmt);
+  vsnprintf(buf, sizeof(buf), fmt, args);
+  va_end(args);
 
   if (OPT_DEBUG)
-    fprintf(stderr, "[%s] %s\n", date_iso8601(0), data2);
+    fprintf(stderr, "[%s] %s\n", date_iso8601(0), buf);
   else
   {
-    fprintf(logfile, "[%s] %s\n", date_iso8601(0), data2);
+    fprintf(logfile, "[%s] %s\n", date_iso8601(0), buf);
     fflush(logfile);
   }
 }
