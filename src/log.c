@@ -72,7 +72,7 @@ scanlog_close(void)
 void
 log_printf(const char *fmt, ...)
 {
-  char buf[512];
+  char buf[LOG_BUFSIZE];
   va_list args;
 
   if (OPT_DEBUG == 0 && logfile == NULL)

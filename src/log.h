@@ -21,6 +21,8 @@
 #ifndef LOG_H
 #define LOG_H
 
+enum { LOG_BUFSIZE = 512 };
+
 extern void log_open(const char *);
 extern void log_close(void);
 extern void scanlog_open(const char *);
