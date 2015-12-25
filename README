@@ -27,7 +27,9 @@ sometimes as severe as 100% of clients being K:lined;
 
 * A UNIX OS with GNU make, a C99 compiler, etc.;
 
-* Permission from your users to portscan them for open proxies.
+* Permission from your users to portscan them for open proxies;
+
+* For HTTPS proxy detection, a working LibreSSL/OpenSSL library is required.
 
 
 Compatibility
