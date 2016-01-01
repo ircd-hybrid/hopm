@@ -36,6 +36,9 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token BLACKLIST
 %token BYTES KBYTES MBYTES
 %token CHANNEL
+%token COMMAND_INTERVAL
+%token COMMAND_QUEUE_SIZE
+%token COMMAND_TIMEOUT
 %token CONNREGEX
 %token DNS_FDLIMIT
 %token DNS_TIMEOUT
@@ -134,12 +137,15 @@ options_entry: OPTIONS '{' options_items '}' ';';
 options_items: options_items options_item |
                options_item;
 
-options_item: options_negcache         |
-              options_negcache_rebuild |
-              options_pidfile          |
-              options_dns_fdlimit      |
-              options_dns_timeout      |
-              options_scanlog          |
+options_item: options_negcache           |
+              options_negcache_rebuild   |
+              options_pidfile            |
+              options_dns_fdlimit        |
+              options_dns_timeout        |
+              options_scanlog            |
+              options_command_queue_size |
+              options_command_interval   |
+              options_command_timeout    |
               error;
 
 options_negcache: NEGCACHE '=' timespec ';'
@@ -172,6 +178,21 @@ options_scanlog: SCANLOG '=' STRING ';'
 {
   xfree(OptionsItem->scanlog);
   OptionsItem->scanlog = xstrdup($3);
+};
+
+options_command_queue_size: COMMAND_QUEUE_SIZE '=' NUMBER ';'
+{
+  OptionsItem->command_queue_size = $3;
+};
+
+options_command_interval: COMMAND_INTERVAL '=' timespec ';'
+{
+  OptionsItem->command_interval = $3;
+};
+
+options_command_timeout: COMMAND_TIMEOUT '=' timespec ';'
+{
+  OptionsItem->command_timeout = $3;
 };
 
 

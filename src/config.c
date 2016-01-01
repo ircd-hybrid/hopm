@@ -91,6 +91,9 @@ config_setup(void)
   IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
 
   /* Setup options block defaults */
+  OptionsItem->command_queue_size = 64;
+  OptionsItem->command_interval = 10;
+  OptionsItem->command_timeout = 180;
   OptionsItem->negcache = 0;   /* 0 disabled negcache */
   OptionsItem->negcache_rebuild = 43200;
   OptionsItem->pidfile = xstrdup("hopm.pid");

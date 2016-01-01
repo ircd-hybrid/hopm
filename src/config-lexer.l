@@ -91,6 +91,9 @@ AWAY                    { return AWAY;         }
 BAN_UNKNOWN             { return BAN_UNKNOWN;  }
 BLACKLIST               { return BLACKLIST;    }
 CHANNEL                 { return CHANNEL;      }
+COMMAND_INTERVAL        { return COMMAND_INTERVAL; }
+COMMAND_QUEUE_SIZE      { return COMMAND_QUEUE_SIZE; }
+COMMAND_TIMEOUT         { return COMMAND_TIMEOUT; }
 CONNREGEX               { return CONNREGEX;    }
 DNS_FDLIMIT             { return DNS_FDLIMIT;  }
 DNS_TIMEOUT             { return DNS_TIMEOUT;  }
