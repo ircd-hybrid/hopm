@@ -2,6 +2,10 @@
 o) Added 'command_queue_size', 'command_interval', and 'command_timeout',
    configuration directives to the options {} block. See doc/reference.conf
    for more information.
+o) Various updates to the reference.conf; added updated 'connregex' directives
+   for ircd-hybrid in conjunction with user mode +F (far connect notices), and
+   UnrealIRCd 4.0.0, which now uses a different format for connect notices
+o) Minor code cleanups
 
 
 -- Noteworthy changes in version 1.1.0 (2015-08-07)
