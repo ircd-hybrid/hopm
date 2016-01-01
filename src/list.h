@@ -33,7 +33,7 @@ struct _list
 {
   struct _node *head;
   struct _node *tail;
-  int elements;
+  unsigned int elements;
 };
 
 struct _node
