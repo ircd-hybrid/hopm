@@ -60,6 +60,9 @@ struct ChannelConf
 
 struct OptionsConf
 {
+  unsigned int command_queue_size;
+  time_t command_interval;
+  time_t command_timeout;
   time_t negcache;
   time_t negcache_rebuild;
   unsigned int dns_fdlimit;

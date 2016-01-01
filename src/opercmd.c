@@ -163,8 +163,8 @@ command_parse(const char *command, const struct ChannelConf *target, const char 
     log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
                source_p, target->name);
 
-  /* Only allow COMMANDMAX commands in the queue */
-  if (LIST_SIZE(&COMMANDS) >= COMMANDMAX)
+  /* Only allow OptionsItem->command_queue_size commands in the queue */
+  if (LIST_SIZE(&COMMANDS) >= OptionsItem->command_queue_size)
     return;
 
   /*
@@ -229,8 +229,8 @@ command_timer(void)
   node_t *node, *node_next;
   time_t present;
 
-  /* Only perform command removal every COMMANDINTERVAL seconds */
-  if (interval++ < COMMANDINTERVAL)
+  /* Only perform command removal every OptionsItem->command_interval seconds */
+  if (interval++ < OptionsItem->command_interval)
     return;
   else
     interval = 0;
@@ -241,7 +241,7 @@ command_timer(void)
   {
     struct Command *command = node->data;
 
-    if ((present - command->added) > COMMANDTIMEOUT)
+    if ((present - command->added) > OptionsItem->command_timeout)
     {
       command_free(command);
       list_remove(&COMMANDS, node);
