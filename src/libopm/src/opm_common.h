@@ -9,7 +9,7 @@ struct _libopm_list
 {
   struct _libopm_node *head;
   struct _libopm_node *tail;
-  int elements;
+  unsigned int elements;
 };
 
 struct _libopm_node
