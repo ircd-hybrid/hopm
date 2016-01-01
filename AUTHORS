@@ -10,10 +10,10 @@ BOPM 3.0.x:
          - libopm library, and bopm interface
          - IRC parsing
          - config file parsing
- 
+
   Andy Smith <grifferz@blitzed.org>
          - Operator command interface
-         - dnsbl_report 
+         - dnsbl_report
          - Handles all the DNSBL fun!
          - Automake/Autoconf madness
 
@@ -46,8 +46,8 @@ BOPM 1.x - 2.x:
          - Autoconfiscation (kekeke) & Automake
          - Solaris port (with thanks to Nathan Nieblas for resources)
          - Poking people with sticks until they did things
- 
-   David Leadbeater <dg@blitzed.org> 
+
+   David Leadbeater <dg@blitzed.org>
          - Developed perl script (see proxy-tools in Blitzed CVS repository) to
            test BOPM's support for scanning many clients at once
 
