@@ -509,7 +509,7 @@ scanner_target_string: TARGET_STRING '=' STRING ';'
   struct ScannerConf *item = tmp;
   node_t *node;
 
-  node = node_create($3);
+  node = node_create(xstrdup($3));
 
   if (item->target_string_created == 0)
   {
