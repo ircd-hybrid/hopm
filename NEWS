@@ -1,4 +1,4 @@
--- Noteworthy changes in version 1.1.2 (2016-??-??)
+-- Noteworthy changes in version 1.1.2 (2016-05-15)
 o) Fixed archaic bug which can cause the scanner to either detect nothing or
    to detect everything and therefore even kill legit clients
 
