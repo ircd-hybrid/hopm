@@ -2107,7 +2107,7 @@ yyreduce:
   struct ScannerConf *item = tmp;
   node_t *node;
 
-  node = node_create((yyvsp[-1].string));
+  node = node_create(xstrdup((yyvsp[-1].string)));
 
   if (item->target_string_created == 0)
   {
