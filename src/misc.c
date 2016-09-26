@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <assert.h>
 
 #include "misc.h"
 
@@ -77,4 +78,25 @@ time_dissect(time_t duration)
   snprintf(buf, sizeof(buf), "%u day%s, %02u:%02u:%02u",
            days, days == 1 ? "" : "s", hours, minutes, seconds);
   return buf;
+}
+
+/*
+ * strip_tabs(dst, src, length)
+ *
+ *   Copies src to dst, while converting all \t (tabs) into spaces.
+ */
+void
+strip_tabs(char *dest, const char *src, size_t len)
+{
+  char *d = dest;
+
+  /* Sanity check; we don't want anything nasty... */
+  assert(dest);
+  assert(src);
+  assert(len > 0);
+
+  for (; --len && *src; ++src)
+    *d++ = *src == '\t' ? ' ' : *src;
+
+  *d = '\0'; /* NUL terminate, thanks and goodbye */
 }

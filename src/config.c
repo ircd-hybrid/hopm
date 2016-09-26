@@ -27,6 +27,7 @@
 
 #include "config.h"
 #include "config-parser.h"
+#include "compat.h"
 #include "memory.h"
 #include "log.h"
 #include "scan.h"
@@ -34,9 +35,10 @@
 #include "opercmd.h"
 #include "stats.h"
 #include "firedns.h"
+#include "misc.h"
 
-extern FILE *yyin;
 
+FILE *conf_file;
 struct OptionsConf *OptionsItem = NULL;
 struct IRCConf *IRCItem = NULL;
 struct OpmConf *OpmItem = NULL;
@@ -111,14 +113,16 @@ config_load(const char *filename)
 
   log_printf("CONFIG -> Loading %s", filename);
 
-  if ((yyin = fopen(filename, "r")) == NULL)
+  strlcpy(conffilebuf, filename, sizeof(conffilebuf));
+
+  if ((conf_file = fopen(filename, "r")) == NULL)
   {
     log_printf("CONFIG -> Error opening %s: %s", filename, strerror(errno));
     exit(EXIT_FAILURE);
   }
 
   yyparse();
-  fclose(yyin);
+  fclose(conf_file);
 
   scan_init();     /* Initialize the scanners once we have the configuration */
   stats_init();    /* Initialize stats (UPTIME) */
@@ -128,6 +132,9 @@ config_load(const char *filename)
 void
 yyerror(const char *str)
 {
-  log_printf("CONFIG -> %s: line %u", str, linenum);
+  char newlinebuf[512];
+
+  strip_tabs(newlinebuf, linebuf, sizeof(newlinebuf));
+  log_printf("CONFIG -> \"%s\", line %u: %s: %s", conffilebuf, lineno + 1, str, newlinebuf);
   exit(EXIT_FAILURE);
 }
