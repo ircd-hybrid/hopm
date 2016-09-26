@@ -65,57 +65,61 @@ conf_yy_input(char *lbuf, unsigned int max_size)
   return !fgets(lbuf, max_size, conf_file) ? 0 : strlen(lbuf);
 }
 
-
 %}
 
-string                 \"[^\"\n]*[\"\n]
-include                \.include{WS}(\<.*\>|\".*\")
-comment                ("//"|"#").*
-whitespace             [ \t\r]*
+WS        [[:blank:]]*
+DIGIT     [[:digit:]]+
+COMMENT   ("//"|"#").*
+qstring   \"[^\"\n]*[\"\n]
+include   \.include{WS}(\<.*\>|\".*\")
 
 %%
+{include}       { conf_include(); }
+"/*"            { ccomment(); }
+\n.*            { strlcpy(linebuf, yytext + 1, sizeof(linebuf)); ++lineno; yyless(1); }
+{WS}            ;
+{COMMENT}       ;
+{DIGIT}         { yylval.number = atoi(yytext); return NUMBER; }
+{qstring}       { if (yytext[yyleng - 2] == '\\')
+                  {
+                    yyless(yyleng - 1);  /* Return last quote */
+                    yymore();  /* Append next string */
+                  }
+                  else
+                  {
+                    yylval.string = yytext + 1;
 
-"/*"                    { ccomment(); }
+                    if (yylval.string[yyleng - 2] != '"')
+                      log_printf("CONFIG ->Unterminated character string");
+                    else
+                    {
+                      unsigned int i = 0, j = 0;
 
-{comment}               ;
+                      yylval.string[yyleng - 2] = '\0';  /* Remove close quote */
 
-{string}                {
-                           /* QSTRING from Hybrid7. Why re-invent the wheel? */
+                      for (; yylval.string[i] != '\0'; ++i, ++j)
+                      {
+                        if (yylval.string[i] != '\\')
+                          yylval.string[j] = yylval.string[i];
+                        else
+                        {
+                          ++i;
 
-                           if(yytext[yyleng-2] == '\\')
-                           {
-                              yyless(yyleng-1); /* return last quote */
-                              yymore();         /* append next string */
-                           }
-                           else
-                           {
-                              yylval.string = yytext+1;
-                              if(yylval.string[yyleng-2] != '"') ; /* log error */
-                              else
-                              {
-                                 int i,j;
+                          if (yylval.string[i] == '\0')  /* XXX: should not happen */
+                          {
+                            log_printf("CONFIG -> Unterminated character string");
+                            break;
+                          }
 
-                                 yylval.string[yyleng-2] = '\0'; /* remove close
-                                                                  *  quote
-                                                                  */
-
-                                 for (j=i=0 ;yylval.string[i] != '\0'; i++,j++)
-                                 {
-                                    if (yylval.string[i] != '\\')
-                                    {
-                                       yylval.string[j] = yylval.string[i];
-                                    }
-                                    else
-                                    {
-                                        i++;
-                                        yylval.string[j] = yylval.string[i];
-                                    }
-                                 }
-                                 yylval.string[j] = '\0';
-                                 return STRING;
-                              }
-                           }
+                          yylval.string[j] = yylval.string[i];
                         }
+                      }
+
+                      yylval.string[j] = '\0';
+                      return STRING;
+                    }
+                  }
+                }
 
 AWAY                    { return AWAY;         }
 BAN_UNKNOWN             { return BAN_UNKNOWN;  }
@@ -243,16 +247,6 @@ DREAMBOX                {
                         }
 
 
-
-[0-9]+                  {
-                           yylval.number=atoi(yytext);
-                           return NUMBER;
-                        }
-
-
-
-
-
 TRUE                     {
                            yylval.number=1;
                            return NUMBER;
@@ -283,16 +277,7 @@ OFF                      {
                            return NUMBER;
                          }
 
-
-\n.*                     {
-                           strlcpy(linebuf, yytext + 1, sizeof(linebuf));
-                           ++lineno;
-                           yyless(1);
-                         }
-
-{whitespace}            /* ignore whitespace */;
-
-.                       return yytext[0];
+.                       { return yytext[0]; }
 <<EOF>>                 { if (conf_eof()) yyterminate(); }
 
 %%
