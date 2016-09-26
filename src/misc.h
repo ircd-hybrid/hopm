@@ -23,5 +23,5 @@
 
 extern const char *date_iso8601(time_t);
 extern const char *time_dissect(time_t);
-extern void strip_tabs(char *, const char *, size_t);
+extern char *stripws(char *);
 #endif

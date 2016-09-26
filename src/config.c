@@ -132,9 +132,6 @@ config_load(const char *filename)
 void
 yyerror(const char *str)
 {
-  char newlinebuf[512];
-
-  strip_tabs(newlinebuf, linebuf, sizeof(newlinebuf));
-  log_printf("CONFIG -> \"%s\", line %u: %s: %s", conffilebuf, lineno + 1, str, newlinebuf);
+  log_printf("CONFIG -> \"%s\", line %u: %s: %s", conffilebuf, lineno + 1, str, stripws(linebuf));
   exit(EXIT_FAILURE);
 }
