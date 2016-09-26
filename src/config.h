@@ -27,7 +27,9 @@
 #include "libopm/src/opm_types.h"
 
 extern char linebuf[512];
-extern unsigned int linenum;
+extern char conffilebuf[512];
+extern unsigned int lineno;
+extern FILE *conf_file;
 
 struct IRCConf
 {
