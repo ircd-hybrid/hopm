@@ -132,6 +132,6 @@ config_load(const char *filename)
 void
 yyerror(const char *str)
 {
-  log_printf("CONFIG -> \"%s\", line %u: %s: %s", conffilebuf, lineno + 1, str, stripws(linebuf));
+  log_printf("CONFIG -> \"%s\", line %u: %s: %s", conffilebuf, lineno, str, stripws(linebuf));
   exit(EXIT_FAILURE);
 }
