@@ -369,7 +369,7 @@ conf_include(void)
   conf_file = tmp_fbfile_in;
 
   snprintf(conffilebuf, sizeof(conffilebuf), "%s", filenamebuf);
-  yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
+  yy_switch_to_buffer(yy_create_buffer(NULL, YY_BUF_SIZE));
 }
 
 static int
