@@ -345,10 +345,7 @@ static int
 conf_eof(void)
 {
   if (include_stack_ptr == 0)
-  {
-    lineno = 1;
     return 1;
-  }
 
   /* switch buffer */
   struct included_file *file = &include_stack[--include_stack_ptr];
