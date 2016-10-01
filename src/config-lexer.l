@@ -20,6 +20,7 @@
 
 %option case-insensitive
 %option noyywrap
+%option noinput
 %option nounput
 %option never-interactive
 
