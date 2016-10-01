@@ -23,6 +23,8 @@
 %option nounput
 %option never-interactive
 
+%x IN_COMMENT
+
 %{
 #include <stdio.h>
 #include <string.h>
@@ -57,7 +59,6 @@ static struct included_file
 static unsigned int include_stack_ptr;
 
 
-static void ccomment(void);
 static void conf_include(void);
 static int conf_eof(void);
 
@@ -81,8 +82,14 @@ qstring   \"[^\"\n]*[\"\n]
 include   \.include{WS}(\<.*\>|\".*\")
 
 %%
+
+"/*"                { BEGIN IN_COMMENT; }
+<IN_COMMENT>"*/"    { BEGIN INITIAL;    }
+<IN_COMMENT>.       ;  /* Eat everything but a newline */
+<IN_COMMENT>\n      { ++lineno; }
+<IN_COMMENT><<EOF>> { BEGIN INITIAL; if (conf_eof()) yyterminate(); }
+
 {include}       { conf_include(); }
-"/*"            { ccomment(); }
 \n.*            { strlcpy(linebuf, yytext + 1, sizeof(linebuf)); ++lineno; yyless(1); }
 {WS}            ;
 {COMMENT}       ;
@@ -288,45 +295,6 @@ OFF                      {
 <<EOF>>                 { if (conf_eof()) yyterminate(); }
 
 %%
-
-
-/* C-comment ignoring routine -kre*/
-static void
-ccomment(void)
-{
-  int c = 0;
-
-  /* log(L_NOTICE, "got comment"); */
-  while (1)
-  {
-    while ((c = input()) != '*' && c != EOF)
-      if (c == '\n')
-        ++lineno;
-
-    if (c == '*')
-    {
-      while ((c = input()) == '*')
-        /* Nothing */ ;
-      if (c == '/')
-        break;
-      else if (c == '\n')
-        ++lineno;
-    }
-
-    if (c == EOF)
-    {
-      YY_FATAL_ERROR("EOF in comment");
-
-      /* XXX hack alert this disables
-       * the stupid unused function warning
-       * gcc generates
-       */
-      if (1 == 0)
-        yy_fatal_error("EOF in comment");
-      break;
-    }
-  }
-}
 
 static void
 conf_include(void)
