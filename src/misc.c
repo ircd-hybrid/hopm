@@ -81,7 +81,7 @@ time_dissect(time_t duration)
   return buf;
 }
 
-char *
+const char *
 stripws(char *txt)
 {
   while (*txt == '\t' || *txt == ' ')
