@@ -130,6 +130,10 @@ negcache_rebuild(void)
 
     if (n->seen + OptionsItem->negcache < time(NULL))
     {
+      if (OPT_DEBUG >= 2)
+        log_printf("NEGCACHE -> Deleting expired negcache node for %s added at %lu",
+                   prefix_toa(pnode->prefix), n->seen);
+
       list_remove(negcache_list, node);
       node_free(node);
       xfree(n);
