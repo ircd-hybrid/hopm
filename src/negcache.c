@@ -31,20 +31,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
 #include <time.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 
-#include "irc.h"
+#include "list.h"
+#include "patricia.h"
 #include "negcache.h"
 #include "config.h"
 #include "memory.h"
 #include "log.h"
-#include "patricia.h"
-#include "list.h"
 
 
 extern unsigned int OPT_DEBUG;
