@@ -302,7 +302,7 @@ scan_init(void)
     if (OPT_DEBUG >= 2)
       log_printf("SCAN -> Initializing negative cache");
 
-    nc_init(&nc_head);
+    negcache_init();
   }
 }
 
@@ -341,14 +341,14 @@ scan_connect(const char *user[], const char *msg)
   if (OptionsItem->negcache)
   {
     struct sockaddr_in ip;
-
+/* TBC: we currently only do ipv4 */
     if (inet_pton(AF_INET, user[3], &ip.sin_addr) <= 0)
     {
       log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
       return;
     }
 
-    if (check_neg_cache(ip.sin_addr.s_addr))
+    if (check_neg_cache(user[3]))
     {
       if (OPT_DEBUG)
         log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. Skipping all tests.",

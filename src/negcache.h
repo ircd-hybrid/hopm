@@ -20,19 +20,15 @@
 
 #ifndef NEGCACHE_H
 #define NEGCACHE_H
+#include "patricia.h"
 
-struct cnode
+struct negcache_item
 {
-  unsigned long ip;  /* IP address, network byte order. */
-  time_t seen;  /* When it was last seen. */
-  unsigned int b;  /* Index of bit to be tested. */
-  struct cnode *l;  /* Node to the left. */
-  struct cnode *r;  /* Node to the right. */
+  time_t seen;
 };
 
-extern struct cnode *nc_head;
-extern void nc_init(struct cnode **);
-extern struct cnode *check_neg_cache(const unsigned long);
+extern void negcache_init(void);
+extern struct negcache_item *check_neg_cache(const char *);
 extern void negcache_insert(const char *);
 extern void negcache_rebuild(void);
 #endif
