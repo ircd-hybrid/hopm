@@ -98,7 +98,7 @@ negcache_insert(const char *ipstr)
 {
   patricia_node_t *pnode = make_and_lookup(negcache_trie, (char *)ipstr);
   if (!pnode)
-    return;
+    return;  /* Malformed IP address */
 
   struct negcache_item *n = xcalloc(sizeof(*n));
   n->seen = time(NULL);
