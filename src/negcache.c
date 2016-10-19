@@ -19,7 +19,7 @@
  */
 
 /*
- * A Negative caching implementation for IPv4 addresses.  The idea is that
+ * A Negative caching implementation for IPv4/IPv6 addresses.  The idea is that
  * every time an IP address is seen, it is checked against a patricia trie.  If
  * the IP address was previously seen and within an acceptable period of time,
  * it is not scanned again.  Otherwise, the address is scanned as normal.  If
@@ -90,27 +90,19 @@ check_neg_cache(const char *ipstr)
 }
 
 /*
- * Prepare an ASCII string representing an IPv4 address for inserting into
+ * Prepare an ASCII string representing an IPv4/IPv6 address for inserting into
  * our negative cache.
-
- TBC: we currently only do ipv4
-
  */
 void
 negcache_insert(const char *ipstr)
 {
-  struct sockaddr_in ip;
-
-  if (inet_pton(AF_INET, ipstr, &ip.sin_addr) <= 0)
-  {
-    log_printf("NEGCACHE -> Invalid IPv4 address '%s'", ipstr);
+  patricia_node_t *pnode = make_and_lookup(negcache_trie, (char *)ipstr);
+  if (!pnode)
     return;
-  }
 
   struct negcache_item *n = xcalloc(sizeof(*n));
   n->seen = time(NULL);
 
-  patricia_node_t *pnode = make_and_lookup(negcache_trie, (char *)ipstr);
   pnode->data = n;
   list_add(negcache_list, node_create(pnode));
 }
