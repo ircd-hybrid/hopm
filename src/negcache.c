@@ -71,7 +71,7 @@ check_neg_cache(const char *ipstr)
   if (OptionsItem->negcache == 0)
     return NULL;
 
-  patricia_node_t *pnode = try_search_exact(negcache_trie, (char *)ipstr);
+  patricia_node_t *pnode = try_search_exact(negcache_trie, ipstr);
   if (pnode)
   {
     struct negcache_item *n = pnode->data;
@@ -90,7 +90,7 @@ check_neg_cache(const char *ipstr)
 void
 negcache_insert(const char *ipstr)
 {
-  patricia_node_t *pnode = make_and_lookup(negcache_trie, (char *)ipstr);
+  patricia_node_t *pnode = make_and_lookup(negcache_trie, ipstr);
   if (!pnode)
     return;  /* Malformed IP address */
 
