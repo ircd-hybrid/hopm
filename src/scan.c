@@ -340,14 +340,6 @@ scan_connect(const char *user[], const char *msg)
   /* Check negcache before anything */
   if (OptionsItem->negcache)
   {
-    struct sockaddr_in ip;
-/* TBC: we currently only do ipv4 */
-    if (inet_pton(AF_INET, user[3], &ip.sin_addr) <= 0)
-    {
-      log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
-      return;
-    }
-
     if (check_neg_cache(user[3]))
     {
       if (OPT_DEBUG)
