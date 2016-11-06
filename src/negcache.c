@@ -57,7 +57,7 @@ negcache_init(void)
     /* Cache already exists */
     return;
 
-  negcache_trie = New_Patricia(PATRICIA_MAXBITS);
+  negcache_trie = patricia_new(PATRICIA_MAXBITS);
   negcache_list = list_create();
 }
 
@@ -71,7 +71,7 @@ check_neg_cache(const char *ipstr)
   if (OptionsItem->negcache == 0)
     return NULL;
 
-  patricia_node_t *pnode = try_search_exact(negcache_trie, ipstr);
+  patricia_node_t *pnode = patricia_try_search_exact(negcache_trie, ipstr);
   if (pnode)
   {
     struct negcache_item *n = pnode->data;
@@ -90,7 +90,7 @@ check_neg_cache(const char *ipstr)
 void
 negcache_insert(const char *ipstr)
 {
-  patricia_node_t *pnode = make_and_lookup(negcache_trie, ipstr);
+  patricia_node_t *pnode = patricia_make_and_lookup(negcache_trie, ipstr);
   if (!pnode || pnode->data)
     return;  /* Malformed IP address or already added to the trie */
 
@@ -118,7 +118,7 @@ negcache_rebuild(void)
     {
       if (OPT_DEBUG >= 2)
         log_printf("NEGCACHE -> Deleting expired negcache node for %s added at %lu",
-                   prefix_toa(pnode->prefix), n->seen);
+                   patricia_prefix_toa(pnode->prefix, 0), n->seen);
 
       list_remove(negcache_list, node);
       node_free(node);
