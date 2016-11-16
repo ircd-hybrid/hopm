@@ -557,7 +557,15 @@ scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
   scs = data;
   ss = remote->data;
 
-  if (ss->manual_target == NULL)
+  if (ss->manual_target)
+  {
+    irc_send("PRIVMSG %s :CHECK -> OPEN PROXY %s:%d (%s) [%s]",
+             ss->manual_target->name, remote->ip, remote->port,
+             scan_gettype(remote->protocol), scs->name);
+    log_printf("SCAN -> OPEN PROXY %s:%d (%s) [%s]", remote->ip,
+               remote->port, scan_gettype(remote->protocol), scs->name);
+  }
+  else
   {
     /* kline and close scan */
     scan_positive(ss, IRCItem->kline, scan_gettype(remote->protocol));
@@ -570,14 +578,6 @@ scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
                       remote->port, scan_gettype(remote->protocol), scs->name);
     log_printf("SCAN -> OPEN PROXY %s!%s@%s %s:%d (%s) [%s]",
                ss->irc_nick, ss->irc_username, ss->irc_hostname, remote->ip,
-               remote->port, scan_gettype(remote->protocol), scs->name);
-  }
-  else
-  {
-    irc_send("PRIVMSG %s :CHECK -> OPEN PROXY %s:%d (%s) [%s]",
-             ss->manual_target->name, remote->ip, remote->port,
-             scan_gettype(remote->protocol), scs->name);
-    log_printf("SCAN -> OPEN PROXY %s:%d (%s) [%s]", remote->ip,
                remote->port, scan_gettype(remote->protocol), scs->name);
   }
 
