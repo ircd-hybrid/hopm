@@ -116,8 +116,8 @@ am_hopm_OBJECTS = compat.$(OBJEXT) config-parser.$(OBJEXT) \
 	config-lexer.$(OBJEXT) config.$(OBJEXT) dnsbl.$(OBJEXT) \
 	firedns.$(OBJEXT) irc.$(OBJEXT) list.$(OBJEXT) log.$(OBJEXT) \
 	main.$(OBJEXT) memory.$(OBJEXT) match.$(OBJEXT) misc.$(OBJEXT) \
-	negcache.$(OBJEXT) opercmd.$(OBJEXT) scan.$(OBJEXT) \
-	stats.$(OBJEXT)
+	negcache.$(OBJEXT) opercmd.$(OBJEXT) patricia.$(OBJEXT) \
+	scan.$(OBJEXT) stats.$(OBJEXT)
 hopm_OBJECTS = $(am_hopm_OBJECTS)
 hopm_DEPENDENCIES = libopm/src/.libs/libopm.a @LIBOBJS@
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -406,6 +406,8 @@ hopm_SOURCES = compat.c        \
                opercmd.h       \
                options.h       \
                patchlevel.h    \
+               patricia.c      \
+               patricia.h      \
                scan.c          \
                scan.h          \
                serno.h         \
@@ -540,6 +542,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/negcache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opercmd.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/patricia.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scan.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stats.Po@am__quote@
 

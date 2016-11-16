@@ -302,7 +302,7 @@ scan_init(void)
     if (OPT_DEBUG >= 2)
       log_printf("SCAN -> Initializing negative cache");
 
-    nc_init(&nc_head);
+    negcache_init();
   }
 }
 
@@ -338,23 +338,12 @@ scan_connect(const char *user[], const char *msg)
   char addrmask[MSGLENMAX];
 
   /* Check negcache before anything */
-  if (OptionsItem->negcache)
+  if (negcache_check(user[3]))
   {
-    struct sockaddr_in ip;
-
-    if (inet_pton(AF_INET, user[3], &ip.sin_addr) <= 0)
-    {
-      log_printf("SCAN -> Invalid IPv4 address '%s'!", user[3]);
-      return;
-    }
-
-    if (check_neg_cache(ip.sin_addr.s_addr))
-    {
-      if (OPT_DEBUG)
-        log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. Skipping all tests.",
-                   user[0], user[1], user[2], user[3]);
-      return;
-    }
+    if (OPT_DEBUG)
+      log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. Skipping all tests.",
+                 user[0], user[1], user[2], user[3]);
+    return;
   }
 
   /* Generate user mask */

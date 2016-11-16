@@ -35,6 +35,8 @@ hopm_SOURCES = compat.c        \
                opercmd.h       \
                options.h       \
                patchlevel.h    \
+               patricia.c      \
+               patricia.h      \
                scan.c          \
                scan.h          \
                serno.h         \

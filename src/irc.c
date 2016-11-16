@@ -775,7 +775,7 @@ irc_cycle(void)
   {
     /* Initialise negative cache. */
     if (OptionsItem->negcache)
-      nc_init(&nc_head);
+      negcache_init();
 
     /* Resolve remote host. */
     irc_init();
