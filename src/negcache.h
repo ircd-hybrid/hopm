@@ -20,7 +20,6 @@
 
 #ifndef NEGCACHE_H
 #define NEGCACHE_H
-#include "patricia.h"
 
 struct negcache_item
 {
