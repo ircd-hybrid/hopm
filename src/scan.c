@@ -338,15 +338,12 @@ scan_connect(const char *user[], const char *msg)
   char addrmask[MSGLENMAX];
 
   /* Check negcache before anything */
-  if (OptionsItem->negcache)
+  if (negcache_check(user[3]))
   {
-    if (check_neg_cache(user[3]))
-    {
-      if (OPT_DEBUG)
-        log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. Skipping all tests.",
-                   user[0], user[1], user[2], user[3]);
-      return;
-    }
+    if (OPT_DEBUG)
+      log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. Skipping all tests.",
+                 user[0], user[1], user[2], user[3]);
+    return;
   }
 
   /* Generate user mask */

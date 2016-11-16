@@ -28,7 +28,7 @@ struct negcache_item
 };
 
 extern void negcache_init(void);
-extern struct negcache_item *check_neg_cache(const char *);
+extern struct negcache_item *negcache_check(const char *);
 extern void negcache_insert(const char *);
 extern void negcache_rebuild(void);
 #endif

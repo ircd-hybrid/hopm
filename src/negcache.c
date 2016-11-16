@@ -66,7 +66,7 @@ negcache_init(void)
  * recently enough.  Return a pointer to its node if so, NULL otherwise.
  */
 struct negcache_item *
-check_neg_cache(const char *ipstr)
+negcache_check(const char *ipstr)
 {
   if (OptionsItem->negcache == 0)
     return NULL;
