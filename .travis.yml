@@ -10,13 +10,8 @@ compiler:
  - gcc
  - clang
 
-matrix:
-  exclude:
-    - os: osx
-      compiler: gcc
-
 script:
- - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then export CC=gcc-4.8; fi
+ - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then export CC=$(ls -t /usr/local/bin/gcc-?.*); fi
  - ./configure
  - make
  - sudo make install
@@ -28,5 +23,3 @@ notifications:
   channels:
   - "irc.ircd-hybrid.org#ircd-coders"
   skip_join: true
-
-osx_image: xcode61
