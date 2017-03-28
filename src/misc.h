@@ -21,7 +21,11 @@
 #ifndef MISC_H
 #define MISC_H
 
+#include <arpa/inet.h>
+
 extern const char *date_iso8601(time_t);
 extern const char *time_dissect(time_t);
 extern const char *stripws(char *);
+extern const int format_reverse_inet6(const struct in6_addr *, char *, size_t, const char *);
+extern const int format_reverse_inet(const struct in_addr *, char *, size_t, const char *);
 #endif

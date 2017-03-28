@@ -121,6 +121,7 @@ struct BlacklistConf
   int ban_unknown;
   list_t *reply;
   unsigned int stats_recv;
+  unsigned int address_family;
 };
 
 struct BlacklistReplyConf
