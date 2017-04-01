@@ -81,7 +81,7 @@ dnsbl_add(struct scan_struct *ss)
   {
     struct BlacklistConf *bl = node->data;
 
-    if (bl->address_family != addr_res->ai_family)
+    if (bl->address_family & (1<<addr_res->ai_family) == 0)
     {
       continue;
     }

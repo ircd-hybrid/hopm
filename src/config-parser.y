@@ -638,17 +638,23 @@ blacklist_name: NAME '=' STRING ';'
   item->name = xstrdup($3);
 };
 
-blacklist_address_family: ADDRESS_FAMILY '=' NUMBER ';'
+blacklist_address_family: ADDRESS_FAMILY '=' blacklist_address_family_items ';';
+
+blacklist_address_family_items: blacklist_address_family_item |
+                                blacklist_address_family_item ',' blacklist_address_family_items;
+
+blacklist_address_family_item: STRING 
 {
   struct BlacklistConf *blacklist = tmp;
-  printf("address_familiy setter\n");
-  if ($3 == 6) {
-    blacklist->address_family = AF_INET6;
-  } else if ($3 == 4) {
-    blacklist->address_family = AF_INET;
-  } else
-    yyerror("Unknown blacklist address_family defined");
-};
+  if (strcmp("ipv4", $1) == 0) {
+    blacklist->address_family |= 1<<AF_INET;
+  } else if (strcmp("ipv6", $1) == 0) {
+    blacklist->address_family |= 1<<AF_INET6;
+  } else {
+     yyerror("Unknown blacklist address_family defined");
+  }
+}
+
 
 blacklist_kline: KLINE '=' STRING ';'
 {
