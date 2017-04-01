@@ -21,6 +21,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include <arpa/inet.h>
 
 #include "memory.h"
 #include "config.h"
@@ -31,6 +32,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 
 %}
 
+%token ADDRESS_FAMILY
 %token AWAY
 %token BAN_UNKNOWN
 %token BLACKLIST
@@ -608,6 +610,7 @@ opm_blacklist_entry:
   item->ban_unknown = 0;
   item->type = A_BITMASK;
   item->reply = list_create();
+  item->address_family = AF_INET;
 
   node = node_create(item);
   list_add(OpmItem->blacklists, node);
@@ -619,11 +622,12 @@ BLACKLIST '{' blacklist_items '}' ';';
 blacklist_items: blacklist_items blacklist_item |
                  blacklist_item;
 
-blacklist_item: blacklist_name        |
-                blacklist_type        |
-                blacklist_kline       |
-                blacklist_ban_unknown |
-                blacklist_reply       |
+blacklist_item: blacklist_name           |
+                blacklist_address_family |
+                blacklist_type           |
+                blacklist_kline          |
+                blacklist_ban_unknown    |
+                blacklist_reply          |
                 error;
 
 blacklist_name: NAME '=' STRING ';'
@@ -633,6 +637,24 @@ blacklist_name: NAME '=' STRING ';'
   xfree(item->name);
   item->name = xstrdup($3);
 };
+
+blacklist_address_family: ADDRESS_FAMILY '=' blacklist_address_family_items ';';
+
+blacklist_address_family_items: blacklist_address_family_item |
+                                blacklist_address_family_item ',' blacklist_address_family_items;
+
+blacklist_address_family_item: STRING 
+{
+  struct BlacklistConf *blacklist = tmp;
+  if (strcmp("ipv4", $1) == 0) {
+    blacklist->address_family |= 1<<AF_INET;
+  } else if (strcmp("ipv6", $1) == 0) {
+    blacklist->address_family |= 1<<AF_INET6;
+  } else {
+     yyerror("Unknown blacklist address_family defined");
+  }
+}
+
 
 blacklist_kline: KLINE '=' STRING ';'
 {

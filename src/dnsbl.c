@@ -27,6 +27,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 #include <time.h>
 #include <errno.h>
 #include <assert.h>
@@ -42,6 +43,7 @@
 #include "scan.h"
 #include "irc.h"
 #include "stats.h"
+#include "misc.h"
 
 
 /*
@@ -51,32 +53,48 @@ void
 dnsbl_add(struct scan_struct *ss)
 {
   struct in_addr in;
-  unsigned char a, b, c, d;
+  struct in6_addr in6;
+  struct addrinfo hint, *addr_res = NULL;
   char lookup[128];
   node_t *node;
   int res;
   struct dnsbl_scan *ds;
 
-  if (inet_pton(AF_INET, ss->ip, &in) <= 0)
+  memset(&hint, '\0', sizeof(hint));
+  hint.ai_family = PF_UNSPEC;
+  hint.ai_flags = AI_NUMERICHOST;
+
+  res = getaddrinfo(ss->ip, NULL, &hint, &addr_res);
+  if (res > 0)
   {
     log_printf("DNSBL -> Invalid address '%s', ignoring.", ss->ip);
     return;
   }
 
-  d = (unsigned char)(in.s_addr >> 24) & 0xFF;
-  c = (unsigned char)(in.s_addr >> 16) & 0xFF;
-  b = (unsigned char)(in.s_addr >>  8) & 0xFF;
-  a = (unsigned char) in.s_addr & 0xFF;
+  if (addr_res->ai_family != AF_INET && addr_res->ai_family != AF_INET6)
+  {
+    log_printf("DNSBL -> unsupported address family for '%s', ignoring.", ss->ip);
+    return;
+  }
 
   LIST_FOREACH(node, OpmItem->blacklists->head)
   {
     struct BlacklistConf *bl = node->data;
 
-#ifdef WORDS_BIGENDIAN
-    snprintf(lookup, sizeof(lookup), "%d.%d.%d.%d.%s", a, b, c, d, bl->name);
-#else
-    snprintf(lookup, sizeof(lookup), "%d.%d.%d.%d.%s", d, c, b, a, bl->name);
-#endif
+    if (bl->address_family & (1<<addr_res->ai_family) == 0)
+    {
+      continue;
+    }
+
+    switch (addr_res->ai_family)
+    {
+      case AF_INET:
+        format_reverse_inet(&(((struct sockaddr_in*)(addr_res->ai_addr))->sin_addr), lookup, sizeof lookup, bl->name);
+      break;
+      case AF_INET6:
+        format_reverse_inet6(&(((struct sockaddr_in6*)(addr_res->ai_addr))->sin6_addr), lookup, sizeof lookup, bl->name);
+      break;
+    }
 
     ds = xcalloc(sizeof *ds);
     ds->ss = ss;

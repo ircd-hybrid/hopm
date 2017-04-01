@@ -136,6 +136,7 @@ include   \.include{WS}(\<.*\>|\".*\")
                   }
                 }
 
+ADDRESS_FAMILY          { return ADDRESS_FAMILY; }
 AWAY                    { return AWAY;         }
 BAN_UNKNOWN             { return BAN_UNKNOWN;  }
 BLACKLIST               { return BLACKLIST;    }
