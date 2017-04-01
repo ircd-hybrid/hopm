@@ -104,7 +104,7 @@ format_reverse_inet(const struct in_addr* addr, char *buf, size_t buf_size, cons
   b = (unsigned char)(addr->s_addr >>  8) & 0xFF;
   a = (unsigned char) addr->s_addr & 0xFF;
 #ifdef WORDS_BIGENDIAN
-  snprintf(buf, sizeof(buf), "%d.%d.%d.%d.%s", a, b, c, d, suffix);
+  snprintf(buf, buf_size, "%d.%d.%d.%d.%s", a, b, c, d, suffix);
 #else
   snprintf(buf, buf_size, "%d.%d.%d.%d.%s", d, c, b, a, suffix);
 #endif
