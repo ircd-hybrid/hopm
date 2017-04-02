@@ -52,8 +52,6 @@ dnsbl_add(struct scan_struct *ss)
 {
   char lookup[128];
   node_t *node;
-  int res;
-  struct dnsbl_scan *ds;
   struct addrinfo hints, *addr_res;
 
   memset(&hints, 0, sizeof(hints));
@@ -85,8 +83,8 @@ dnsbl_add(struct scan_struct *ss)
       const uint8_t *b = (const uint8_t *)&v6->sin6_addr.s6_addr;
 
       snprintf(lookup, sizeof(lookup),
-               "%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x."
-               "%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%s",
+               "%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x."
+               "%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%s",
                (unsigned int)(b[15] & 0xF), (unsigned int)(b[15] >> 4),
                (unsigned int)(b[14] & 0xF), (unsigned int)(b[14] >> 4),
                (unsigned int)(b[13] & 0xF), (unsigned int)(b[13] >> 4),
@@ -105,15 +103,14 @@ dnsbl_add(struct scan_struct *ss)
                (unsigned int)(b[0] & 0xF), (unsigned int)(b[0] >> 4), bl->name);
     }
 
-    ds = xcalloc(sizeof *ds);
+    struct dnsbl_scan *ds = xcalloc(sizeof *ds);
     ds->ss = ss;
     ds->bl = bl;
 
     if (OPT_DEBUG)
       log_printf("DNSBL -> Passed '%s' to resolver", lookup);
 
-    res = firedns_getip(FDNS_QRY_A, lookup, ds);
-
+    int res = firedns_getip(FDNS_QRY_A, lookup, ds);
     if (res == -1 && firedns_errno != FDNS_ERR_FDLIMIT)
     {
       log_printf("DNSBL -> Error sending dns lookup for '%s': %s", lookup, firedns_strerror(firedns_errno));
