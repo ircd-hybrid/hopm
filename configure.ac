@@ -34,9 +34,6 @@ AX_ARG_ENABLE_WARNINGS
 
 AC_CHECK_FUNCS(strlcpy strlcat)
 
-dnl Check for host endianness
-AC_C_BIGENDIAN
-
 AC_CONFIG_FILES(Makefile doc/Makefile src/Makefile src/libopm/Makefile src/libopm/src/Makefile)
 AC_OUTPUT
 
