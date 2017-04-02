@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/socket.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
@@ -849,7 +850,9 @@ scan_manual(char *param, const struct ChannelConf *target)
   const char *ip = NULL;
   char *scannername;
   node_t *node;
-  int ret;
+  int ret, n;
+  struct sockaddr_storage storage;
+  socklen_t storage_len = 0;
 
   /* If there were no parameters sent, simply alert the user and return */
   if (param == NULL)
@@ -870,21 +873,39 @@ scan_manual(char *param, const struct ChannelConf *target)
     scannername++;
   }
 
-  /* If IP is a hostname, resolve it using gethostbyname (which will block!) */
-  if ((addr = firedns_resolveip4(ip)) == NULL)
+  memset(&storage, 0, sizeof(storage));
+
+  if ((addr = firedns_resolveip6(ip)))
+  {
+    struct sockaddr_in6 *in = (struct sockaddr_in6 *)&storage;
+
+    storage_len = sizeof(*in);
+    storage.ss_family = AF_INET6;
+    memcpy(&in->sin6_addr, addr, sizeof(in->sin6_addr));
+  }
+  else if ((addr = firedns_resolveip4(ip)))
+  {
+    struct sockaddr_in *in = (struct sockaddr_in *)&storage;
+
+    storage_len = sizeof(*in);
+    storage.ss_family = AF_INET;
+    memcpy(&in->sin_addr, addr, sizeof(in->sin_addr));
+  }
+  else
   {
     irc_send("PRIVMSG %s :CHECK -> Error resolving host '%s': %s",
              target->name, ip, firedns_strerror(firedns_errno));
     return;
   }
 
-  /* IP = the resolved IP now (it was the IP or hostname before) */
-  if ((ip = inet_ntop(AF_INET, addr, buf, sizeof(buf))) == NULL)
+  if ((n = getnameinfo((const struct sockaddr *)&storage, storage_len, buf, sizeof(buf), NULL, 0, NI_NUMERICHOST)))
   {
     irc_send("PRIVMSG %s :CHECK -> invalid address: %s",
-             target->name, strerror(errno));
+             target->name, gai_strerror(n));
     return;
   }
+
+  ip = buf;
 
   ss = xcalloc(sizeof(*ss));
   ss->ip = xstrdup(ip);
