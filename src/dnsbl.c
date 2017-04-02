@@ -102,6 +102,8 @@ dnsbl_add(struct scan_struct *ss)
                (unsigned int)(b[1] & 0xF), (unsigned int)(b[1] >> 4),
                (unsigned int)(b[0] & 0xF), (unsigned int)(b[0] >> 4), bl->name);
     }
+    else
+      continue;
 
     struct dnsbl_scan *ds = xcalloc(sizeof *ds);
     ds->ss = ss;
