@@ -253,7 +253,7 @@ firedns_resolveip4(const char *const name)
 
 /* immediate AAAA query */
 struct in6_addr *
-firedns_resolveip6(const char * const name)
+firedns_resolveip6(const char *const name)
 {
   static struct in6_addr addr;
 
@@ -307,7 +307,7 @@ firedns_resolveip(int type, const char *const name)
  * firedns_getresult()
  */
 int
-firedns_getip(int type, const char * const name, void *info)
+firedns_getip(int type, const char *const name, void *info)
 {
   struct s_connection *s;
   node_t *node;
