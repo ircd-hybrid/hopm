@@ -177,11 +177,11 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
     /* Only report it if no other scans have found positives yet. */
     scan_positive(ss, (bl->kline[0] ? bl->kline : IRCItem->kline), text_type);
 
-    irc_send_channels("DNSBL -> %s!%s@%s appears in BL zone %s (%s)",
-                      ss->irc_nick, ss->irc_username, ss->irc_hostname, bl->name,
+    irc_send_channels("DNSBL -> %s!%s@%s [%s] appears in BL zone %s (%s)",
+                      ss->irc_nick, ss->irc_username, ss->irc_hostname, ss->ip, bl->name,
                       text_type);
-    log_printf("DNSBL -> %s!%s@%s appears in BL zone %s (%s)",
-               ss->irc_nick, ss->irc_username, ss->irc_hostname, bl->name,
+    log_printf("DNSBL -> %s!%s@%s [%s] appears in BL zone %s (%s)",
+               ss->irc_nick, ss->irc_username, ss->irc_hostname,ss->ip, bl->name,
                text_type);
   }
 
@@ -221,8 +221,7 @@ dnsbl_result(struct firedns_result *res)
   {
     if (ds->ss->manual_target)
       irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s does not appear in BL zone %s",
-               ds->ss->manual_target->name, ds->ss->ip,
-               (strlen(ds->ss->ip) < strlen(res->lookup)) ? (res->lookup + strlen(ds->ss->ip) + 1) : res->lookup);
+               ds->ss->manual_target->name, ds->ss->ip, ds->bl->name);
 
     --ds->ss->scans;  /* We are done with ss here */
     scan_checkfinished(ds->ss);  /* This could free ss, don't use ss after this point */
