@@ -136,6 +136,7 @@ include   \.include{WS}(\<.*\>|\".*\")
                   }
                 }
 
+ADDRESS_FAMILY          { return ADDRESS_FAMILY; }
 AWAY                    { return AWAY;         }
 BAN_UNKNOWN             { return BAN_UNKNOWN;  }
 BLACKLIST               { return BLACKLIST;    }
@@ -151,6 +152,8 @@ DNSBL_TO                { return DNSBL_TO;     }
 EXEMPT                  { return EXEMPT;       }
 FD                      { return FD;           }
 INVITE                  { return INVITE;       }
+IPV4                    { return IPV4;         }
+IPV6                    { return IPV6;         }
 IRC                     { return IRC;          }
 KLINE                   { return KLINE;        }
 KEY                     { return KEY;          }

@@ -118,6 +118,8 @@ struct BlacklistConf
   char *name;
   char *kline;
   enum BlacklistType type;
+  unsigned int ipv4;
+  unsigned int ipv6;
   int ban_unknown;
   list_t *reply;
   unsigned int stats_recv;

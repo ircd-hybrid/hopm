@@ -25,12 +25,12 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <time.h>
 #include <errno.h>
 #include <assert.h>
-
 #include "compat.h"
 #include "config.h"
 #include "dnsbl.h"
@@ -50,33 +50,60 @@
 void
 dnsbl_add(struct scan_struct *ss)
 {
-  struct in_addr in;
-  unsigned char a, b, c, d;
   char lookup[128];
   node_t *node;
   int res;
   struct dnsbl_scan *ds;
+  struct addrinfo hints, *addr_res;
 
-  if (inet_pton(AF_INET, ss->ip, &in) <= 0)
+  memset(&hints, 0, sizeof(hints));
+  hints.ai_family = PF_UNSPEC;
+  hints.ai_flags = AI_NUMERICHOST;
+
+  if (getaddrinfo(ss->ip, NULL, &hints, &addr_res))
   {
     log_printf("DNSBL -> Invalid address '%s', ignoring.", ss->ip);
     return;
   }
 
-  d = (unsigned char)(in.s_addr >> 24) & 0xFF;
-  c = (unsigned char)(in.s_addr >> 16) & 0xFF;
-  b = (unsigned char)(in.s_addr >>  8) & 0xFF;
-  a = (unsigned char) in.s_addr & 0xFF;
-
   LIST_FOREACH(node, OpmItem->blacklists->head)
   {
     struct BlacklistConf *bl = node->data;
 
-#ifdef WORDS_BIGENDIAN
-    snprintf(lookup, sizeof(lookup), "%d.%d.%d.%d.%s", a, b, c, d, bl->name);
-#else
-    snprintf(lookup, sizeof(lookup), "%d.%d.%d.%d.%s", d, c, b, a, bl->name);
-#endif
+    if (addr_res->ai_family == AF_INET && bl->ipv4)
+    {
+      const struct sockaddr_in *v4 = (const struct sockaddr_in *)addr_res->ai_addr;
+      const uint8_t *b = (const uint8_t *)&v4->sin_addr.s_addr;
+
+      snprintf(lookup, sizeof(lookup), "%u.%u.%u.%u.%s",
+               (unsigned int)(b[3]), (unsigned int)(b[2]),
+               (unsigned int)(b[1]), (unsigned int)(b[0]), bl->name);
+    }
+    else if (addr_res->ai_family == AF_INET6 && bl->ipv6)
+    {
+      const struct sockaddr_in6 *v6 = (const struct sockaddr_in6 *)addr_res->ai_addr;
+      const uint8_t *b = (const uint8_t *)&v6->sin6_addr.s6_addr;
+
+      snprintf(lookup, sizeof(lookup),
+               "%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x."
+               "%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%s",
+               (unsigned int)(b[15] & 0xF), (unsigned int)(b[15] >> 4),
+               (unsigned int)(b[14] & 0xF), (unsigned int)(b[14] >> 4),
+               (unsigned int)(b[13] & 0xF), (unsigned int)(b[13] >> 4),
+               (unsigned int)(b[12] & 0xF), (unsigned int)(b[12] >> 4),
+               (unsigned int)(b[11] & 0xF), (unsigned int)(b[11] >> 4),
+               (unsigned int)(b[10] & 0xF), (unsigned int)(b[10] >> 4),
+               (unsigned int)(b[9] & 0xF), (unsigned int)(b[9] >> 4),
+               (unsigned int)(b[8] & 0xF), (unsigned int)(b[8] >> 4),
+               (unsigned int)(b[7] & 0xF), (unsigned int)(b[7] >> 4),
+               (unsigned int)(b[6] & 0xF), (unsigned int)(b[6] >> 4),
+               (unsigned int)(b[5] & 0xF), (unsigned int)(b[5] >> 4),
+               (unsigned int)(b[4] & 0xF), (unsigned int)(b[4] >> 4),
+               (unsigned int)(b[3] & 0xF), (unsigned int)(b[3] >> 4),
+               (unsigned int)(b[2] & 0xF), (unsigned int)(b[2] >> 4),
+               (unsigned int)(b[1] & 0xF), (unsigned int)(b[1] >> 4),
+               (unsigned int)(b[0] & 0xF), (unsigned int)(b[0] >> 4), bl->name);
+    }
 
     ds = xcalloc(sizeof *ds);
     ds->ss = ss;
@@ -95,6 +122,8 @@ dnsbl_add(struct scan_struct *ss)
     else
       ++ss->scans;  /* Increase scan count - one for each blacklist */
   }
+
+  freeaddrinfo(addr_res);
 }
 
 static void
