@@ -31,6 +31,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 
 %}
 
+%token ADDRESS_FAMILY
 %token AWAY
 %token BAN_UNKNOWN
 %token BLACKLIST
@@ -47,6 +48,8 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token EXEMPT
 %token FD
 %token INVITE
+%token IPV4
+%token IPV6
 %token IRC
 %token KLINE
 %token KEY
@@ -605,6 +608,7 @@ opm_blacklist_entry:
   item = xcalloc(sizeof(*item));
   item->name = xstrdup("");
   item->kline = xstrdup("");
+  item->ipv4 = 1;
   item->ban_unknown = 0;
   item->type = A_BITMASK;
   item->reply = list_create();
@@ -619,11 +623,12 @@ BLACKLIST '{' blacklist_items '}' ';';
 blacklist_items: blacklist_items blacklist_item |
                  blacklist_item;
 
-blacklist_item: blacklist_name        |
-                blacklist_type        |
-                blacklist_kline       |
-                blacklist_ban_unknown |
-                blacklist_reply       |
+blacklist_item: blacklist_name           |
+                blacklist_address_family |
+                blacklist_type           |
+                blacklist_kline          |
+                blacklist_ban_unknown    |
+                blacklist_reply          |
                 error;
 
 blacklist_name: NAME '=' STRING ';'
@@ -632,6 +637,27 @@ blacklist_name: NAME '=' STRING ';'
 
   xfree(item->name);
   item->name = xstrdup($3);
+};
+
+blacklist_address_family: ADDRESS_FAMILY
+{
+  struct BlacklistConf *item = tmp;
+
+  item->ipv4 = 0;
+  item->ipv6 = 0;
+} '='  blacklist_address_family_items ';' ;
+
+blacklist_address_family_items: blacklist_address_family_items ',' blacklist_address_family_item | blacklist_address_family_item;
+blacklist_address_family_item:  IPV4
+{
+  struct BlacklistConf *item = tmp;
+
+  item->ipv4 = 1;
+} | IPV6
+{
+  struct BlacklistConf *item = tmp;
+
+  item->ipv6 = 1;
 };
 
 blacklist_kline: KLINE '=' STRING ';'
