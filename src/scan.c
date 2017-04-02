@@ -915,7 +915,7 @@ scan_manual(char *param, const struct ChannelConf *target)
 
   if (scannername)
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies [%s]",
-             target->name, ip,  scannername);
+             target->name, ip, scannername);
   else
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies on all "
              "scanners", target->name, ip);
