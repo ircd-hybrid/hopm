@@ -45,149 +45,155 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    AWAY = 258,
-    BAN_UNKNOWN = 259,
-    BLACKLIST = 260,
-    BYTES = 261,
-    KBYTES = 262,
-    MBYTES = 263,
-    CHANNEL = 264,
-    COMMAND_INTERVAL = 265,
-    COMMAND_QUEUE_SIZE = 266,
-    COMMAND_TIMEOUT = 267,
-    CONNREGEX = 268,
-    DNS_FDLIMIT = 269,
-    DNS_TIMEOUT = 270,
-    DNSBL_FROM = 271,
-    DNSBL_TO = 272,
-    EXEMPT = 273,
-    FD = 274,
-    INVITE = 275,
-    IRC = 276,
-    KLINE = 277,
-    KEY = 278,
-    MASK = 279,
-    MAX_READ = 280,
-    MODE = 281,
-    NAME = 282,
-    NEGCACHE = 283,
-    NEGCACHE_REBUILD = 284,
-    NICK = 285,
-    NICKSERV = 286,
-    NOTICE = 287,
-    OPER = 288,
-    OPM = 289,
-    OPTIONS = 290,
-    PASSWORD = 291,
-    PERFORM = 292,
-    PIDFILE = 293,
-    PORT = 294,
-    PROTOCOL = 295,
-    READTIMEOUT = 296,
-    REALNAME = 297,
-    RECONNECTINTERVAL = 298,
-    REPLY = 299,
-    SCANLOG = 300,
-    SCANNER = 301,
-    SECONDS = 302,
-    MINUTES = 303,
-    HOURS = 304,
-    DAYS = 305,
-    WEEKS = 306,
-    MONTHS = 307,
-    YEARS = 308,
-    SENDMAIL = 309,
-    SERVER = 310,
-    TARGET_IP = 311,
-    TARGET_PORT = 312,
-    TARGET_STRING = 313,
-    TIMEOUT = 314,
-    TYPE = 315,
-    USERNAME = 316,
-    USER = 317,
-    VHOST = 318,
-    NUMBER = 319,
-    STRING = 320,
-    PROTOCOLTYPE = 321
+    ADDRESS_FAMILY = 258,
+    AWAY = 259,
+    BAN_UNKNOWN = 260,
+    BLACKLIST = 261,
+    BYTES = 262,
+    KBYTES = 263,
+    MBYTES = 264,
+    CHANNEL = 265,
+    COMMAND_INTERVAL = 266,
+    COMMAND_QUEUE_SIZE = 267,
+    COMMAND_TIMEOUT = 268,
+    CONNREGEX = 269,
+    DNS_FDLIMIT = 270,
+    DNS_TIMEOUT = 271,
+    DNSBL_FROM = 272,
+    DNSBL_TO = 273,
+    EXEMPT = 274,
+    FD = 275,
+    INVITE = 276,
+    IPV4 = 277,
+    IPV6 = 278,
+    IRC = 279,
+    KLINE = 280,
+    KEY = 281,
+    MASK = 282,
+    MAX_READ = 283,
+    MODE = 284,
+    NAME = 285,
+    NEGCACHE = 286,
+    NEGCACHE_REBUILD = 287,
+    NICK = 288,
+    NICKSERV = 289,
+    NOTICE = 290,
+    OPER = 291,
+    OPM = 292,
+    OPTIONS = 293,
+    PASSWORD = 294,
+    PERFORM = 295,
+    PIDFILE = 296,
+    PORT = 297,
+    PROTOCOL = 298,
+    READTIMEOUT = 299,
+    REALNAME = 300,
+    RECONNECTINTERVAL = 301,
+    REPLY = 302,
+    SCANLOG = 303,
+    SCANNER = 304,
+    SECONDS = 305,
+    MINUTES = 306,
+    HOURS = 307,
+    DAYS = 308,
+    WEEKS = 309,
+    MONTHS = 310,
+    YEARS = 311,
+    SENDMAIL = 312,
+    SERVER = 313,
+    TARGET_IP = 314,
+    TARGET_PORT = 315,
+    TARGET_STRING = 316,
+    TIMEOUT = 317,
+    TYPE = 318,
+    USERNAME = 319,
+    USER = 320,
+    VHOST = 321,
+    NUMBER = 322,
+    STRING = 323,
+    PROTOCOLTYPE = 324
   };
 #endif
 /* Tokens.  */
-#define AWAY 258
-#define BAN_UNKNOWN 259
-#define BLACKLIST 260
-#define BYTES 261
-#define KBYTES 262
-#define MBYTES 263
-#define CHANNEL 264
-#define COMMAND_INTERVAL 265
-#define COMMAND_QUEUE_SIZE 266
-#define COMMAND_TIMEOUT 267
-#define CONNREGEX 268
-#define DNS_FDLIMIT 269
-#define DNS_TIMEOUT 270
-#define DNSBL_FROM 271
-#define DNSBL_TO 272
-#define EXEMPT 273
-#define FD 274
-#define INVITE 275
-#define IRC 276
-#define KLINE 277
-#define KEY 278
-#define MASK 279
-#define MAX_READ 280
-#define MODE 281
-#define NAME 282
-#define NEGCACHE 283
-#define NEGCACHE_REBUILD 284
-#define NICK 285
-#define NICKSERV 286
-#define NOTICE 287
-#define OPER 288
-#define OPM 289
-#define OPTIONS 290
-#define PASSWORD 291
-#define PERFORM 292
-#define PIDFILE 293
-#define PORT 294
-#define PROTOCOL 295
-#define READTIMEOUT 296
-#define REALNAME 297
-#define RECONNECTINTERVAL 298
-#define REPLY 299
-#define SCANLOG 300
-#define SCANNER 301
-#define SECONDS 302
-#define MINUTES 303
-#define HOURS 304
-#define DAYS 305
-#define WEEKS 306
-#define MONTHS 307
-#define YEARS 308
-#define SENDMAIL 309
-#define SERVER 310
-#define TARGET_IP 311
-#define TARGET_PORT 312
-#define TARGET_STRING 313
-#define TIMEOUT 314
-#define TYPE 315
-#define USERNAME 316
-#define USER 317
-#define VHOST 318
-#define NUMBER 319
-#define STRING 320
-#define PROTOCOLTYPE 321
+#define ADDRESS_FAMILY 258
+#define AWAY 259
+#define BAN_UNKNOWN 260
+#define BLACKLIST 261
+#define BYTES 262
+#define KBYTES 263
+#define MBYTES 264
+#define CHANNEL 265
+#define COMMAND_INTERVAL 266
+#define COMMAND_QUEUE_SIZE 267
+#define COMMAND_TIMEOUT 268
+#define CONNREGEX 269
+#define DNS_FDLIMIT 270
+#define DNS_TIMEOUT 271
+#define DNSBL_FROM 272
+#define DNSBL_TO 273
+#define EXEMPT 274
+#define FD 275
+#define INVITE 276
+#define IPV4 277
+#define IPV6 278
+#define IRC 279
+#define KLINE 280
+#define KEY 281
+#define MASK 282
+#define MAX_READ 283
+#define MODE 284
+#define NAME 285
+#define NEGCACHE 286
+#define NEGCACHE_REBUILD 287
+#define NICK 288
+#define NICKSERV 289
+#define NOTICE 290
+#define OPER 291
+#define OPM 292
+#define OPTIONS 293
+#define PASSWORD 294
+#define PERFORM 295
+#define PIDFILE 296
+#define PORT 297
+#define PROTOCOL 298
+#define READTIMEOUT 299
+#define REALNAME 300
+#define RECONNECTINTERVAL 301
+#define REPLY 302
+#define SCANLOG 303
+#define SCANNER 304
+#define SECONDS 305
+#define MINUTES 306
+#define HOURS 307
+#define DAYS 308
+#define WEEKS 309
+#define MONTHS 310
+#define YEARS 311
+#define SENDMAIL 312
+#define SERVER 313
+#define TARGET_IP 314
+#define TARGET_PORT 315
+#define TARGET_STRING 316
+#define TIMEOUT 317
+#define TYPE 318
+#define USERNAME 319
+#define USER 320
+#define VHOST 321
+#define NUMBER 322
+#define STRING 323
+#define PROTOCOLTYPE 324
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 89 "config-parser.y" /* yacc.c:1909  */
+#line 92 "config-parser.y" /* yacc.c:1909  */
 
   int number;
   char *string;
 
-#line 191 "config-parser.h" /* yacc.c:1909  */
+#line 197 "config-parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
