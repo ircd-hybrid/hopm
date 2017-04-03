@@ -31,6 +31,7 @@
 #include <time.h>
 #include <errno.h>
 #include <assert.h>
+
 #include "compat.h"
 #include "config.h"
 #include "dnsbl.h"
@@ -181,7 +182,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
                       ss->irc_nick, ss->irc_username, ss->irc_hostname, ss->ip, bl->name,
                       text_type);
     log_printf("DNSBL -> %s!%s@%s [%s] appears in BL zone %s (%s)",
-               ss->irc_nick, ss->irc_username, ss->irc_hostname,ss->ip, bl->name,
+               ss->irc_nick, ss->irc_username, ss->irc_hostname, ss->ip, bl->name,
                text_type);
   }
 

@@ -326,8 +326,6 @@ void
 scan_connect(const char *user[], const char *msg)
 {
   node_t *p, *p2;
-  struct scan_struct *ss;
-  struct scanner_struct *scs;
   int ret;
 
   /*
@@ -361,7 +359,7 @@ scan_connect(const char *user[], const char *msg)
   }
 
   /* Create scan_struct */
-  ss = scan_create(user, msg);
+  struct scan_struct *ss = scan_create(user, msg);
 
   /* Store ss in the remote struct, so that in callbacks we have ss */
   ss->remote->data = ss;
@@ -373,7 +371,7 @@ scan_connect(const char *user[], const char *msg)
   /* Add ss->remote to all matching scanners */
   LIST_FOREACH(p, SCANNERS->head)
   {
-    scs = p->data;
+    struct scanner_struct *scs = p->data;
 
     LIST_FOREACH(p2, scs->masks->head)
     {
@@ -845,8 +843,6 @@ scan_manual(char *param, const struct ChannelConf *target)
 {
   char buf[INET6_ADDRSTRLEN];
   const void *addr = NULL;
-  struct scan_struct *ss;
-  struct scanner_struct *scs;
   const char *ip = NULL;
   char *scannername;
   node_t *node;
@@ -907,7 +903,7 @@ scan_manual(char *param, const struct ChannelConf *target)
 
   ip = buf;
 
-  ss = xcalloc(sizeof(*ss));
+  struct scan_struct *ss = xcalloc(sizeof(*ss));
   ss->ip = xstrdup(ip);
   ss->remote = opm_remote_create(ss->ip);
   ss->remote->data = ss;
@@ -917,16 +913,16 @@ scan_manual(char *param, const struct ChannelConf *target)
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies [%s]",
              target->name, ip, scannername);
   else
-    irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies on all "
-             "scanners", target->name, ip);
+    irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies on all scanners",
+             target->name, ip);
 
-  if (LIST_SIZE(OpmItem->blacklists) > 0)
+  if (LIST_SIZE(OpmItem->blacklists))
     dnsbl_add(ss);
 
   /* Add ss->remote to all scanners */
   LIST_FOREACH(node, SCANNERS->head)
   {
-    scs = node->data;
+    struct scanner_struct *scs = node->data;
 
     /*
      * If we have a scannername, only allow that scanner
@@ -966,9 +962,8 @@ scan_manual(char *param, const struct ChannelConf *target)
   if (ss->scans == 0)
   {
     if (scannername)
-      irc_send("PRIVMSG %s :CHECK -> No such scanner '%s', or '%s' has "
-               "0 protocols.", ss->manual_target->name, scannername,
-               scannername);
+      irc_send("PRIVMSG %s :CHECK -> No such scanner '%s', or '%s' has 0 protocols.",
+               ss->manual_target->name, scannername, scannername);
 
     irc_send("PRIVMSG %s :CHECK -> No scans active on '%s', aborting scan.",
              ss->manual_target->name, ss->ip);
