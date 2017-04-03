@@ -43,16 +43,16 @@ static unsigned int STATS_DNSBLSENT;
 
 static struct StatsHash STATS_PROXIES[] =
 {
-  { OPM_TYPE_HTTP,      0, "HTTP"      },
-  { OPM_TYPE_HTTPPOST,  0, "HTTPPOST"  },
-  { OPM_TYPE_HTTPS,     0, "HTTPS"     },
-  { OPM_TYPE_HTTPSPOST, 0, "HTTPSPOST" },
-  { OPM_TYPE_SOCKS4,    0, "SOCKS4"    },
-  { OPM_TYPE_SOCKS5,    0, "SOCKS5"    },
-  { OPM_TYPE_ROUTER,    0, "ROUTER"    },
-  { OPM_TYPE_WINGATE,   0, "WINGATE"   },
-  { OPM_TYPE_DREAMBOX,  0, "DREAMBOX"  },
-  { 0, 0, NULL }
+  { .type = OPM_TYPE_HTTP,      .name = "HTTP"      },
+  { .type = OPM_TYPE_HTTPPOST,  .name = "HTTPPOST"  },
+  { .type = OPM_TYPE_HTTPS,     .name = "HTTPS"     },
+  { .type = OPM_TYPE_HTTPSPOST, .name = "HTTPSPOST" },
+  { .type = OPM_TYPE_SOCKS4,    .name = "SOCKS4"    },
+  { .type = OPM_TYPE_SOCKS5,    .name = "SOCKS5"    },
+  { .type = OPM_TYPE_ROUTER,    .name = "ROUTER"    },
+  { .type = OPM_TYPE_WINGATE,   .name = "WINGATE"   },
+  { .type = OPM_TYPE_DREAMBOX,  .name = "DREAMBOX"  },
+  { .type = 0 }
 };
 
 
