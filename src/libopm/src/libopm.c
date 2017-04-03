@@ -403,18 +403,22 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
   OPM_SCAN_T *scan;  /* New scan for OPM_T */
   OPM_NODE_T *node;  /* Node we'll add scan to when we link it to scans */
+  opm_inaddr in;
 
   if (LIST_SIZE(scanner->protocols) == 0 &&
       LIST_SIZE(remote->protocols) == 0)
     return OPM_ERR_NOPROTOCOLS;
 
-  scan = libopm_scan_create(scanner, remote);
-
-  if (inet_pton(AF_INET, remote->ip, &(scan->addr.sa4.sin_addr)) <= 0)
-  {
-    libopm_scan_free(scan);
+  /*
+   * XXX: libopm ideally shouldn't see an IP address in string representation.
+   * Could have been stuffed into the _OPM_REMOTE struct by the caller that
+   * already does getaddrinfo() anyway.
+   */
+  if (inet_pton(AF_INET, remote->ip, &in.in4) <= 0)
     return OPM_ERR_BADADDR;
-  }
+
+  scan = libopm_scan_create(scanner, remote);
+  memcpy(&scan->addr.sa4.sin_addr, &in.in4, sizeof(scan->addr.sa4.sin_addr));
 
   node = libopm_node_create(scan);
   libopm_list_add(scanner->queue, node);
