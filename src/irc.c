@@ -514,7 +514,7 @@ irc_init(void)
 
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = AI_PASSIVE | AI_NUMERICHOST;
+    hints.ai_flags = AI_NUMERICHOST;
 
     if ((n = getaddrinfo(IRCItem->vhost, NULL, &hints, &res)))
     {
