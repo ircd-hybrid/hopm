@@ -25,7 +25,7 @@ typedef int OPM_PROXYREAD_T  (OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 
 struct _OPM_SCAN
 {
-  opm_sockaddr         addr;           /* Address in byte order of remote client */
+  struct sockaddr_in   addr;           /* Address in byte order of remote client */
   OPM_REMOTE_T        *remote;         /* Pointed to the OPM_REMOTE_T for this scan, passed by client */
   OPM_LIST_T          *connections;    /* List of individual connections of this scan (1 for each protocol) */
 };

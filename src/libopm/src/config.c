@@ -88,7 +88,7 @@ libopm_config_create(void)
         break;
 
       case OPM_TYPE_ADDRESS:
-        ret->vars[i] = xcalloc(sizeof(opm_sockaddr));
+        ret->vars[i] = xcalloc(sizeof(struct sockaddr_in));
         break;
 
       case OPM_TYPE_STRINGLIST:
@@ -185,7 +185,7 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
       break;
 
     case OPM_TYPE_ADDRESS:
-      if (inet_pton(AF_INET, value, &(((opm_sockaddr *)config->vars[key])->sa4.sin_addr)) <= 0)
+      if (inet_pton(AF_INET, value, &(((struct sockaddr_in *)config->vars[key])->sin_addr)) <= 0)
         return OPM_ERR_BADVALUE;  /* Return appropriate err code */
 
       break;

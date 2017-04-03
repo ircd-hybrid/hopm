@@ -403,7 +403,7 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
   OPM_SCAN_T *scan;  /* New scan for OPM_T */
   OPM_NODE_T *node;  /* Node we'll add scan to when we link it to scans */
-  opm_inaddr in;
+  struct in_addr in;
 
   if (LIST_SIZE(scanner->protocols) == 0 &&
       LIST_SIZE(remote->protocols) == 0)
@@ -414,11 +414,11 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
    * Could have been stuffed into the _OPM_REMOTE struct by the caller that
    * already does getaddrinfo() anyway.
    */
-  if (inet_pton(AF_INET, remote->ip, &in.in4) <= 0)
+  if (inet_pton(AF_INET, remote->ip, &in) <= 0)
     return OPM_ERR_BADADDR;
 
   scan = libopm_scan_create(scanner, remote);
-  memcpy(&scan->addr.sa4.sin_addr, &in.in4, sizeof(scan->addr.sa4.sin_addr));
+  memcpy(&scan->addr.sin_addr, &in, sizeof(scan->addr.sin_addr));
 
   node = libopm_node_create(scan);
   libopm_list_add(scanner->queue, node);
@@ -903,15 +903,15 @@ libopm_check_closed(OPM_T *scanner)
 static void
 libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  opm_sockaddr *bind_ip;
+  struct sockaddr_in *bind_ip;
   struct sockaddr_in *addr;  /* Outgoing host */
   struct sockaddr_in local_addr;  /* For binding */
 
-  addr = (struct sockaddr_in *)&(scan->addr.sa4);  /* Already have the IP in byte format from opm_scan */
+  addr = &scan->addr;  /* Already have the IP in byte format from opm_scan */
   addr->sin_family = AF_INET;
   addr->sin_port   = htons(conn->port);
 
-  bind_ip = (opm_sockaddr *)libopm_config(scanner->config, OPM_CONFIG_BIND_IP);
+  bind_ip = (struct sockaddr_in *)libopm_config(scanner->config, OPM_CONFIG_BIND_IP);
 
   conn->fd = socket(AF_INET, SOCK_STREAM, 0);
   scanner->fd_use++;  /* Increase file descriptor use */
@@ -927,7 +927,7 @@ libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
   {
     memset(&local_addr, 0, sizeof(local_addr));
 
-    local_addr.sin_addr.s_addr = bind_ip->sa4.sin_addr.s_addr;
+    local_addr.sin_addr.s_addr = bind_ip->sin_addr.s_addr;
     local_addr.sin_family = AF_INET;
     local_addr.sin_port = htons(0);
 
