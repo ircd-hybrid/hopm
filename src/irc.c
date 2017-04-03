@@ -224,7 +224,6 @@ static void
 m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
   const struct ChannelConf *channel = NULL;
-  size_t nick_len;
 
   if (source_p == NULL)
     return;
@@ -247,19 +246,18 @@ m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p
   if ((channel = get_channel(parv[2])) == NULL)
     return;
 
-  /* Find a suitable length to compare with */
-  nick_len = strcspn(parv[3], " :,");
-
-  if (nick_len < 3 && strlen(IRCItem->nick) >= 3)
-    nick_len = 3;
-
-  /* Message is a command */
-  if (strncasecmp(parv[3], IRCItem->nick, nick_len) == 0 ||
-      strncasecmp(parv[3], "!all", 4) == 0)
+  int hit = strncasecmp(parv[3], "!all ", 5) == 0;
+  if (hit == 0)
   {
+    size_t nick_len = strlen(IRCItem->nick);
+
+    if (strncasecmp(parv[3], IRCItem->nick, nick_len) == 0)
+      hit = *(parv[3] + nick_len) == ' ';
+  }
+
+  if (hit)
     /* XXX command_parse will alter parv[3]. */
     command_parse(parv[3], channel, source_p);
-  }
 }
 
 /* m_notice
