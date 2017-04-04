@@ -385,7 +385,8 @@ scan_connect(const char *user[], const char *msg)
               continue;
               break;
             case OPM_ERR_BADADDR:
-              log_printf("OPM -> Bad address %s [%s]", ss->ip, scs->name);
+              if (!strchr(ss->ip, ':'))  /* XXX: hack alert. remove when libopm can deal with IPv6 addresses */
+                log_printf("OPM -> Bad address %s [%s]", ss->ip, scs->name);
               break;
             default:
               log_printf("OPM -> Unknown error %s [%s]", ss->ip, scs->name);
@@ -929,8 +930,9 @@ scan_manual(char *param, const struct ChannelConf *target)
         case OPM_ERR_NOPROTOCOLS:
           break;
         case OPM_ERR_BADADDR:
-          irc_send("PRIVMSG %s :OPM -> Bad address %s [%s]",
-                   ss->manual_target->name, ss->ip, scs->name);
+          if (!strchr(ss->ip, ':'))  /* XXX: hack alert. remove when libopm can deal with IPv6 addresses */
+            irc_send("PRIVMSG %s :OPM -> Bad address %s [%s]",
+                     ss->manual_target->name, ss->ip, scs->name);
           break;
         default:
           irc_send("PRIVMSG %s :OPM -> Unknown error %s [%s]",
