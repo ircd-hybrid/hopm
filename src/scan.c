@@ -335,7 +335,7 @@ scan_connect(const char *user[], const char *msg)
   if (negcache_check(user[3]))
   {
     if (OPT_DEBUG)
-      log_printf("SCAN -> %s!%s@%s (%s) is negatively cached. Skipping all tests.",
+      log_printf("SCAN -> %s!%s@%s [%s] is negatively cached. Skipping all tests.",
                  user[0], user[1], user[2], user[3]);
     return;
   }
@@ -348,7 +348,7 @@ scan_connect(const char *user[], const char *msg)
   if (scan_checkexempt(hostmask, addrmask))
   {
     if (OPT_DEBUG)
-      log_printf("SCAN -> %s (%s) is exempt from scanning", hostmask, addrmask);
+      log_printf("SCAN -> %s [%s] is exempt from scanning", hostmask, user[3]);
 
     return;
   }
@@ -476,8 +476,8 @@ scan_checkfinished(struct scan_struct *ss)
     {
       if (OPT_DEBUG)
         /* If there was a manual_target, then irc_nick, etc is NULL. */
-        log_printf("SCAN -> All tests on %s!%s@%s complete.",
-                   ss->irc_nick, ss->irc_username, ss->irc_hostname);
+        log_printf("SCAN -> All tests on %s!%s@%s [%s] complete.",
+                   ss->irc_nick, ss->irc_username, ss->irc_hostname, ss->ip);
 
       /* Scan was a negative */
       if (ss->positive == 0)
