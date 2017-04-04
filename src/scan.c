@@ -681,6 +681,11 @@ scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
     case OPM_ERR_BIND:
       log_printf("SCAN -> Bind error on %s:%d (%s) [%s]", remote->ip,
                  remote->port, scan_gettype(remote->protocol), scs->name);
+
+      if (ss->manual_target)
+        irc_send("PRIVMSG %s :CHECK -> Bind error on %s:%d (%s) [%s]",
+                 ss->manual_target->name, remote->ip, remote->port,
+                 scan_gettype(remote->protocol), scs->name);
       break;
     case OPM_ERR_NOFD:
       log_printf("SCAN -> File descriptor allocation error %s:%d (%s) "
