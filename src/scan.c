@@ -48,8 +48,7 @@
 #include "misc.h"
 #include "scan.h"
 
-/* Libopm */
-
+/* libopm includes */
 #include "libopm/src/opm.h"
 #include "libopm/src/opm_common.h"
 #include "libopm/src/opm_error.h"
@@ -205,10 +204,6 @@ void
 scan_init(void)
 {
   node_t *p, *p2, *p3, *p4, *node;
-  struct UserConf *uc;
-  struct ScannerConf *sc;
-  struct ProtocolConf *pc;
-  struct scanner_struct *scs;
 
   SCANNERS = list_create();
   MASKS    = list_create();
@@ -216,13 +211,13 @@ scan_init(void)
   /* Setup each individual scanner */
   LIST_FOREACH(p, ScannerItemList->head)
   {
-    sc = p->data;
-    scs = xcalloc(sizeof(*scs));
+    struct ScannerConf *sc = p->data;
 
     if (OPT_DEBUG)
       log_printf("SCAN -> Setting up scanner [%s]", sc->name);
 
     /* Build the scanner */
+    struct scanner_struct *scs = xcalloc(sizeof(*scs));
     scs->scanner = opm_create();
     scs->name = xstrdup(sc->name);
     scs->masks = list_create();
@@ -249,7 +244,7 @@ scan_init(void)
     /* Setup the protocols */
     LIST_FOREACH(p2, sc->protocols->head)
     {
-      pc = p2->data;
+      struct ProtocolConf *pc = p2->data;
 
       if (OPT_DEBUG >= 2)
         log_printf("SCAN -> Adding protocol %s:%d to scanner [%s]",
@@ -267,11 +262,11 @@ scan_init(void)
   /* Give scanners a list of masks they scan */
   LIST_FOREACH(p, SCANNERS->head)
   {
-    scs = p->data;
+    struct scanner_struct *scs = p->data;
 
     LIST_FOREACH(p2, UserItemList->head)
     {
-      uc = p2->data;
+      struct UserConf *uc = p2->data;
 
       LIST_FOREACH(p3, uc->scanners->head)
       {
@@ -526,7 +521,7 @@ scan_positive(struct scan_struct *ss, const char *kline, const char *type)
     opm_end(scanner, ss->remote);
   }
 
-  /* Set it as a positive (to avoid a scan_negative call later on */
+  /* Set it as a positive to avoid a scan_negative call later on */
   ss->positive = 1;
 }
 
@@ -543,14 +538,11 @@ scan_positive(struct scan_struct *ss, const char *kline, const char *type)
 static void
 scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
-  struct scan_struct *ss;
-  struct scanner_struct *scs;
+  struct scan_struct *ss = remote->data;
+  struct scanner_struct *scs = data;
 
   /* Record that a scan happened */
   scan_log(remote);
-
-  scs = data;
-  ss = remote->data;
 
   if (ss->manual_target)
   {
@@ -644,11 +636,8 @@ scan_timeout(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 static void
 scan_end(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 {
-  struct scan_struct *ss;
-  struct scanner_struct *scs;
-
-  scs = data;
-  ss = remote->data;
+  struct scan_struct *ss = remote->data;
+  struct scanner_struct *scs = data;
 
   if (OPT_DEBUG)
     log_printf("SCAN -> Scan %s [%s] completed", remote->ip, scs->name);
@@ -672,11 +661,8 @@ scan_end(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
 static void
 scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
 {
-  struct scan_struct *ss;
-  struct scanner_struct *scs;
-
-  scs = data;
-  ss = remote->data;
+  struct scan_struct *ss = remote->data;
+  struct scanner_struct *scs = data;
 
   switch (err)
   {
@@ -907,10 +893,10 @@ scan_manual(char *param, const struct ChannelConf *target)
 
   if (scannername)
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies [%s]",
-             target->name, ip, scannername);
+             target->name, ss->ip, scannername);
   else
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies on all scanners",
-             target->name, ip);
+             target->name, ss->ip);
 
   if (LIST_SIZE(OpmItem->blacklists))
     dnsbl_add(ss);
@@ -929,7 +915,7 @@ scan_manual(char *param, const struct ChannelConf *target)
         continue;
 
     if (OPT_DEBUG)
-      log_printf("SCAN -> Passing %s to scanner [%s] (MANUAL SCAN)", ip, scs->name);
+      log_printf("SCAN -> Passing %s to scanner [%s] (MANUAL SCAN)", ss->ip, scs->name);
 
     if ((ret = opm_scan(scs->scanner, ss->remote)) != OPM_SUCCESS)
     {

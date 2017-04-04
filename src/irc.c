@@ -79,7 +79,7 @@ static time_t IRC_LASTRECONNECT;         /* Time of last reconnection           
  * Return: Pointer to ChannelConf containing the channel
  */
 static const struct ChannelConf *
-get_channel(const char *channel)
+get_channel(const char *name)
 {
   node_t *node;
 
@@ -87,7 +87,7 @@ get_channel(const char *channel)
   {
     struct ChannelConf *item = node->data;
 
-    if (strcasecmp(item->name, channel) == 0)
+    if (strcasecmp(item->name, name) == 0)
       return item;
   }
 
@@ -472,7 +472,7 @@ irc_init(void)
   {
     struct sockaddr_in6 *in = (struct sockaddr_in6 *)&IRC_SVR;
 
-    svr_addrlen = sizeof(struct sockaddr_in6);
+    svr_addrlen = sizeof(*in);
     IRC_SVR.ss_family = AF_INET6;
     in->sin6_port = htons(IRCItem->port);
     memcpy(&in->sin6_addr, address, sizeof(in->sin6_addr));
@@ -481,7 +481,7 @@ irc_init(void)
   {
     struct sockaddr_in *in = (struct sockaddr_in *)&IRC_SVR;
 
-    svr_addrlen = sizeof(struct sockaddr_in);
+    svr_addrlen = sizeof(*in);
     IRC_SVR.ss_family = AF_INET;
     in->sin_port = htons(IRCItem->port);
     memcpy(&in->sin_addr, address, sizeof(in->sin_addr));
@@ -771,7 +771,7 @@ irc_cycle(void)
 
   if (IRC_FD == -1)
   {
-    /* Initialise negative cache. */
+    /* Initialize negative cache. */
     if (OptionsItem->negcache)
       negcache_init();
 
