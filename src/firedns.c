@@ -239,6 +239,50 @@ firedns_init(void)
   fclose(f);
 }
 
+/*
+ * These little hacks are here to avoid alignment and type sizing issues completely by doing manual copies
+ */
+static inline void
+firedns_fill_rr(struct s_rr_middle *restrict const rr, const unsigned char *const restrict input)
+{
+  rr->type = input[0] * 256 + input[1];
+  rr->class = input[2] * 256 + input[3];
+  rr->ttl = input[4] * 16777216 + input[5] * 65536 + input[6] * 256 + input[7];
+  rr->rdlength = input[8] * 256 + input[9];
+}
+
+static inline void
+firedns_fill_header(struct s_header *const restrict header, const unsigned char *const restrict input, const int l)
+{
+  header->id[0] = input[0];
+  header->id[1] = input[1];
+  header->flags1 = input[2];
+  header->flags2 = input[3];
+  header->qdcount = input[4] * 256 + input[5];
+  header->ancount = input[6] * 256 + input[7];
+  header->nscount = input[8] * 256 + input[9];
+  header->arcount = input[10] * 256 + input[11];
+  memcpy(header->payload, &input[12], l);
+}
+
+static inline void
+firedns_empty_header(unsigned char *const restrict output, const struct s_header *const restrict header, const int l)
+{
+  output[0] = header->id[0];
+  output[1] = header->id[1];
+  output[2] = header->flags1;
+  output[3] = header->flags2;
+  output[4] = header->qdcount / 256;
+  output[5] = header->qdcount % 256;
+  output[6] = header->ancount / 256;
+  output[7] = header->ancount % 256;
+  output[8] = header->nscount / 256;
+  output[9] = header->nscount % 256;
+  output[10] = header->arcount / 256;
+  output[11] = header->arcount % 256;
+  memcpy(&output[12], header->payload, l);
+}
+
 /* immediate A query */
 struct in_addr *
 firedns_resolveip4(const char *const name)
@@ -442,15 +486,17 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
   int i, sent_ok = 0;
   struct sockaddr_in addr4;
   struct sockaddr_in6 addr6;
+  unsigned char payload[sizeof(struct s_header)];
 
   /* set header flags */
+  h->id[0] = s->id[0];
+  h->id[1] = s->id[1];
   h->flags1 = 0 | FLAGS1_MASK_RD;
   h->flags2 = 0;
-  h->qdcount = htons(1);
-  h->ancount = htons(0);
-  h->nscount = htons(0);
-  h->arcount = htons(0);
-  memcpy(h->id, s->id, 2);
+  h->qdcount = 1;
+  h->ancount = 0;
+  h->nscount = 0;
+  h->arcount = 0;
 
   /* try to create ipv6 or ipv4 socket */
   s->v6 = 0;
@@ -514,6 +560,8 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
     }
   }
 
+  firedns_empty_header(payload,h,l);
+
   /* if we've got ipv6 support, an ip v6 socket, and ipv6 servers, send to them */
   if (i6 > 0 && s->v6 == 1)
   {
@@ -525,7 +573,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
       addr6.sin6_family = AF_INET6;
       addr6.sin6_port = htons(FDNS_PORT);
 
-      if (sendto(s->fd, h, l + 12, 0, (struct sockaddr *)&addr6, sizeof(addr6)) > 0)
+      if (sendto(s->fd, payload, l + 12, 0, (struct sockaddr *)&addr6, sizeof(addr6)) > 0)
         sent_ok = 1;
     }
   }
@@ -541,7 +589,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
       addr6.sin6_family = AF_INET6;
       addr6.sin6_port = htons(FDNS_PORT);
 
-      if (sendto(s->fd, h, l + 12, 0, (struct sockaddr *)&addr6, sizeof(addr6)) > 0)
+      if (sendto(s->fd, payload, l + 12, 0, (struct sockaddr *)&addr6, sizeof(addr6)) > 0)
         sent_ok = 1;
 
       continue;
@@ -553,7 +601,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
     addr4.sin_family = AF_INET;
     addr4.sin_port = htons(FDNS_PORT);
 
-    if (sendto(s->fd, h, l + 12, 0, (struct sockaddr *)&addr4, sizeof(addr4)) > 0)
+    if (sendto(s->fd, payload, l + 12, 0, (struct sockaddr *)&addr4, sizeof(addr4)) > 0)
       sent_ok = 1;
   }
 
@@ -581,9 +629,8 @@ firedns_getresult(const int fd)
   struct s_connection *c;
   node_t *node;
   int l, i, q, curanswer;
-  struct s_rr_middle *rr, rrbacking;
-  char *src, *dst;
-  int bytes;
+  struct s_rr_middle rr = { .rdlength = 0 };
+  unsigned char buffer[sizeof(struct s_header)];
 
   firedns_errno = FDNS_ERR_OTHER;
   result.info = NULL;
@@ -606,7 +653,8 @@ firedns_getresult(const int fd)
     return &result;
 
   /* query found -- we remove in cleanup */
-  l = recv(c->fd, &h, sizeof(struct s_header), 0);
+  l = recv(c->fd, buffer, sizeof(struct s_header), 0);
+
   result.info = c->info;
   strlcpy(result.lookup, c->lookup, sizeof(result.lookup));
 
@@ -618,6 +666,8 @@ firedns_getresult(const int fd)
 
   if (l < 12)
     goto cleanup;
+
+  firedns_fill_header(&h, buffer, l - 12);
 
   if (c->id[0] != h.id[0] || c->id[1] != h.id[1])
     /*
@@ -638,8 +688,6 @@ firedns_getresult(const int fd)
     goto cleanup;
   }
 
-  h.ancount = ntohs(h.ancount);
-
   if (h.ancount < 1)
   {
     firedns_errno = FDNS_ERR_NXDOMAIN;
@@ -651,7 +699,6 @@ firedns_getresult(const int fd)
   i = 0;
   q = 0;
   l -= 12;
-  h.qdcount = ntohs(h.qdcount);
 
   while (q < h.qdcount && i < l)
   {
@@ -705,28 +752,20 @@ firedns_getresult(const int fd)
     if (l - i < 10)
       goto cleanup;
 
-    rr = (struct s_rr_middle *)&h.payload[i];
-    src = (char *)rr;
-    dst = (char *)&rrbacking;
-
-    for (bytes = sizeof(rrbacking); bytes; bytes--)
-      *dst++ = *src++;
-
-    rr = &rrbacking;
+    firedns_fill_rr(&rr, &h.payload[i]);
     i += 10;
-    rr->rdlength = ntohs(rr->rdlength);
 
-    if (ntohs(rr->type) != c->type)
+    if (rr.type != c->type)
     {
       curanswer++;
-      i += rr->rdlength;
+      i += rr.rdlength;
       continue;
     }
 
-    if (ntohs(rr->class) != c->class)
+    if (rr.class != c->class)
     {
       curanswer++;
-      i += rr->rdlength;
+      i += rr.rdlength;
       continue;
     }
 
@@ -735,14 +774,14 @@ firedns_getresult(const int fd)
 
   if (curanswer == h.ancount)
     goto cleanup;
-  if (i + rr->rdlength > l)
+  if (i + rr.rdlength > l)
     goto cleanup;
-  if (rr->rdlength > 1023)
+  if (rr.rdlength > 1023)
     goto cleanup;
 
   firedns_errno = FDNS_ERR_NONE;
-  memcpy(result.text, &h.payload[i], rr->rdlength);
-  result.text[rr->rdlength] = '\0';
+  memcpy(result.text, &h.payload[i], rr.rdlength);
+  result.text[rr.rdlength] = '\0';
 
 /* Clean-up */
 cleanup:
