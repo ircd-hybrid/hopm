@@ -54,9 +54,10 @@ static unsigned int firedns_fdinuse;
 /* up to FDNS_MAX nameservers; populated by firedns_init() */
 static struct in_addr servers4[FDNS_MAX];
 static struct in6_addr servers6[FDNS_MAX];
+
 /* actual count of nameservers; set by firedns_init() */
-static int i4;
-static int i6;
+static unsigned int i4;
+static unsigned int i6;
 
 /*
  * Linked list of open DNS queries; populated by firedns_add_query(),
@@ -68,7 +69,7 @@ static list_t *CONNECTIONS;
  * List of errors, in order of values used in FDNS_ERR_*, returned by
  * firedns_strerror
  */
-static const char *errors[] =
+static const char *const errors[] =
 {
   [FDNS_ERR_NONE] = "Success",
   [FDNS_ERR_FORMAT] = "Format error",
@@ -154,7 +155,6 @@ firedns_init(void)
    * addresses from /etc/firedns.conf (or /etc/resolv.conf)
    */
   FILE *f;
-  int i;
   struct in_addr addr4;
   struct in6_addr addr6;
   char buf[1024];
@@ -190,7 +190,7 @@ firedns_init(void)
 
       if (strncmp(buf, "nameserver", 10) == 0)
       {
-        i = 10;
+        unsigned int i = 10;
 
         while (buf[i] == ' ' || buf[i] == '\t')
           ++i;
@@ -292,7 +292,7 @@ firedns_resolveip4(const char *const name)
   if (inet_pton(AF_INET, name, &addr) > 0)
     return &addr;
 
-  return (struct in_addr *)firedns_resolveip(FDNS_QRY_A, name);
+  return firedns_resolveip(FDNS_QRY_A, name);
 }
 
 /* immediate AAAA query */
@@ -304,21 +304,20 @@ firedns_resolveip6(const char *const name)
   if (inet_pton(AF_INET6, name, &addr) > 0)
     return &addr;
 
-  return (struct in6_addr *)firedns_resolveip(FDNS_QRY_AAAA, name);
+  return firedns_resolveip(FDNS_QRY_AAAA, name);
 }
 
 /* resolve a query of a given type */
-char *
+void *
 firedns_resolveip(int type, const char *const name)
 {
   struct firedns_result *result;
   struct timeval tv;
   fd_set s;
 
-  for (int t = 0; t < FIREDNS_TRIES; ++t)
+  for (unsigned int t = 0; t < FIREDNS_TRIES; ++t)
   {
     int fd = firedns_getip(type, name, NULL);
-
     if (fd == -1)
       return NULL;
 
@@ -355,7 +354,6 @@ firedns_getip(int type, const char *const name, void *info)
 {
   struct s_connection *s;
   node_t *node;
-  int fd;
 
   s = firedns_add_query();
   s->class = 1;
@@ -379,8 +377,7 @@ firedns_getip(int type, const char *const name, void *info)
     return -1;
   }
 
-  fd = firedns_doquery(s);
-
+  int fd = firedns_doquery(s);
   if (fd == -1)
   {
     xfree(s);
@@ -413,11 +410,9 @@ firedns_add_query(void)
 static int
 firedns_doquery(struct s_connection *s)
 {
-  int len;
   struct s_header h;
 
-  len = firedns_build_query_payload(s->lookup, s->type, 1, (unsigned char *)&h.payload);
-
+  int len = firedns_build_query_payload(s->lookup, s->type, 1, (unsigned char *)&h.payload);
   if (len == -1)
   {
     firedns_errno = FDNS_ERR_FORMAT;
@@ -483,7 +478,7 @@ firedns_build_query_payload(const char *const name, uint16_t rr, uint16_t class,
 static int
 firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
 {
-  int i, sent_ok = 0;
+  int sent_ok = 0;
   struct sockaddr_in addr4;
   struct sockaddr_in6 addr6;
   unsigned char payload[sizeof(struct s_header)];
@@ -560,12 +555,12 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
     }
   }
 
-  firedns_empty_header(payload,h,l);
+  firedns_empty_header(payload, h, l);
 
   /* if we've got ipv6 support, an ip v6 socket, and ipv6 servers, send to them */
   if (i6 > 0 && s->v6 == 1)
   {
-    for (i = 0; i < i6; i++)
+    for (unsigned int i = 0; i < i6; ++i)
     {
       memset(&addr6, 0, sizeof(addr6));
       memcpy(&addr6.sin6_addr, &servers6[i], sizeof(addr6.sin6_addr));
@@ -578,7 +573,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
     }
   }
 
-  for (i = 0; i < i4; i++)
+  for (unsigned int i = 0; i < i4; ++i)
   {
     /* send via ipv4-over-ipv6 if we've got an ipv6 socket */
     if (s->v6 == 1)
@@ -787,9 +782,10 @@ firedns_getresult(const int fd)
 cleanup:
   list_remove(CONNECTIONS, node);
   node_free(node);
+
   close(c->fd);
-  firedns_fdinuse--;
   xfree(c);
+  firedns_fdinuse--;
 
   return &result;
 }
@@ -801,8 +797,7 @@ firedns_cycle(void)
   struct s_connection *p;
   struct firedns_result *res, new_result;
   static struct pollfd *ufds = NULL;
-  int fd;
-  unsigned int size, i;
+  unsigned int size = 0;
   time_t timenow;
 
   if (LIST_SIZE(CONNECTIONS) == 0)
@@ -812,7 +807,6 @@ firedns_cycle(void)
     ufds = xcalloc(sizeof(*ufds) * OptionsItem->dns_fdlimit);
 
   time(&timenow);
-  size = 0;
 
   LIST_FOREACH_SAFE(node, node_next, CONNECTIONS->head)
   {
@@ -835,8 +829,8 @@ firedns_cycle(void)
       strlcpy(new_result.lookup, p->lookup, sizeof(new_result.lookup));
 
       close(p->fd);
-      firedns_fdinuse--;
       xfree(p);
+      firedns_fdinuse--;
 
       firedns_errno = FDNS_ERR_TIMEOUT;
 
@@ -867,12 +861,11 @@ firedns_cycle(void)
 
     if (p->fd > 0)
     {
-      for (i = 0; i < size; ++i)
+      for (unsigned int i = 0; i < size; ++i)
       {
         if ((ufds[i].revents & POLLIN) && ufds[i].fd == p->fd)
         {
-          fd = p->fd;
-          res = firedns_getresult(fd);
+          res = firedns_getresult(p->fd);
 
           if (res && res->info)
             dnsbl_result(res);

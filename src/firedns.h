@@ -75,7 +75,7 @@ extern int firedns_getip(int, const char *const, void *);
 extern struct firedns_result *firedns_getresult(const int);
 
 /* low-timeout blocking functions */
-extern char *firedns_resolveip(int, const char *const);
+extern void *firedns_resolveip(int, const char *const);
 extern struct in_addr *firedns_resolveip4(const char *const);
 extern struct in6_addr *firedns_resolveip6(const char *const);
 
