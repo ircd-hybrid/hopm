@@ -152,11 +152,11 @@ command_parse(const char *command, const struct ChannelConf *target, const char 
   char *param;  /* Parsed parameters */
   static const struct OperCommandHash COMMAND_TABLE[] =
   {
-    { "CHECK",     cmd_check  },
-    { "SCAN",      cmd_check  },
-    { "STATS",     cmd_stats  },
-    { "FDSTAT",    cmd_fdstat },
-    { NULL,        NULL       }
+    { .command = "CHECK",  .handler = cmd_check  },
+    { .command = "SCAN",   .handler = cmd_check  },
+    { .command = "STATS",  .handler = cmd_stats  },
+    { .command = "FDSTAT", .handler = cmd_fdstat },
+    { .command = NULL }
   };
 
   if (OPT_DEBUG)
