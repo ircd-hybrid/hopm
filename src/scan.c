@@ -142,23 +142,24 @@ scan_timer(void)
 const char *
 scan_gettype(int protocol)
 {
-  static const char *undef = "undefined";
+  static const char *const undef = "undefined";
   static const struct protocol_assoc protocols[] =
   {
-    { OPM_TYPE_HTTP,      "HTTP"      },
-    { OPM_TYPE_HTTPPOST,  "HTTPPOST"  },
-    { OPM_TYPE_SOCKS4,    "SOCKS4"    },
-    { OPM_TYPE_SOCKS5,    "SOCKS5"    },
-    { OPM_TYPE_WINGATE,   "WINGATE"   },
-    { OPM_TYPE_ROUTER,    "ROUTER"    },
-    { OPM_TYPE_HTTPS,     "HTTPS"     },
-    { OPM_TYPE_HTTPSPOST, "HTTPSPOST" },
-    { OPM_TYPE_DREAMBOX,  "DREAMBOX"  }
+    { .type = OPM_TYPE_HTTP,      .name = "HTTP"      },
+    { .type = OPM_TYPE_HTTPPOST,  .name = "HTTPPOST"  },
+    { .type = OPM_TYPE_SOCKS4,    .name = "SOCKS4"    },
+    { .type = OPM_TYPE_SOCKS5,    .name = "SOCKS5"    },
+    { .type = OPM_TYPE_WINGATE,   .name = "WINGATE"   },
+    { .type = OPM_TYPE_ROUTER,    .name = "ROUTER"    },
+    { .type = OPM_TYPE_HTTPS,     .name = "HTTPS"     },
+    { .type = OPM_TYPE_HTTPSPOST, .name = "HTTPSPOST" },
+    { .type = OPM_TYPE_DREAMBOX,  .name = "DREAMBOX"  },
+    { .type = 0 }
   };
 
-  for (unsigned int i = 0; i < (sizeof(protocols) / sizeof(struct protocol_assoc)); ++i)
-    if (protocol == protocols[i].type)
-      return protocols[i].name;
+  for (const struct protocol_assoc *tab = protocols; tab->type; ++tab)
+    if (protocol == tab->type)
+      return tab->name;
 
   return undef;
 }

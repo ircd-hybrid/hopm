@@ -631,18 +631,18 @@ irc_parse(void)
    */
   static const struct CommandHash COMMAND_TABLE[] =
   {
-    { "NOTICE",  m_notice      },
-    { "PRIVMSG", m_privmsg     },
-    { "PING",    m_ping        },
-    { "INVITE",  m_invite      },
-    { "001",     m_perform     },
-    { "302",     m_userhost    },
-    { "471",     m_cannot_join },
-    { "473",     m_cannot_join },
-    { "474",     m_cannot_join },
-    { "475",     m_cannot_join },
-    { "KILL",    m_kill        },
-    { NULL,      NULL          }
+    { .command = "NOTICE",  .handler = m_notice      },
+    { .command = "PRIVMSG", .handler = m_privmsg     },
+    { .command = "PING",    .handler = m_ping        },
+    { .command = "INVITE",  .handler = m_invite      },
+    { .command = "001",     .handler = m_perform     },
+    { .command = "302",     .handler = m_userhost    },
+    { .command = "471",     .handler = m_cannot_join },
+    { .command = "473",     .handler = m_cannot_join },
+    { .command = "474",     .handler = m_cannot_join },
+    { .command = "475",     .handler = m_cannot_join },
+    { .command = "KILL",    .handler = m_kill        },
+    { .command = NULL }
   };
 
   if (IRC_RAW_LEN == 0)
