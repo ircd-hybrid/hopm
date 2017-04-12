@@ -165,23 +165,23 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
   if (text_type[0] == '\0' && bl->ban_unknown == 0)
   {
     if (OPT_DEBUG)
-      log_printf("DNSBL -> Unknown result from BL zone %s (%d)", bl->name, type);
+      log_printf("DNSBL -> Unknown result from %s (%d)", bl->name, type);
 
     return;
   }
 
   if (ss->manual_target)
-    irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s appears in BL zone %s (%s)",
+    irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s appears in %s (%s)",
              ss->manual_target->name, ss->ip, bl->name, text_type);
   else if (ss->positive == 0)
   {
     /* Only report it if no other scans have found positives yet. */
     scan_positive(ss, (bl->kline[0] ? bl->kline : IRCItem->kline), text_type);
 
-    irc_send_channels("DNSBL -> %s!%s@%s [%s] appears in BL zone %s (%s)",
+    irc_send_channels("DNSBL -> %s!%s@%s [%s] appears in %s (%s)",
                       ss->irc_nick, ss->irc_username, ss->irc_hostname, ss->ip, bl->name,
                       text_type);
-    log_printf("DNSBL -> %s!%s@%s [%s] appears in BL zone %s (%s)",
+    log_printf("DNSBL -> %s!%s@%s [%s] appears in %s (%s)",
                ss->irc_nick, ss->irc_username, ss->irc_hostname, ss->ip, bl->name,
                text_type);
   }
@@ -221,7 +221,7 @@ dnsbl_result(struct firedns_result *res)
   if (res->text[0] == '\0' && firedns_errno == FDNS_ERR_NXDOMAIN)
   {
     if (ds->ss->manual_target)
-      irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s does not appear in BL zone %s",
+      irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s does not appear in %s",
                ds->ss->manual_target->name, ds->ss->ip, ds->bl->name);
 
     --ds->ss->scans;  /* We are done with ss here */
