@@ -41,7 +41,7 @@
 
 extern unsigned int OPT_DEBUG;
 
-static list_t *negcache_list;
+static list_t negcache_list;
 static patricia_tree_t *negcache_trie;
 
 
@@ -56,7 +56,6 @@ negcache_init(void)
     return;
 
   negcache_trie = patricia_new(PATRICIA_MAXBITS);
-  negcache_list = list_create();
 }
 
 /*
@@ -96,7 +95,7 @@ negcache_insert(const char *ipstr)
   n->seen = time(NULL);
 
   pnode->data = n;
-  list_add(negcache_list, node_create(pnode));
+  list_add(&negcache_list, node_create(pnode));
 }
 
 /*
@@ -107,7 +106,7 @@ negcache_rebuild(void)
 {
   node_t *node, *node_next;
 
-  LIST_FOREACH_SAFE(node, node_next, negcache_list->head)
+  LIST_FOREACH_SAFE(node, node_next, negcache_list.head)
   {
     patricia_node_t *pnode = node->data;
     struct negcache_item *n = pnode->data;
@@ -118,7 +117,7 @@ negcache_rebuild(void)
         log_printf("NEGCACHE -> Deleting expired negcache node for %s added at %lu",
                    patricia_prefix_toa(pnode->prefix, 0), n->seen);
 
-      list_remove(negcache_list, node);
+      list_remove(&negcache_list, node);
       node_free(node);
       xfree(n);
       patricia_remove(negcache_trie, pnode);
