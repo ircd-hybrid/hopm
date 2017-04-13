@@ -24,12 +24,6 @@
 enum { MSGLENMAX = 513 };  /* 510 bytes message length + \r\n\0 */
 
 
-struct CommandHash
-{
-  const char *command;
-  void (*handler)(char *[], unsigned int, const char *, const char *);
-};
-
 extern void irc_send(const char *, ...);
 extern void irc_send_channels(const char *, ...);
 extern void irc_cycle(void);
