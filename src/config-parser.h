@@ -188,7 +188,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 92 "config-parser.y" /* yacc.c:1909  */
+#line 91 "config-parser.y" /* yacc.c:1909  */
 
   int number;
   char *string;
