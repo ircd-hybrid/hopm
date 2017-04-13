@@ -23,8 +23,8 @@
 
 #include <stdio.h>
 #include <time.h>
+
 #include "list.h"
-#include "libopm/src/opm_types.h"
 
 extern char linebuf[512];
 extern char conffilebuf[512];
