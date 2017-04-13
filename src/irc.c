@@ -625,6 +625,12 @@ irc_parse(void)
   unsigned int parc = 1;
   char         msg[MSGLENMAX];  /* Temporarily stores IRC msg to pass to handlers */
 
+  struct CommandHash
+  {
+    const char *command;
+    void (*handler)(char *[], unsigned int, const char *, const char *);
+  };
+
   /*
    * Table should be ordered with most occuring (or priority)
    * commands at the top of the list.
