@@ -30,9 +30,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <poll.h>
-#include <sys/time.h>
 #include <time.h>
-
 #include <errno.h>
 #include <stdarg.h>
 #include <regex.h>

@@ -24,10 +24,8 @@
  * \version $Id$
  */
 
-#include <stdarg.h>
-#include <string.h>
-
 #include "match.h"
+
 
 #define ToLower(c) (ToLowerTab[(unsigned char)(c)])
 
