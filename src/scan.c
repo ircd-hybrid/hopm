@@ -49,11 +49,8 @@
 #include "libopm/src/opm_types.h"
 
 
-/* GLOBAL LISTS */
-
-static list_t *SCANNERS;  /* List of OPM_T */
-static list_t *MASKS;     /* Associative list of masks->scanners */
-
+/* GLOBAL LIST */
+static list_t SCANNERS;  /* List of OPM_T */
 
 /* Function declarations */
 static struct scan_struct *scan_create(const char *[], const char *);
@@ -85,7 +82,7 @@ scan_cycle(void)
   dnsbl_cycle();
 
   /* Cycle each scanner object */
-  LIST_FOREACH(node, SCANNERS->head)
+  LIST_FOREACH(node, SCANNERS.head)
   {
     struct scanner_struct *scs = node->data;
     opm_cycle(scs->scanner);
@@ -200,9 +197,6 @@ scan_init(void)
 {
   node_t *p, *p2, *p3, *p4, *node;
 
-  SCANNERS = list_create();
-  MASKS    = list_create();
-
   /* Setup each individual scanner */
   LIST_FOREACH(p, ScannerItemList->head)
   {
@@ -251,11 +245,11 @@ scan_init(void)
     }
 
     node = node_create(scs);
-    list_add(SCANNERS, node);
+    list_add(&SCANNERS, node);
   }
 
   /* Give scanners a list of masks they scan */
-  LIST_FOREACH(p, SCANNERS->head)
+  LIST_FOREACH(p, SCANNERS.head)
   {
     struct scanner_struct *scs = p->data;
 
@@ -359,7 +353,7 @@ scan_connect(const char *user[], const char *msg)
     dnsbl_add(ss);
 
   /* Add ss->remote to all matching scanners */
-  LIST_FOREACH(p, SCANNERS->head)
+  LIST_FOREACH(p, SCANNERS.head)
   {
     struct scanner_struct *scs = p->data;
 
@@ -511,7 +505,7 @@ scan_positive(struct scan_struct *ss, const char *kline, const char *type)
 
   /* Speed up the cleanup procedure */
   /* Close all scans prematurely */
-  LIST_FOREACH(node, SCANNERS->head)
+  LIST_FOREACH(node, SCANNERS.head)
   {
     OPM_T *scanner = ((struct scanner_struct *)node->data)->scanner;
     opm_end(scanner, ss->remote);
@@ -903,7 +897,7 @@ scan_manual(char *param, const struct ChannelConf *target)
     dnsbl_add(ss);
 
   /* Add ss->remote to all scanners */
-  LIST_FOREACH(node, SCANNERS->head)
+  LIST_FOREACH(node, SCANNERS.head)
   {
     struct scanner_struct *scs = node->data;
 

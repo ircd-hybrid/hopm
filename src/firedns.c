@@ -63,7 +63,7 @@ static unsigned int i6;
  * Linked list of open DNS queries; populated by firedns_add_query(),
  * decimated by firedns_getresult()
  */
-static list_t *CONNECTIONS;
+static list_t CONNECTIONS;
 
 /*
  * List of errors, in order of values used in FDNS_ERR_*, returned by
@@ -162,9 +162,6 @@ firedns_init(void)
 
   i6 = 0;
   i4 = 0;
-
-  /* Initialize connections list */
-  CONNECTIONS = list_create();
 
   srand((unsigned int)time(NULL));
   memset(servers4, 0, sizeof(servers4));
@@ -371,7 +368,7 @@ firedns_getip(int type, const char *const name, void *info)
     else
     {
       node = node_create(s);
-      list_add(CONNECTIONS, node);
+      list_add(&CONNECTIONS, node);
     }
 
     return -1;
@@ -385,7 +382,7 @@ firedns_getip(int type, const char *const name, void *info)
   }
 
   node = node_create(s);
-  list_add(CONNECTIONS, node);
+  list_add(&CONNECTIONS, node);
 
   return fd;
 }
@@ -633,7 +630,7 @@ firedns_getresult(const int fd)
   memset(result.text, 0, sizeof(result.text));
 
   /* Find query in list of dns lookups */
-  LIST_FOREACH(node, CONNECTIONS->head)
+  LIST_FOREACH(node, CONNECTIONS.head)
   {
     c = node->data;
 
@@ -780,7 +777,7 @@ firedns_getresult(const int fd)
 
 /* Clean-up */
 cleanup:
-  list_remove(CONNECTIONS, node);
+  list_remove(&CONNECTIONS, node);
   node_free(node);
 
   close(c->fd);
@@ -800,7 +797,7 @@ firedns_cycle(void)
   unsigned int size = 0;
   time_t timenow;
 
-  if (LIST_SIZE(CONNECTIONS) == 0)
+  if (LIST_SIZE(&CONNECTIONS) == 0)
     return;
 
   if (ufds == NULL)
@@ -808,7 +805,7 @@ firedns_cycle(void)
 
   time(&timenow);
 
-  LIST_FOREACH_SAFE(node, node_next, CONNECTIONS->head)
+  LIST_FOREACH_SAFE(node, node_next, CONNECTIONS.head)
   {
     if (size >= OptionsItem->dns_fdlimit)
       break;
@@ -821,7 +818,7 @@ firedns_cycle(void)
     if (p->fd > 0 && (p->start + OptionsItem->dns_timeout) < timenow)
     {
       /* Timed out - remove from list */
-      list_remove(CONNECTIONS, node);
+      list_remove(&CONNECTIONS, node);
       node_free(node);
 
       memset(new_result.text, 0, sizeof(new_result.text));
@@ -855,7 +852,7 @@ firedns_cycle(void)
       return;
   }
 
-  LIST_FOREACH_SAFE(node, node_next, CONNECTIONS->head)
+  LIST_FOREACH_SAFE(node, node_next, CONNECTIONS.head)
   {
     p = node->data;
 
