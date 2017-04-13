@@ -28,8 +28,6 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <time.h>
-#include <errno.h>
 #include <assert.h>
 
 #include "compat.h"

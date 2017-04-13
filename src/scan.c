@@ -21,18 +21,12 @@
 #include "setup.h"
 
 #include <stdio.h>
-#include <unistd.h>
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <time.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 
 #include "compat.h"
 #include "config.h"
