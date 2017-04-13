@@ -21,9 +21,7 @@
 #ifndef IRC_H
 #define IRC_H
 
-#include <sys/types.h>
-
-#define MSGLENMAX 512 + 1
+enum { MSGLENMAX = 513 };  /* 510 bytes message length + \r\n\0 */
 
 
 struct CommandHash
