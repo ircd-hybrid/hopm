@@ -18,6 +18,11 @@
  *  USA
  */
 
+/*! \file list.h
+ * \brief A header for the list manipulation routines.
+ * \version $Id$
+ */
+
 #ifndef LIST_H
 #define LIST_H
 
