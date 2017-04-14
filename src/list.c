@@ -18,7 +18,13 @@
  *  USA
  */
 
+/*! \file list.c
+ * \brief Maintains doubly-linked lists.
+ * \version $Id$
+ */
+
 #include <stdlib.h>
+#include <assert.h>
 
 #include "memory.h"
 #include "list.h"
@@ -44,56 +50,47 @@ list_create(void)
 node_t *
 list_add(list_t *list, node_t *node)
 {
-  if (list == NULL || node == NULL)
-    return NULL;
+  node->prev = NULL;
+  node->next = list->head;
 
-  if (list->tail == NULL)
-  {
-    list->head = node;
+  /* Assumption: If list->tail != NULL, list->head != NULL */
+  if (list->head)
+    list->head->prev = node;
+  else if (list->tail == NULL)
     list->tail = node;
 
-    node->next = NULL;
-    node->prev = NULL;
-  }
-  else
-  {
-    node->prev = list->tail;
-    list->tail->next = node;
-    list->tail = node;
-    node->next = NULL;
-  }
+  list->head = node;
+  list->elements++;
 
-  ++list->elements;
   return node;
 }
 
 node_t *
 list_remove(list_t *list, node_t *node)
 {
-  if (list == NULL || node == NULL)
-    return NULL;
-
-  if (node == list->head)
-  {
-    list->head = node->next;
-
-    if (node->next)
-      node->next->prev = NULL;
-    else
-      list->tail = NULL;
-  }
-  else if (node == list->tail)
-  {
-    list->tail = list->tail->prev;
-    list->tail->next = NULL;
-  }
+  /* Assumption: If node->next == NULL, then list->tail == node
+   *      and:   If node->prev == NULL, then list->head == node
+   */
+  if (node->next)
+    node->next->prev = node->prev;
   else
   {
-    node->prev->next = node->next;
-    node->next->prev = node->prev;
+    assert(list->tail == node);
+    list->tail = node->prev;
   }
 
-  --list->elements;
+  if (node->prev)
+    node->prev->next = node->next;
+  else
+  {
+    assert(list->head == node);
+    list->head = node->next;
+  }
+
+  /* Set this to NULL does matter */
+  node->next = node->prev = NULL;
+  list->elements--;
+
   return node;
 }
 
@@ -106,5 +103,5 @@ list_free(list_t *list)
 void
 node_free(node_t *node)
 {
-   xfree(node);
+  xfree(node);
 }
