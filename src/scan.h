@@ -36,7 +36,7 @@ struct scan_struct
   unsigned int scans;
   unsigned int positive;
 
-  const struct ChannelConf *manual_target;
+  const char *manual_target;
 };
 
 struct scanner_struct
@@ -57,7 +57,7 @@ extern const char *scan_gettype(int);
 extern void scan_cycle(void);
 extern void scan_connect(const char *[], const char *);
 extern void scan_checkfinished(struct scan_struct *);
-extern void scan_manual(char *, const struct ChannelConf *);
+extern void scan_manual(char *, const char *);
 extern void scan_timer(void);
 extern void scan_positive(struct scan_struct *, const char *, const char *);
 #endif /* SCAN_H */

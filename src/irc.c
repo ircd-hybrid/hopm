@@ -255,7 +255,7 @@ m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p
 
   if (hit)
     /* XXX command_parse will alter parv[3]. */
-    command_parse(parv[3], channel, source_p);
+    command_parse(parv[3], channel->name, source_p);
 }
 
 /* m_notice

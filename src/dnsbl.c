@@ -170,7 +170,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
 
   if (ss->manual_target)
     irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s appears in BL zone %s (%s)",
-             ss->manual_target->name, ss->ip, bl->name, text_type);
+             ss->manual_target, ss->ip, bl->name, text_type);
   else if (ss->positive == 0)
   {
     /* Only report it if no other scans have found positives yet. */
@@ -220,7 +220,7 @@ dnsbl_result(struct firedns_result *res)
   {
     if (ds->ss->manual_target)
       irc_send("PRIVMSG %s :CHECK -> DNSBL -> %s does not appear in BL zone %s",
-               ds->ss->manual_target->name, ds->ss->ip, ds->bl->name);
+               ds->ss->manual_target, ds->ss->ip, ds->bl->name);
 
     --ds->ss->scans;  /* We are done with ss here */
     scan_checkfinished(ds->ss);  /* This could free ss, don't use ss after this point */

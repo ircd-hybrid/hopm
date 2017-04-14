@@ -50,7 +50,7 @@ static list_t COMMANDS;  /* List of active commands */
  *
  */
 static void
-cmd_check(char *param, const struct ChannelConf *target)
+cmd_check(char *param, const char *target)
 {
   scan_manual(param, target);
 }
@@ -64,9 +64,9 @@ cmd_check(char *param, const struct ChannelConf *target)
  *    target: channel command was sent to
  */
 static void
-cmd_stats(char *param, const struct ChannelConf *target)
+cmd_stats(char *param, const char *target)
 {
-  stats_output(target->name);
+  stats_output(target);
 }
 
 /* cmd_fdstat
@@ -78,9 +78,9 @@ cmd_stats(char *param, const struct ChannelConf *target)
  *    target: channel command was sent to
  */
 static void
-cmd_fdstat(char *param, const struct ChannelConf *target)
+cmd_fdstat(char *param, const char *target)
 {
-  fdstats_output(target->name);
+  fdstats_output(target);
 }
 
 /* command_create
@@ -98,7 +98,7 @@ cmd_fdstat(char *param, const struct ChannelConf *target)
  */
 static struct Command *
 command_create(const struct OperCommandHash *tab, const char *param, const char *irc_nick,
-               const struct ChannelConf *target)
+               const char *target)
 {
   struct Command *command = xcalloc(sizeof(*command));
 
@@ -147,7 +147,7 @@ command_free(struct Command *command)
  *
  */
 void
-command_parse(const char *command, const struct ChannelConf *target, const char *source_p)
+command_parse(const char *command, const char *target, const char *source_p)
 {
   char *param;  /* Parsed parameters */
   static const struct OperCommandHash COMMAND_TABLE[] =
@@ -161,7 +161,7 @@ command_parse(const char *command, const struct ChannelConf *target, const char 
 
   if (OPT_DEBUG)
     log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
-               source_p, target->name);
+               source_p, target);
 
   /* Only allow OptionsItem->command_queue_size commands in the queue */
   if (LIST_SIZE(&COMMANDS) >= OptionsItem->command_queue_size)

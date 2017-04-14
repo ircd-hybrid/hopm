@@ -461,7 +461,7 @@ scan_checkfinished(struct scan_struct *ss)
   {
     if (ss->manual_target)
       irc_send("PRIVMSG %s :CHECK -> All tests on %s completed.",
-               ss->manual_target->name, ss->ip);
+               ss->manual_target, ss->ip);
     else
     {
       if (OPT_DEBUG)
@@ -537,7 +537,7 @@ scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
   if (ss->manual_target)
   {
     irc_send("PRIVMSG %s :CHECK -> OPEN PROXY %s:%d (%s) [%s]",
-             ss->manual_target->name, remote->ip, remote->port,
+             ss->manual_target, remote->ip, remote->port,
              scan_gettype(remote->protocol), scs->name);
     log_printf("SCAN -> OPEN PROXY %s:%d (%s) [%s]", remote->ip,
                remote->port, scan_gettype(remote->protocol), scs->name);
@@ -664,7 +664,7 @@ scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
 
       if (ss->manual_target)
         irc_send("PRIVMSG %s :CHECK -> Negotiation failed %s:%d (%s) "
-                 "[%s] (%d bytes read)", ss->manual_target->name,
+                 "[%s] (%d bytes read)", ss->manual_target,
                  remote->ip, remote->port, scan_gettype(remote->protocol),
                  scs->name, remote->bytes_read);
       break;
@@ -674,7 +674,7 @@ scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
 
       if (ss->manual_target)
         irc_send("PRIVMSG %s :CHECK -> Bind error on %s:%d (%s) [%s]",
-                 ss->manual_target->name, remote->ip, remote->port,
+                 ss->manual_target, remote->ip, remote->port,
                  scan_gettype(remote->protocol), scs->name);
       break;
     case OPM_ERR_NOFD:
@@ -685,7 +685,7 @@ scan_handle_error(OPM_T *scanner, OPM_REMOTE_T *remote, int err, void *data)
       if (ss->manual_target)
         irc_send("PRIVMSG %s :CHECK -> Scan failed %s:%d (%s) [%s] "
                  "(file descriptor allocation error)",
-                 ss->manual_target->name, remote->ip, remote->port,
+                 ss->manual_target, remote->ip, remote->port,
                  scan_gettype(remote->protocol), scs->name);
       break;
     default:  /* Unknown Error! */
@@ -816,7 +816,7 @@ scan_irckline(const struct scan_struct *ss, const char *format, const char *type
  *    scan_struct contains a manual_target pointer.
  */
 void
-scan_manual(char *param, const struct ChannelConf *target)
+scan_manual(char *param, const char *target)
 {
   char buf[INET6_ADDRSTRLEN];
   const void *addr = NULL;
@@ -830,7 +830,7 @@ scan_manual(char *param, const struct ChannelConf *target)
   /* If there were no parameters sent, simply alert the user and return */
   if (param == NULL)
   {
-    irc_send("PRIVMSG %s :OPM -> Invalid parameters.", target->name);
+    irc_send("PRIVMSG %s :OPM -> Invalid parameters.", target);
     return;
   }
 
@@ -867,14 +867,14 @@ scan_manual(char *param, const struct ChannelConf *target)
   else
   {
     irc_send("PRIVMSG %s :CHECK -> Error resolving host '%s': %s",
-             target->name, ip, firedns_strerror(firedns_errno));
+             target, ip, firedns_strerror(firedns_errno));
     return;
   }
 
   if ((n = getnameinfo((const struct sockaddr *)&storage, storage_len, buf, sizeof(buf), NULL, 0, NI_NUMERICHOST)))
   {
     irc_send("PRIVMSG %s :CHECK -> invalid address: %s",
-             target->name, gai_strerror(n));
+             target, gai_strerror(n));
     return;
   }
 
@@ -888,10 +888,10 @@ scan_manual(char *param, const struct ChannelConf *target)
 
   if (scannername)
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies [%s]",
-             target->name, ss->ip, scannername);
+             target, ss->ip, scannername);
   else
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies on all scanners",
-             target->name, ss->ip);
+             target, ss->ip);
 
   if (LIST_SIZE(OpmItem->blacklists))
     dnsbl_add(ss);
@@ -921,11 +921,11 @@ scan_manual(char *param, const struct ChannelConf *target)
         case OPM_ERR_BADADDR:
           if (!strchr(ss->ip, ':'))  /* XXX: hack alert. remove when libopm can deal with IPv6 addresses */
             irc_send("PRIVMSG %s :OPM -> Bad address %s [%s]",
-                     ss->manual_target->name, ss->ip, scs->name);
+                     ss->manual_target, ss->ip, scs->name);
           break;
         default:
           irc_send("PRIVMSG %s :OPM -> Unknown error %s [%s]",
-                   ss->manual_target->name, ss->ip, scs->name);
+                   ss->manual_target, ss->ip, scs->name);
           break;
       }
     }
@@ -941,10 +941,10 @@ scan_manual(char *param, const struct ChannelConf *target)
   {
     if (scannername)
       irc_send("PRIVMSG %s :CHECK -> No such scanner '%s', or '%s' has 0 protocols.",
-               ss->manual_target->name, scannername, scannername);
+               ss->manual_target, scannername, scannername);
 
     irc_send("PRIVMSG %s :CHECK -> No scans active on '%s', aborting scan.",
-             ss->manual_target->name, ss->ip);
+             ss->manual_target, ss->ip);
     scan_free(ss);
   }
 }
