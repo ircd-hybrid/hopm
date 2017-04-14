@@ -205,7 +205,7 @@ command_parse(const char *command, const struct ChannelConf *target, const char 
       /* Queue this command */
       struct Command *cmd = command_create(tab, param, source_p, target);
 
-      list_add(&COMMANDS, node_create(cmd));
+      list_add(&COMMANDS, &cmd->node);
       break;
     }
   }
@@ -243,9 +243,8 @@ command_timer(void)
 
     if ((present - command->added) > OptionsItem->command_timeout)
     {
+      list_remove(&COMMANDS, &command->node);
       command_free(command);
-      list_remove(&COMMANDS, node);
-      node_free(node);
     }
     else  /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
       return;
@@ -298,9 +297,8 @@ command_userhost(const char *reply)
         command->tab->handler(command->param, command->target);
 
       /* Cleanup the command */
+      list_remove(&COMMANDS, &command->node);
       command_free(command);
-      list_remove(&COMMANDS, node);
-      node_free(node);
     }
   }
 }
