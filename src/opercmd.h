@@ -29,8 +29,6 @@ struct OperCommandHash
 
 struct Command
 {
-  node_t node;  /**< Doubly linked list node */
-
   /* Points to specific entry in COMMAND_TABLE in opercmd.c */
   const struct OperCommandHash *tab;
 
