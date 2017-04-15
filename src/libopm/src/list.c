@@ -36,7 +36,7 @@
 OPM_NODE_T *
 libopm_node_create(void *data)
 {
-  OPM_NODE_T *node = xcalloc(sizeof *node);
+  OPM_NODE_T *node = libopm_calloc(sizeof *node);
 
   node->data = data;
 
@@ -46,7 +46,7 @@ libopm_node_create(void *data)
 OPM_LIST_T *
 libopm_list_create(void)
 {
-  OPM_LIST_T *list = xcalloc(sizeof *list);
+  OPM_LIST_T *list = libopm_calloc(sizeof *list);
   return list;
 }
 
@@ -100,11 +100,11 @@ libopm_list_remove(OPM_LIST_T *list, OPM_NODE_T *node)
 void
 libopm_list_free(OPM_LIST_T *list)
 {
-  MyFree(list);
+  libopm_free(list);
 }
 
 void
 libopm_node_free(OPM_NODE_T *node)
 {
-  MyFree(node);
+  libopm_free(node);
 }

@@ -65,8 +65,8 @@ libopm_config_create(void)
   const unsigned int num = sizeof(HASH) / sizeof(OPM_CONFIG_HASH_T);
   OPM_CONFIG_T *ret;
 
-  ret = xcalloc(sizeof(OPM_CONFIG_T));
-  ret->vars = xcalloc(sizeof(void *) * num);
+  ret = libopm_calloc(sizeof(OPM_CONFIG_T));
+  ret->vars = libopm_calloc(sizeof(void *) * num);
 
 
   /*
@@ -83,15 +83,15 @@ libopm_config_create(void)
     switch (libopm_config_gettype(i))
     {
       case OPM_TYPE_INT:
-        ret->vars[i] = xcalloc(sizeof(int));
+        ret->vars[i] = libopm_calloc(sizeof(int));
         break;
 
       case OPM_TYPE_STRING:
-        ret->vars[i] = libopm_xstrdup("");
+        ret->vars[i] = libopm_strdup("");
         break;
 
       case OPM_TYPE_ADDRESS:
-        ret->vars[i] = xcalloc(sizeof(struct sockaddr_in));
+        ret->vars[i] = libopm_calloc(sizeof(struct sockaddr_in));
         break;
 
       case OPM_TYPE_STRINGLIST:
@@ -135,20 +135,20 @@ libopm_config_free(OPM_CONFIG_T *config)
 
         LIST_FOREACH_SAFE(p, next, list->head)
         {
-          MyFree(p->data);
-          MyFree(p);
+          libopm_free(p->data);
+          libopm_free(p);
         }
 
         break;
 
       default:
-        MyFree(config->vars[i]);
+        libopm_free(config->vars[i]);
         break;
     }
   }
 
-  MyFree(config->vars);
-  MyFree(config);
+  libopm_free(config->vars);
+  libopm_free(config);
 }
 
 /* config_set
@@ -178,9 +178,9 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
   {
     case OPM_TYPE_STRING:
       if (config->vars[key])
-        MyFree(config->vars[key]);
+        libopm_free(config->vars[key]);
 
-      config->vars[key] = libopm_xstrdup(value);
+      config->vars[key] = libopm_strdup(value);
       break;
 
     case OPM_TYPE_INT:
@@ -194,7 +194,7 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
       break;
 
     case OPM_TYPE_STRINGLIST:
-      node = libopm_node_create(libopm_xstrdup(value));
+      node = libopm_node_create(libopm_strdup(value));
       libopm_list_add(config->vars[key], node);
       break;
 

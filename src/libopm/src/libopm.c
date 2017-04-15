@@ -105,14 +105,14 @@ opm_create(void)
 {
   OPM_T *ret;
 
-  ret = xcalloc(sizeof(*ret));
+  ret = libopm_calloc(sizeof(*ret));
   ret->config = libopm_config_create();
   ret->scans = libopm_list_create();
   ret->queue = libopm_list_create();
   ret->protocols = libopm_list_create();
 
   /* Setup callbacks */
-  ret->callbacks = xcalloc(sizeof(OPM_CALLBACK_T) * CBLEN);
+  ret->callbacks = libopm_calloc(sizeof(OPM_CALLBACK_T) * CBLEN);
 
   return ret;
 }
@@ -134,8 +134,8 @@ opm_remote_create(const char *ip)
 {
   OPM_REMOTE_T *ret;
 
-  ret = xcalloc(sizeof(*ret));
-  ret->ip = libopm_xstrdup(ip);
+  ret = libopm_calloc(sizeof(*ret));
+  ret->ip = libopm_strdup(ip);
   ret->protocols = libopm_list_create();  /* Setup protocol list */
 
   return ret;
@@ -157,7 +157,7 @@ opm_remote_free(OPM_REMOTE_T *remote)
   OPM_NODE_T *p, *next;
   OPM_PROTOCOL_CONFIG_T *ppc;
 
-  MyFree(remote->ip);
+  libopm_free(remote->ip);
 
   LIST_FOREACH_SAFE(p, next, remote->protocols->head)
   {
@@ -170,7 +170,7 @@ opm_remote_free(OPM_REMOTE_T *remote)
 
   libopm_list_free(remote->protocols);
 
-  MyFree(remote);
+  libopm_free(remote);
 }
 
 /* opm_callback
@@ -245,8 +245,8 @@ opm_free(OPM_T *scanner)
   libopm_list_free(scanner->scans);
   libopm_list_free(scanner->queue);
 
-  MyFree(scanner->callbacks);
-  MyFree(scanner);
+  libopm_free(scanner->callbacks);
+  libopm_free(scanner);
 }
 
 /* opm_config
@@ -364,7 +364,7 @@ libopm_protocol_config_create(void)
 {
   OPM_PROTOCOL_CONFIG_T *ret;
 
-  ret = xcalloc(sizeof(*ret));
+  ret = libopm_calloc(sizeof(*ret));
 
   return ret;
 }
@@ -382,7 +382,7 @@ libopm_protocol_config_create(void)
 static void
 libopm_protocol_config_free(OPM_PROTOCOL_CONFIG_T *protocol)
 {
-  MyFree(protocol);
+  libopm_free(protocol);
 }
 
 /* opm_scan
@@ -570,7 +570,7 @@ libopm_scan_create(OPM_T *scanner, OPM_REMOTE_T *remote)
   }
 #endif
 
-  ret = xcalloc(sizeof(*ret));
+  ret = libopm_calloc(sizeof(*ret));
   ret->remote = remote;
   ret->connections = libopm_list_create();
 
@@ -642,7 +642,7 @@ libopm_scan_free(OPM_SCAN_T *scan)
 
   libopm_list_free(scan->connections);
 
-  MyFree(scan);
+  libopm_free(scan);
 }
 
 /* connection_create
@@ -660,7 +660,7 @@ libopm_connection_create(void)
 {
   OPM_CONNECTION_T *ret;
 
-  ret = xcalloc(sizeof(*ret));
+  ret = libopm_calloc(sizeof(*ret));
   ret->state = OPM_STATE_UNESTABLISHED;
 
   return ret;
@@ -679,7 +679,7 @@ libopm_connection_create(void)
 static void
 libopm_connection_free(OPM_CONNECTION_T *conn)
 {
-  MyFree(conn);
+  libopm_free(conn);
 }
 
 /* opm_cycle
@@ -975,9 +975,9 @@ libopm_check_poll(OPM_T *scanner)
   /* Grow pollfd array (ufds) as needed */
   if (ufds_size < (*(unsigned int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT)))
   {
-    MyFree(ufds);
+    libopm_free(ufds);
 
-    ufds = xcalloc((sizeof *ufds) * (*(unsigned int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT)));
+    ufds = libopm_calloc((sizeof *ufds) * (*(unsigned int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT)));
     ufds_size = (*(unsigned int *)libopm_config(scanner->config, OPM_CONFIG_FD_LIMIT));
   }
 
