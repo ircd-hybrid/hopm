@@ -89,7 +89,7 @@ config_setup(void)
   IRCItem->username = xstrdup("hopm");
   IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");
   IRCItem->server = xstrdup("irc.example.org");
-  IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9a-fA-F\\.:]+)\\].*");
+  IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9a-f\\.:]+)\\].*");
   IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
 
   /* Setup options block defaults */
