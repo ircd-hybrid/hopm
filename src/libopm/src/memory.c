@@ -21,12 +21,13 @@
  *
  */
 
-#include <assert.h>
-#include <string.h>
 #include "setup.h"
 
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
 #include "memory.h"
-#include "opm.h"
 
 
 /* xcalloc

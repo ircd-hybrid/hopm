@@ -31,7 +31,6 @@
 #include "opm_common.h"
 #include "list.h"
 #include "memory.h"
-#include "opm.h"
 
 
 OPM_NODE_T *

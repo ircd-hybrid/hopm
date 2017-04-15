@@ -23,11 +23,14 @@
 
 #include "setup.h"
 
-#include <string.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include "memory.h"
 #include "config.h"
-#include "inet.h"
 #include "opm_error.h"
 #include "opm_types.h"
 #include "opm_common.h"
