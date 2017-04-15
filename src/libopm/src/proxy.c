@@ -29,7 +29,6 @@
 #include <openssl/ssl.h>
 #endif
 
-#include "inet.h"
 #include "config.h"
 #include "proxy.h"
 #include "opm_common.h"

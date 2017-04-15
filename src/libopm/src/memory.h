@@ -1,10 +1,6 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-#include "setup.h"
-
-#include <stdlib.h>
-
 #define xcalloc(SIZE) libopm_xcalloc(SIZE)
 #define MyFree(X) libopm_MyFree((void **) &X)
 

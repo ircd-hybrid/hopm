@@ -2,7 +2,6 @@ noinst_LTLIBRARIES = libopm.la
 
 libopm_la_SOURCES = config.c     \
                     config.h     \
-                    inet.h       \
                     libopm.c     \
                     libopm.h     \
                     list.c       \

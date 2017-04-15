@@ -1,8 +1,12 @@
 #ifndef LIBOPM_H
 #define LIBOPM_H
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 #include "config.h"
-#include "inet.h"
 #include "opm_common.h"
 #include "opm.h"
 

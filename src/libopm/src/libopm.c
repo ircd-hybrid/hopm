@@ -23,6 +23,17 @@
 
 #include "setup.h"
 
+#include <errno.h>
+#include <time.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+#include <stdlib.h>
+#include <poll.h>
+#ifdef HAVE_LIBCRYPTO
+#include <openssl/ssl.h>
+#endif
+
 #include "config.h"
 #include "libopm.h"
 #include "memory.h"
@@ -30,18 +41,7 @@
 #include "opm_types.h"
 #include "opm_common.h"
 #include "list.h"
-#include "inet.h"
 #include "proxy.h"
-
-#include <errno.h>
-#include <sys/time.h>
-#include <time.h>
-#include <unistd.h>
-#include <string.h>
-#include <poll.h>
-#ifdef HAVE_LIBCRYPTO
-#include <openssl/ssl.h>
-#endif
 
 
 static OPM_PROTOCOL_CONFIG_T *libopm_protocol_config_create(void);
