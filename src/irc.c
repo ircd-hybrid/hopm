@@ -250,7 +250,9 @@ m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p
     size_t nick_len = strlen(IRCItem->nick);
 
     if (strncasecmp(parv[3], IRCItem->nick, nick_len) == 0)
-      hit = *(parv[3] + nick_len) == ' ';
+      hit = *(parv[3] + nick_len) == ' ' ||
+            *(parv[3] + nick_len) == ',' ||
+            *(parv[3] + nick_len) == ':';
   }
 
   if (hit)
