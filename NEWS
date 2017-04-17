@@ -1,3 +1,7 @@
+-- Noteworthy changes in version 1.1.5 (2017-??-?)
+o) The ':', and ',' nickname delimiters work again
+
+
 -- Noteworthy changes in version 1.1.4 (2017-04-05)
 o) IPv6 blacklist support has been implemented
 o) The CHECK command now accepts IPv6 addresses
