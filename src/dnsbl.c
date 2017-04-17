@@ -259,7 +259,7 @@ dnsbl_cycle(void)
 void
 dnsbl_report(const struct scan_struct *ss)
 {
-  char buf[4096], cmdbuf[512];
+  char buf[2048], cmdbuf[256];
   FILE *fp;
 
   assert(ss->ip);
