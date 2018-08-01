@@ -61,7 +61,6 @@ static void libopm_check_queue(OPM_T *);
 static void libopm_do_connect(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_readready(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static int libopm_do_readready_tls(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
-static int libopm_do_readready_ssh(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_writeready(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_hup(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
 static void libopm_do_read(OPM_T *, OPM_SCAN_T *, OPM_CONNECTION_T *);
@@ -89,7 +88,7 @@ static OPM_PROTOCOL_T OPM_PROTOCOLS[] =
   { OPM_TYPE_DREAMBOX,  libopm_proxy_dreambox_write,  NULL, 0 },
   { OPM_TYPE_HTTPS,     libopm_proxy_https_write,     libopm_do_readready_tls, 1 },
   { OPM_TYPE_HTTPSPOST, libopm_proxy_httpspost_write, libopm_do_readready_tls, 1 },
-  { OPM_TYPE_SSH,       NULL,                         libopm_do_readready_ssh, 0 }
+  { OPM_TYPE_SSH,       NULL,                         NULL, 0 }
 };
 
 /* opm_create
@@ -1114,56 +1113,6 @@ libopm_do_readready_tls(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn
       conn->readbuf[++(conn->readlen) - 1] = *p;  /* -1 to pad for null term */
   }
 #endif
-  return 0;
-}
-
-static int
-libopm_do_readready_ssh(OPM_T *scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
-{
-  int max_read, length;
-  char readbuf[READBUFLEN];
-
-  if ((length = recv(conn->fd, readbuf, sizeof(readbuf), 0)) <= 0)
-  {
-    libopm_do_hup(scanner, scan, conn);
-    return 0;
-  }
-
-  max_read = *(int *)libopm_config(scanner->config, OPM_CONFIG_MAX_READ);
-
-  for (const char *p = readbuf, *end = readbuf + length; p < end; ++p)
-  {
-    conn->bytes_read++;
-
-    if (conn->bytes_read >= max_read)
-    {
-      libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_MAX_READ);
-      conn->state = OPM_STATE_CLOSED;
-
-      return 0;
-    }
-
-    if (*p == '\0' || *p == '\r')
-      continue;
-
-    if (*p == '\n')
-    {
-      conn->readbuf[conn->readlen] = '\0';
-      conn->readlen = 0;
-
-      libopm_do_read(scanner, scan, conn);
-
-      if (conn->state == OPM_STATE_CLOSED)
-        return 0;
-
-      //printf("4 READBUF: %s", conn->readbuf);
-      continue;
-    }
-
-    if (conn->readlen < READBUFLEN)
-      conn->readbuf[++(conn->readlen) - 1] = *p;  /* -1 to pad for null term */
-  }
-
   return 0;
 }
 
