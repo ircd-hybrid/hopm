@@ -51,6 +51,7 @@ static struct StatsHash STATS_PROXIES[] =
   { .type = OPM_TYPE_ROUTER,    .name = "ROUTER"    },
   { .type = OPM_TYPE_WINGATE,   .name = "WINGATE"   },
   { .type = OPM_TYPE_DREAMBOX,  .name = "DREAMBOX"  },
+  { .type = OPM_TYPE_SSH,       .name = "SSH"       },
   { .type = 0 }
 };
 

@@ -267,6 +267,10 @@ DREAMBOX                {
                           return PROTOCOLTYPE;
                         }
 
+SSH                     {
+                          yylval.number = OPM_TYPE_SSH;
+                          return PROTOCOLTYPE;
+                        }
 
 TRUE                     {
                            yylval.number=1;
