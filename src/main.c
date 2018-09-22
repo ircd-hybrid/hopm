@@ -183,10 +183,10 @@ main(int argc, char *argv[])
   HUPACTION.sa_handler = &do_signal;
   USR1ACTION.sa_handler = &do_signal;
 
-  sigaction(SIGALRM, &ALARMACTION, 0);
-  sigaction(SIGINT, &INTACTION, 0);
-  sigaction(SIGHUP, &HUPACTION, 0);
-  sigaction(SIGUSR1, &USR1ACTION, 0);
+  sigaction(SIGALRM, &ALARMACTION, NULL);
+  sigaction(SIGINT, &INTACTION, NULL);
+  sigaction(SIGHUP, &HUPACTION, NULL);
+  sigaction(SIGUSR1, &USR1ACTION, NULL);
 
   /* Ignore SIGPIPE. */
   signal(SIGPIPE, SIG_IGN);
