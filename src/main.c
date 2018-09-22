@@ -41,9 +41,9 @@
 #include "main.h"
 
 
-static int RESTART = 0;  /* Flagged to restart on next cycle */
-static int ALARMED = 0;  /* Flagged to call timer functions on next cycle */
-static int REOPEN  = 0;  /* Flagged to reopen log files on next cycle */
+static int RESTART;  /* Flagged to restart on next cycle */
+static int ALARMED;  /* Flagged to call timer functions on next cycle */
+static int REOPEN;  /* Flagged to reopen log files on next cycle */
 
 static struct sigaction ALARMACTION;
 static struct sigaction INTACTION;
@@ -91,7 +91,6 @@ main(int argc, char *argv[])
   while (1)
   {
     int c = getopt(argc, argv, "dc:");
-
     if (c == -1)
       break;
 
@@ -255,7 +254,7 @@ main(int argc, char *argv[])
     }
   }
 
-  if (!OPT_DEBUG)
+  if (OPT_DEBUG == 0)
     log_close();
 
   /* If there's no scanlog open then this will do nothing anyway */

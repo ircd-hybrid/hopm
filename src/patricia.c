@@ -111,7 +111,7 @@ New_Prefix2(int family, void *dest, int bitlen, prefix_t *prefix)
     default: return NULL;
   }
 
-  if (!prefix)
+  if (prefix == NULL)
   {
     prefix = xcalloc(sizeof(prefix_t));
     dynamic_allocated = 1;
@@ -751,7 +751,7 @@ patricia_remove(patricia_tree_t *patricia, patricia_node_t *node)
      * This might be a placeholder node -- have to check and make sure
      * there is a prefix associated with it !
      */
-    if (node->prefix != NULL)
+    if (node->prefix)
       Deref_Prefix(node->prefix);
 
     node->prefix = NULL;

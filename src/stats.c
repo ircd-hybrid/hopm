@@ -159,12 +159,12 @@ stats_output(const char *target)
   {
     const struct BlacklistConf *bl = p->data;
 
-    if (bl->stats_recv > 0)
+    if (bl->stats_recv)
       irc_send("PRIVMSG %s :DNSBL: %u successful lookups from %s",
                target, bl->stats_recv, bl->name);
   }
 
-  if (STATS_DNSBLSENT > 0)
+  if (STATS_DNSBLSENT)
     irc_send("PRIVMSG %s :DNSBL: %u reports sent", target,
              STATS_DNSBLSENT);
 

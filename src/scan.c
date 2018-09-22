@@ -175,7 +175,7 @@ scan_checkexempt(const char *mask, const char *ipmask)
   {
     const char *exempt_mask = node->data;
 
-    if (!match(exempt_mask, mask) || !match(exempt_mask, ipmask))
+    if (match(exempt_mask, mask) == 0 || match(exempt_mask, ipmask) == 0)
       return 1;
   }
 
@@ -361,7 +361,7 @@ scan_connect(const char *user[], const char *msg)
     {
       const char *scsmask = p2->data;
 
-      if (!match(scsmask, hostmask))
+      if (match(scsmask, hostmask) == 0)
       {
         if (OPT_DEBUG)
           log_printf("SCAN -> Passing %s to scanner [%s]", hostmask, scs->name);
