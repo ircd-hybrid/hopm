@@ -1,11 +1,14 @@
 -- Noteworthy changes in version 1.1.5 (2017-??-?)
 o) The ':', and ',' nickname delimiters work again
+o) Fixed a bug where the hopm process couldn't be restarted under certain
+   conditions
+o) The hopm process can now be restarted from the command line via "kill -HUP"
 
 
 -- Noteworthy changes in version 1.1.4 (2017-04-05)
 o) IPv6 blacklist support has been implemented
 o) The CHECK command now accepts IPv6 addresses
-o) The negative chache has been rewritten to use latest Net::Patricia
+o) The negative cache has been rewritten to use latest Net::Patricia
    C sources and does support IPv6 now
 o) Further code cleanups and optimizations
 
