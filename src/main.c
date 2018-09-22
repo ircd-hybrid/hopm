@@ -47,6 +47,7 @@ static int REOPEN  = 0;  /* Flagged to reopen log files on next cycle */
 
 static struct sigaction ALARMACTION;
 static struct sigaction INTACTION;
+static struct sigaction HUPACTION;
 static struct sigaction USR1ACTION;
 
 static const char *CONFNAME = DEFAULTNAME;
@@ -69,6 +70,9 @@ do_signal(int signum)
     case SIGINT:
       log_printf("MAIN -> Caught SIGINT, bye!");
       exit(0);
+      break;
+    case SIGHUP:
+      RESTART = 1;
       break;
     case SIGUSR1:
       REOPEN = 1;
@@ -176,10 +180,12 @@ main(int argc, char *argv[])
   ALARMACTION.sa_handler = &do_signal;
   ALARMACTION.sa_flags = SA_RESTART;
   INTACTION.sa_handler = &do_signal;
+  HUPACTION.sa_handler = &do_signal;
   USR1ACTION.sa_handler = &do_signal;
 
   sigaction(SIGALRM, &ALARMACTION, 0);
   sigaction(SIGINT, &INTACTION, 0);
+  sigaction(SIGHUP, &HUPACTION, 0);
   sigaction(SIGUSR1, &USR1ACTION, 0);
 
   /* Ignore SIGPIPE. */
@@ -214,8 +220,8 @@ main(int argc, char *argv[])
         fcntl(i, F_SETFD, FD_CLOEXEC);
 
       /* execute new process */
-      if (execv(argv[0], argv) == -1)
-        log_printf("MAIN RESTART -> Execution of \"%s\" failed. ERROR: %s", argv[0], strerror(errno));
+      if (execv(HOPM_BINPATH, argv) == -1)
+        log_printf("MAIN RESTART -> Execution of \"%s\" failed. ERROR: %s", HOPM_BINPATH, strerror(errno));
 
       exit(0);  /* Should only get here if execv() failed */
     }

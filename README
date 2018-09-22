@@ -80,7 +80,8 @@ Rehashing HOPM
 ==============
 
 A /quote KILL on HOPM will cause the process to restart, rehashing the
-configuration file and ending all queued scans.
+configuration file and ending all queued scans. The same can be achieved
+with "kill -HUP " from the command line.
 
 
 Logging
