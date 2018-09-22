@@ -33,7 +33,7 @@ date_iso8601(time_t lclock)
   static char buf[32];
   static time_t lclock_last;
 
-  if (!lclock)
+  if (lclock == 0)
     lclock = time(0);
 
   if (lclock_last != lclock)

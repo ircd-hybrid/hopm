@@ -52,8 +52,7 @@ void
 negcache_init(void)
 {
   if (negcache_trie)
-    /* Cache already exists */
-    return;
+    return;  /* Cache already exists */
 
   negcache_trie = patricia_new(PATRICIA_MAXBITS);
 }
@@ -88,7 +87,7 @@ void
 negcache_insert(const char *ipstr)
 {
   patricia_node_t *pnode = patricia_make_and_lookup(negcache_trie, ipstr);
-  if (!pnode || pnode->data)
+  if (pnode == NULL || pnode->data)
     return;  /* Malformed IP address or already added to the trie */
 
   struct negcache_item *n = xcalloc(sizeof(*n));
