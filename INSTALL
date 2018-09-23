@@ -17,7 +17,7 @@ Make
     --prefix            Sets the root of HOPM's install. By default this
                         is $HOME/hopm, with binaries going in
                         $HOME/hopm/bin, config in $HOME/hopm/etc and logs
-                        in $HOME/hopm/var.
+                        in $HOME/hopm/var/log.
 
     --bindir            Specify the place to install binaries. By default
                         this is $PREFIX/bin. (see --prefix, above)
@@ -84,7 +84,7 @@ Execution
     You can run HOPM from any directory, the path to its config file is
     compiled into it. The bot will fork and connect to the IRC server
     immediately. Any errors and debug information can be found in
-    $PREFIX/var/hopm.log.
+    $PREFIX/var/log/hopm.log.
 
     You can tell HOPM to use a different config file with the -c argument,
     this works the same way that wgmon's -c argument does, just give the name
