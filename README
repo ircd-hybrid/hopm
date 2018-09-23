@@ -81,14 +81,14 @@ Rehashing HOPM
 
 A /quote KILL on HOPM will cause the process to restart, rehashing the
 configuration file and ending all queued scans. The same can be achieved
-with "kill -HUP " from the command line.
+with "kill -HUP" from the command line.
 
 
 Logging
 =======
 
 Once started, HOPM logs all significant events to a file called `hopm.log`,
-which by default can be found at `$HOME/hopm/var/hopm.log`. There is also a
+which by default can be found at `$HOME/hopm/var/log/hopm.log`. There is also a
 configuration option, `scanlog`, to log all proxy scans initiated, which can be
 quite useful if you receive an abuse report related to portscanning.
 
