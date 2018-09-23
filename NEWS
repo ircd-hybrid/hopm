@@ -3,6 +3,8 @@ o) The ':', and ',' nickname delimiters work again
 o) Fixed a bug where the hopm process couldn't be restarted under certain
    conditions
 o) The hopm process can now be restarted from the command line via "kill -HUP"
+o) Added --enable-efence switch to allow easy linking with the
+   electric fence memory debugger library
 
 
 -- Noteworthy changes in version 1.1.4 (2017-04-05)
