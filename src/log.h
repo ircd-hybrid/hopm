@@ -1,6 +1,6 @@
 /*
  *  Copyright (c) 2002 Erik Fears
- *  Copyright (c) 2014-2017 ircd-hybrid development team
+ *  Copyright (c) 2014-2018 ircd-hybrid development team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
