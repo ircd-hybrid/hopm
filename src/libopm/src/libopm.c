@@ -87,7 +87,8 @@ static OPM_PROTOCOL_T OPM_PROTOCOLS[] =
   { OPM_TYPE_HTTPPOST,  libopm_proxy_httppost_write,  NULL, 0 },
   { OPM_TYPE_DREAMBOX,  libopm_proxy_dreambox_write,  NULL, 0 },
   { OPM_TYPE_HTTPS,     libopm_proxy_https_write,     libopm_do_readready_tls, 1 },
-  { OPM_TYPE_HTTPSPOST, libopm_proxy_httpspost_write, libopm_do_readready_tls, 1 }
+  { OPM_TYPE_HTTPSPOST, libopm_proxy_httpspost_write, libopm_do_readready_tls, 1 },
+  { OPM_TYPE_SSH,       NULL,                         NULL, 0 }
 };
 
 /* opm_create
