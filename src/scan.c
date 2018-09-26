@@ -145,6 +145,7 @@ scan_gettype(int protocol)
     { .type = OPM_TYPE_HTTPS,     .name = "HTTPS"     },
     { .type = OPM_TYPE_HTTPSPOST, .name = "HTTPSPOST" },
     { .type = OPM_TYPE_DREAMBOX,  .name = "DREAMBOX"  },
+    { .type = OPM_TYPE_SSH,       .name = "SSH"       },
     { .type = 0 }
   };
 
