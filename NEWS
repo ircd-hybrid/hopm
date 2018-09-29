@@ -5,8 +5,9 @@ o) Fixed a bug where the hopm process couldn't be restarted under certain
 o) The hopm process can now be restarted from the command line via "kill -HUP"
 o) Added --enable-efence switch to allow easy linking with the
    electric fence memory debugger library
-o) Implemented proper support to kill users with vulnerable SSH versions. Patch
-   provided by falsovsky (Pedro de Oliveira).
+o) Implemented proper support to kill users with vulnerable SSH versions by
+   version announcement. Patch provided by falsovsky (Pedro de Oliveira). See
+   doc/reference.conf for more information.
 
 
 -- Noteworthy changes in version 1.1.4 (2017-04-05)
