@@ -41,15 +41,14 @@ Configuration
     Edit hopm.conf as needed. Most options are self explanatory and
     contain a short description.
 
-    Please take note of the target_string, this is new in version 2 onward and may be
-    different for your ircd. Because we now check that we really have
-    connected back onto IRC, HOPM needs to be told what your ircd says during
-    the first part of a connection. If you're not sure, the best thing to do
-    is telnet to your ircd from your shell, e.g.:
+    Please take note of the target_string which may be different for your ircd.
+    Because we check that we really have connected back onto IRC, HOPM needs to
+    be told what your ircd says during the first part of a connection. If you're
+    not sure, the best thing to do is telnet to your ircd from your shell, e.g.:
 
       [miwob@svn ~]$ telnet irc.ircd-hybrid.org 6667
-      Trying 74.208.44.181...
-      Connected to irc.ircd-hybrid.org (74.208.44.181).
+      Trying 104.254.244.55...
+      Connected to irc.ircd-hybrid.org (104.254.244.55).
       Escape character is '^]'.
       :irc.ircd-hybrid.org NOTICE * :*** Looking up your hostname
       :irc.ircd-hybrid.org NOTICE * :*** Checking Ident
