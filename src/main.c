@@ -59,6 +59,18 @@ unsigned int OPT_DEBUG = 0;  /* Debug level */
 
 
 static void
+setup_corelimit(void)
+{
+  struct rlimit rlim;
+
+  if (getrlimit(RLIMIT_CORE, &rlim) == 0)
+  {
+    rlim.rlim_cur = rlim.rlim_max;
+    setrlimit(RLIMIT_CORE, &rlim);
+  }
+}
+
+static void
 do_signal(int signum)
 {
   switch (signum)
@@ -87,6 +99,8 @@ main(int argc, char *argv[])
   size_t lenc, lenl;
   FILE *pidout;
   struct rlimit rlim;
+
+  setup_corelimit();
 
   while (1)
   {
