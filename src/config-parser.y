@@ -152,49 +152,49 @@ options_item: options_negcache           |
 
 options_negcache: NEGCACHE '=' timespec ';'
 {
-  OptionsItem->negcache = $3;
+  OptionsItem.negcache = $3;
 };
 
 options_negcache_rebuild: NEGCACHE_REBUILD '=' timespec ';'
 {
-  OptionsItem->negcache_rebuild = $3;
+  OptionsItem.negcache_rebuild = $3;
 };
 
 options_pidfile: PIDFILE '=' STRING ';'
 {
-  xfree(OptionsItem->pidfile);
-  OptionsItem->pidfile = xstrdup($3);
+  xfree(OptionsItem.pidfile);
+  OptionsItem.pidfile = xstrdup($3);
 };
 
 options_dns_fdlimit: DNS_FDLIMIT '=' NUMBER ';'
 {
-  OptionsItem->dns_fdlimit = $3;
+  OptionsItem.dns_fdlimit = $3;
 };
 
 options_dns_timeout: DNS_TIMEOUT '=' timespec ';'
 {
-  OptionsItem->dns_timeout = $3;
+  OptionsItem.dns_timeout = $3;
 };
 
 options_scanlog: SCANLOG '=' STRING ';'
 {
-  xfree(OptionsItem->scanlog);
-  OptionsItem->scanlog = xstrdup($3);
+  xfree(OptionsItem.scanlog);
+  OptionsItem.scanlog = xstrdup($3);
 };
 
 options_command_queue_size: COMMAND_QUEUE_SIZE '=' NUMBER ';'
 {
-  OptionsItem->command_queue_size = $3;
+  OptionsItem.command_queue_size = $3;
 };
 
 options_command_interval: COMMAND_INTERVAL '=' timespec ';'
 {
-  OptionsItem->command_interval = $3;
+  OptionsItem.command_interval = $3;
 };
 
 options_command_timeout: COMMAND_TIMEOUT '=' timespec ';'
 {
-  OptionsItem->command_timeout = $3;
+  OptionsItem.command_timeout = $3;
 };
 
 
@@ -226,44 +226,44 @@ irc_item: irc_away              |
 
 irc_away: AWAY '=' STRING ';'
 {
-  xfree(IRCItem->away);
-  IRCItem->away = xstrdup($3);
+  xfree(IRCItem.away);
+  IRCItem.away = xstrdup($3);
 };
 
 irc_kline: KLINE '=' STRING ';'
 {
-  xfree(IRCItem->kline);
-  IRCItem->kline = xstrdup($3);
+  xfree(IRCItem.kline);
+  IRCItem.kline = xstrdup($3);
 };
 
 irc_mode: MODE '=' STRING ';'
 {
-  xfree(IRCItem->mode);
-  IRCItem->mode = xstrdup($3);
+  xfree(IRCItem.mode);
+  IRCItem.mode = xstrdup($3);
 };
 
 irc_nick: NICK '=' STRING ';'
 {
-  xfree(IRCItem->nick);
-  IRCItem->nick = xstrdup($3);
+  xfree(IRCItem.nick);
+  IRCItem.nick = xstrdup($3);
 };
 
 irc_nickserv: NICKSERV '=' STRING ';'
 {
-  xfree(IRCItem->nickserv);
-  IRCItem->nickserv = xstrdup($3);
+  xfree(IRCItem.nickserv);
+  IRCItem.nickserv = xstrdup($3);
 };
 
 irc_oper: OPER '=' STRING ';'
 {
-  xfree(IRCItem->oper);
-  IRCItem->oper = xstrdup($3);
+  xfree(IRCItem.oper);
+  IRCItem.oper = xstrdup($3);
 };
 
 irc_password: PASSWORD '=' STRING ';'
 {
-  xfree(IRCItem->password);
-  IRCItem->password = xstrdup($3);
+  xfree(IRCItem.password);
+  IRCItem.password = xstrdup($3);
 };
 
 irc_perform: PERFORM '=' STRING ';'
@@ -271,7 +271,7 @@ irc_perform: PERFORM '=' STRING ';'
   node_t *node;
 
   node = node_create(xstrdup($3));
-  list_add(IRCItem->performs, node);
+  list_add(&IRCItem.performs, node);
 };
 
 irc_notice: NOTICE '=' STRING ';'
@@ -279,52 +279,52 @@ irc_notice: NOTICE '=' STRING ';'
   node_t *node;
 
   node = node_create(xstrdup($3));
-  list_add(IRCItem->notices, node);
+  list_add(&IRCItem.notices, node);
 };
 
 irc_port: PORT '=' NUMBER ';'
 {
-  IRCItem->port = $3;
+  IRCItem.port = $3;
 };
 
 irc_readtimeout: READTIMEOUT '=' timespec ';'
 {
-  IRCItem->readtimeout = $3;
+  IRCItem.readtimeout = $3;
 };
 
 irc_reconnectinterval: RECONNECTINTERVAL '=' timespec ';'
 {
-  IRCItem->reconnectinterval = $3;
+  IRCItem.reconnectinterval = $3;
 };
 
 irc_realname: REALNAME '=' STRING ';'
 {
-  xfree(IRCItem->realname);
-  IRCItem->realname = xstrdup($3);
+  xfree(IRCItem.realname);
+  IRCItem.realname = xstrdup($3);
 };
 
 irc_server: SERVER '=' STRING ';'
 {
-  xfree(IRCItem->server);
-  IRCItem->server = xstrdup($3);
+  xfree(IRCItem.server);
+  IRCItem.server = xstrdup($3);
 };
 
 irc_username: USERNAME '=' STRING ';'
 {
-  xfree(IRCItem->username);
-  IRCItem->username = xstrdup($3);
+  xfree(IRCItem.username);
+  IRCItem.username = xstrdup($3);
 };
 
 irc_vhost: VHOST '=' STRING ';'
 {
-  xfree(IRCItem->vhost);
-  IRCItem->vhost = xstrdup($3);
+  xfree(IRCItem.vhost);
+  IRCItem.vhost = xstrdup($3);
 };
 
 irc_connregex: CONNREGEX '=' STRING ';'
 {
-  xfree(IRCItem->connregex);
-  IRCItem->connregex = xstrdup($3);
+  xfree(IRCItem.connregex);
+  IRCItem.connregex = xstrdup($3);
 };
 
 
@@ -341,7 +341,7 @@ channel_entry:
 
   node = node_create(item);
 
-  list_add(IRCItem->channels, node);
+  list_add(&IRCItem.channels, node);
   tmp = item;
 }
 CHANNEL '{' channel_items '}' ';';
@@ -385,12 +385,10 @@ user_entry:
   struct UserConf *item;
 
   item = xcalloc(sizeof(*item));
-  item->masks = list_create();
-  item->scanners = list_create();
 
   node = node_create(item);
 
-  list_add(UserItemList, node);
+  list_add(&UserItemList, node);
   tmp = item;
 }
 USER '{' user_items '}' ';' ;
@@ -409,7 +407,7 @@ user_mask: MASK '=' STRING ';'
 
   node = node_create(xstrdup($3));
 
-  list_add(item->masks, node);
+  list_add(&item->masks, node);
 };
 
 user_scanner: SCANNER '=' STRING ';'
@@ -419,7 +417,7 @@ user_scanner: SCANNER '=' STRING ';'
 
   node = node_create(xstrdup($3));
 
-  list_add(item->scanners, node);
+  list_add(&item->scanners, node);
 };
 
 
@@ -434,9 +432,9 @@ scanner_entry:
   /* Setup ScannerConf defaults */
   item->name = xstrdup("undefined");
 
-  if (LIST_SIZE(ScannerItemList) > 0)
+  if (LIST_SIZE(&ScannerItemList))
   {
-    olditem = ScannerItemList->tail->data;
+    olditem = ScannerItemList.tail->data;
 
     item->vhost = xstrdup(olditem->vhost);
     item->fd = olditem->fd;
@@ -444,8 +442,8 @@ scanner_entry:
     item->target_port = olditem->target_port;
     item->timeout = olditem->timeout;
     item->max_read = olditem->max_read;
-    item->target_string = olditem->target_string;
     item->target_string_created = 0;
+    memcpy(&item->target_string, &olditem->target_string, sizeof(item->target_string));
   }
   else
   {
@@ -455,15 +453,12 @@ scanner_entry:
     item->target_port = 6667;
     item->timeout = 30;
     item->max_read = 4096;
-    item->target_string = list_create();
     item->target_string_created = 1;
   }
 
-  item->protocols = list_create();
-
   node = node_create(item);
 
-  list_add(ScannerItemList, node);
+  list_add(&ScannerItemList, node);
   tmp = item;
 }
 SCANNER '{' scanner_items '}' ';' ;
@@ -514,12 +509,9 @@ scanner_target_string: TARGET_STRING '=' STRING ';'
   node = node_create(xstrdup($3));
 
   if (item->target_string_created == 0)
-  {
-    item->target_string = list_create();
-    item->target_string_created = 1;
-  }
+    memset(&item->target_string, 0, sizeof(item->target_string));
 
-  list_add(item->target_string, node);
+  list_add(&item->target_string, node);
 };
 
 scanner_fd: FD '=' NUMBER ';'
@@ -563,7 +555,7 @@ scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
   item2 = tmp;
 
   node = node_create(item);
-  list_add(item2->protocols, node);
+  list_add(&item2->protocols, node);
 };
 
 
@@ -581,20 +573,20 @@ opm_item: opm_dnsbl_from      |
 
 opm_dnsbl_from: DNSBL_FROM '=' STRING ';'
 {
-  xfree(OpmItem->dnsbl_from);
-  OpmItem->dnsbl_from = xstrdup($3);
+  xfree(OpmItem.dnsbl_from);
+  OpmItem.dnsbl_from = xstrdup($3);
 };
 
 opm_dnsbl_to: DNSBL_TO '=' STRING ';'
 {
-  xfree(OpmItem->dnsbl_to);
-  OpmItem->dnsbl_to = xstrdup($3);
+  xfree(OpmItem.dnsbl_to);
+  OpmItem.dnsbl_to = xstrdup($3);
 };
 
 opm_sendmail: SENDMAIL '=' STRING ';'
 {
-  xfree(OpmItem->sendmail);
-  OpmItem->sendmail = xstrdup($3);
+  xfree(OpmItem.sendmail);
+  OpmItem.sendmail = xstrdup($3);
 };
 
 
@@ -610,10 +602,9 @@ opm_blacklist_entry:
   item->ipv4 = 1;
   item->ban_unknown = 0;
   item->type = A_BITMASK;
-  item->reply = list_create();
 
   node = node_create(item);
-  list_add(OpmItem->blacklists, node);
+  list_add(&OpmItem.blacklists, node);
 
   tmp = item;
 }
@@ -702,7 +693,7 @@ blacklist_reply_item: NUMBER '=' STRING ';'
   item->type = xstrdup($3);
 
   node = node_create(item);
-  list_add(blacklist->reply, node);
+  list_add(&blacklist->reply, node);
 };
 
 
@@ -720,7 +711,7 @@ exempt_mask: MASK '=' STRING ';'
   node_t *node;
   node = node_create(xstrdup($3));
 
-  list_add(ExemptItem->masks, node);
+  list_add(&ExemptItem.masks, node);
 };
 
 %%

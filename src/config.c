@@ -39,76 +39,46 @@
 
 
 FILE *conf_file;
-struct OptionsConf *OptionsItem = NULL;
-struct IRCConf *IRCItem = NULL;
-struct OpmConf *OpmItem = NULL;
-struct ExemptConf *ExemptItem = NULL;
-list_t *UserItemList = NULL;
-list_t *ScannerItemList = NULL;
+struct OptionsConf OptionsItem;
+struct IRCConf IRCItem;
+struct OpmConf OpmItem;
+struct ExemptConf ExemptItem;
+list_t UserItemList;
+list_t ScannerItemList;
 
-
-/* Malloc and initialize configuration data to NULL */
-static void
-config_init(void)
-{
-  /* Init IRC block */
-  IRCItem = xcalloc(sizeof(*IRCItem));
-  IRCItem->channels = list_create();
-  IRCItem->performs = list_create();
-  IRCItem->notices  = list_create();
-
-  /* Init Options block */
-  OptionsItem = xcalloc(sizeof(*OptionsItem));
-
-  /* Init OPM block */
-  OpmItem = xcalloc(sizeof(*OpmItem));
-  OpmItem->blacklists = list_create();
-
-  /* Init list of User blocks */
-  UserItemList = list_create();
-
-  /* Init list of Scanner blocks */
-  ScannerItemList = list_create();
-
-  /* Init list of Exempts */
-  ExemptItem = xcalloc(sizeof(*ExemptItem));
-  ExemptItem->masks = list_create();
-}
 
 /* Setup structs that hold configuration data and then reset default values */
 static void
 config_setup(void)
 {
-  /* Setup IRC Block Defaults */
-  IRCItem->mode = xstrdup("+c");
-  IRCItem->nick = xstrdup("hopm");
-  IRCItem->port = 6667;
-  IRCItem->readtimeout = 900;
-  IRCItem->reconnectinterval = 30;
-  IRCItem->oper = xstrdup("undefined");
-  IRCItem->username = xstrdup("hopm");
-  IRCItem->realname = xstrdup("Hybrid Open Proxy Monitor");
-  IRCItem->server = xstrdup("irc.example.org");
-  IRCItem->connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9a-f\\.:]+)\\].*");
-  IRCItem->kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
+  /* Setup irc {} block defaults */
+  IRCItem.mode = xstrdup("+c");
+  IRCItem.nick = xstrdup("hopm");
+  IRCItem.port = 6667;
+  IRCItem.readtimeout = 900;
+  IRCItem.reconnectinterval = 30;
+  IRCItem.oper = xstrdup("undefined");
+  IRCItem.username = xstrdup("hopm");
+  IRCItem.realname = xstrdup("Hybrid Open Proxy Monitor");
+  IRCItem.server = xstrdup("irc.example.org");
+  IRCItem.connregex = xstrdup("\\*\\*\\* Notice -- Client connecting: ([^ ]+) \\(([^@]+)@([^\\)]+)\\) \\[([0-9a-f\\.:]+)\\].*");
+  IRCItem.kline = xstrdup("KLINE %u@%h :Open Proxy found on your host.");
 
-  /* Setup options block defaults */
-  OptionsItem->command_queue_size = 64;
-  OptionsItem->command_interval = 10;
-  OptionsItem->command_timeout = 180;
-  OptionsItem->negcache = 0;   /* 0 disabled negcache */
-  OptionsItem->negcache_rebuild = 43200;
-  OptionsItem->pidfile = xstrdup("hopm.pid");
-  OptionsItem->dns_fdlimit = 50;
-  OptionsItem->dns_timeout = 5;
-  OptionsItem->scanlog = NULL;
+  /* Setup options {} block defaults */
+  OptionsItem.command_queue_size = 64;
+  OptionsItem.command_interval = 10;
+  OptionsItem.command_timeout = 180;
+  OptionsItem.negcache = 0;   /* 0 disabled negcache */
+  OptionsItem.negcache_rebuild = 43200;
+  OptionsItem.pidfile = xstrdup("hopm.pid");
+  OptionsItem.dns_fdlimit = 50;
+  OptionsItem.dns_timeout = 5;
 }
 
 /* Load configuration from filename, via flex/bison parser */
 void
 config_load(const char *filename)
 {
-  config_init();
   config_setup();  /* Setup/clear current configuration */
 
   log_printf("CONFIG -> Loading %s", filename);

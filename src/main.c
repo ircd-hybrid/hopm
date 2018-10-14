@@ -158,10 +158,10 @@ main(int argc, char *argv[])
 
   config_load(CONFFILE);
 
-  if (OptionsItem->scanlog)
-    scanlog_open(OptionsItem->scanlog);
+  if (OptionsItem.scanlog)
+    scanlog_open(OptionsItem.scanlog);
 
-  pidout = fopen(OptionsItem->pidfile, "w");
+  pidout = fopen(OptionsItem.pidfile, "w");
 
   if (pidout)
   {
@@ -170,7 +170,7 @@ main(int argc, char *argv[])
   }
   else
   {
-    log_printf("MAIN -> Error opening pid file %s: %s", OptionsItem->pidfile,
+    log_printf("MAIN -> Error opening pid file %s: %s", OptionsItem.pidfile,
                strerror(errno));
     exit(EXIT_FAILURE);
   }
@@ -232,10 +232,10 @@ main(int argc, char *argv[])
       log_close();
       log_open(LOGFILE);
 
-      if (OptionsItem->scanlog)
+      if (OptionsItem.scanlog)
       {
         scanlog_close();
-        scanlog_open(OptionsItem->scanlog);
+        scanlog_open(OptionsItem.scanlog);
       }
 
       log_printf("MAIN -> reopened logfiles");

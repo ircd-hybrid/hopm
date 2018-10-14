@@ -29,6 +29,8 @@ struct OperCommandHash
 
 struct Command
 {
+  node_t node;  /**< List node; linked into COMMANDS */
+
   /* Points to specific entry in COMMAND_TABLE in opercmd.c */
   const struct OperCommandHash *tab;
 

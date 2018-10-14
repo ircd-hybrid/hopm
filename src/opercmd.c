@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <time.h>
 
+#include "list.h"
 #include "options.h"
 #include "irc.h"
 #include "log.h"
@@ -33,7 +34,6 @@
 #include "opercmd.h"
 #include "scan.h"
 #include "memory.h"
-#include "list.h"
 #include "stats.h"
 
 
@@ -163,8 +163,8 @@ command_parse(const char *command, const char *target, const char *source_p)
     log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
                source_p, target);
 
-  /* Only allow OptionsItem->command_queue_size commands in the queue */
-  if (LIST_SIZE(&COMMANDS) >= OptionsItem->command_queue_size)
+  /* Only allow OptionsItem.command_queue_size commands in the queue */
+  if (LIST_SIZE(&COMMANDS) >= OptionsItem.command_queue_size)
     return;
 
   /*
@@ -205,7 +205,7 @@ command_parse(const char *command, const char *target, const char *source_p)
       /* Queue this command */
       struct Command *cmd = command_create(tab, param, source_p, target);
 
-      list_add(&COMMANDS, node_create(cmd));
+      list_add(&COMMANDS, &cmd->node);
       break;
     }
   }
@@ -229,8 +229,8 @@ command_timer(void)
   node_t *node, *node_next;
   time_t present;
 
-  /* Only perform command removal every OptionsItem->command_interval seconds */
-  if (interval++ < OptionsItem->command_interval)
+  /* Only perform command removal every OptionsItem.command_interval seconds */
+  if (interval++ < OptionsItem.command_interval)
     return;
   else
     interval = 0;
@@ -241,11 +241,10 @@ command_timer(void)
   {
     struct Command *command = node->data;
 
-    if ((present - command->added) > OptionsItem->command_timeout)
+    if ((present - command->added) > OptionsItem.command_timeout)
     {
-      command_free(command);
-      list_remove(&COMMANDS, node);
-      node_free(node);
+      list_remove(&COMMANDS, &command->node);
+      command_free(command);  /* Cleanup the command */
     }
     else  /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
       return;
@@ -297,10 +296,8 @@ command_userhost(const char *reply)
       if (oper)
         command->tab->handler(command->param, command->target);
 
-      /* Cleanup the command */
-      command_free(command);
-      list_remove(&COMMANDS, node);
-      node_free(node);
+      list_remove(&COMMANDS, &command->node);
+      command_free(command);  /* Cleanup the command */
     }
   }
 }

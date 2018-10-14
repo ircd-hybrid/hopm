@@ -95,7 +95,7 @@ libopm_config_create(void)
         break;
 
       case OPM_TYPE_STRINGLIST:
-        ret->vars[i] = libopm_list_create();
+        ret->vars[i] = libopm_calloc(sizeof(OPM_LIST_T));
         break;
 
       default:

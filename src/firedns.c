@@ -88,6 +88,8 @@ static const char *const errors[] =
 /* open DNS query */
 struct s_connection
 {
+  node_t node;  /**< List node; linked into CONNECTIONS */
+
   /*
    * unique ID (random number), matches header ID; both set by
    * firedns_add_query()
@@ -350,7 +352,6 @@ int
 firedns_getip(int type, const char *const name, void *info)
 {
   struct s_connection *s;
-  node_t *node;
 
   s = firedns_add_query();
   s->class = 1;
@@ -358,7 +359,7 @@ firedns_getip(int type, const char *const name, void *info)
   s->info = info;
   strlcpy(s->lookup, name, sizeof(s->lookup));
 
-  if (firedns_fdinuse >= OptionsItem->dns_fdlimit)
+  if (firedns_fdinuse >= OptionsItem.dns_fdlimit)
   {
     firedns_errno = FDNS_ERR_FDLIMIT;
 
@@ -366,10 +367,7 @@ firedns_getip(int type, const char *const name, void *info)
     if (info == NULL)
       xfree(s);
     else
-    {
-      node = node_create(s);
-      list_add(&CONNECTIONS, node);
-    }
+      list_add(&CONNECTIONS, &s->node);
 
     return -1;
   }
@@ -381,8 +379,7 @@ firedns_getip(int type, const char *const name, void *info)
     return -1;
   }
 
-  node = node_create(s);
-  list_add(&CONNECTIONS, node);
+  list_add(&CONNECTIONS, &s->node);
 
   return fd;
 }
@@ -777,8 +774,7 @@ firedns_getresult(const int fd)
 
 /* Clean-up */
 cleanup:
-  list_remove(&CONNECTIONS, node);
-  node_free(node);
+  list_remove(&CONNECTIONS, &c->node);
 
   close(c->fd);
   xfree(c);
@@ -801,13 +797,13 @@ firedns_cycle(void)
     return;
 
   if (ufds == NULL)
-    ufds = xcalloc(sizeof(*ufds) * OptionsItem->dns_fdlimit);
+    ufds = xcalloc(sizeof(*ufds) * OptionsItem.dns_fdlimit);
 
   time(&timenow);
 
   LIST_FOREACH_SAFE(node, node_next, CONNECTIONS.head)
   {
-    if (size >= OptionsItem->dns_fdlimit)
+    if (size >= OptionsItem.dns_fdlimit)
       break;
 
     p = node->data;
@@ -815,11 +811,10 @@ firedns_cycle(void)
     if (p->fd < 0)
       continue;
 
-    if (p->fd > 0 && (p->start + OptionsItem->dns_timeout) < timenow)
+    if (p->fd > 0 && (p->start + OptionsItem.dns_timeout) < timenow)
     {
       /* Timed out - remove from list */
-      list_remove(&CONNECTIONS, node);
-      node_free(node);
+      list_remove(&CONNECTIONS, &p->node);
 
       memset(new_result.text, 0, sizeof(new_result.text));
       new_result.info = p->info;
@@ -871,7 +866,7 @@ firedns_cycle(void)
         }
       }
     }
-    else if (firedns_fdinuse < OptionsItem->dns_fdlimit)
+    else if (firedns_fdinuse < OptionsItem.dns_fdlimit)
       firedns_doquery(p);
   }
 }

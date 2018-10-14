@@ -40,13 +40,6 @@ node_create(void *data)
   return node;
 }
 
-list_t *
-list_create(void)
-{
-  list_t *list = xcalloc(sizeof *list);
-  return list;
-}
-
 node_t *
 list_add(list_t *list, node_t *node)
 {
@@ -92,12 +85,6 @@ list_remove(list_t *list, node_t *node)
   list->elements--;
 
   return node;
-}
-
-void
-list_free(list_t *list)
-{
-  xfree(list);
 }
 
 void
