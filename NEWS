@@ -1,4 +1,4 @@
--- Noteworthy changes in version 1.1.5 (2017-??-?)
+-- Noteworthy changes in version 1.1.5 (2018-10-14)
 o) The ':', and ',' nickname delimiters work again
 o) Fixed a bug where the hopm process couldn't be restarted under certain
    conditions
@@ -8,6 +8,7 @@ o) Added --enable-efence switch to allow easy linking with the
 o) Implemented proper support to kill users with vulnerable SSH versions by
    version announcement. Patch provided by falsovsky (Pedro de Oliveira). See
    doc/reference.conf for more information.
+o) Minimum supported OpenSSL version is 1.0.1d now
 
 
 -- Noteworthy changes in version 1.1.4 (2017-04-05)
