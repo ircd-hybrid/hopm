@@ -268,18 +268,12 @@ irc_password: PASSWORD '=' STRING ';'
 
 irc_perform: PERFORM '=' STRING ';'
 {
-  node_t *node;
-
-  node = node_create(xstrdup($3));
-  list_add(&IRCItem.performs, node);
+  list_add(xstrdup($3), node_create(), &IRCItem.performs);
 };
 
 irc_notice: NOTICE '=' STRING ';'
 {
-  node_t *node;
-
-  node = node_create(xstrdup($3));
-  list_add(&IRCItem.notices, node);
+  list_add(xstrdup($3), node_create(), &IRCItem.notices);
 };
 
 irc_port: PORT '=' NUMBER ';'
@@ -331,7 +325,6 @@ irc_connregex: CONNREGEX '=' STRING ';'
 /************************** CHANNEL BLOCK *************************/
 channel_entry:
 {
-  node_t *node;
   struct ChannelConf *item;
 
   item = xcalloc(sizeof(*item));
@@ -339,9 +332,7 @@ channel_entry:
   item->key = xstrdup("");
   item->invite = xstrdup("");
 
-  node = node_create(item);
-
-  list_add(&IRCItem.channels, node);
+  list_add(item, &item->node, &IRCItem.channels);
   tmp = item;
 }
 CHANNEL '{' channel_items '}' ';';
@@ -381,14 +372,11 @@ channel_invite: INVITE '=' STRING ';'
 /*************************** USER BLOCK ***************************/
 user_entry:
 {
-  node_t *node;
   struct UserConf *item;
 
   item = xcalloc(sizeof(*item));
 
-  node = node_create(item);
-
-  list_add(&UserItemList, node);
+  list_add(item, &item->node, &UserItemList);
   tmp = item;
 }
 USER '{' user_items '}' ';' ;
@@ -403,28 +391,21 @@ user_item: user_mask     |
 user_mask: MASK '=' STRING ';'
 {
   struct UserConf *item = tmp;
-  node_t *node;
 
-  node = node_create(xstrdup($3));
-
-  list_add(&item->masks, node);
+  list_add(xstrdup($3), node_create(), &item->masks);
 };
 
 user_scanner: SCANNER '=' STRING ';'
 {
   struct UserConf *item = tmp;
-  node_t *node;
 
-  node = node_create(xstrdup($3));
-
-  list_add(&item->scanners, node);
+  list_add(xstrdup($3), node_create(), &item->scanners);
 };
 
 
 /*************************** SCANNER BLOCK ***************************/
 scanner_entry:
 {
-  node_t *node;
   struct ScannerConf *item, *olditem;
 
   item = xcalloc(sizeof(*item));
@@ -456,9 +437,7 @@ scanner_entry:
     item->target_string_created = 1;
   }
 
-  node = node_create(item);
-
-  list_add(&ScannerItemList, node);
+  list_add(item, &item->node, &ScannerItemList);
   tmp = item;
 }
 SCANNER '{' scanner_items '}' ';' ;
@@ -504,14 +483,11 @@ scanner_target_ip: TARGET_IP '=' STRING ';'
 scanner_target_string: TARGET_STRING '=' STRING ';'
 {
   struct ScannerConf *item = tmp;
-  node_t *node;
-
-  node = node_create(xstrdup($3));
 
   if (item->target_string_created == 0)
     memset(&item->target_string, 0, sizeof(item->target_string));
 
-  list_add(&item->target_string, node);
+  list_add(xstrdup($3), node_create(), &item->target_string);
 };
 
 scanner_fd: FD '=' NUMBER ';'
@@ -546,7 +522,6 @@ scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
 {
   struct ProtocolConf *item;
   struct ScannerConf *item2;
-  node_t *node;
 
   item = xcalloc(sizeof(*item));
   item->type = $3;
@@ -554,8 +529,7 @@ scanner_protocol: PROTOCOL '=' PROTOCOLTYPE ':' NUMBER ';'
 
   item2 = tmp;
 
-  node = node_create(item);
-  list_add(&item2->protocols, node);
+  list_add(item, node_create(), &item2->protocols);
 };
 
 
@@ -593,7 +567,6 @@ opm_sendmail: SENDMAIL '=' STRING ';'
 /************************** BLACKLIST BLOCK *************************/
 opm_blacklist_entry:
 {
-  node_t *node;
   struct BlacklistConf *item;
 
   item = xcalloc(sizeof(*item));
@@ -603,8 +576,7 @@ opm_blacklist_entry:
   item->ban_unknown = 0;
   item->type = A_BITMASK;
 
-  node = node_create(item);
-  list_add(&OpmItem.blacklists, node);
+  list_add(item, node_create(), &OpmItem.blacklists);
 
   tmp = item;
 }
@@ -686,14 +658,12 @@ blacklist_reply_item: NUMBER '=' STRING ';'
 {
   struct BlacklistReplyConf *item;
   struct BlacklistConf *blacklist = tmp;
-  node_t *node;
 
   item = xcalloc(sizeof(*item));
   item->number = $1;
   item->type = xstrdup($3);
 
-  node = node_create(item);
-  list_add(&blacklist->reply, node);
+  list_add(item, node_create(), &blacklist->reply);
 };
 
 
@@ -708,10 +678,7 @@ exempt_item: exempt_mask |
 
 exempt_mask: MASK '=' STRING ';'
 {
-  node_t *node;
-  node = node_create(xstrdup($3));
-
-  list_add(&ExemptItem.masks, node);
+  list_add(xstrdup($3), node_create(), &ExemptItem.masks);
 };
 
 %%

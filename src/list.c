@@ -31,18 +31,22 @@
 
 
 node_t *
-node_create(void *data)
+node_create(void)
 {
   node_t *node = xcalloc(sizeof *node);
-
-  node->data = data;
-
   return node;
 }
 
-node_t *
-list_add(list_t *list, node_t *node)
+void
+node_free(node_t *node)
 {
+  xfree(node);
+}
+
+node_t *
+list_add(void *data, node_t *node, list_t *list)
+{
+  node->data = data;
   node->prev = NULL;
   node->next = list->head;
 
@@ -59,7 +63,7 @@ list_add(list_t *list, node_t *node)
 }
 
 node_t *
-list_remove(list_t *list, node_t *node)
+list_remove(node_t *node, list_t *list)
 {
   /* Assumption: If node->next == NULL, then list->tail == node
    *      and:   If node->prev == NULL, then list->head == node
@@ -81,14 +85,9 @@ list_remove(list_t *list, node_t *node)
   }
 
   /* Set this to NULL does matter */
-  node->next = node->prev = NULL;
+  node->next = NULL;
+  node->prev = NULL;
   list->elements--;
 
   return node;
-}
-
-void
-node_free(node_t *node)
-{
-  xfree(node);
 }
