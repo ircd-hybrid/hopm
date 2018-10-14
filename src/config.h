@@ -48,9 +48,9 @@ struct IRCConf
   char *away;
   char *connregex;
   char *kline;
-  list_t *channels;  /* List of ChannelConf */
-  list_t *performs;  /* List of char * */
-  list_t *notices;   /* List of char * */
+  list_t channels;  /* List of ChannelConf */
+  list_t performs;  /* List of char * */
+  list_t notices;   /* List of char * */
 };
 
 struct ChannelConf
@@ -75,21 +75,21 @@ struct OptionsConf
 
 struct UserConf
 {
-  list_t *masks;     /* List of char * */
-  list_t *scanners;  /* List of char * */
+  list_t masks;     /* List of char * */
+  list_t scanners;  /* List of char * */
 };
 
 struct ScannerConf
 {
   char *name;
-  list_t *protocols;
+  list_t protocols;
   char *vhost;
   int fd;
   char *target_ip;
   int target_port;
   int timeout;
   int max_read;
-  list_t *target_string;
+  list_t target_string;
   int target_string_created;
 };
 
@@ -101,7 +101,7 @@ struct ProtocolConf
 
 struct OpmConf
 {
-  list_t *blacklists;
+  list_t blacklists;
   char *dnsbl_from;
   char *dnsbl_to;
   char *sendmail;
@@ -121,7 +121,7 @@ struct BlacklistConf
   unsigned int ipv4;
   unsigned int ipv6;
   int ban_unknown;
-  list_t *reply;
+  list_t reply;
   unsigned int stats_recv;
 };
 
@@ -133,17 +133,17 @@ struct BlacklistReplyConf
 
 struct ExemptConf
 {
-  list_t *masks;
+  list_t masks;
 };
 
 
 /* Extern to actual config data declared in config.c */
-extern struct IRCConf *IRCItem;
-extern struct OptionsConf *OptionsItem;
-extern struct OpmConf *OpmItem;
-extern struct ExemptConf *ExemptItem;
-extern list_t *UserItemList;
-extern list_t *ScannerItemList;
+extern struct IRCConf IRCItem;
+extern struct OptionsConf OptionsItem;
+extern struct OpmConf OpmItem;
+extern struct ExemptConf ExemptItem;
+extern list_t UserItemList;
+extern list_t ScannerItemList;
 
 extern void yyerror(const char *);
 extern void config_load(const char *);

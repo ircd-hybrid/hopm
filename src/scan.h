@@ -43,7 +43,7 @@ struct scanner_struct
 {
   char *name;
   OPM_T *scanner;
-  list_t *masks;
+  list_t masks;
 };
 
 struct protocol_assoc

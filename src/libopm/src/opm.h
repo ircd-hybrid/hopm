@@ -32,9 +32,9 @@ struct _OPM_CONFIG
 struct _OPM
 {
   OPM_CONFIG_T *config;               /* Individual scanner configuration                           */
-  OPM_LIST_T   *queue;                /* List of scans in the queue (not yet established)           */
-  OPM_LIST_T   *scans;                /* List of scans (each scan containing a list of connections) */
-  OPM_LIST_T   *protocols;            /* List of protocols this scanner handles                     */
+  OPM_LIST_T   queue;                /* List of scans in the queue (not yet established)           */
+  OPM_LIST_T   scans;                /* List of scans (each scan containing a list of connections) */
+  OPM_LIST_T   protocols;            /* List of protocols this scanner handles                     */
   unsigned int  fd_use;               /* Number of file descriptors in use                          */
   OPM_CALLBACK_T *callbacks;          /* Scanner wide callbacks                                     */
 };
@@ -45,7 +45,7 @@ struct _OPM_REMOTE
   unsigned short int   port;            /* Port passed back on certain callbacks       */
   unsigned short int   protocol;        /* Protocol passed back on certain callbacks   */
   unsigned short int   bytes_read;      /* Bytes read passed back on certain callbacks */
-  OPM_LIST_T           *protocols;      /* Remote specific protocols */
+  OPM_LIST_T           protocols;      /* Remote specific protocols */
   void                 *data;           /* Arbitrary data that the client can point to for any purpose*/
 };
 

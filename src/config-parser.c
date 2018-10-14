@@ -587,15 +587,15 @@ static const yytype_uint16 yyrline[] =
      216,   217,   218,   219,   220,   221,   222,   223,   224,   225,
      227,   233,   239,   245,   251,   257,   263,   269,   277,   285,
      290,   295,   300,   306,   312,   318,   324,   333,   333,   349,
-     350,   352,   353,   354,   356,   364,   372,   383,   383,   398,
-     399,   401,   402,   403,   405,   415,   428,   428,   471,   472,
-     474,   475,   476,   477,   478,   479,   480,   481,   482,   483,
-     485,   493,   501,   509,   525,   532,   539,   546,   553,   571,
-     573,   574,   576,   577,   578,   579,   580,   582,   588,   594,
-     603,   603,   622,   623,   625,   626,   627,   628,   629,   630,
-     631,   633,   642,   641,   649,   649,   650,   655,   662,   670,
-     682,   689,   691,   692,   694,   710,   712,   713,   715,   716,
-     718
+     350,   352,   353,   354,   356,   364,   372,   383,   383,   396,
+     397,   399,   400,   401,   403,   413,   426,   426,   466,   467,
+     469,   470,   471,   472,   473,   474,   475,   476,   477,   478,
+     480,   488,   496,   504,   517,   524,   531,   538,   545,   563,
+     565,   566,   568,   569,   570,   571,   572,   574,   580,   586,
+     595,   595,   613,   614,   616,   617,   618,   619,   620,   621,
+     622,   624,   633,   632,   640,   640,   641,   646,   653,   661,
+     673,   680,   682,   683,   685,   701,   703,   704,   706,   707,
+     709
 };
 #endif
 
@@ -1714,7 +1714,7 @@ yyreduce:
   case 39:
 #line 154 "config-parser.y" /* yacc.c:1646  */
     {
-  OptionsItem->negcache = (yyvsp[-1].number);
+  OptionsItem.negcache = (yyvsp[-1].number);
 }
 #line 1720 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1722,7 +1722,7 @@ yyreduce:
   case 40:
 #line 159 "config-parser.y" /* yacc.c:1646  */
     {
-  OptionsItem->negcache_rebuild = (yyvsp[-1].number);
+  OptionsItem.negcache_rebuild = (yyvsp[-1].number);
 }
 #line 1728 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1730,8 +1730,8 @@ yyreduce:
   case 41:
 #line 164 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(OptionsItem->pidfile);
-  OptionsItem->pidfile = xstrdup((yyvsp[-1].string));
+  xfree(OptionsItem.pidfile);
+  OptionsItem.pidfile = xstrdup((yyvsp[-1].string));
 }
 #line 1737 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1739,7 +1739,7 @@ yyreduce:
   case 42:
 #line 170 "config-parser.y" /* yacc.c:1646  */
     {
-  OptionsItem->dns_fdlimit = (yyvsp[-1].number);
+  OptionsItem.dns_fdlimit = (yyvsp[-1].number);
 }
 #line 1745 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1747,7 +1747,7 @@ yyreduce:
   case 43:
 #line 175 "config-parser.y" /* yacc.c:1646  */
     {
-  OptionsItem->dns_timeout = (yyvsp[-1].number);
+  OptionsItem.dns_timeout = (yyvsp[-1].number);
 }
 #line 1753 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1755,8 +1755,8 @@ yyreduce:
   case 44:
 #line 180 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(OptionsItem->scanlog);
-  OptionsItem->scanlog = xstrdup((yyvsp[-1].string));
+  xfree(OptionsItem.scanlog);
+  OptionsItem.scanlog = xstrdup((yyvsp[-1].string));
 }
 #line 1762 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1764,7 +1764,7 @@ yyreduce:
   case 45:
 #line 186 "config-parser.y" /* yacc.c:1646  */
     {
-  OptionsItem->command_queue_size = (yyvsp[-1].number);
+  OptionsItem.command_queue_size = (yyvsp[-1].number);
 }
 #line 1770 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1772,7 +1772,7 @@ yyreduce:
   case 46:
 #line 191 "config-parser.y" /* yacc.c:1646  */
     {
-  OptionsItem->command_interval = (yyvsp[-1].number);
+  OptionsItem.command_interval = (yyvsp[-1].number);
 }
 #line 1778 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1780,7 +1780,7 @@ yyreduce:
   case 47:
 #line 196 "config-parser.y" /* yacc.c:1646  */
     {
-  OptionsItem->command_timeout = (yyvsp[-1].number);
+  OptionsItem.command_timeout = (yyvsp[-1].number);
 }
 #line 1786 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1788,8 +1788,8 @@ yyreduce:
   case 70:
 #line 228 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->away);
-  IRCItem->away = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.away);
+  IRCItem.away = xstrdup((yyvsp[-1].string));
 }
 #line 1795 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1797,8 +1797,8 @@ yyreduce:
   case 71:
 #line 234 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->kline);
-  IRCItem->kline = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.kline);
+  IRCItem.kline = xstrdup((yyvsp[-1].string));
 }
 #line 1804 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1806,8 +1806,8 @@ yyreduce:
   case 72:
 #line 240 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->mode);
-  IRCItem->mode = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.mode);
+  IRCItem.mode = xstrdup((yyvsp[-1].string));
 }
 #line 1813 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1815,8 +1815,8 @@ yyreduce:
   case 73:
 #line 246 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->nick);
-  IRCItem->nick = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.nick);
+  IRCItem.nick = xstrdup((yyvsp[-1].string));
 }
 #line 1822 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1824,8 +1824,8 @@ yyreduce:
   case 74:
 #line 252 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->nickserv);
-  IRCItem->nickserv = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.nickserv);
+  IRCItem.nickserv = xstrdup((yyvsp[-1].string));
 }
 #line 1831 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1833,8 +1833,8 @@ yyreduce:
   case 75:
 #line 258 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->oper);
-  IRCItem->oper = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.oper);
+  IRCItem.oper = xstrdup((yyvsp[-1].string));
 }
 #line 1840 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1842,8 +1842,8 @@ yyreduce:
   case 76:
 #line 264 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->password);
-  IRCItem->password = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.password);
+  IRCItem.password = xstrdup((yyvsp[-1].string));
 }
 #line 1849 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1854,7 +1854,7 @@ yyreduce:
   node_t *node;
 
   node = node_create(xstrdup((yyvsp[-1].string)));
-  list_add(IRCItem->performs, node);
+  list_add(&IRCItem.performs, node);
 }
 #line 1860 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1865,7 +1865,7 @@ yyreduce:
   node_t *node;
 
   node = node_create(xstrdup((yyvsp[-1].string)));
-  list_add(IRCItem->notices, node);
+  list_add(&IRCItem.notices, node);
 }
 #line 1871 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1873,7 +1873,7 @@ yyreduce:
   case 79:
 #line 286 "config-parser.y" /* yacc.c:1646  */
     {
-  IRCItem->port = (yyvsp[-1].number);
+  IRCItem.port = (yyvsp[-1].number);
 }
 #line 1879 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1881,7 +1881,7 @@ yyreduce:
   case 80:
 #line 291 "config-parser.y" /* yacc.c:1646  */
     {
-  IRCItem->readtimeout = (yyvsp[-1].number);
+  IRCItem.readtimeout = (yyvsp[-1].number);
 }
 #line 1887 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1889,7 +1889,7 @@ yyreduce:
   case 81:
 #line 296 "config-parser.y" /* yacc.c:1646  */
     {
-  IRCItem->reconnectinterval = (yyvsp[-1].number);
+  IRCItem.reconnectinterval = (yyvsp[-1].number);
 }
 #line 1895 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1897,8 +1897,8 @@ yyreduce:
   case 82:
 #line 301 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->realname);
-  IRCItem->realname = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.realname);
+  IRCItem.realname = xstrdup((yyvsp[-1].string));
 }
 #line 1904 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1906,8 +1906,8 @@ yyreduce:
   case 83:
 #line 307 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->server);
-  IRCItem->server = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.server);
+  IRCItem.server = xstrdup((yyvsp[-1].string));
 }
 #line 1913 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1915,8 +1915,8 @@ yyreduce:
   case 84:
 #line 313 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->username);
-  IRCItem->username = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.username);
+  IRCItem.username = xstrdup((yyvsp[-1].string));
 }
 #line 1922 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1924,8 +1924,8 @@ yyreduce:
   case 85:
 #line 319 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->vhost);
-  IRCItem->vhost = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.vhost);
+  IRCItem.vhost = xstrdup((yyvsp[-1].string));
 }
 #line 1931 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1933,8 +1933,8 @@ yyreduce:
   case 86:
 #line 325 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(IRCItem->connregex);
-  IRCItem->connregex = xstrdup((yyvsp[-1].string));
+  xfree(IRCItem.connregex);
+  IRCItem.connregex = xstrdup((yyvsp[-1].string));
 }
 #line 1940 "config-parser.c" /* yacc.c:1646  */
     break;
@@ -1952,7 +1952,7 @@ yyreduce:
 
   node = node_create(item);
 
-  list_add(IRCItem->channels, node);
+  list_add(&IRCItem.channels, node);
   tmp = item;
 }
 #line 1959 "config-parser.c" /* yacc.c:1646  */
@@ -1998,45 +1998,43 @@ yyreduce:
   struct UserConf *item;
 
   item = xcalloc(sizeof(*item));
-  item->masks = list_create();
-  item->scanners = list_create();
 
   node = node_create(item);
 
-  list_add(UserItemList, node);
+  list_add(&UserItemList, node);
   tmp = item;
 }
-#line 2010 "config-parser.c" /* yacc.c:1646  */
+#line 2008 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 406 "config-parser.y" /* yacc.c:1646  */
+#line 404 "config-parser.y" /* yacc.c:1646  */
     {
   struct UserConf *item = tmp;
   node_t *node;
 
   node = node_create(xstrdup((yyvsp[-1].string)));
 
-  list_add(item->masks, node);
+  list_add(&item->masks, node);
 }
-#line 2023 "config-parser.c" /* yacc.c:1646  */
+#line 2021 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 416 "config-parser.y" /* yacc.c:1646  */
+#line 414 "config-parser.y" /* yacc.c:1646  */
     {
   struct UserConf *item = tmp;
   node_t *node;
 
   node = node_create(xstrdup((yyvsp[-1].string)));
 
-  list_add(item->scanners, node);
+  list_add(&item->scanners, node);
 }
-#line 2036 "config-parser.c" /* yacc.c:1646  */
+#line 2034 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 428 "config-parser.y" /* yacc.c:1646  */
+#line 426 "config-parser.y" /* yacc.c:1646  */
     {
   node_t *node;
   struct ScannerConf *item, *olditem;
@@ -2046,9 +2044,9 @@ yyreduce:
   /* Setup ScannerConf defaults */
   item->name = xstrdup("undefined");
 
-  if (LIST_SIZE(ScannerItemList) > 0)
+  if (LIST_SIZE(&ScannerItemList))
   {
-    olditem = ScannerItemList->tail->data;
+    olditem = ScannerItemList.tail->data;
 
     item->vhost = xstrdup(olditem->vhost);
     item->fd = olditem->fd;
@@ -2056,8 +2054,8 @@ yyreduce:
     item->target_port = olditem->target_port;
     item->timeout = olditem->timeout;
     item->max_read = olditem->max_read;
-    item->target_string = olditem->target_string;
     item->target_string_created = 0;
+    memcpy(&item->target_string, &olditem->target_string, sizeof(item->target_string));
   }
   else
   {
@@ -2067,55 +2065,52 @@ yyreduce:
     item->target_port = 6667;
     item->timeout = 30;
     item->max_read = 4096;
-    item->target_string = list_create();
     item->target_string_created = 1;
   }
 
-  item->protocols = list_create();
-
   node = node_create(item);
 
-  list_add(ScannerItemList, node);
+  list_add(&ScannerItemList, node);
   tmp = item;
 }
-#line 2082 "config-parser.c" /* yacc.c:1646  */
+#line 2077 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 486 "config-parser.y" /* yacc.c:1646  */
+#line 481 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
 
   xfree(item->name);
   item->name = xstrdup((yyvsp[-1].string));
 }
-#line 2093 "config-parser.c" /* yacc.c:1646  */
+#line 2088 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 494 "config-parser.y" /* yacc.c:1646  */
+#line 489 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
 
   xfree(item->vhost);
   item->vhost = xstrdup((yyvsp[-1].string));
 }
-#line 2104 "config-parser.c" /* yacc.c:1646  */
+#line 2099 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 502 "config-parser.y" /* yacc.c:1646  */
+#line 497 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
 
   xfree(item->target_ip);
   item->target_ip = xstrdup((yyvsp[-1].string));
 }
-#line 2115 "config-parser.c" /* yacc.c:1646  */
+#line 2110 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 510 "config-parser.y" /* yacc.c:1646  */
+#line 505 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
   node_t *node;
@@ -2123,58 +2118,55 @@ yyreduce:
   node = node_create(xstrdup((yyvsp[-1].string)));
 
   if (item->target_string_created == 0)
-  {
-    item->target_string = list_create();
-    item->target_string_created = 1;
-  }
+    memset(&item->target_string, 0, sizeof(item->target_string));
 
-  list_add(item->target_string, node);
+  list_add(&item->target_string, node);
 }
-#line 2134 "config-parser.c" /* yacc.c:1646  */
+#line 2126 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 124:
-#line 526 "config-parser.y" /* yacc.c:1646  */
+#line 518 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
 
   item->fd = (yyvsp[-1].number);
 }
-#line 2144 "config-parser.c" /* yacc.c:1646  */
+#line 2136 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 533 "config-parser.y" /* yacc.c:1646  */
+#line 525 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
 
   item->target_port = (yyvsp[-1].number);
 }
-#line 2154 "config-parser.c" /* yacc.c:1646  */
+#line 2146 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 540 "config-parser.y" /* yacc.c:1646  */
+#line 532 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
 
   item->timeout = (yyvsp[-1].number);
 }
-#line 2164 "config-parser.c" /* yacc.c:1646  */
+#line 2156 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 127:
-#line 547 "config-parser.y" /* yacc.c:1646  */
+#line 539 "config-parser.y" /* yacc.c:1646  */
     {
   struct ScannerConf *item = tmp;
 
   item->max_read = (yyvsp[-1].number);
 }
-#line 2174 "config-parser.c" /* yacc.c:1646  */
+#line 2166 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 554 "config-parser.y" /* yacc.c:1646  */
+#line 546 "config-parser.y" /* yacc.c:1646  */
     {
   struct ProtocolConf *item;
   struct ScannerConf *item2;
@@ -2187,40 +2179,40 @@ yyreduce:
   item2 = tmp;
 
   node = node_create(item);
-  list_add(item2->protocols, node);
+  list_add(&item2->protocols, node);
 }
-#line 2193 "config-parser.c" /* yacc.c:1646  */
+#line 2185 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 137:
-#line 583 "config-parser.y" /* yacc.c:1646  */
+#line 575 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(OpmItem->dnsbl_from);
-  OpmItem->dnsbl_from = xstrdup((yyvsp[-1].string));
+  xfree(OpmItem.dnsbl_from);
+  OpmItem.dnsbl_from = xstrdup((yyvsp[-1].string));
 }
-#line 2202 "config-parser.c" /* yacc.c:1646  */
+#line 2194 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 138:
-#line 589 "config-parser.y" /* yacc.c:1646  */
+#line 581 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(OpmItem->dnsbl_to);
-  OpmItem->dnsbl_to = xstrdup((yyvsp[-1].string));
+  xfree(OpmItem.dnsbl_to);
+  OpmItem.dnsbl_to = xstrdup((yyvsp[-1].string));
 }
-#line 2211 "config-parser.c" /* yacc.c:1646  */
+#line 2203 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 139:
-#line 595 "config-parser.y" /* yacc.c:1646  */
+#line 587 "config-parser.y" /* yacc.c:1646  */
     {
-  xfree(OpmItem->sendmail);
-  OpmItem->sendmail = xstrdup((yyvsp[-1].string));
+  xfree(OpmItem.sendmail);
+  OpmItem.sendmail = xstrdup((yyvsp[-1].string));
 }
-#line 2220 "config-parser.c" /* yacc.c:1646  */
+#line 2212 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 603 "config-parser.y" /* yacc.c:1646  */
+#line 595 "config-parser.y" /* yacc.c:1646  */
     {
   node_t *node;
   struct BlacklistConf *item;
@@ -2231,71 +2223,70 @@ yyreduce:
   item->ipv4 = 1;
   item->ban_unknown = 0;
   item->type = A_BITMASK;
-  item->reply = list_create();
 
   node = node_create(item);
-  list_add(OpmItem->blacklists, node);
+  list_add(&OpmItem.blacklists, node);
 
   tmp = item;
 }
-#line 2242 "config-parser.c" /* yacc.c:1646  */
+#line 2233 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 151:
-#line 634 "config-parser.y" /* yacc.c:1646  */
+#line 625 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   xfree(item->name);
   item->name = xstrdup((yyvsp[-1].string));
 }
-#line 2253 "config-parser.c" /* yacc.c:1646  */
+#line 2244 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 152:
-#line 642 "config-parser.y" /* yacc.c:1646  */
+#line 633 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   item->ipv4 = 0;
   item->ipv6 = 0;
 }
-#line 2264 "config-parser.c" /* yacc.c:1646  */
+#line 2255 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 156:
-#line 651 "config-parser.y" /* yacc.c:1646  */
+#line 642 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   item->ipv4 = 1;
 }
-#line 2274 "config-parser.c" /* yacc.c:1646  */
+#line 2265 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 157:
-#line 656 "config-parser.y" /* yacc.c:1646  */
+#line 647 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   item->ipv6 = 1;
 }
-#line 2284 "config-parser.c" /* yacc.c:1646  */
+#line 2275 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 158:
-#line 663 "config-parser.y" /* yacc.c:1646  */
+#line 654 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   xfree(item->kline);
   item->kline = xstrdup((yyvsp[-1].string));
 }
-#line 2295 "config-parser.c" /* yacc.c:1646  */
+#line 2286 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 159:
-#line 671 "config-parser.y" /* yacc.c:1646  */
+#line 662 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
@@ -2306,21 +2297,21 @@ yyreduce:
   else
     yyerror("Unknown blacklist type defined");
 }
-#line 2310 "config-parser.c" /* yacc.c:1646  */
+#line 2301 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 160:
-#line 683 "config-parser.y" /* yacc.c:1646  */
+#line 674 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistConf *item = tmp;
 
   item->ban_unknown = (yyvsp[-1].number);
 }
-#line 2320 "config-parser.c" /* yacc.c:1646  */
+#line 2311 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 164:
-#line 695 "config-parser.y" /* yacc.c:1646  */
+#line 686 "config-parser.y" /* yacc.c:1646  */
     {
   struct BlacklistReplyConf *item;
   struct BlacklistConf *blacklist = tmp;
@@ -2331,24 +2322,24 @@ yyreduce:
   item->type = xstrdup((yyvsp[-1].string));
 
   node = node_create(item);
-  list_add(blacklist->reply, node);
+  list_add(&blacklist->reply, node);
 }
-#line 2337 "config-parser.c" /* yacc.c:1646  */
+#line 2328 "config-parser.c" /* yacc.c:1646  */
     break;
 
   case 170:
-#line 719 "config-parser.y" /* yacc.c:1646  */
+#line 710 "config-parser.y" /* yacc.c:1646  */
     {
   node_t *node;
   node = node_create(xstrdup((yyvsp[-1].string)));
 
-  list_add(ExemptItem->masks, node);
+  list_add(&ExemptItem.masks, node);
 }
-#line 2348 "config-parser.c" /* yacc.c:1646  */
+#line 2339 "config-parser.c" /* yacc.c:1646  */
     break;
 
 
-#line 2352 "config-parser.c" /* yacc.c:1646  */
+#line 2343 "config-parser.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2576,5 +2567,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 726 "config-parser.y" /* yacc.c:1906  */
+#line 717 "config-parser.y" /* yacc.c:1906  */
 

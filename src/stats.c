@@ -156,7 +156,7 @@ stats_output(const char *target)
 
   irc_send("PRIVMSG %s :Uptime: %s", target, time_dissect(uptime));
 
-  LIST_FOREACH(p, OpmItem->blacklists->head)
+  LIST_FOREACH(p, OpmItem.blacklists.head)
   {
     const struct BlacklistConf *bl = p->data;
 

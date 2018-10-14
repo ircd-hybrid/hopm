@@ -64,7 +64,7 @@ negcache_init(void)
 struct negcache_item *
 negcache_check(const char *ipstr)
 {
-  if (OptionsItem->negcache == 0)
+  if (OptionsItem.negcache == 0)
     return NULL;
 
   patricia_node_t *pnode = patricia_try_search_exact(negcache_trie, ipstr);
@@ -72,7 +72,7 @@ negcache_check(const char *ipstr)
   {
     struct negcache_item *n = pnode->data;
 
-    if (time(NULL) - n->seen <= OptionsItem->negcache)
+    if (time(NULL) - n->seen <= OptionsItem.negcache)
       return n;
   }
 
@@ -94,7 +94,7 @@ negcache_insert(const char *ipstr)
   n->seen = time(NULL);
 
   pnode->data = n;
-  list_add(&negcache_list, node_create(pnode));
+  list_add(&negcache_list, &n->node);
 }
 
 /*
@@ -110,14 +110,14 @@ negcache_rebuild(void)
     patricia_node_t *pnode = node->data;
     struct negcache_item *n = pnode->data;
 
-    if (n->seen + OptionsItem->negcache < time(NULL))
+    if (n->seen + OptionsItem.negcache < time(NULL))
     {
       if (OPT_DEBUG >= 2)
         log_printf("NEGCACHE -> Deleting expired negcache node for %s added at %lu",
                    patricia_prefix_toa(pnode->prefix, 0), n->seen);
 
-      list_remove(&negcache_list, node);
-      node_free(node);
+      list_remove(&negcache_list, &n->node);
+
       xfree(n);
       patricia_remove(negcache_trie, pnode);
     }

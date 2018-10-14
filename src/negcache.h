@@ -23,6 +23,7 @@
 
 struct negcache_item
 {
+  node_t node;  /**< List node; linked into negcache_list */
   time_t seen;
 };
 

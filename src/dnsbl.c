@@ -63,7 +63,7 @@ dnsbl_add(struct scan_struct *ss)
     return;
   }
 
-  LIST_FOREACH(node, OpmItem->blacklists->head)
+  LIST_FOREACH(node, OpmItem.blacklists.head)
   {
     struct BlacklistConf *bl = node->data;
 
@@ -132,7 +132,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
 
   if (bl->type == A_BITMASK)
   {
-    LIST_FOREACH(node, bl->reply->head)
+    LIST_FOREACH(node, bl->reply.head)
     {
       const struct BlacklistReplyConf *item = node->data;
 
@@ -148,7 +148,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
   }
   else
   {
-    LIST_FOREACH(node, bl->reply->head)
+    LIST_FOREACH(node, bl->reply.head)
     {
       const struct BlacklistReplyConf *item = node->data;
 
@@ -174,7 +174,7 @@ dnsbl_positive(struct scan_struct *ss, struct BlacklistConf *bl, unsigned char t
   else if (ss->positive == 0)
   {
     /* Only report it if no other scans have found positives yet. */
-    scan_positive(ss, (EmptyString(bl->kline) ? IRCItem->kline : bl->kline), text_type);
+    scan_positive(ss, (EmptyString(bl->kline) ? IRCItem.kline : bl->kline), text_type);
 
     irc_send_channels("DNSBL -> %s!%s@%s [%s] appears in BL zone %s (%s)",
                       ss->irc_nick, ss->irc_username, ss->irc_hostname, ss->ip, bl->name,
@@ -264,17 +264,17 @@ dnsbl_report(const struct scan_struct *ss)
 
   assert(ss->ip);
 
-  if (EmptyString(OpmItem->dnsbl_to) || EmptyString(OpmItem->dnsbl_from) || EmptyString(OpmItem->sendmail))
+  if (EmptyString(OpmItem.dnsbl_to) || EmptyString(OpmItem.dnsbl_from) || EmptyString(OpmItem.sendmail))
     return;
 
-  snprintf(cmdbuf, sizeof(cmdbuf), "%s -t", OpmItem->sendmail);
+  snprintf(cmdbuf, sizeof(cmdbuf), "%s -t", OpmItem.sendmail);
   snprintf(buf, sizeof(buf),
            "From: %s <%s>\n"
            "To: %s\n"
            "Subject: HOPM Report\n"
            "X-HOPM-Version: %s\n\n"
            "%s: %s:%d\n\n"
-           "%s\n", IRCItem->nick, OpmItem->dnsbl_from, OpmItem->dnsbl_to,
+           "%s\n", IRCItem.nick, OpmItem.dnsbl_from, OpmItem.dnsbl_to,
            VERSION, scan_gettype(ss->remote->protocol), ss->ip,
            ss->remote->port, ss->proof);
 
@@ -293,7 +293,7 @@ dnsbl_report(const struct scan_struct *ss)
   fputs(buf, fp);
   pclose(fp);
 
-  log_printf("DNSBL -> Sent report to %s [%s]", OpmItem->dnsbl_to, ss->ip);
+  log_printf("DNSBL -> Sent report to %s [%s]", OpmItem.dnsbl_to, ss->ip);
 
   /* Record send in stats */
   stats_dnsblsend();

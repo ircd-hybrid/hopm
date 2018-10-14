@@ -81,7 +81,7 @@ get_channel(const char *name)
 {
   node_t *node;
 
-  LIST_FOREACH(node, IRCItem->channels->head)
+  LIST_FOREACH(node, IRCItem.channels.head)
   {
     struct ChannelConf *item = node->data;
 
@@ -109,28 +109,28 @@ m_perform(char *parv[], unsigned int parc, const char *msg, const char *source_p
 {
   node_t *node;
 
-  log_printf("IRC -> Connected to %s/%d", IRCItem->server, IRCItem->port);
+  log_printf("IRC -> Connected to %s/%d", IRCItem.server, IRCItem.port);
 
   /* Identify to nickserv if needed */
-  if (!EmptyString(IRCItem->nickserv))
-    irc_send("%s", IRCItem->nickserv);
+  if (!EmptyString(IRCItem.nickserv))
+    irc_send("%s", IRCItem.nickserv);
 
   /* Oper */
-  irc_send("OPER %s", IRCItem->oper);
+  irc_send("OPER %s", IRCItem.oper);
 
   /* Set modes */
-  irc_send("MODE %s %s", IRCItem->nick, IRCItem->mode);
+  irc_send("MODE %s %s", IRCItem.nick, IRCItem.mode);
 
   /* Set Away */
-  if (!EmptyString(IRCItem->away))
-    irc_send("AWAY :%s", IRCItem->away);
+  if (!EmptyString(IRCItem.away))
+    irc_send("AWAY :%s", IRCItem.away);
 
   /* Perform */
-  LIST_FOREACH(node, IRCItem->performs->head)
+  LIST_FOREACH(node, IRCItem.performs.head)
     irc_send("%s", node->data);
 
   /* Join all listed channels. */
-  LIST_FOREACH(node, IRCItem->channels->head)
+  LIST_FOREACH(node, IRCItem.channels.head)
   {
     const struct ChannelConf *channel = node->data;
 
@@ -247,9 +247,9 @@ m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p
   int hit = strncasecmp(parv[3], "!all ", 5) == 0;
   if (hit == 0)
   {
-    size_t nick_len = strlen(IRCItem->nick);
+    size_t nick_len = strlen(IRCItem.nick);
 
-    if (strncasecmp(parv[3], IRCItem->nick, nick_len) == 0)
+    if (strncasecmp(parv[3], IRCItem.nick, nick_len) == 0)
       hit = *(parv[3] + nick_len) == ' ' ||
             *(parv[3] + nick_len) == ',' ||
             *(parv[3] + nick_len) == ':';
@@ -292,7 +292,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const char *source_p)
   {
     preg = xcalloc(sizeof(*preg));
 
-    if ((errnum = regcomp(preg, IRCItem->connregex, REG_ICASE | REG_EXTENDED)))
+    if ((errnum = regcomp(preg, IRCItem.connregex, REG_ICASE | REG_EXTENDED)))
     {
       char errmsg[256];
 
@@ -336,7 +336,7 @@ m_notice(char *parv[], unsigned int parc, const char *msg, const char *source_p)
     log_printf("IRC REGEX -> Parsed %s!%s@%s [%s] from connection notice.",
                user[0], user[1], user[2], user[3]);
 
-  LIST_FOREACH(node, IRCItem->notices->head)
+  LIST_FOREACH(node, IRCItem.notices.head)
     irc_send("NOTICE %s :%s", user[0], node->data);
 
   /* Pass this information off to scan.c */
@@ -468,27 +468,27 @@ irc_init(void)
   memset(&IRC_SVR, 0, sizeof(IRC_SVR));
 
   /* Resolve IRC host. */
-  if ((address = firedns_resolveip6(IRCItem->server)))
+  if ((address = firedns_resolveip6(IRCItem.server)))
   {
     struct sockaddr_in6 *in = (struct sockaddr_in6 *)&IRC_SVR;
 
     svr_addrlen = sizeof(*in);
     IRC_SVR.ss_family = AF_INET6;
-    in->sin6_port = htons(IRCItem->port);
+    in->sin6_port = htons(IRCItem.port);
     memcpy(&in->sin6_addr, address, sizeof(in->sin6_addr));
   }
-  else if ((address = firedns_resolveip4(IRCItem->server)))
+  else if ((address = firedns_resolveip4(IRCItem.server)))
   {
     struct sockaddr_in *in = (struct sockaddr_in *)&IRC_SVR;
 
     svr_addrlen = sizeof(*in);
     IRC_SVR.ss_family = AF_INET;
-    in->sin_port = htons(IRCItem->port);
+    in->sin_port = htons(IRCItem.port);
     memcpy(&in->sin_addr, address, sizeof(in->sin_addr));
   }
   else
   {
-    log_printf("IRC -> firedns_resolveip(\"%s\"): %s", IRCItem->server,
+    log_printf("IRC -> firedns_resolveip(\"%s\"): %s", IRCItem.server,
                firedns_strerror(firedns_errno));
     exit(EXIT_FAILURE);
   }
@@ -503,7 +503,7 @@ irc_init(void)
   }
 
   /* Bind */
-  if (!EmptyString(IRCItem->vhost))
+  if (!EmptyString(IRCItem.vhost))
   {
     struct addrinfo hints, *res;
     int n;
@@ -514,14 +514,14 @@ irc_init(void)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_NUMERICHOST;
 
-    if ((n = getaddrinfo(IRCItem->vhost, NULL, &hints, &res)))
+    if ((n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res)))
     {
-      log_printf("IRC -> error binding to %s: %s", IRCItem->vhost, gai_strerror(n));
+      log_printf("IRC -> error binding to %s: %s", IRCItem.vhost, gai_strerror(n));
       exit(EXIT_FAILURE);
     }
     else if (bind(IRC_FD, res->ai_addr, res->ai_addrlen))
     {
-      log_printf("IRC -> error binding to %s: %s", IRCItem->vhost, strerror(errno));
+      log_printf("IRC -> error binding to %s: %s", IRCItem.vhost, strerror(errno));
       exit(EXIT_FAILURE);
     }
 
@@ -544,8 +544,8 @@ irc_reconnect(void)
 
   time(&present);
 
-  /* Only try to reconnect every IRCItem->reconnectinterval seconds */
-  if ((present - IRC_LASTRECONNECT) < IRCItem->reconnectinterval)
+  /* Only try to reconnect every IRCItem.reconnectinterval seconds */
+  if ((present - IRC_LASTRECONNECT) < IRCItem.reconnectinterval)
   {
     /* Sleep to avoid excessive CPU */
     sleep(1);
@@ -560,7 +560,7 @@ irc_reconnect(void)
     IRC_FD = -1;  /* Set IRC_FD -1 for reconnection on next irc_cycle(). */
   }
 
-  log_printf("IRC -> Connection to (%s) failed, reconnecting.", IRCItem->server);
+  log_printf("IRC -> Connection to (%s) failed, reconnecting.", IRCItem.server);
 }
 
 /* irc_connect
@@ -578,7 +578,7 @@ irc_connect(void)
   if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, svr_addrlen) == -1)
   {
     log_printf("IRC -> connect(): error connecting to %s: %s",
-               IRCItem->server, strerror(errno));
+               IRCItem.server, strerror(errno));
 
     if (errno == EISCONN /* Already connected */ || errno == EALREADY /* Previous attempt not complete */)
       return;
@@ -588,16 +588,16 @@ irc_connect(void)
     return;
   }
 
-  irc_send("NICK %s", IRCItem->nick);
+  irc_send("NICK %s", IRCItem.nick);
 
-  if (!EmptyString(IRCItem->password))
-    irc_send("PASS %s", IRCItem->password);
+  if (!EmptyString(IRCItem.password))
+    irc_send("PASS %s", IRCItem.password);
 
   irc_send("USER %s %s %s :%s",
-           IRCItem->username,
-           IRCItem->username,
-           IRCItem->username,
-           IRCItem->realname);
+           IRCItem.username,
+           IRCItem.username,
+           IRCItem.username,
+           IRCItem.realname);
   time(&IRC_LAST);
 }
 
@@ -667,7 +667,7 @@ irc_parse(void)
     parv[0] = IRC_RAW + 1;
   else
   {
-    parv[0] = IRCItem->server;
+    parv[0] = IRCItem.server;
     parv[parc++] = IRC_RAW;
   }
 
@@ -778,7 +778,7 @@ irc_cycle(void)
   if (IRC_FD == -1)
   {
     /* Initialize negative cache. */
-    if (OptionsItem->negcache)
+    if (OptionsItem.negcache)
       negcache_init();
 
     /* Resolve remote host. */
@@ -868,7 +868,7 @@ irc_send_channels(const char *data, ...)
   vsnprintf(buf, sizeof(buf), data, arglist);
   va_end(arglist);
 
-  LIST_FOREACH(node, IRCItem->channels->head)
+  LIST_FOREACH(node, IRCItem.channels.head)
   {
     const struct ChannelConf *chan = node->data;
 
@@ -892,8 +892,8 @@ irc_timer(void)
 
   delta = present - IRC_LAST;
 
-  /* No data in IRCItem->readtimeout seconds */
-  if (delta >= IRCItem->readtimeout)
+  /* No data in IRCItem.readtimeout seconds */
+  if (delta >= IRCItem.readtimeout)
   {
     log_printf("IRC -> Timeout awaiting data from server.");
     irc_reconnect();
@@ -901,7 +901,7 @@ irc_timer(void)
     /* Make sure we don't do this again for a while */
     time(&IRC_LAST);
   }
-  else if (delta >= IRCItem->readtimeout / 2)
+  else if (delta >= IRCItem.readtimeout / 2)
   {
     /*
      * Generate some data so high ping times don't cause uneeded

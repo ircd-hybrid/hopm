@@ -102,9 +102,9 @@ scan_timer(void)
 {
   static time_t nc_counter;
 
-  if (OptionsItem->negcache)
+  if (OptionsItem.negcache)
   {
-    if (nc_counter++ >= OptionsItem->negcache_rebuild)
+    if (nc_counter++ >= OptionsItem.negcache_rebuild)
     {
       /*
        * Time to rebuild the negative cache.
@@ -172,7 +172,7 @@ scan_checkexempt(const char *mask, const char *ipmask)
 {
   node_t *node;
 
-  LIST_FOREACH(node, ExemptItem->masks->head)
+  LIST_FOREACH(node, ExemptItem.masks.head)
   {
     const char *exempt_mask = node->data;
 
@@ -199,7 +199,7 @@ scan_init(void)
   node_t *p, *p2, *p3, *p4, *node;
 
   /* Setup each individual scanner */
-  LIST_FOREACH(p, ScannerItemList->head)
+  LIST_FOREACH(p, ScannerItemList.head)
   {
     struct ScannerConf *sc = p->data;
 
@@ -210,7 +210,6 @@ scan_init(void)
     struct scanner_struct *scs = xcalloc(sizeof(*scs));
     scs->scanner = opm_create();
     scs->name = xstrdup(sc->name);
-    scs->masks = list_create();
 
     /* Setup configuration */
     opm_config(scs->scanner, OPM_CONFIG_FD_LIMIT, &sc->fd);
@@ -221,7 +220,7 @@ scan_init(void)
     opm_config(scs->scanner, OPM_CONFIG_BIND_IP, sc->vhost);
 
     /* add target strings */
-    LIST_FOREACH(p2, sc->target_string->head)
+    LIST_FOREACH(p2, sc->target_string.head)
       opm_config(scs->scanner, OPM_CONFIG_TARGET_STRING, p2->data);
 
     /* Setup callbacks */
@@ -232,7 +231,7 @@ scan_init(void)
     opm_callback(scs->scanner, OPM_CALLBACK_ERROR, &scan_handle_error, scs);
 
     /* Setup the protocols */
-    LIST_FOREACH(p2, sc->protocols->head)
+    LIST_FOREACH(p2, sc->protocols.head)
     {
       struct ProtocolConf *pc = p2->data;
 
@@ -254,18 +253,18 @@ scan_init(void)
   {
     struct scanner_struct *scs = p->data;
 
-    LIST_FOREACH(p2, UserItemList->head)
+    LIST_FOREACH(p2, UserItemList.head)
     {
       struct UserConf *uc = p2->data;
 
-      LIST_FOREACH(p3, uc->scanners->head)
+      LIST_FOREACH(p3, uc->scanners.head)
       {
         const char *scannername = p3->data;
 
         /* Add all these masks to scanner */
         if (strcasecmp(scannername, scs->name) == 0)
         {
-          LIST_FOREACH(p4, uc->masks->head)
+          LIST_FOREACH(p4, uc->masks.head)
           {
             const char *mask = p4->data;
 
@@ -273,7 +272,7 @@ scan_init(void)
               log_printf("SCAN -> Linking the mask [%s] to scanner [%s]", mask, scannername);
 
             node = node_create(xstrdup(mask));
-            list_add(scs->masks, node);
+            list_add(&scs->masks, node);
           }
 
           break;
@@ -283,7 +282,7 @@ scan_init(void)
   }
 
   /* Initialise negative cache */
-  if (OptionsItem->negcache)
+  if (OptionsItem.negcache)
   {
     if (OPT_DEBUG >= 2)
       log_printf("SCAN -> Initializing negative cache");
@@ -350,7 +349,7 @@ scan_connect(const char *user[], const char *msg)
   ss->remote->data = ss;
 
   /* Start checking our DNSBLs */
-  if (LIST_SIZE(OpmItem->blacklists))
+  if (LIST_SIZE(&OpmItem.blacklists))
     dnsbl_add(ss);
 
   /* Add ss->remote to all matching scanners */
@@ -358,7 +357,7 @@ scan_connect(const char *user[], const char *msg)
   {
     struct scanner_struct *scs = p->data;
 
-    LIST_FOREACH(p2, scs->masks->head)
+    LIST_FOREACH(p2, scs->masks.head)
     {
       const char *scsmask = p2->data;
 
@@ -546,7 +545,7 @@ scan_open_proxy(OPM_T *scanner, OPM_REMOTE_T *remote, int notused, void *data)
   else
   {
     /* kline and close scan */
-    scan_positive(ss, IRCItem->kline, scan_gettype(remote->protocol));
+    scan_positive(ss, IRCItem.kline, scan_gettype(remote->protocol));
 
     /* Report to blacklist */
     dnsbl_report(ss);
@@ -711,7 +710,7 @@ static void
 scan_negative(const struct scan_struct *ss)
 {
   /* Insert IP in negcache */
-  if (OptionsItem->negcache)
+  if (OptionsItem.negcache)
   {
     if (OPT_DEBUG >= 2)
       log_printf("SCAN -> Adding %s to negative cache", ss->ip);
@@ -894,7 +893,7 @@ scan_manual(char *param, const char *target)
     irc_send("PRIVMSG %s :CHECK -> Checking '%s' for open proxies on all scanners",
              target, ss->ip);
 
-  if (LIST_SIZE(OpmItem->blacklists))
+  if (LIST_SIZE(&OpmItem.blacklists))
     dnsbl_add(ss);
 
   /* Add ss->remote to all scanners */
@@ -963,7 +962,7 @@ scan_log(OPM_REMOTE_T *remote)
 {
   struct scan_struct *ss = remote->data;
 
-  if (!(OptionsItem->scanlog && scanlogfile))
+  if (!(OptionsItem.scanlog && scanlogfile))
     return;
 
   fprintf(scanlogfile, "[%s] %s:%d (%s) \"%s\"\n", date_iso8601(0), remote->ip,

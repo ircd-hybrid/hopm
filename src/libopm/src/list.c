@@ -43,13 +43,6 @@ libopm_node_create(void *data)
   return node;
 }
 
-OPM_LIST_T *
-libopm_list_create(void)
-{
-  OPM_LIST_T *list = libopm_calloc(sizeof *list);
-  return list;
-}
-
 OPM_NODE_T *
 libopm_list_add(OPM_LIST_T *list, OPM_NODE_T *node)
 {
@@ -95,12 +88,6 @@ libopm_list_remove(OPM_LIST_T *list, OPM_NODE_T *node)
   list->elements--;
 
   return node;
-}
-
-void
-libopm_list_free(OPM_LIST_T *list)
-{
-  libopm_free(list);
 }
 
 void
