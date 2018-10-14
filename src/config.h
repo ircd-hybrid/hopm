@@ -55,6 +55,7 @@ struct IRCConf
 
 struct ChannelConf
 {
+  node_t node;  /**< List node; linked into IRCItem->channels */
   char *name;
   char *key;
   char *invite;
@@ -75,12 +76,14 @@ struct OptionsConf
 
 struct UserConf
 {
+  node_t node;  /**< List node; linked into UserItemList */
   list_t masks;     /* List of char * */
   list_t scanners;  /* List of char * */
 };
 
 struct ScannerConf
 {
+  node_t node;  /**< List node; linked into ScannerItemList */
   char *name;
   list_t protocols;
   char *vhost;

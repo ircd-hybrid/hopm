@@ -367,7 +367,7 @@ firedns_getip(int type, const char *const name, void *info)
     if (info == NULL)
       xfree(s);
     else
-      list_add(&CONNECTIONS, &s->node);
+      list_add(s, &s->node, &CONNECTIONS);
 
     return -1;
   }
@@ -379,7 +379,7 @@ firedns_getip(int type, const char *const name, void *info)
     return -1;
   }
 
-  list_add(&CONNECTIONS, &s->node);
+  list_add(s, &s->node, &CONNECTIONS);
 
   return fd;
 }
@@ -774,7 +774,7 @@ firedns_getresult(const int fd)
 
 /* Clean-up */
 cleanup:
-  list_remove(&CONNECTIONS, &c->node);
+  list_remove(&c->node, &CONNECTIONS);
 
   close(c->fd);
   xfree(c);
@@ -814,7 +814,7 @@ firedns_cycle(void)
     if (p->fd > 0 && (p->start + OptionsItem.dns_timeout) < timenow)
     {
       /* Timed out - remove from list */
-      list_remove(&CONNECTIONS, &p->node);
+      list_remove(&p->node, &CONNECTIONS);
 
       memset(new_result.text, 0, sizeof(new_result.text));
       new_result.info = p->info;

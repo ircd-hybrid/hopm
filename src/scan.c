@@ -196,7 +196,7 @@ scan_checkexempt(const char *mask, const char *ipmask)
 void
 scan_init(void)
 {
-  node_t *p, *p2, *p3, *p4, *node;
+  node_t *p, *p2, *p3, *p4;
 
   /* Setup each individual scanner */
   LIST_FOREACH(p, ScannerItemList.head)
@@ -244,8 +244,7 @@ scan_init(void)
                     scan_gettype(pc->type), pc->port, scs->name);
     }
 
-    node = node_create(scs);
-    list_add(&SCANNERS, node);
+    list_add(scs, node_create(), &SCANNERS);
   }
 
   /* Give scanners a list of masks they scan */
@@ -271,8 +270,7 @@ scan_init(void)
             if (OPT_DEBUG)
               log_printf("SCAN -> Linking the mask [%s] to scanner [%s]", mask, scannername);
 
-            node = node_create(xstrdup(mask));
-            list_add(&scs->masks, node);
+            list_add(xstrdup(mask), node_create(), &scs->masks);
           }
 
           break;

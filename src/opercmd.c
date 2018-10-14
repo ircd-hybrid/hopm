@@ -160,8 +160,8 @@ command_parse(const char *command, const char *target, const char *source_p)
   };
 
   if (OPT_DEBUG)
-    log_printf("COMMAND -> Parsing command (%s) from %s [%s]", command,
-               source_p, target);
+    log_printf("COMMAND -> Parsing command (%s) from %s [%s]",
+               command, source_p, target);
 
   /* Only allow OptionsItem.command_queue_size commands in the queue */
   if (LIST_SIZE(&COMMANDS) >= OptionsItem.command_queue_size)
@@ -169,7 +169,7 @@ command_parse(const char *command, const char *target, const char *source_p)
 
   /*
    * Parameter is the first character in command after the first space.
-   * param will be NULL if:
+   * 'param' will be NULL if:
    * 1. There was no space
    * 2. There was a space but it was the last character in command, in which case
    *    param = '\0'
@@ -178,7 +178,6 @@ command_parse(const char *command, const char *target, const char *source_p)
   /* Skip past the botname/!all */
   command = strchr(command, ' ');
 
-  /* TBD: skip leading spaces if there's more than one */
   /*
    * There is no command OR there is at least nothing
    * past that first space.
@@ -205,7 +204,7 @@ command_parse(const char *command, const char *target, const char *source_p)
       /* Queue this command */
       struct Command *cmd = command_create(tab, param, source_p, target);
 
-      list_add(&COMMANDS, &cmd->node);
+      list_add(cmd, &cmd->node, &COMMANDS);
       break;
     }
   }
@@ -243,7 +242,7 @@ command_timer(void)
 
     if ((present - command->added) > OptionsItem.command_timeout)
     {
-      list_remove(&COMMANDS, &command->node);
+      list_remove(&command->node, &COMMANDS);
       command_free(command);  /* Cleanup the command */
     }
     else  /* Since the queue is in order, it's also ordered by time, no nodes after this will be timed out */
@@ -296,7 +295,7 @@ command_userhost(const char *reply)
       if (oper)
         command->tab->handler(command->param, command->target);
 
-      list_remove(&COMMANDS, &command->node);
+      list_remove(&command->node, &COMMANDS);
       command_free(command);  /* Cleanup the command */
     }
   }

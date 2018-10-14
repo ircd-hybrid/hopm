@@ -94,7 +94,7 @@ negcache_insert(const char *ipstr)
   n->seen = time(NULL);
 
   pnode->data = n;
-  list_add(&negcache_list, &n->node);
+  list_add(pnode, &n->node, &negcache_list);
 }
 
 /*
@@ -116,7 +116,7 @@ negcache_rebuild(void)
         log_printf("NEGCACHE -> Deleting expired negcache node for %s added at %lu",
                    patricia_prefix_toa(pnode->prefix, 0), n->seen);
 
-      list_remove(&negcache_list, &n->node);
+      list_remove(&n->node, &negcache_list);
 
       xfree(n);
       patricia_remove(negcache_trie, pnode);
