@@ -486,6 +486,7 @@ scanner_target_string: TARGET_STRING '=' STRING ';'
 
   if (item->target_string_created == 0)
     memset(&item->target_string, 0, sizeof(item->target_string));
+  item->target_string_created = 1;
 
   list_add(xstrdup($3), node_create(), &item->target_string);
 };
