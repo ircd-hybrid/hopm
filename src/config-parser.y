@@ -423,7 +423,6 @@ scanner_entry:
     item->target_port = olditem->target_port;
     item->timeout = olditem->timeout;
     item->max_read = olditem->max_read;
-    item->target_string_created = 0;
     memcpy(&item->target_string, &olditem->target_string, sizeof(item->target_string));
   }
   else
@@ -434,7 +433,6 @@ scanner_entry:
     item->target_port = 6667;
     item->timeout = 30;
     item->max_read = 4096;
-    item->target_string_created = 1;
   }
 
   list_add(item, &item->node, &ScannerItemList);
@@ -485,7 +483,10 @@ scanner_target_string: TARGET_STRING '=' STRING ';'
   struct ScannerConf *item = tmp;
 
   if (item->target_string_created == 0)
+  {
     memset(&item->target_string, 0, sizeof(item->target_string));
+    item->target_string_created = 1;
+  }
 
   list_add(xstrdup($3), node_create(), &item->target_string);
 };
