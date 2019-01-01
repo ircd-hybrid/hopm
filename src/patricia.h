@@ -38,7 +38,6 @@
 
 /* { from defs.h */
 #define prefix_touchar(prefix) ((unsigned char *)&(prefix)->add.sin)
-#define MAXLINE 1024
 #define BIT_TEST(f, b)  ((f) & (b))
 /* } */
 
@@ -67,7 +66,6 @@ typedef struct _patricia_node_t
   struct _patricia_node_t *l, *r;  /* left and right children */
   struct _patricia_node_t *parent;  /* may be used */
   void *data;  /* pointer to data */
-  void *user1;  /* pointer to usr data (ex. route flap info) */
 } patricia_node_t;
 
 typedef struct _patricia_tree_t
@@ -96,6 +94,7 @@ extern patricia_node_t *patricia_try_search_best_addr(patricia_tree_t *, struct 
 
 /* { from demo.c */
 extern patricia_node_t *patricia_make_and_lookup(patricia_tree_t *, const char *);
+extern patricia_node_t *patricia_make_and_lookup_addr(patricia_tree_t *, struct sockaddr *, int);
 /* } */
 
 #define PATRICIA_MAXBITS   (sizeof(struct in6_addr) * 8)

@@ -65,7 +65,7 @@ comp_with_mask(void *addr, void *dest, unsigned int mask)
   if ( /* mask/8 == 0 || */ memcmp(addr, dest, mask / 8) == 0)
   {
     int n = mask / 8;
-    int m = ((-1) << (8 - (mask % 8)));
+    int m = ~((1 << (8 - (mask % 8))) - 1);
 
     if (mask % 8 == 0 || (((unsigned char *)addr)[n] & m) == (((unsigned char *)dest)[n] & m))
       return 1;
@@ -113,7 +113,7 @@ New_Prefix2(int family, void *dest, int bitlen, prefix_t *prefix)
 
   if (prefix == NULL)
   {
-    prefix = xcalloc(sizeof(prefix_t));
+    prefix = xcalloc(sizeof(*prefix));
     dynamic_allocated = 1;
   }
 
@@ -137,6 +137,7 @@ New_Prefix(int family, void *dest, int bitlen)
 static prefix_t *
 ascii2prefix(int family, const char *string)
 {
+  char save[INET6_ADDRSTRLEN];
   int bitlen, maxbitlen = 0;
   union
   {
@@ -151,7 +152,7 @@ ascii2prefix(int family, const char *string)
   {
     family = AF_INET;
 
-    if (strchr (string, ':'))
+    if (strchr(string, ':'))
       family = AF_INET6;
   }
 
@@ -163,16 +164,17 @@ ascii2prefix(int family, const char *string)
   const char *const cp = strchr(string, '/');
   if (cp)
   {
-    char save[MAXLINE];
+    size_t length = cp - string;
+
+    if (length >= sizeof(save))
+      return NULL;
 
     bitlen = atoi(cp + 1);
 
-    /* *cp = '\0'; */
     /* Copy the string to save. Avoid destroying the string */
-    assert(cp - string < MAXLINE);
-    memcpy(save, string, cp - string);
+    memcpy(save, string, length);
+    save[length] = '\0';
 
-    save[cp - string] = '\0';
     string = save;
 
     if (bitlen < 0 || bitlen > maxbitlen)
@@ -222,7 +224,7 @@ Deref_Prefix(prefix_t *prefix)
 patricia_tree_t *
 patricia_new(unsigned int maxbits)
 {
-  patricia_tree_t *patricia = xcalloc(sizeof *patricia);
+  patricia_tree_t *patricia = xcalloc(sizeof(*patricia));
   patricia->maxbits = maxbits;
 
   assert(maxbits <= PATRICIA_MAXBITS);  /* XXX */
@@ -288,8 +290,9 @@ patricia_clear(patricia_tree_t *patricia, void (*func)(void *))
     }
   }
 
+  patricia->head = NULL;
+
   assert(patricia->num_active_node == 0);
-  /* xfree (patricia); */
 }
 
 void
@@ -504,9 +507,9 @@ patricia_lookup(patricia_tree_t *patricia, prefix_t *prefix)
 
   if (patricia->head == NULL)
   {
-    node = xcalloc(sizeof *node);
+    node = xcalloc(sizeof(*node));
     node->bit = prefix->bitlen;
-    node->prefix = Ref_Prefix (prefix);
+    node->prefix = Ref_Prefix(prefix);
     patricia->head = node;
 #ifdef PATRICIA_DEBUG
     fprintf(stderr, "patricia_lookup: new_node #0 %s/%d (head)\n",
@@ -629,7 +632,7 @@ patricia_lookup(patricia_tree_t *patricia, prefix_t *prefix)
     return node;
   }
 
-  new_node = xcalloc(sizeof *new_node);
+  new_node = xcalloc(sizeof(*new_node));
   new_node->bit = prefix->bitlen;
   new_node->prefix = Ref_Prefix(prefix);
   patricia->num_active_node++;
@@ -690,7 +693,7 @@ patricia_lookup(patricia_tree_t *patricia, prefix_t *prefix)
   }
   else
   {
-    glue = xcalloc(sizeof *glue);
+    glue = xcalloc(sizeof(*glue));
     glue->bit = differ_bit;
     glue->parent = node->parent;
     patricia->num_active_node++;
@@ -863,6 +866,38 @@ patricia_make_and_lookup(patricia_tree_t *tree, const char *string)
 {
   prefix_t *prefix = ascii2prefix(0, string);
 
+  if (prefix)
+  {
+    patricia_node_t *node = patricia_lookup(tree, prefix);
+    Deref_Prefix(prefix);
+    return node;
+  }
+
+  return NULL;
+}
+
+patricia_node_t *
+patricia_make_and_lookup_addr(patricia_tree_t *tree, struct sockaddr *addr, int bitlen)
+{
+  int family;
+  void *dest;
+
+  if (addr->sa_family == AF_INET6)
+  {
+    if (bitlen == 0 || bitlen > 128)
+      bitlen = 128;
+    family = AF_INET6;
+    dest = &((struct sockaddr_in6 *)addr)->sin6_addr;
+  }
+  else
+  {
+    if (bitlen == 0 || bitlen > 32)
+      bitlen = 32;
+    family = AF_INET;
+    dest = &((struct sockaddr_in *)addr)->sin_addr;
+  }
+
+  prefix_t *prefix = New_Prefix(family, dest, bitlen);
   if (prefix)
   {
     patricia_node_t *node = patricia_lookup(tree, prefix);
