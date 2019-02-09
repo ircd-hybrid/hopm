@@ -1,5 +1,5 @@
 
-#line 2 "config-lexer.c"
+#line 3 "config-lexer.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -887,8 +887,8 @@ conf_yy_fatal_error(const char *msg)
 {
   return 0;
 }
-#line 890 "config-lexer.c"
 #line 891 "config-lexer.c"
+#line 892 "config-lexer.c"
 
 #define INITIAL 0
 #define IN_COMMENT 1
@@ -1107,7 +1107,7 @@ YY_DECL
 #line 88 "config-lexer.l"
 
 
-#line 1110 "config-lexer.c"
+#line 1111 "config-lexer.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1804,7 +1804,7 @@ YY_RULE_SETUP
 #line 309 "config-lexer.l"
 ECHO;
 	YY_BREAK
-#line 1807 "config-lexer.c"
+#line 1808 "config-lexer.c"
 
 	case YY_END_OF_BUFFER:
 		{
