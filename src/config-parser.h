@@ -1,8 +1,9 @@
-/* A Bison parser, made by GNU Bison 3.2.2.  */
+/* A Bison parser, made by GNU Bison 3.3.2.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2019 Free Software Foundation,
+   Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -191,12 +192,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 91 "config-parser.y" /* yacc.c:1906  */
+#line 91 "config-parser.y" /* yacc.c:1921  */
 
   int number;
   char *string;
 
-#line 200 "config-parser.h" /* yacc.c:1906  */
+#line 201 "config-parser.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;
