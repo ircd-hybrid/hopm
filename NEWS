@@ -1,5 +1,4 @@
-
--- Noteworthy changes in version 1.1.6 (201?-??-??)
+-- Noteworthy changes in version 1.1.6 (2019-04-21)
 o) Fixed issue with ssh banner scans where hopm would test connections only
    against the 'target_string' that's defined last in the scanner{} block
 o) Minimum supported OpenSSL version is 1.0.1f now
