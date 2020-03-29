@@ -157,10 +157,20 @@ main(int argc, char *argv[])
     /* Reset file mode. */
     umask(077);  /* umask 077: u=rwx,g=,o= */
 
-    /* Close file descriptors. */
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
+    /* Connect stdin, stdout, and stderr to /dev/null */
+    int fd = open("/dev/null", O_RDWR);
+    if (fd < 0)
+    {
+      perror("open()");
+      exit(EXIT_FAILURE);
+    }
+
+    dup2(fd, STDIN_FILENO);
+    dup2(fd, STDOUT_FILENO);
+    dup2(fd, STDERR_FILENO);
+
+    if (fd > STDERR_FILENO)
+      close(fd);
 
     log_open(LOGFILE);
   }
