@@ -1,3 +1,8 @@
+-- Noteworthy changes in version 1.1.7 (2020-??-??)
+o) Fixed github issue #31: hopm attempts to open stderr for logging in
+   non-debug/fork mode which can cause hopm to exit silently
+
+
 -- Noteworthy changes in version 1.1.6 (2019-04-21)
 o) Fixed issue with ssh banner scans where hopm would test connections only
    against the 'target_string' that's defined last in the scanner{} block
