@@ -68,7 +68,7 @@ config_setup(void)
   OptionsItem.command_queue_size = 64;
   OptionsItem.command_interval = 10;
   OptionsItem.command_timeout = 180;
-  OptionsItem.negcache = 0;   /* 0 disabled negcache */
+  OptionsItem.negcache = 0;  /* 0 disabled negcache */
   OptionsItem.negcache_rebuild = 43200;
   OptionsItem.pidfile = xstrdup("hopm.pid");
   OptionsItem.dns_fdlimit = 50;
@@ -85,7 +85,8 @@ config_load(const char *filename)
 
   strlcpy(conffilebuf, filename, sizeof(conffilebuf));
 
-  if ((conf_file = fopen(filename, "r")) == NULL)
+  conf_file = fopen(filename, "r");
+  if (conf_file == NULL)
   {
     log_printf("CONFIG -> Error opening %s: %s", filename, strerror(errno));
     exit(EXIT_FAILURE);
