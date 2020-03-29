@@ -260,7 +260,6 @@ void
 dnsbl_report(const struct scan_struct *ss)
 {
   char buf[2048], cmdbuf[256];
-  FILE *fp;
 
   assert(ss->ip);
 
@@ -281,7 +280,8 @@ dnsbl_report(const struct scan_struct *ss)
   if (OPT_DEBUG >= 3)
     log_printf("DNSBL -> Sending following email:\n%s\n", buf);
 
-  if ((fp = popen(cmdbuf, "w")) == NULL)
+  FILE *fp = popen(cmdbuf, "w");
+  if (fp == NULL)
   {
     log_printf("DNSBL -> Failed to create pipe to '%s' for email report!", cmdbuf);
     irc_send_channels("I was trying to create a pipe to '%s' to send a DNSBL "

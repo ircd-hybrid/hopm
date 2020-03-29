@@ -178,14 +178,13 @@ m_ping(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 static void
 m_invite(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
-  const struct ChannelConf *channel = NULL;
-
   if (parc < 4)
     return;
 
   log_printf("IRC -> Invited to %s by %s", parv[3], parv[0]);
 
-  if ((channel = get_channel(parv[3])) == NULL)
+  const struct ChannelConf *channel = get_channel(parv[3]);
+  if (channel == NULL)
     return;
 
   irc_send("JOIN %s %s", channel->name, channel->key);
@@ -221,8 +220,6 @@ m_ctcp(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 static void
 m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
-  const struct ChannelConf *channel = NULL;
-
   if (source_p == NULL)
     return;
 
@@ -241,7 +238,8 @@ m_privmsg(char *parv[], unsigned int parc, const char *msg, const char *source_p
     return;
 
   /* Get a target */
-  if ((channel = get_channel(parv[2])) == NULL)
+  const struct ChannelConf *channel = get_channel(parv[2]);
+  if (channel == NULL)
     return;
 
   int hit = strncasecmp(parv[3], "!all ", 5) == 0;
@@ -377,13 +375,12 @@ m_userhost(char *parv[], unsigned int parc, const char *msg, const char *source_
 static void
 m_cannot_join(char *parv[], unsigned int parc, const char *msg, const char *source_p)
 {
-  const struct ChannelConf *channel = NULL;
-
   if (parc < 5)
     return;
 
   /* Is it one of our channels? */
-  if ((channel = get_channel(parv[3])) == NULL)
+  const struct ChannelConf *channel = get_channel(parv[3]);
+  if (channel == NULL)
     return;
 
   if (EmptyString(channel->invite))
@@ -461,7 +458,7 @@ userinfo_create(const char *source)
 static void
 irc_init(void)
 {
-  const void *address = NULL;
+  const void *address;
 
   assert(IRC_FD == -1);
 
@@ -506,7 +503,6 @@ irc_init(void)
   if (!EmptyString(IRCItem.vhost))
   {
     struct addrinfo hints, *res;
-    int n;
 
     memset(&hints, 0, sizeof(hints));
 
@@ -514,7 +510,8 @@ irc_init(void)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_NUMERICHOST;
 
-    if ((n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res)))
+    int n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res);
+    if (n)
     {
       log_printf("IRC -> error binding to %s: %s", IRCItem.vhost, gai_strerror(n));
       exit(EXIT_FAILURE);
@@ -824,10 +821,9 @@ irc_send(const char *data, ...)
 {
   va_list arglist;
   char buf[MSGLENMAX];
-  size_t len = 0;
 
   va_start(arglist, data);
-  len = vsnprintf(buf, sizeof(buf), data, arglist);
+  size_t len = vsnprintf(buf, sizeof(buf), data, arglist);
   va_end(arglist);
 
   if (OPT_DEBUG >= 2)
