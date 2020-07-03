@@ -823,7 +823,7 @@ irc_send(const char *data, ...)
   char buf[MSGLENMAX];
 
   va_start(arglist, data);
-  size_t len = vsnprintf(buf, sizeof(buf), data, arglist);
+  ssize_t len = vsnprintf(buf, sizeof(buf), data, arglist);
   va_end(arglist);
 
   if (OPT_DEBUG >= 2)
@@ -835,7 +835,7 @@ irc_send(const char *data, ...)
   buf[len++] = '\r';
   buf[len++] = '\n';
 
-  if (send(IRC_FD, buf, len, 0) == -1)
+  if (send(IRC_FD, buf, len, 0) != len)
   {
     /* Return of -1 indicates error sending data; we reconnect. */
     log_printf("IRC -> Error sending data to server: %s", strerror(errno));
