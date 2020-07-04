@@ -64,6 +64,7 @@
 static char         IRC_RAW[MSGLENMAX];  /* Buffer to read data into               */
 static unsigned int IRC_RAW_LEN;         /* Position of IRC_RAW                    */
 static int          IRC_FD = -1;         /* File descriptor for IRC client         */
+static int          IRC_CONNECT = 1;     /* Attempt to connect to server if 1 */
 
 static struct sockaddr_storage IRC_SVR;  /* Sock Address Struct for IRC server     */
 static socklen_t svr_addrlen;
@@ -589,16 +590,6 @@ irc_reconnect(void)
 
   time(&present);
 
-  /* Only try to reconnect every IRCItem.reconnectinterval seconds */
-  if ((present - IRC_LASTRECONNECT) < IRCItem.reconnectinterval)
-  {
-    /* Sleep to avoid excessive CPU */
-    sleep(1);
-    return;
-  }
-
-  time(&IRC_LASTRECONNECT);
-
   if (IRC_FD > -1)
   {
 #ifdef HAVE_LIBCRYPTO
@@ -614,6 +605,23 @@ irc_reconnect(void)
     IRC_FD = -1;  /* Set IRC_FD -1 for reconnection on next irc_cycle(). */
   }
 
+  /*
+   * Set IRC_CONNECT to 0 so irc_connect() doesn't repeatedly attempts to connect to
+   * the ircd unti the reconnect interval timer has expired.
+   */
+  IRC_CONNECT = 0;
+
+  /* Only try to reconnect every IRCItem.reconnectinterval seconds */
+  if ((present - IRC_LASTRECONNECT) < IRCItem.reconnectinterval)
+  {
+    /* Sleep to avoid excessive CPU */
+    sleep(1);
+    return;
+  }
+
+  IRC_CONNECT = 1;
+  time(&IRC_LASTRECONNECT);
+
   log_printf("IRC -> Connection to (%s) failed, reconnecting.", IRCItem.server);
 }
 
@@ -628,6 +636,19 @@ irc_reconnect(void)
 static void
 irc_connect(void)
 {
+  assert(IRC_FD == -1);
+
+  if (IRC_CONNECT == 0)
+    return;
+
+  /*
+   * Initialize IRC_LASTRECONNECT time here, otherwise in case of a failed connection
+   * attempt, a second attempt will be made immediately after due to IRC_LASTRECONNECT
+   * being 0 in the very first irc_reconnect() call.
+   */
+  if (IRC_LASTRECONNECT == 0)
+    time(&IRC_LASTRECONNECT);
+
   /* Connect to IRC server as client. */
   if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, svr_addrlen) == -1)
   {
