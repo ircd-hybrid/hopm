@@ -189,6 +189,7 @@ TARGET_IP               { return TARGET_IP;    }
 TARGET_PORT             { return TARGET_PORT;  }
 TARGET_STRING           { return TARGET_STRING;}
 TIMEOUT                 { return TIMEOUT;      }
+TLS                     { return TLS;          }
 TYPE                    { return TYPE;         }
 USER                    { return USER;         }
 USERNAME                { return USERNAME;     }

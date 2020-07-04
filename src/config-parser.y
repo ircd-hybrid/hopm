@@ -82,6 +82,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token TARGET_PORT
 %token TARGET_STRING
 %token TIMEOUT
+%token TLS
 %token TYPE
 %token USERNAME
 %token USER
@@ -213,6 +214,7 @@ irc_item: irc_away              |
           irc_oper              |
           irc_password          |
           irc_port              |
+          irc_tls               |
           irc_readtimeout       |
           irc_reconnectinterval |
           irc_realname          |
@@ -279,6 +281,11 @@ irc_notice: NOTICE '=' STRING ';'
 irc_port: PORT '=' NUMBER ';'
 {
   IRCItem.port = $3;
+};
+
+irc_tls: TLS '=' NUMBER ';'
+{
+  IRCItem.tls = $3;
 };
 
 irc_readtimeout: READTIMEOUT '=' timespec ';'
