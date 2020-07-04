@@ -544,13 +544,14 @@ irc_init(void)
     {
       tls_init = 1;
 
-      ssl_ctx = SSL_CTX_new(SSLv23_client_method());
+      ssl_ctx = SSL_CTX_new(TLS_client_method());
       if (ssl_ctx == NULL)
       {
         log_printf("IRC -> unable to create SSL context");
         exit(EXIT_FAILURE);
       }
 
+      SSL_CTX_set_min_proto_version(ssl_ctx, TLS1_2_VERSION);
       SSL_CTX_set_default_verify_paths(ssl_ctx);
     }
 
