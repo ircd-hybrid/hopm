@@ -1,3 +1,10 @@
+-- Noteworthy changes in version 1.1.8 (2020-??-??)
+o) Minimum supported OpenSSL version is 1.1.1 now
+o) Experimental TLS support for the irc client part has been implemented. We
+   only do TLSv1.2 and higher
+o) A possible out-of-bounds write in the irc parser logic has been fixed
+
+
 -- Noteworthy changes in version 1.1.7 (2020-04-19)
 o) Fixed github issue #31: hopm attempts to open stderr for logging in
    non-debug/fork mode which can cause hopm to exit silently
