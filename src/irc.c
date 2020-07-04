@@ -809,7 +809,8 @@ irc_read(void)
       len = recv(IRC_FD, &c, 1, 0);
 
     if (len <= 0)
-        break;
+      break;
+
     if (c == '\r')
       continue;
 
