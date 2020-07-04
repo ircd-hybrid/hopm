@@ -692,6 +692,7 @@ irc_parse(void)
    * source did not exist
    */
   char        *parv[17];
+  static const unsigned int parv_size = sizeof(parv) / sizeof(parv[0]);
   unsigned int parc = 1;
   char         msg[MSGLENMAX];  /* Temporarily stores IRC msg to pass to handlers */
 
@@ -743,7 +744,7 @@ irc_parse(void)
 
   pos = IRC_RAW;
 
-  while ((pos = strchr(pos, ' ')) && parc <= 17)
+  while ((pos = strchr(pos, ' ')) && parc < parv_size)
   {
     /* Avoid excessive spaces and end of IRC_RAW */
     if (*(pos + 1) == ' ' || *(pos + 1) == '\0')
