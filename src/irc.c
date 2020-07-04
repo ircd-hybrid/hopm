@@ -606,7 +606,7 @@ irc_reconnect(void)
   }
 
   /*
-   * Set IRC_CONNECT to 0 so irc_connect() doesn't repeatedly attempts to connect to
+   * Set IRC_CONNECT to 0 so irc_connect() doesn't repeatedly attempt to connect to
    * the ircd until the reconnect interval timer has expired.
    */
   IRC_CONNECT = 0;
