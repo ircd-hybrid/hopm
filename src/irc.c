@@ -543,7 +543,6 @@ irc_init(void)
     if (tls_init == 0)
     {
       tls_init = 1;
-      SSLeay_add_ssl_algorithms();
 
       ssl_ctx = SSL_CTX_new(SSLv23_client_method());
       if (ssl_ctx == NULL)
