@@ -39,6 +39,7 @@ struct IRCConf
   char *server;
   int port;
   int tls;
+  int tls_hostname_verification;
   time_t readtimeout;
   time_t reconnectinterval;
   char *password;
