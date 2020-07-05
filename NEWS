@@ -2,6 +2,8 @@
 o) Minimum supported OpenSSL version is 1.1.1 now
 o) Experimental TLS support for the irc client part has been implemented. We
    only do TLSv1.2 and higher
+o) The irc::tls and irc::tls_hostname_verification configuration options
+   have been added
 o) A possible out-of-bounds write in the irc parser logic has been fixed
 
 
