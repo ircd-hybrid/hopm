@@ -56,6 +56,7 @@ config_setup(void)
   IRCItem.nick = xstrdup("hopm");
   IRCItem.port = 6667;
   IRCItem.tls = 0;
+  IRCItem.tls_hostname_verification = 1;
   IRCItem.readtimeout = 900;
   IRCItem.reconnectinterval = 30;
   IRCItem.oper = xstrdup("undefined");

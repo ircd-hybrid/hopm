@@ -558,13 +558,17 @@ irc_init(void)
 
     ssl_handle = SSL_new(ssl_ctx);
     SSL_set_fd(ssl_handle, IRC_FD);
-    SSL_set_hostflags(ssl_handle, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
 
-    if (!SSL_set1_host(ssl_handle, IRCItem.server))
+    if (IRCItem.tls_hostname_verification)
     {
-      log_printf("IRC -> unable to set expected DNS hostname");
-      /* OpenSSL is unable to verify the server hostname at this point, so we exit. */
-      exit(EXIT_FAILURE);
+      SSL_set_hostflags(ssl_handle, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
+
+      if (SSL_set1_host(ssl_handle, IRCItem.server) == 0)
+      {
+        log_printf("IRC -> unable to set expected DNS hostname");
+        /* OpenSSL is unable to verify the server hostname at this point, so we exit. */
+        exit(EXIT_FAILURE);
+      }
     }
 
     SSL_set_verify(ssl_handle, SSL_VERIFY_PEER, NULL);
