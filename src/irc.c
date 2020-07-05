@@ -64,7 +64,6 @@
 static char         IRC_RAW[MSGLENMAX];  /* Buffer to read data into               */
 static unsigned int IRC_RAW_LEN;         /* Position of IRC_RAW                    */
 static int          IRC_FD = -1;         /* File descriptor for IRC client         */
-static int          IRC_CONNECT = 1;     /* Attempt to connect to server if 1 */
 
 static struct sockaddr_storage IRC_SVR;  /* Sock Address Struct for IRC server     */
 static socklen_t svr_addrlen;
@@ -579,7 +578,7 @@ irc_init(void)
   }
 }
 
-/* irc_reconnect
+/* irc_close
  *
  *    Close connection to IRC server.
  *
@@ -588,12 +587,8 @@ irc_init(void)
  * Return: NONE
  */
 static void
-irc_reconnect(void)
+irc_close(void)
 {
-  time_t present;
-
-  time(&present);
-
   if (IRC_FD > -1)
   {
 #ifdef HAVE_LIBCRYPTO
@@ -609,23 +604,6 @@ irc_reconnect(void)
     IRC_FD = -1;  /* Set IRC_FD -1 for reconnection on next irc_cycle(). */
   }
 
-  /*
-   * Set IRC_CONNECT to 0 so irc_connect() doesn't repeatedly attempt to connect to
-   * the ircd until the reconnect interval timer has expired.
-   */
-  IRC_CONNECT = 0;
-
-  /* Only try to reconnect every IRCItem.reconnectinterval seconds */
-  if ((present - IRC_LASTRECONNECT) < IRCItem.reconnectinterval)
-  {
-    /* Sleep to avoid excessive CPU */
-    sleep(1);
-    return;
-  }
-
-  IRC_CONNECT = 1;
-  time(&IRC_LASTRECONNECT);
-
   log_printf("IRC -> Connection to (%s) failed, reconnecting.", IRCItem.server);
 }
 
@@ -640,16 +618,22 @@ irc_reconnect(void)
 static void
 irc_connect(void)
 {
-  if (IRC_CONNECT == 0)
-    return;
+  time_t present;
 
-  /*
-   * Initialize IRC_LASTRECONNECT time here, otherwise in case of a failed connection
-   * attempt, a second attempt will be made immediately after due to IRC_LASTRECONNECT
-   * being 0 in the very first irc_reconnect() call.
-   */
-  if (IRC_LASTRECONNECT == 0)
-    time(&IRC_LASTRECONNECT);
+  time(&present);
+
+  /* Only try to reconnect every IRCItem.reconnectinterval seconds */
+  if ((present - IRC_LASTRECONNECT) < IRCItem.reconnectinterval)
+  {
+    /* Sleep to avoid excessive CPU */
+    sleep(1);
+    return;
+  }
+
+  time(&IRC_LASTRECONNECT);
+  time(&IRC_LAST);
+
+  irc_init();
 
   /* Connect to IRC server as client. */
   if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, svr_addrlen) == -1)
@@ -657,11 +641,8 @@ irc_connect(void)
     log_printf("IRC -> connect(): error connecting to %s: %s",
                IRCItem.server, strerror(errno));
 
-    if (errno == EISCONN /* Already connected */ || errno == EALREADY /* Previous attempt not complete */)
-      return;
-
-    /* Try to connect again */
-    irc_reconnect();
+    /* Close socket and try to connect again */
+    irc_close();
     return;
   }
 
@@ -675,8 +656,8 @@ irc_connect(void)
       log_printf("IRC -> connect(): error performing TLS handshake with %s: %s",
                  IRCItem.server, error);
 
-      /* Try to connect again */
-      irc_reconnect();
+      /* Close socket and try to connect again */
+      irc_close();
       return;
     }
   }
@@ -859,7 +840,7 @@ irc_read(void)
     if (errno != EINTR)
       log_printf("IRC -> Error reading data from server: %s", strerror(errno));
 
-    irc_reconnect();
+    irc_close();
     IRC_RAW_LEN = 0;
     return;
   }
@@ -886,9 +867,6 @@ irc_cycle(void)
     if (OptionsItem.negcache)
       negcache_init();
 
-    /* Resolve remote host. */
-    irc_init();
-
     /* Connect to remote host. */
     irc_connect();
     return;  /* In case connect() immediately failed */
@@ -908,7 +886,7 @@ irc_cycle(void)
       if (pfd.revents & POLLIN)
         irc_read();
       else if (pfd.revents & (POLLERR | POLLHUP))
-        irc_reconnect();
+        irc_close();
 
       break;
   }
@@ -955,7 +933,7 @@ irc_send(const char *data, ...)
   {
     /* Return of -1 indicates error sending data; we reconnect. */
     log_printf("IRC -> Error sending data to server: %s", strerror(errno));
-    irc_reconnect();
+    irc_close();
   }
 }
 
@@ -1008,7 +986,7 @@ irc_timer(void)
   if (delta >= IRCItem.readtimeout)
   {
     log_printf("IRC -> Timeout awaiting data from server.");
-    irc_reconnect();
+    irc_close();
 
     /* Make sure we don't do this again for a while */
     time(&IRC_LAST);
