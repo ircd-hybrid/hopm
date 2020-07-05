@@ -110,13 +110,14 @@ extern int yydebug;
     TARGET_STRING = 316,
     TIMEOUT = 317,
     TLS = 318,
-    TYPE = 319,
-    USERNAME = 320,
-    USER = 321,
-    VHOST = 322,
-    NUMBER = 323,
-    STRING = 324,
-    PROTOCOLTYPE = 325
+    TLS_HOSTNAME_VERIFICATION = 319,
+    TYPE = 320,
+    USERNAME = 321,
+    USER = 322,
+    VHOST = 323,
+    NUMBER = 324,
+    STRING = 325,
+    PROTOCOLTYPE = 326
   };
 #endif
 /* Tokens.  */
@@ -181,25 +182,26 @@ extern int yydebug;
 #define TARGET_STRING 316
 #define TIMEOUT 317
 #define TLS 318
-#define TYPE 319
-#define USERNAME 320
-#define USER 321
-#define VHOST 322
-#define NUMBER 323
-#define STRING 324
-#define PROTOCOLTYPE 325
+#define TLS_HOSTNAME_VERIFICATION 319
+#define TYPE 320
+#define USERNAME 321
+#define USER 322
+#define VHOST 323
+#define NUMBER 324
+#define STRING 325
+#define PROTOCOLTYPE 326
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 92 "config-parser.y" /* yacc.c:1921  */
+#line 93 "config-parser.y" /* yacc.c:1921  */
 
   int number;
   char *string;
 
-#line 203 "config-parser.h" /* yacc.c:1921  */
+#line 205 "config-parser.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;
