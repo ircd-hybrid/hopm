@@ -640,8 +640,6 @@ irc_reconnect(void)
 static void
 irc_connect(void)
 {
-  assert(IRC_FD == -1);
-
   if (IRC_CONNECT == 0)
     return;
 
