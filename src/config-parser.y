@@ -83,7 +83,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token TARGET_STRING
 %token TIMEOUT
 %token TLS
-%token TLS_HOSTNAME_VALIDATION
+%token TLS_HOSTNAME_VERIFICATION
 %token TYPE
 %token USERNAME
 %token USER
