@@ -481,8 +481,6 @@ irc_init(void)
 
   if (!EmptyString(IRCItem.vhost))
   {
-    struct addrinfo hints, *res;
-
     memset(&hints, 0, sizeof(hints));
 
     hints.ai_family = AF_UNSPEC;
