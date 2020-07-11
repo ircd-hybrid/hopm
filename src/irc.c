@@ -473,13 +473,32 @@ irc_init(void)
 {
   int n;
   const void *address;
+  struct addrinfo hints, *res = NULL;
 
   assert(IRC_FD == -1);
 
   memset(&IRC_SVR, 0, sizeof(IRC_SVR));
 
+  if (!EmptyString(IRCItem.vhost))
+  {
+    struct addrinfo hints, *res;
+
+    memset(&hints, 0, sizeof(hints));
+
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_NUMERICHOST;
+
+    n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res);
+    if (n)
+    {
+      log_printf("IRC -> getaddrinfo() error: %s", gai_strerror(n));
+      exit(EXIT_FAILURE);
+    }
+  }
+
   /* Resolve IRC host. */
-  if ((address = firedns_resolveip6(IRCItem.server)))
+  if ((res == NULL || res->ai_family == AF_INET6) && (address = firedns_resolveip6(IRCItem.server)))
   {
     struct sockaddr_in6 *in = (struct sockaddr_in6 *)&IRC_SVR;
 
@@ -488,7 +507,7 @@ irc_init(void)
     in->sin6_port = htons(IRCItem.port);
     memcpy(&in->sin6_addr, address, sizeof(in->sin6_addr));
   }
-  else if ((address = firedns_resolveip4(IRCItem.server)))
+  else if ((res == NULL || res->ai_family == AF_INET) && (address = firedns_resolveip4(IRCItem.server)))
   {
     struct sockaddr_in *in = (struct sockaddr_in *)&IRC_SVR;
 
@@ -499,7 +518,7 @@ irc_init(void)
   }
   else
   {
-    log_printf("IRC -> firedns_resolveip(\"%s\"): %s", IRCItem.server,
+    log_printf("IRC -> Error resolving host '%s': %s", IRCItem.server,
                firedns_strerror(firedns_errno));
     exit(EXIT_FAILURE);
   }
@@ -522,23 +541,9 @@ irc_init(void)
   }
 
   /* Bind */
-  if (!EmptyString(IRCItem.vhost))
+  if (res)
   {
-    struct addrinfo hints, *res;
-
-    memset(&hints, 0, sizeof(hints));
-
-    hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = AI_NUMERICHOST;
-
-    n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res);
-    if (n)
-    {
-      log_printf("IRC -> error binding to %s: %s", IRCItem.vhost, gai_strerror(n));
-      exit(EXIT_FAILURE);
-    }
-    else if (bind(IRC_FD, res->ai_addr, res->ai_addrlen))
+    if (bind(IRC_FD, res->ai_addr, res->ai_addrlen))
     {
       log_printf("IRC -> error binding to %s: %s", IRCItem.vhost, strerror(errno));
       exit(EXIT_FAILURE);
