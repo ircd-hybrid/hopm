@@ -120,17 +120,19 @@ m_perform(char *parv[], unsigned int parc, const char *msg, const char *source_p
 {
   node_t *node;
 
-  log_printf("IRC -> Connected to %s/%d", IRCItem.server, IRCItem.port);
+  log_printf("IRC -> Connected to %s[%s]:%i", IRC_SVR_STR, IRCItem.server, IRCItem.port);
 
   /* Identify to nickserv if needed */
   if (!EmptyString(IRCItem.nickserv))
     irc_send("%s", IRCItem.nickserv);
 
   /* Oper */
-  irc_send("OPER %s", IRCItem.oper);
+  if (!EmptyString(IRCItem.oper))
+    irc_send("OPER %s", IRCItem.oper);
 
   /* Set modes */
-  irc_send("MODE %s %s", IRCItem.nick, IRCItem.mode);
+  if (!EmptyString(IRCItem.mode))
+    irc_send("MODE %s %s", IRCItem.nick, IRCItem.mode);
 
   /* Set Away */
   if (!EmptyString(IRCItem.away))

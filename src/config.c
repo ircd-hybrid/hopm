@@ -52,14 +52,12 @@ static void
 config_setup(void)
 {
   /* Setup irc {} block defaults */
-  IRCItem.mode = xstrdup("+c");
   IRCItem.nick = xstrdup("hopm");
   IRCItem.port = 6667;
   IRCItem.tls = 0;
   IRCItem.tls_hostname_verification = 1;
   IRCItem.readtimeout = 900;
   IRCItem.reconnectinterval = 30;
-  IRCItem.oper = xstrdup("undefined");
   IRCItem.username = xstrdup("hopm");
   IRCItem.realname = xstrdup("Hybrid Open Proxy Monitor");
   IRCItem.server = xstrdup("irc.example.org");
