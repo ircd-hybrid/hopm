@@ -66,7 +66,8 @@ static unsigned int IRC_RAW_LEN;         /* Position of IRC_RAW                 
 static int          IRC_FD = -1;         /* File descriptor for IRC client         */
 
 static struct sockaddr_storage IRC_SVR;  /* Sock Address Struct for IRC server     */
-static socklen_t svr_addrlen;
+static socklen_t IRC_SVR_LEN;
+static char IRC_SVR_STR[INET6_ADDRSTRLEN];
 static time_t IRC_LAST;                  /* Last full line of data from irc server */
 static time_t IRC_LASTRECONNECT;         /* Time of last reconnection              */
 
@@ -468,6 +469,7 @@ userinfo_create(const char *source)
 static void
 irc_init(void)
 {
+  int n;
   const void *address;
 
   assert(IRC_FD == -1);
@@ -479,7 +481,7 @@ irc_init(void)
   {
     struct sockaddr_in6 *in = (struct sockaddr_in6 *)&IRC_SVR;
 
-    svr_addrlen = sizeof(*in);
+    IRC_SVR_LEN = sizeof(*in);
     IRC_SVR.ss_family = AF_INET6;
     in->sin6_port = htons(IRCItem.port);
     memcpy(&in->sin6_addr, address, sizeof(in->sin6_addr));
@@ -488,7 +490,7 @@ irc_init(void)
   {
     struct sockaddr_in *in = (struct sockaddr_in *)&IRC_SVR;
 
-    svr_addrlen = sizeof(*in);
+    IRC_SVR_LEN = sizeof(*in);
     IRC_SVR.ss_family = AF_INET;
     in->sin_port = htons(IRCItem.port);
     memcpy(&in->sin_addr, address, sizeof(in->sin_addr));
@@ -497,6 +499,14 @@ irc_init(void)
   {
     log_printf("IRC -> firedns_resolveip(\"%s\"): %s", IRCItem.server,
                firedns_strerror(firedns_errno));
+    exit(EXIT_FAILURE);
+  }
+
+  n = getnameinfo((const struct sockaddr *)&IRC_SVR, IRC_SVR_LEN, IRC_SVR_STR,
+                  sizeof(IRC_SVR_STR), NULL, 0, NI_NUMERICHOST);
+  if (n)
+  {
+    log_printf("IRC -> getnameinfo() error: %s", gai_strerror(n));
     exit(EXIT_FAILURE);
   }
 
@@ -520,7 +530,7 @@ irc_init(void)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_NUMERICHOST;
 
-    int n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res);
+    n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res);
     if (n)
     {
       log_printf("IRC -> error binding to %s: %s", IRCItem.vhost, gai_strerror(n));
@@ -635,8 +645,10 @@ irc_connect(void)
 
   irc_init();
 
+  log_printf("IRC -> Attempting to connect to %s[%s]:%i", IRC_SVR_STR, IRCItem.server, IRCItem.port);
+
   /* Connect to IRC server as client. */
-  if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, svr_addrlen) == -1)
+  if (connect(IRC_FD, (struct sockaddr *)&IRC_SVR, IRC_SVR_LEN) == -1)
   {
     log_printf("IRC -> connect(): error connecting to %s: %s",
                IRCItem.server, strerror(errno));
