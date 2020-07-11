@@ -845,7 +845,7 @@ irc_read(void)
 
       /* Reset counter. */
       IRC_RAW_LEN = 0;
-      break;
+      return;
     }
 
     if (c != '\0')
@@ -859,7 +859,6 @@ irc_read(void)
 
     irc_close();
     IRC_RAW_LEN = 0;
-    return;
   }
 }
 
