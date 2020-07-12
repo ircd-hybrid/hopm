@@ -181,6 +181,7 @@ READTIMEOUT             { return READTIMEOUT;  }
 REALNAME                { return REALNAME;     }
 RECONNECTINTERVAL       { return RECONNECTINTERVAL; }
 REPLY                   { return REPLY;        }
+RSA_PRIVATE_KEY_FILE    { return RSA_PRIVATE_KEY_FILE; }
 SCANLOG                 { return SCANLOG;      }
 SCANNER                 { return SCANNER;      }
 SENDMAIL                { return SENDMAIL;     }
@@ -190,6 +191,7 @@ TARGET_PORT             { return TARGET_PORT;  }
 TARGET_STRING           { return TARGET_STRING;}
 TIMEOUT                 { return TIMEOUT;      }
 TLS                     { return TLS;          }
+TLS_CERTIFICATE_FILE    { return TLS_CERTIFICATE_FILE; }
 TLS_HOSTNAME_VERIFICATION { return TLS_HOSTNAME_VERIFICATION; }
 TYPE                    { return TYPE;         }
 USER                    { return USER;         }
