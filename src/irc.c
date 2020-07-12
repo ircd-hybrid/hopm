@@ -566,6 +566,31 @@ irc_init(void)
         exit(EXIT_FAILURE);
       }
 
+      if (!EmptyString(IRCItem.rsa_private_key_file) &&
+          !EmptyString(IRCItem.tls_certificate_file))
+      {
+        if (SSL_CTX_use_certificate_chain_file(ssl_ctx, IRCItem.tls_certificate_file) != 1)
+        {
+          log_printf("IRC -> couldn't load client certificate from %s: %s",
+                     IRCItem.tls_certificate_file, ERR_error_string(ERR_get_error(), NULL));
+          exit(EXIT_FAILURE);
+        }
+
+        if (SSL_CTX_use_PrivateKey_file(ssl_ctx, IRCItem.rsa_private_key_file, SSL_FILETYPE_PEM) != 1)
+        {
+          log_printf("IRC -> couldn't load private key from %s: %s",
+                     IRCItem.rsa_private_key_file, ERR_error_string(ERR_get_error(), NULL));
+          exit(EXIT_FAILURE);
+        }
+
+        if (SSL_CTX_check_private_key(ssl_ctx) != 1)
+        {
+          log_printf("IRC -> Private key does not match the client certificate: %s",
+                     ERR_error_string(ERR_get_error(), NULL));
+          exit(EXIT_FAILURE);
+        }
+      }
+
       SSL_CTX_set_min_proto_version(ssl_ctx, TLS1_2_VERSION);
       SSL_CTX_set_default_verify_paths(ssl_ctx);
     }

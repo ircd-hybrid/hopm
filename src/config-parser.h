@@ -90,34 +90,36 @@ extern int yydebug;
     PIDFILE = 296,
     PORT = 297,
     PROTOCOL = 298,
-    READTIMEOUT = 299,
-    REALNAME = 300,
-    RECONNECTINTERVAL = 301,
-    REPLY = 302,
-    SCANLOG = 303,
-    SCANNER = 304,
-    SECONDS = 305,
-    MINUTES = 306,
-    HOURS = 307,
-    DAYS = 308,
-    WEEKS = 309,
-    MONTHS = 310,
-    YEARS = 311,
-    SENDMAIL = 312,
-    SERVER = 313,
-    TARGET_IP = 314,
-    TARGET_PORT = 315,
-    TARGET_STRING = 316,
-    TIMEOUT = 317,
-    TLS = 318,
-    TLS_HOSTNAME_VERIFICATION = 319,
-    TYPE = 320,
-    USERNAME = 321,
-    USER = 322,
-    VHOST = 323,
-    NUMBER = 324,
-    STRING = 325,
-    PROTOCOLTYPE = 326
+    RSA_PRIVATE_KEY_FILE = 299,
+    READTIMEOUT = 300,
+    REALNAME = 301,
+    RECONNECTINTERVAL = 302,
+    REPLY = 303,
+    SCANLOG = 304,
+    SCANNER = 305,
+    SECONDS = 306,
+    MINUTES = 307,
+    HOURS = 308,
+    DAYS = 309,
+    WEEKS = 310,
+    MONTHS = 311,
+    YEARS = 312,
+    SENDMAIL = 313,
+    SERVER = 314,
+    TARGET_IP = 315,
+    TARGET_PORT = 316,
+    TARGET_STRING = 317,
+    TIMEOUT = 318,
+    TLS = 319,
+    TLS_CERTIFICATE_FILE = 320,
+    TLS_HOSTNAME_VERIFICATION = 321,
+    TYPE = 322,
+    USERNAME = 323,
+    USER = 324,
+    VHOST = 325,
+    NUMBER = 326,
+    STRING = 327,
+    PROTOCOLTYPE = 328
   };
 #endif
 /* Tokens.  */
@@ -162,46 +164,48 @@ extern int yydebug;
 #define PIDFILE 296
 #define PORT 297
 #define PROTOCOL 298
-#define READTIMEOUT 299
-#define REALNAME 300
-#define RECONNECTINTERVAL 301
-#define REPLY 302
-#define SCANLOG 303
-#define SCANNER 304
-#define SECONDS 305
-#define MINUTES 306
-#define HOURS 307
-#define DAYS 308
-#define WEEKS 309
-#define MONTHS 310
-#define YEARS 311
-#define SENDMAIL 312
-#define SERVER 313
-#define TARGET_IP 314
-#define TARGET_PORT 315
-#define TARGET_STRING 316
-#define TIMEOUT 317
-#define TLS 318
-#define TLS_HOSTNAME_VERIFICATION 319
-#define TYPE 320
-#define USERNAME 321
-#define USER 322
-#define VHOST 323
-#define NUMBER 324
-#define STRING 325
-#define PROTOCOLTYPE 326
+#define RSA_PRIVATE_KEY_FILE 299
+#define READTIMEOUT 300
+#define REALNAME 301
+#define RECONNECTINTERVAL 302
+#define REPLY 303
+#define SCANLOG 304
+#define SCANNER 305
+#define SECONDS 306
+#define MINUTES 307
+#define HOURS 308
+#define DAYS 309
+#define WEEKS 310
+#define MONTHS 311
+#define YEARS 312
+#define SENDMAIL 313
+#define SERVER 314
+#define TARGET_IP 315
+#define TARGET_PORT 316
+#define TARGET_STRING 317
+#define TIMEOUT 318
+#define TLS 319
+#define TLS_CERTIFICATE_FILE 320
+#define TLS_HOSTNAME_VERIFICATION 321
+#define TYPE 322
+#define USERNAME 323
+#define USER 324
+#define VHOST 325
+#define NUMBER 326
+#define STRING 327
+#define PROTOCOLTYPE 328
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 93 "config-parser.y" /* yacc.c:1921  */
+#line 95 "config-parser.y" /* yacc.c:1921  */
 
   int number;
   char *string;
 
-#line 205 "config-parser.h" /* yacc.c:1921  */
+#line 209 "config-parser.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;

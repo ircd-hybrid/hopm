@@ -69,6 +69,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token PIDFILE
 %token PORT
 %token PROTOCOL
+%token RSA_PRIVATE_KEY_FILE
 %token READTIMEOUT
 %token REALNAME
 %token RECONNECTINTERVAL
@@ -83,6 +84,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token TARGET_STRING
 %token TIMEOUT
 %token TLS
+%token TLS_CERTIFICATE_FILE
 %token TLS_HOSTNAME_VERIFICATION
 %token TYPE
 %token USERNAME
@@ -216,6 +218,8 @@ irc_item: irc_away              |
           irc_password          |
           irc_port              |
           irc_tls               |
+          irc_rsa_private_key_file |
+          irc_tls_certificate_file |
           irc_tls_hostname_verification |
           irc_readtimeout       |
           irc_reconnectinterval |
@@ -288,6 +292,19 @@ irc_port: PORT '=' NUMBER ';'
 irc_tls: TLS '=' NUMBER ';'
 {
   IRCItem.tls = $3;
+};
+
+irc_rsa_private_key_file: RSA_PRIVATE_KEY_FILE '=' STRING ';'
+{
+  xfree(IRCItem.rsa_private_key_file);
+  IRCItem.rsa_private_key_file = xstrdup($3);
+};
+
+
+irc_tls_certificate_file: TLS_CERTIFICATE_FILE '=' STRING ';'
+{
+  xfree(IRCItem.tls_certificate_file);
+  IRCItem.tls_certificate_file = xstrdup($3);
 };
 
 irc_tls_hostname_verification: TLS_HOSTNAME_VERIFICATION '=' NUMBER ';'
