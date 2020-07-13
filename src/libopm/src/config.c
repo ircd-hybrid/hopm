@@ -193,6 +193,11 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
     {
       struct addrinfo hints, *res;
 
+      memset(&hints, 0, sizeof(hints));
+      hints.ai_family = AF_UNSPEC;
+      hints.ai_socktype = SOCK_STREAM;
+      hints.ai_flags = AI_NUMERICHOST;
+
       if (getaddrinfo(value, NULL, &hints, &res) || res->ai_family != AF_INET) /* XXX: v4 only for now */
       {
         freeaddrinfo(res);
