@@ -29,10 +29,14 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <poll.h>
 #ifdef HAVE_LIBCRYPTO
 #include <openssl/ssl.h>
 #endif
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
 
 #include "config.h"
 #include "libopm.h"
@@ -394,22 +398,47 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
 {
   OPM_SCAN_T *scan;  /* New scan for OPM_T */
   OPM_NODE_T *node;  /* Node we'll add scan to when we link it to scans */
-  struct in_addr in;
+  struct addrinfo hints, *res;
 
   if (LIST_SIZE(&scanner->protocols) == 0 &&
       LIST_SIZE(&remote->protocols) == 0)
     return OPM_ERR_NOPROTOCOLS;
+
+  memset(&hints, 0, sizeof(hints));
+
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_flags = AI_NUMERICHOST;
 
   /*
    * XXX: libopm ideally shouldn't see an IP address in string representation.
    * Could have been stuffed into the _OPM_REMOTE struct by the caller that
    * already does getaddrinfo() anyway.
    */
-  if (inet_pton(AF_INET, remote->ip, &in) <= 0)
+  if (getaddrinfo(remote->ip, NULL, &hints, &res) || res->ai_family != AF_INET)  /* XXX: only do v4 for now */
+  {
+    freeaddrinfo(res);
     return OPM_ERR_BADADDR;
+  }
 
   scan = libopm_scan_create(scanner, remote);
-  memcpy(&scan->addr.sin_addr, &in, sizeof(scan->addr.sin_addr));
+
+  if (res->ai_family == AF_INET6)
+  {
+    struct sockaddr_in6 *in = (struct sockaddr_in6 *)&scan->addr;
+    scan->addr.ss_family = res->ai_family;
+    scan->addr_len = sizeof(*in);
+    memcpy(&in->sin6_addr, res->ai_addr, sizeof(in->sin6_addr));
+  }
+  else
+  {
+    struct sockaddr_in *in = (struct sockaddr_in *)&scan->addr;
+    scan->addr.ss_family = res->ai_family;
+    scan->addr_len = sizeof(*in);
+    memcpy(&in->sin_addr, res->ai_addr, sizeof(in->sin_addr));
+  }
+
+  freeaddrinfo(res);
 
   node = libopm_node_create(scan);
   libopm_list_add(&scanner->queue, node);
@@ -891,19 +920,16 @@ libopm_check_closed(OPM_T *scanner)
 static void
 libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 {
-  struct sockaddr_in *bind_ip;
-  struct sockaddr_in *addr;  /* Outgoing host */
-  struct sockaddr_in local_addr;  /* For binding */
+  assert(scan->addr.ss_family == AF_INET);
 
-  addr = &scan->addr;  /* Already have the IP in byte format from opm_scan */
-  addr->sin_family = AF_INET;
-  addr->sin_port   = htons(conn->port);
+  if (scan->addr.ss_family == AF_INET6)
+    ((struct sockaddr_in6 *)&scan->addr)->sin6_port = htons(conn->port);
+  else
+    ((struct sockaddr_in *)&scan->addr)->sin_port = htons(conn->port);
 
-  bind_ip = (struct sockaddr_in *)libopm_config(scanner->config, OPM_CONFIG_BIND_IP);
-
-  conn->fd = socket(AF_INET, SOCK_STREAM, 0);
   scanner->fd_use++;  /* Increase file descriptor use */
 
+  conn->fd = socket(scan->addr.ss_family, SOCK_STREAM, 0);
   if (conn->fd == -1)
   {
     libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_NOFD);
@@ -911,15 +937,25 @@ libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
     return;
   }
 
+  struct sockaddr_storage *bind_ip = libopm_config(scanner->config, OPM_CONFIG_BIND_IP);
   if (bind_ip)
   {
-    memset(&local_addr, 0, sizeof(local_addr));
+    size_t addr_len;
 
-    local_addr.sin_addr.s_addr = bind_ip->sin_addr.s_addr;
-    local_addr.sin_family = AF_INET;
-    local_addr.sin_port = htons(0);
+    if (bind_ip->ss_family == AF_INET6)
+    {
+      struct sockaddr_in6 *in = (struct sockaddr_in6 *)bind_ip;
+      in->sin6_port = htons(0);
+      addr_len = sizeof(*in);
+    }
+    else
+    {
+      struct sockaddr_in *in = (struct sockaddr_in *)bind_ip;
+      in->sin_port = htons(0);
+      addr_len = sizeof(*in);
+    }
 
-    if (bind(conn->fd, (struct sockaddr *)&local_addr, sizeof(local_addr)) == -1)
+    if (bind(conn->fd, (const struct sockaddr *)bind_ip, addr_len) == -1)
     {
       libopm_do_callback(scanner, libopm_setup_remote(scan->remote, conn), OPM_CALLBACK_ERROR, OPM_ERR_BIND);
       conn->state = OPM_STATE_CLOSED;
@@ -930,7 +966,7 @@ libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
   /* Set socket non blocking */
   fcntl(conn->fd, F_SETFL, O_NONBLOCK);
 
-  connect(conn->fd, (struct sockaddr *)addr, sizeof(*addr));
+  connect(conn->fd, (const struct sockaddr *)&scan->addr, scan->addr_len);
 
 #ifdef HAVE_LIBCRYPTO
   if (conn->protocol->use_tls)

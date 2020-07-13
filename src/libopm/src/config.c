@@ -24,8 +24,10 @@
 #include "setup.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
@@ -91,7 +93,7 @@ libopm_config_create(void)
         break;
 
       case OPM_TYPE_ADDRESS:
-        ret->vars[i] = libopm_calloc(sizeof(struct sockaddr_in));
+        ret->vars[i] = libopm_calloc(sizeof(struct sockaddr_storage));
         break;
 
       case OPM_TYPE_STRINGLIST:
@@ -188,10 +190,31 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
       break;
 
     case OPM_TYPE_ADDRESS:
-      if (inet_pton(AF_INET, value, &(((struct sockaddr_in *)config->vars[key])->sin_addr)) <= 0)
-        return OPM_ERR_BADVALUE;  /* Return appropriate err code */
+    {
+      struct addrinfo hints, *res;
 
+      if (getaddrinfo(value, NULL, &hints, &res) || res->ai_family != AF_INET) /* XXX: v4 only for now */
+      {
+        freeaddrinfo(res);
+        return OPM_ERR_BADVALUE;  /* Return appropriate err code */
+      }
+
+      if (res->ai_family == AF_INET6)
+      {
+        struct sockaddr_in6 *in = config->vars[key];
+        in->sin6_family = res->ai_family;
+        memcpy(&in->sin6_addr, res->ai_addr, sizeof(in->sin6_addr));
+      }
+      else
+      {
+        struct sockaddr_in *in = config->vars[key];
+        in->sin_family = res->ai_family;
+        memcpy(&in->sin_addr, res->ai_addr, sizeof(in->sin_addr));
+      }
+
+      freeaddrinfo(res);
       break;
+    }
 
     case OPM_TYPE_STRINGLIST:
       node = libopm_node_create(libopm_strdup(value));
