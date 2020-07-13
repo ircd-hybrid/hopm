@@ -427,14 +427,14 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
   {
     struct sockaddr_in6 *in = (struct sockaddr_in6 *)&scan->addr;
     scan->addr.ss_family = res->ai_family;
-    scan->addr_len = sizeof(*in);
+    scan->addr_len = res->ai_addrlen;
     memcpy(&in->sin6_addr, res->ai_addr, sizeof(in->sin6_addr));
   }
   else
   {
     struct sockaddr_in *in = (struct sockaddr_in *)&scan->addr;
     scan->addr.ss_family = res->ai_family;
-    scan->addr_len = sizeof(*in);
+    scan->addr_len = res->ai_addrlen;;
     memcpy(&in->sin_addr, res->ai_addr, sizeof(in->sin_addr));
   }
 
