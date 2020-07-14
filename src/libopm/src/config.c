@@ -200,22 +200,15 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
 
       if (getaddrinfo(value, NULL, &hints, &res) || res->ai_family != AF_INET) /* XXX: v4 only for now */
       {
-        freeaddrinfo(res);
+        if (res)
+          freeaddrinfo(res);
+
         return OPM_ERR_BADVALUE;  /* Return appropriate err code */
       }
 
-      if (res->ai_family == AF_INET6)
-      {
-        struct sockaddr_in6 *in = config->vars[key];
-        in->sin6_family = res->ai_family;
-        memcpy(&in->sin6_addr, res->ai_addr, sizeof(in->sin6_addr));
-      }
-      else
-      {
-        struct sockaddr_in *in = config->vars[key];
-        in->sin_family = res->ai_family;
-        memcpy(&in->sin_addr, res->ai_addr, sizeof(in->sin_addr));
-      }
+      struct sockaddr_storage *const addr = config->vars[key];
+      memcpy(addr, res->ai_addr, res->ai_addrlen);
+      addr->ss_family = res->ai_family;
 
       freeaddrinfo(res);
       break;
