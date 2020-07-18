@@ -7,7 +7,7 @@ AC_INIT([hopm], [TRUNK], [bugs@ircd-hybrid.org])
 AM_INIT_AUTOMAKE(1.15)
 AM_MAINTAINER_MODE
 AC_CONFIG_SRCDIR(src/opercmd.h)
-AC_CONFIG_HEADER(src/setup.h)
+AC_CONFIG_HEADERS(src/setup.h)
 AC_CONFIG_MACRO_DIR([m4])
 AC_PREFIX_DEFAULT([\${HOME}/hopm])
 
