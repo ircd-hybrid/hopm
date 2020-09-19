@@ -1,3 +1,9 @@
+-- Noteworthy changes in version 1.1.9 (2020-??-??)
+o) Implemented support for loading a user-provided private key and
+   tls certificate. As a side effect this allows HOPM to use certificate
+   fingerprints for NickServ authentication
+
+
 -- Noteworthy changes in version 1.1.8 (2020-07-05)
 o) Minimum supported OpenSSL version is 1.1.1 now
 o) Experimental TLS support for the irc client part has been implemented. We
