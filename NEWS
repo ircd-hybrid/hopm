@@ -25,7 +25,7 @@
 
 
 -- Noteworthy changes in version 1.1.5 (2018-10-14)
-* The ':', and ',' nickname delimiters work again
+* The `:`, and `,` nickname delimiters work again
 * Fixed a bug where the hopm process couldn't be restarted under certain
   conditions
 * The hopm process can now be restarted from the command line via `kill -HUP`
@@ -80,7 +80,7 @@
 
 
 -- Noteworthy changes in version 1.0.8 (2015-06-25)
-* Added `options::reconnectinterval` configuration option. `See doc/reference.conf`
+* Added `options::reconnectinterval` configuration option. See `doc/reference.conf`
   for more information.
 * Added `options::dns_timeout` configuration option. See `doc/reference.conf`
   for more information.
@@ -120,7 +120,7 @@
 -- Noteworthy changes in version 1.0.3 (2015-01-28)
 * Fixed bug where HOPM wouldn't try re-connecting to the server in
   case the connection got lost
-* Added irc::notice configuration option
+* Added `irc::notice` configuration option
 
 
 -- Noteworthy changes in version 1.0.2 (2015-01-12)
