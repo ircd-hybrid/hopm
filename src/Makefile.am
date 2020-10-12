@@ -39,7 +39,6 @@ hopm_SOURCES = compat.c        \
                patricia.h      \
                scan.c          \
                scan.h          \
-               serno.h         \
                stats.c         \
                stats.h
 
