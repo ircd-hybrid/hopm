@@ -33,6 +33,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token ADDRESS_FAMILY
 %token AWAY
 %token BAN_UNKNOWN
+%token BIND
 %token BLACKLIST
 %token BYTES KBYTES MBYTES
 %token CHANNEL
@@ -89,7 +90,6 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token TYPE
 %token USERNAME
 %token USER
-%token VHOST
 
 %union
 {
@@ -226,7 +226,7 @@ irc_item: irc_away              |
           irc_realname          |
           irc_server            |
           irc_username          |
-          irc_vhost             |
+          irc_bind              |
           irc_perform           |
           irc_notice            |
           channel_entry         |
@@ -340,10 +340,10 @@ irc_username: USERNAME '=' STRING ';'
   IRCItem.username = xstrdup($3);
 };
 
-irc_vhost: VHOST '=' STRING ';'
+irc_bind: BIND '=' STRING ';'
 {
-  xfree(IRCItem.vhost);
-  IRCItem.vhost = xstrdup($3);
+  xfree(IRCItem.bind);
+  IRCItem.bind = xstrdup($3);
 };
 
 irc_connregex: CONNREGEX '=' STRING ';'
@@ -448,7 +448,7 @@ scanner_entry:
   {
     olditem = ScannerItemList.tail->data;
 
-    item->vhost = xstrdup(olditem->vhost);
+    item->bind = xstrdup(olditem->bind);
     item->fd = olditem->fd;
     item->target_ip = xstrdup(olditem->target_ip);
     item->target_port = olditem->target_port;
@@ -458,7 +458,7 @@ scanner_entry:
   }
   else
   {
-    item->vhost = xstrdup("0.0.0.0");
+    item->bind = xstrdup("0.0.0.0");
     item->fd = 512;
     item->target_ip = xstrdup("127.0.0.1");
     item->target_port = 6667;
@@ -475,7 +475,7 @@ scanner_items: scanner_items scanner_item |
                scanner_item;
 
 scanner_item: scanner_name          |
-              scanner_vhost         |
+              scanner_bind          |
               scanner_fd            |
               scanner_target_ip     |
               scanner_target_port   |
@@ -493,12 +493,12 @@ scanner_name: NAME '=' STRING ';'
   item->name = xstrdup($3);
 };
 
-scanner_vhost: VHOST '=' STRING ';'
+scanner_bind: BIND '=' STRING ';'
 {
   struct ScannerConf *item = tmp;
 
-  xfree(item->vhost);
-  item->vhost = xstrdup($3);
+  xfree(item->bind);
+  item->bind = xstrdup($3);
 };
 
 scanner_target_ip: TARGET_IP '=' STRING ';'
