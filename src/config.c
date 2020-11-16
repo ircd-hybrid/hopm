@@ -54,7 +54,6 @@ config_setup(void)
   /* Setup irc {} block defaults */
   IRCItem.nick = xstrdup("hopm");
   IRCItem.port = 6667;
-  IRCItem.tls = 0;
   IRCItem.tls_hostname_verification = 1;
   IRCItem.readtimeout = 900;
   IRCItem.reconnectinterval = 30;
@@ -68,7 +67,6 @@ config_setup(void)
   OptionsItem.command_queue_size = 64;
   OptionsItem.command_interval = 10;
   OptionsItem.command_timeout = 180;
-  OptionsItem.negcache = 0;  /* 0 disabled negcache */
   OptionsItem.negcache_rebuild = 43200;
   OptionsItem.pidfile = xstrdup("hopm.pid");
   OptionsItem.dns_fdlimit = 50;
@@ -95,8 +93,8 @@ config_load(const char *filename)
   yyparse();
   fclose(conf_file);
 
-  scan_init();     /* Initialize the scanners once we have the configuration */
-  stats_init();    /* Initialize stats (UPTIME) */
+  scan_init();  /* Initialize the scanners once we have the configuration */
+  stats_init(); /* Initialize stats (UPTIME) */
   firedns_init();  /* Initialize adns */
 }
 
