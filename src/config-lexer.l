@@ -142,6 +142,7 @@ include   \.include{WS}(\<.*\>|\".*\")
 ADDRESS_FAMILY          { return ADDRESS_FAMILY; }
 AWAY                    { return AWAY;         }
 BAN_UNKNOWN             { return BAN_UNKNOWN;  }
+BIND                    { return BIND;         }
 BLACKLIST               { return BLACKLIST;    }
 CHANNEL                 { return CHANNEL;      }
 COMMAND_INTERVAL        { return COMMAND_INTERVAL; }
@@ -196,7 +197,6 @@ TLS_HOSTNAME_VERIFICATION { return TLS_HOSTNAME_VERIFICATION; }
 TYPE                    { return TYPE;         }
 USER                    { return USER;         }
 USERNAME                { return USERNAME;     }
-VHOST                   { return VHOST;        }
 
 years                   { return YEARS; }
 year                    { return YEARS; }

@@ -4,6 +4,8 @@
   configuration directives have been added for this.
   As a side effect this now allows HOPM to use certificate fingerprints for
   NickServ authentication
+* The `vhost` configuration directive found in the irc {} and scanner {} blocks
+  has been renamed to `bind`
 
 
 -- Noteworthy changes in version 1.1.8 (2020-07-05)

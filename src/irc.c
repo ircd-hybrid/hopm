@@ -478,7 +478,7 @@ irc_init(void)
 
   memset(&IRC_SVR, 0, sizeof(IRC_SVR));
 
-  if (!EmptyString(IRCItem.vhost))
+  if (!EmptyString(IRCItem.bind))
   {
     memset(&hints, 0, sizeof(hints));
 
@@ -486,7 +486,7 @@ irc_init(void)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_NUMERICHOST;
 
-    n = getaddrinfo(IRCItem.vhost, NULL, &hints, &res);
+    n = getaddrinfo(IRCItem.bind, NULL, &hints, &res);
     if (n)
     {
       log_printf("IRC -> getaddrinfo() error: %s", gai_strerror(n));
@@ -542,7 +542,7 @@ irc_init(void)
   {
     if (bind(IRC_FD, res->ai_addr, res->ai_addrlen))
     {
-      log_printf("IRC -> error binding to %s: %s", IRCItem.vhost, strerror(errno));
+      log_printf("IRC -> error binding to %s: %s", IRCItem.bind, strerror(errno));
       exit(EXIT_FAILURE);
     }
 

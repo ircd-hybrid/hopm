@@ -45,7 +45,7 @@ struct IRCConf
   time_t readtimeout;
   time_t reconnectinterval;
   char *password;
-  char *vhost;
+  char *bind;
   char *nickserv;
   char *oper;
   char *mode;
@@ -90,7 +90,7 @@ struct ScannerConf
   node_t node;  /**< List node; linked into ScannerItemList */
   char *name;
   list_t protocols;
-  char *vhost;
+  char *bind;
   int fd;
   char *target_ip;
   int target_port;
