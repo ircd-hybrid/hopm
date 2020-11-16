@@ -1,6 +1,6 @@
--- Noteworthy changes in version 1.1.9 (2020-??-??)
-* Implemented support for loading a user-provided private key and
-  tls certificate. As a side effect this allows HOPM to use certificate
+-- Noteworthy changes in version 1.1.9 (2020-11-16)
+* Implemented support for loading a user-provided private key and tls client
+  certificate. As a side effect this allows HOPM to use certificate
   fingerprints for NickServ authentication
 
 
