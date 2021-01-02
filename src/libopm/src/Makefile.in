@@ -112,7 +112,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libopm_la_DEPENDENCIES = @LTLIBOBJS@
-am_libopm_la_OBJECTS = config.lo libopm.lo list.lo memory.lo proxy.lo
+am_libopm_la_OBJECTS = config.lo libopm.lo list.lo memory.lo \
+	opm_gettime.lo proxy.lo
 libopm_la_OBJECTS = $(am_libopm_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -135,7 +136,7 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/config.Plo ./$(DEPDIR)/libopm.Plo \
 	./$(DEPDIR)/list.Plo ./$(DEPDIR)/memory.Plo \
-	./$(DEPDIR)/proxy.Plo
+	./$(DEPDIR)/opm_gettime.Plo ./$(DEPDIR)/proxy.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -307,19 +308,21 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LTLIBRARIES = libopm.la
-libopm_la_SOURCES = config.c     \
-                    config.h     \
-                    libopm.c     \
-                    libopm.h     \
-                    list.c       \
-                    list.h       \
-                    memory.c     \
-                    memory.h     \
-                    opm_common.h \
-                    opm_error.h  \
-                    opm.h        \
-                    opm_types.h  \
-                    proxy.c      \
+libopm_la_SOURCES = config.c      \
+                    config.h      \
+                    libopm.c      \
+                    libopm.h      \
+                    list.c        \
+                    list.h        \
+                    memory.c      \
+                    memory.h      \
+                    opm_common.h  \
+                    opm_error.h   \
+                    opm.h         \
+                    opm_gettime.c \
+                    opm_gettime.h \
+                    opm_types.h   \
+                    proxy.c       \
                     proxy.h
 
 libopm_la_LIBADD = @LTLIBOBJS@
@@ -381,6 +384,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libopm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memory.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opm_gettime.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/proxy.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -545,6 +549,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/libopm.Plo
 	-rm -f ./$(DEPDIR)/list.Plo
 	-rm -f ./$(DEPDIR)/memory.Plo
+	-rm -f ./$(DEPDIR)/opm_gettime.Plo
 	-rm -f ./$(DEPDIR)/proxy.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -595,6 +600,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/libopm.Plo
 	-rm -f ./$(DEPDIR)/list.Plo
 	-rm -f ./$(DEPDIR)/memory.Plo
+	-rm -f ./$(DEPDIR)/opm_gettime.Plo
 	-rm -f ./$(DEPDIR)/proxy.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
