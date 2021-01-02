@@ -44,6 +44,7 @@
 #include "opm_error.h"
 #include "opm_types.h"
 #include "opm_common.h"
+#include "opm_gettime.h"
 #include "list.h"
 #include "proxy.h"
 
@@ -826,7 +827,7 @@ libopm_check_closed(OPM_T *scanner)
   if (LIST_SIZE(&scanner->scans) == 0)
     return;
 
-  time(&present);
+  present = opm_gettime();
   timeout = *(int *)libopm_config(scanner->config, OPM_CONFIG_TIMEOUT);
 
   LIST_FOREACH_SAFE(node1, next1, scanner->scans.head)
@@ -964,7 +965,7 @@ libopm_do_connect(OPM_T * scanner, OPM_SCAN_T *scan, OPM_CONNECTION_T *conn)
 #endif
 
   conn->state = OPM_STATE_ESTABLISHED;
-  time(&conn->creation);  /* Stamp creation time, for timeout */
+  conn->creation = opm_gettime();  /* Stamp creation time, for timeout */
 }
 
 /* check_poll

@@ -43,6 +43,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "list.h"
 #include "log.h"
 #include "dnsbl.h"
+#include "opm_gettime.h"
 
 #define FIREDNS_TRIES 3
 
@@ -602,7 +603,7 @@ firedns_send_requests(struct s_header *h, struct s_connection *s, int l)
     return -1;
   }
 
-  time(&s->start);
+  s->start = opm_gettime();
   firedns_fdinuse++;
   firedns_errno = FDNS_ERR_NONE;
 
@@ -799,7 +800,7 @@ firedns_cycle(void)
   if (ufds == NULL)
     ufds = xcalloc(sizeof(*ufds) * OptionsItem.dns_fdlimit);
 
-  time(&timenow);
+  timenow = opm_gettime();
 
   LIST_FOREACH_SAFE(node, node_next, CONNECTIONS.head)
   {
