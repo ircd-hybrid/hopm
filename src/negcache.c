@@ -37,6 +37,7 @@
 #include "config.h"
 #include "memory.h"
 #include "log.h"
+#include "opm_gettime.h"
 
 
 extern unsigned int OPT_DEBUG;
@@ -72,7 +73,7 @@ negcache_check(const char *ipstr)
   {
     struct negcache_item *n = pnode->data;
 
-    if (time(NULL) - n->seen <= OptionsItem.negcache)
+    if (opm_gettime() - n->seen <= OptionsItem.negcache)
       return n;
   }
 
@@ -91,7 +92,7 @@ negcache_insert(const char *ipstr)
     return;  /* Malformed IP address or already added to the trie */
 
   struct negcache_item *n = xcalloc(sizeof(*n));
-  n->seen = time(NULL);
+  n->seen = opm_gettime();
 
   pnode->data = n;
   list_add(pnode, &n->node, &negcache_list);
@@ -104,13 +105,14 @@ void
 negcache_rebuild(void)
 {
   node_t *node, *node_next;
+  time_t present = opm_gettime();
 
   LIST_FOREACH_SAFE(node, node_next, negcache_list.head)
   {
     patricia_node_t *pnode = node->data;
     struct negcache_item *n = pnode->data;
 
-    if (n->seen + OptionsItem.negcache < time(NULL))
+    if (n->seen + OptionsItem.negcache < present)
     {
       if (OPT_DEBUG >= 2)
         log_printf("NEGCACHE -> Deleting expired negcache node for %s added at %lu",

@@ -35,6 +35,7 @@
 #include "scan.h"
 #include "memory.h"
 #include "stats.h"
+#include "opm_gettime.h"
 
 
 static list_t COMMANDS;  /* List of active commands */
@@ -108,8 +109,7 @@ command_create(const struct OperCommandHash *tab, const char *param, const char 
   command->tab = tab;
   command->irc_nick = xstrdup(irc_nick);
   command->target = target;
-
-  time(&command->added);
+  command->added = opm_gettime();
 
   return command;
 }
@@ -226,15 +226,13 @@ command_timer(void)
 {
   static unsigned int interval;
   node_t *node, *node_next;
-  time_t present;
+  time_t present = opm_gettime();
 
   /* Only perform command removal every OptionsItem.command_interval seconds */
   if (interval++ < OptionsItem.command_interval)
     return;
   else
     interval = 0;
-
-  time(&present);
 
   LIST_FOREACH_SAFE(node, node_next, COMMANDS.head)
   {
