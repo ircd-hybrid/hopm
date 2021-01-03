@@ -1,3 +1,7 @@
+-- Noteworthy changes in version 1.1.10 (2021-??-??)
+* Timers have been changed to use monotonic time instead of wall-clock time
+
+
 -- Noteworthy changes in version 1.1.9 (2020-11-16)
 * Implemented support for loading a user-provided private key and tls client
   certificate. The `irc::rsa_private_key_file`and `irc::tls_certificate_file`
