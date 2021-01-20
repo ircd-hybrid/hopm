@@ -600,9 +600,16 @@ irc_init(void)
 
     if (IRCItem.tls_hostname_verification)
     {
+#if OPENSSL_VERSION_NUMBER >= 0x10100000 && !defined(LIBRESSL_VERSION_NUMBER)
       SSL_set_hostflags(ssl_handle, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
 
       if (SSL_set1_host(ssl_handle, IRCItem.server) == 0)
+#elif OPENSSL_VERSION_NUMBER >= 0x1000200fL /* 1.0.2 */
+      X509_VERIFY_PARAM *param = SSL_get0_param(ssl_handle);
+      X509_VERIFY_PARAM_set_hostflags(param, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
+
+      if (X509_VERIFY_PARAM_set1_host(param, IRCItem.server, 0) == 0)
+#endif
       {
         log_printf("IRC -> unable to set expected DNS hostname");
         /* OpenSSL is unable to verify the server hostname at this point, so we exit. */
