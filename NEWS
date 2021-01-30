@@ -1,4 +1,4 @@
--- Noteworthy changes in version 1.1.10 (2021-??-??)
+-- Noteworthy changes in version 1.1.10 (2021-01-30)
 * Timers have been changed to use monotonic time instead of wall-clock time
 * Fixed broken build with LibreSSL
 
