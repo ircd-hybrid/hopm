@@ -194,6 +194,7 @@ TIMEOUT                 { return TIMEOUT;      }
 TLS                     { return TLS;          }
 TLS_CERTIFICATE_FILE    { return TLS_CERTIFICATE_FILE; }
 TLS_HOSTNAME_VERIFICATION { return TLS_HOSTNAME_VERIFICATION; }
+TLS_DISABLE_CERTIFICATE_VERIFICATION { return TLS_DISABLE_CERTIFICATE_VERIFICATION; }
 TYPE                    { return TYPE;         }
 USER                    { return USER;         }
 USERNAME                { return USERNAME;     }

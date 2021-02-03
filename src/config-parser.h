@@ -114,12 +114,13 @@ extern int yydebug;
     TLS = 320,
     TLS_CERTIFICATE_FILE = 321,
     TLS_HOSTNAME_VERIFICATION = 322,
-    TYPE = 323,
-    USERNAME = 324,
-    USER = 325,
-    NUMBER = 326,
-    STRING = 327,
-    PROTOCOLTYPE = 328
+    TLS_DISABLE_CERTIFICATE_VERIFICATION = 323,
+    TYPE = 324,
+    USERNAME = 325,
+    USER = 326,
+    NUMBER = 327,
+    STRING = 328,
+    PROTOCOLTYPE = 329
   };
 #endif
 /* Tokens.  */
@@ -188,23 +189,24 @@ extern int yydebug;
 #define TLS 320
 #define TLS_CERTIFICATE_FILE 321
 #define TLS_HOSTNAME_VERIFICATION 322
-#define TYPE 323
-#define USERNAME 324
-#define USER 325
-#define NUMBER 326
-#define STRING 327
-#define PROTOCOLTYPE 328
+#define TLS_DISABLE_CERTIFICATE_VERIFICATION 323
+#define TYPE 324
+#define USERNAME 325
+#define USER 326
+#define NUMBER 327
+#define STRING 328
+#define PROTOCOLTYPE 329
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 95 "config-parser.y"
+#line 96 "config-parser.y"
 
   int number;
   char *string;
 
-#line 208 "config-parser.h"
+#line 210 "config-parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -617,7 +617,8 @@ irc_init(void)
       }
     }
 
-    SSL_set_verify(ssl_handle, SSL_VERIFY_PEER, NULL);
+    SSL_set_verify(ssl_handle,
+      IRCItem.tls_disable_certificate_verification ? SSL_VERIFY_NONE : SSL_VERIFY_PEER, NULL);
 #else
     log_printf("IRC -> HOPM is not compiled with OpenSSL support");
     exit(EXIT_FAILURE);
