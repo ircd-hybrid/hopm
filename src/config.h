@@ -40,6 +40,7 @@ struct IRCConf
   int port;
   int tls;
   int tls_hostname_verification;
+  int tls_disable_certificate_verification;
   char *rsa_private_key_file;
   char *tls_certificate_file;
   time_t readtimeout;

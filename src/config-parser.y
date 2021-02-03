@@ -87,6 +87,7 @@ static void *tmp;  /* Variable to temporarily hold nodes before insertion to lis
 %token TLS
 %token TLS_CERTIFICATE_FILE
 %token TLS_HOSTNAME_VERIFICATION
+%token TLS_DISABLE_CERTIFICATE_VERIFICATION
 %token TYPE
 %token USERNAME
 %token USER
@@ -221,6 +222,7 @@ irc_item: irc_away              |
           irc_rsa_private_key_file |
           irc_tls_certificate_file |
           irc_tls_hostname_verification |
+          irc_tls_disable_certificate_verification |
           irc_readtimeout       |
           irc_reconnectinterval |
           irc_realname          |
@@ -310,6 +312,11 @@ irc_tls_certificate_file: TLS_CERTIFICATE_FILE '=' STRING ';'
 irc_tls_hostname_verification: TLS_HOSTNAME_VERIFICATION '=' NUMBER ';'
 {
   IRCItem.tls_hostname_verification = $3;
+};
+
+irc_tls_disable_certificate_verification: TLS_DISABLE_CERTIFICATE_VERIFICATION '=' NUMBER ';'
+{
+  IRCItem.tls_disable_certificate_verification = $3;
 };
 
 irc_readtimeout: READTIMEOUT '=' timespec ';'
