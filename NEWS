@@ -1,3 +1,11 @@
+-- Noteworthy changes in version 1.1.11 (2021-??-??)
+* The `irc::tls_disable_certificate_verification` configuration option
+  has been implemented. Setting this to `yes` turns off verification of
+  the remote peer's certificate.
+  Turning off certificate verification is generally discouraged and should
+  be done only for experimental purposes.
+
+
 -- Noteworthy changes in version 1.1.10 (2021-01-30)
 * Timers have been changed to use monotonic time instead of wall-clock time
 * Fixed broken build with LibreSSL
