@@ -4,14 +4,11 @@ language: c
 
 os:
   - linux
-  - osx
 
 compiler:
  - gcc
- - clang
 
 script:
- - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then export CC=$(ls -t /usr/local/bin/gcc-?.*); fi
  - ./configure
  - make
  - sudo make install
