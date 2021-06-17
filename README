@@ -107,5 +107,4 @@ Contact information
 * GitHub: https://github.com/ircd-hybrid/hopm
 
 Anonymous SVN access is also available:
-  Devel: `svn co svn://svn.ircd-hybrid.org/svnroot/hopm/trunk`
-  Stable branch (1.1.x): `svn co svn://svn.ircd-hybrid.org/svnroot/hopm/branches/1.1.x`
+  Latest stable branch (1.1.x): `svn co svn://svn.ircd-hybrid.org/svnroot/hopm/branches/1.1.x`
