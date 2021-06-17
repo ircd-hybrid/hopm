@@ -208,7 +208,6 @@ libopm_config_set(OPM_CONFIG_T *config, unsigned int key, const void *value)
 
       struct sockaddr_storage *const addr = config->vars[key];
       memcpy(addr, res->ai_addr, res->ai_addrlen);
-      addr->ss_family = res->ai_family;
 
       freeaddrinfo(res);
       break;

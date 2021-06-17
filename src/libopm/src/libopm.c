@@ -426,7 +426,6 @@ opm_scan(OPM_T *scanner, OPM_REMOTE_T *remote)
   OPM_SCAN_T *scan = libopm_scan_create(scanner, remote);
 
   memcpy(&scan->addr, res->ai_addr, res->ai_addrlen);
-  scan->addr.ss_family = res->ai_family;
   scan->addr_len = res->ai_addrlen;
 
   freeaddrinfo(res);
