@@ -132,6 +132,8 @@ match(const char *mask, const char *name)
               return 1;
             for (n_tmp = n; *n && *n != *m; ++n)
               ;
+            if (*n == '\0' || *n++ != *m++)
+              return 1;
           }
           else
           {
@@ -140,7 +142,8 @@ match(const char *mask, const char *name)
               ;
           }
         }
-        /* and fall through */
+
+        continue;
       default:
         if (*n == '\0')
           return *m != '\0';
