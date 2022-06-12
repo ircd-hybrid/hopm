@@ -31,7 +31,7 @@
 
 
 -- Noteworthy changes in version 1.1.7 (2020-04-19)
-* Fixed github issue #31: hopm attempts to open stderr for logging in
+* Fixed github issue #31: hopm attempts to open `stderr` for logging in
   non-debug/fork mode which can cause hopm to exit silently
 
 
@@ -77,7 +77,7 @@
   configuration directives to the options {} block. See `doc/reference.conf`
   for more information.
 * Various updates to the `reference.conf`; added updated `connregex` directives
-  for ircd-hybrid in conjunction with user mode +F (far connect notices), and
+  for ircd-hybrid in conjunction with user mode `F` (far connect notices), and
   UnrealIRCd 4.0.0, which now uses a different format for connect notices
 
 
@@ -168,24 +168,3 @@
 * Code hardening. Replaced occurences of strcpy/strcat with strlcpy/strlcat, etc.
 * Various code cleanups and optimizations
 * The `irc::away` configuration option is now optional
-
-
---------------------------------------------------------------------------------
-
-BUG REPORTS: If you run this code and encounter problems, you must report
- the bug by EMAIL to bugs@ircd-hybrid.org
- Please include a gdb backtrace and a copy of your setup.h and
- hopm.conf with any report (with passwords and other sensitive
- information masked).
-
-DISCUSSION: There is a mailing list for discussion of hopm issues,
- including betas. To subscribe, use this link:
-    https://lists.ircd-hybrid.org/mailman/listinfo/hybrid
- This is the proper place to discuss new features, bugs, etc.
-
-Questions/comments directed to bugs@ircd-hybrid.org
-
-Other files recommended for reading: README, INSTALL
-
---------------------------------------------------------------------------------
-$Id$
