@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.5.1.  */
+/* A Bison parser, made by GNU Bison 3.8.2.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,8 +31,9 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* Undocumented macros, especially those whose name start with YY_,
-   are private implementation details.  Do not rely on them.  */
+/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
+   especially those whose name start with YY_ or yy_.  They are
+   private implementation details that can be changed or removed.  */
 
 #ifndef YY_YY_CONFIG_PARSER_H_INCLUDED
 # define YY_YY_CONFIG_PARSER_H_INCLUDED
@@ -44,86 +45,95 @@
 extern int yydebug;
 #endif
 
-/* Token type.  */
+/* Token kinds.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    ADDRESS_FAMILY = 258,
-    AWAY = 259,
-    BAN_UNKNOWN = 260,
-    BIND = 261,
-    BLACKLIST = 262,
-    BYTES = 263,
-    KBYTES = 264,
-    MBYTES = 265,
-    CHANNEL = 266,
-    COMMAND_INTERVAL = 267,
-    COMMAND_QUEUE_SIZE = 268,
-    COMMAND_TIMEOUT = 269,
-    CONNREGEX = 270,
-    DNS_FDLIMIT = 271,
-    DNS_TIMEOUT = 272,
-    DNSBL_FROM = 273,
-    DNSBL_TO = 274,
-    EXEMPT = 275,
-    FD = 276,
-    INVITE = 277,
-    IPV4 = 278,
-    IPV6 = 279,
-    IRC = 280,
-    KLINE = 281,
-    KEY = 282,
-    MASK = 283,
-    MAX_READ = 284,
-    MODE = 285,
-    NAME = 286,
-    NEGCACHE = 287,
-    NEGCACHE_REBUILD = 288,
-    NICK = 289,
-    NICKSERV = 290,
-    NOTICE = 291,
-    OPER = 292,
-    OPM = 293,
-    OPTIONS = 294,
-    PASSWORD = 295,
-    PERFORM = 296,
-    PIDFILE = 297,
-    PORT = 298,
-    PROTOCOL = 299,
-    RSA_PRIVATE_KEY_FILE = 300,
-    READTIMEOUT = 301,
-    REALNAME = 302,
-    RECONNECTINTERVAL = 303,
-    REPLY = 304,
-    SCANLOG = 305,
-    SCANNER = 306,
-    SECONDS = 307,
-    MINUTES = 308,
-    HOURS = 309,
-    DAYS = 310,
-    WEEKS = 311,
-    MONTHS = 312,
-    YEARS = 313,
-    SENDMAIL = 314,
-    SERVER = 315,
-    TARGET_IP = 316,
-    TARGET_PORT = 317,
-    TARGET_STRING = 318,
-    TIMEOUT = 319,
-    TLS = 320,
-    TLS_CERTIFICATE_FILE = 321,
-    TLS_HOSTNAME_VERIFICATION = 322,
-    TLS_DISABLE_CERTIFICATE_VERIFICATION = 323,
-    TYPE = 324,
-    USERNAME = 325,
-    USER = 326,
-    NUMBER = 327,
-    STRING = 328,
-    PROTOCOLTYPE = 329
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    ADDRESS_FAMILY = 258,          /* ADDRESS_FAMILY  */
+    AWAY = 259,                    /* AWAY  */
+    BAN_UNKNOWN = 260,             /* BAN_UNKNOWN  */
+    BIND = 261,                    /* BIND  */
+    BLACKLIST = 262,               /* BLACKLIST  */
+    BYTES = 263,                   /* BYTES  */
+    KBYTES = 264,                  /* KBYTES  */
+    MBYTES = 265,                  /* MBYTES  */
+    CHANNEL = 266,                 /* CHANNEL  */
+    COMMAND_INTERVAL = 267,        /* COMMAND_INTERVAL  */
+    COMMAND_QUEUE_SIZE = 268,      /* COMMAND_QUEUE_SIZE  */
+    COMMAND_TIMEOUT = 269,         /* COMMAND_TIMEOUT  */
+    CONNREGEX = 270,               /* CONNREGEX  */
+    DNS_FDLIMIT = 271,             /* DNS_FDLIMIT  */
+    DNS_TIMEOUT = 272,             /* DNS_TIMEOUT  */
+    DNSBL_FROM = 273,              /* DNSBL_FROM  */
+    DNSBL_TO = 274,                /* DNSBL_TO  */
+    EXEMPT = 275,                  /* EXEMPT  */
+    FD = 276,                      /* FD  */
+    INVITE = 277,                  /* INVITE  */
+    IPV4 = 278,                    /* IPV4  */
+    IPV6 = 279,                    /* IPV6  */
+    IRC = 280,                     /* IRC  */
+    KLINE = 281,                   /* KLINE  */
+    KEY = 282,                     /* KEY  */
+    MASK = 283,                    /* MASK  */
+    MAX_READ = 284,                /* MAX_READ  */
+    MODE = 285,                    /* MODE  */
+    NAME = 286,                    /* NAME  */
+    NEGCACHE = 287,                /* NEGCACHE  */
+    NEGCACHE_REBUILD = 288,        /* NEGCACHE_REBUILD  */
+    NICK = 289,                    /* NICK  */
+    NICKSERV = 290,                /* NICKSERV  */
+    NOTICE = 291,                  /* NOTICE  */
+    OPER = 292,                    /* OPER  */
+    OPM = 293,                     /* OPM  */
+    OPTIONS = 294,                 /* OPTIONS  */
+    PASSWORD = 295,                /* PASSWORD  */
+    PERFORM = 296,                 /* PERFORM  */
+    PIDFILE = 297,                 /* PIDFILE  */
+    PORT = 298,                    /* PORT  */
+    PROTOCOL = 299,                /* PROTOCOL  */
+    RSA_PRIVATE_KEY_FILE = 300,    /* RSA_PRIVATE_KEY_FILE  */
+    READTIMEOUT = 301,             /* READTIMEOUT  */
+    REALNAME = 302,                /* REALNAME  */
+    RECONNECTINTERVAL = 303,       /* RECONNECTINTERVAL  */
+    REPLY = 304,                   /* REPLY  */
+    SCANLOG = 305,                 /* SCANLOG  */
+    SCANNER = 306,                 /* SCANNER  */
+    SECONDS = 307,                 /* SECONDS  */
+    MINUTES = 308,                 /* MINUTES  */
+    HOURS = 309,                   /* HOURS  */
+    DAYS = 310,                    /* DAYS  */
+    WEEKS = 311,                   /* WEEKS  */
+    MONTHS = 312,                  /* MONTHS  */
+    YEARS = 313,                   /* YEARS  */
+    SENDMAIL = 314,                /* SENDMAIL  */
+    SERVER = 315,                  /* SERVER  */
+    TARGET_IP = 316,               /* TARGET_IP  */
+    TARGET_PORT = 317,             /* TARGET_PORT  */
+    TARGET_STRING = 318,           /* TARGET_STRING  */
+    TIMEOUT = 319,                 /* TIMEOUT  */
+    TLS = 320,                     /* TLS  */
+    TLS_CERTIFICATE_FILE = 321,    /* TLS_CERTIFICATE_FILE  */
+    TLS_HOSTNAME_VERIFICATION = 322, /* TLS_HOSTNAME_VERIFICATION  */
+    TLS_DISABLE_CERTIFICATE_VERIFICATION = 323, /* TLS_DISABLE_CERTIFICATE_VERIFICATION  */
+    TYPE = 324,                    /* TYPE  */
+    USERNAME = 325,                /* USERNAME  */
+    USER = 326,                    /* USER  */
+    NUMBER = 327,                  /* NUMBER  */
+    STRING = 328,                  /* STRING  */
+    PROTOCOLTYPE = 329             /* PROTOCOLTYPE  */
   };
+  typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Tokens.  */
+/* Token kinds.  */
+#define YYEMPTY -2
+#define YYEOF 0
+#define YYerror 256
+#define YYUNDEF 257
 #define ADDRESS_FAMILY 258
 #define AWAY 259
 #define BAN_UNKNOWN 260
@@ -206,7 +216,7 @@ union YYSTYPE
   int number;
   char *string;
 
-#line 210 "config-parser.h"
+#line 220 "config-parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -217,6 +227,8 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
+
 int yyparse (void);
+
 
 #endif /* !YY_YY_CONFIG_PARSER_H_INCLUDED  */
