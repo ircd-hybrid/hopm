@@ -1,4 +1,4 @@
-HOPM: Hybrid Open Proxy Monitor
+HOPM
 &middot;
 [![Latest Github release](https://img.shields.io/github/v/tag/ircd-hybrid/hopm?color=425158&style=flat-square)](https://github.com/ircd-hybrid/hopm/tags)
 [![Build status](https://img.shields.io/github/workflow/status/ircd-hybrid/hopm/CI/1.1.x?color=425158&style=flat-square)](https://github.com/ircd-hybrid/ircd-hybrid/actions/workflows/ci.yml)
@@ -37,14 +37,13 @@ sometimes as severe as 100% of clients being K:lined;
 
 ## Compatibility
 
+* Bahamut 2.0.x
+* InspIRCd 3.5.x
 * ircd-hybrid 8.2.x
 * ircd-ratbox 3.0.x
 * ircu 2.10.x
-* InspIRCd 3.5.x
-* UnrealIRCd 5.0.x
 * ngIRCd 25
-* Bahamut 2.0.x
-* Charybdis 3.4.x
+* UnrealIRCd 5.0.x
 
 HOPM is easily suitable for any other IRCD with little modification (`connregex`
 in `hopm.conf`). However, if an IRCD does not send IP addresses in a connection
