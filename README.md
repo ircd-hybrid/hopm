@@ -1,6 +1,10 @@
-Introduction
-============
-
+HOPM: Hybrid Open Proxy Monitor
+&middot;
+[![Latest Github release](https://img.shields.io/github/v/tag/ircd-hybrid/hopm?color=425158&style=flat-square)](https://github.com/ircd-hybrid/hopm/tags)
+[![Build status](https://img.shields.io/github/workflow/status/ircd-hybrid/hopm/CI/1.1.x?color=425158&style=flat-square)](https://github.com/ircd-hybrid/ircd-hybrid/actions/workflows/ci.yml)
+[![Coverity scan](https://img.shields.io/coverity/scan/ircd-hybrid-hopm?color=425158&style=flat-square)](https://scan.coverity.com/projects/ircd-hybrid-hopm)
+[![License](https://img.shields.io/github/license/ircd-hybrid/hopm?color=425158&style=flat-square)](COPYING.md)
+=====
 HOPM (Hybrid Open Proxy Monitor) is an open-proxy monitoring bot designed to
 monitor an individual server (all servers on the network have to run their own
 bot if the IRCD does not support the "far connect" user mode) with a local
@@ -15,8 +19,7 @@ improves on wgmon with HTTP support, faster scanning (it can scan clients
 simultaneously), better layout (scalability) and DNSBL support.
 
 
-Requirements
-============
+## Requirements
 
 * An IRCD, which presents connection notices in a format, which HOPM recognizes;
 
@@ -32,8 +35,7 @@ sometimes as severe as 100% of clients being K:lined;
 * For HTTPS proxy detection, a working LibreSSL/OpenSSL library is required.
 
 
-Compatibility
-=============
+## Compatibility
 
 * ircd-hybrid 8.2.x
 * ircd-ratbox 3.0.x
@@ -49,8 +51,7 @@ in `hopm.conf`). However, if an IRCD does not send IP addresses in a connection
 notice, HOPM will not work.
 
 
-Command-line options
-====================
+## Command-line options
 
 `-c <name>`     Configuration filename. By default, HOPM reads `hopm.conf`,
                 `-c foo` will cause HOPM to read `foo.conf`. The primary use for
@@ -60,8 +61,7 @@ Command-line options
                 Multiple `-d` increase debug level.
 
 
-Operator channel commands
-=========================
+## Operator channel commands
 
 `<bot> check <host> [scanner]`  Manually scans host for insecure proxies and
                                 outputs all errors. If scanner is not given,
@@ -76,16 +76,14 @@ Also, if several HOPM are present in one channel, they will all respond to `!all
 for example `!all stats`.
 
 
-Rehashing HOPM
-==============
+## Rehashing HOPM
 
 A `/quote KILL` on HOPM will cause the process to restart, rehashing the
 configuration file and ending all queued scans. The same can be achieved
 with `kill -HUP` from the command line.
 
 
-Logging
-=======
+## Logging
 
 Once started, HOPM logs all significant events to a file called `hopm.log`,
 which by default can be found at `$HOME/hopm/var/log/hopm.log`. There is also a
@@ -96,15 +94,3 @@ These log files, especially the `scan.log`, can grow quite large. It is suggeste
 that you arrange for these files to be rotated periodically. You should send a
 `USR1` signal to HOPM after moving its logfiles -- this will cause HOPM to
 reopen those files.
-
-
-Contact information
-===================
-
-* Home page: https://www.ircd-hybrid.org
-* Bug reports: bugs@ircd-hybrid.org
-* IRC: #ircd-coders on irc.ircd-hybrid.org
-* GitHub: https://github.com/ircd-hybrid/hopm
-
-Anonymous SVN access is also available:
-  Latest stable branch (1.1.x): `svn co svn://svn.ircd-hybrid.org/svnroot/hopm/branches/1.1.x`
