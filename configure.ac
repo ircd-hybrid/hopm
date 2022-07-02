@@ -1,6 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_REVISION([$Id$])
 AC_PREREQ([2.71])
 
 AC_INIT([hopm], [1.1.11], [bugs@ircd-hybrid.org])
