@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -30,7 +31,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <poll.h>
-#include <time.h>
 #include <errno.h>
 #include <stdarg.h>
 #include <regex.h>
@@ -68,8 +68,8 @@ static int          IRC_FD = -1;         /* File descriptor for IRC client      
 static struct sockaddr_storage IRC_SVR;  /* Sock Address Struct for IRC server     */
 static socklen_t IRC_SVR_LEN;
 static char IRC_SVR_STR[INET6_ADDRSTRLEN];
-static time_t IRC_LAST;                  /* Last full line of data from irc server */
-static time_t IRC_LASTRECONNECT;         /* Time of last reconnection              */
+static uintmax_t IRC_LAST;                  /* Last full line of data from irc server */
+static uintmax_t IRC_LASTRECONNECT;         /* Time of last reconnection              */
 
 #ifdef HAVE_LIBCRYPTO
 static SSL_CTX *ssl_ctx;
@@ -1021,7 +1021,7 @@ irc_send_channels(const char *data, ...)
 void
 irc_timer(void)
 {
-  time_t delta = opm_gettime() - IRC_LAST;
+  uintmax_t delta = opm_gettime() - IRC_LAST;
 
   /* No data in IRCItem.readtimeout seconds */
   if (delta >= IRCItem.readtimeout)

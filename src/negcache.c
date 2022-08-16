@@ -29,7 +29,7 @@
 
 #include "setup.h"
 
-#include <time.h>
+#include <stdint.h>
 
 #include "list.h"
 #include "patricia.h"
@@ -105,7 +105,7 @@ void
 negcache_rebuild(void)
 {
   node_t *node, *node_next;
-  time_t present = opm_gettime();
+  uintmax_t present = opm_gettime();
 
   LIST_FOREACH_SAFE(node, node_next, negcache_list.head)
   {

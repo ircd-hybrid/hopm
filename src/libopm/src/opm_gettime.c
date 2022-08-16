@@ -18,10 +18,12 @@
  */
 
 #include <stdlib.h>
+#include <stdint.h>
+#include <time.h>
 
 #include "opm_gettime.h"
 
-time_t
+uintmax_t
 opm_gettime(void)
 {
   struct timespec ts;

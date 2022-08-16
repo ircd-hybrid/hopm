@@ -21,7 +21,9 @@
 #ifndef MISC_H
 #define MISC_H
 
-extern const char *date_iso8601(time_t);
-extern const char *time_dissect(time_t);
+#include <stdint.h>
+
+extern const char *date_iso8601(uintmax_t);
+extern const char *time_dissect(uintmax_t);
 extern const char *stripws(char *);
 #endif

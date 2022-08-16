@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <stdint.h>
 
 #include "config.h"
 #include "opm_common.h"
@@ -44,7 +45,7 @@ struct _OPM_CONNECTION
   char               readbuf[READBUFLEN + 1]; /* 128 byte read buffer, anything over 128 is probably not of use */
   unsigned short int readlen;          /* Length of readbuf */
   unsigned short int state;            /* State of connection */
-  time_t             creation;         /* When this connection was established */
+  uintmax_t             creation;         /* When this connection was established */
   void *tls_handle;                    /* SSL structure created by SSL_new() */
 };
 

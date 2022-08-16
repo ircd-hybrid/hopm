@@ -24,7 +24,7 @@
 struct negcache_item
 {
   node_t node;  /**< List node; linked into negcache_list */
-  time_t seen;
+  uintmax_t seen;
 };
 
 extern void negcache_init(void);

@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <stdint.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
@@ -100,7 +100,7 @@ scan_cycle(void)
 void
 scan_timer(void)
 {
-  static time_t nc_counter;
+  static uintmax_t nc_counter;
 
   if (OptionsItem.negcache)
   {

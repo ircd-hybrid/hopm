@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <assert.h>
 #include <poll.h>
 #ifdef HAVE_LIBCRYPTO
@@ -817,8 +818,8 @@ libopm_check_establish(OPM_T *scanner)
 static void
 libopm_check_closed(OPM_T *scanner)
 {
-  time_t present;
-  int timeout;
+  uintmax_t present;
+  uintmax_t timeout;
   OPM_NODE_T *node1, *node2, *next1, *next2;
   OPM_SCAN_T *scan;
   OPM_CONNECTION_T *conn;

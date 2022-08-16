@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "setup.h"
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -102,7 +103,7 @@ struct s_connection
   /* file descriptor returned from sockets */
   int fd;
   void *info;
-  time_t start;
+  uintmax_t start;
   char lookup[256];
   int v6;
 };
@@ -792,7 +793,7 @@ firedns_cycle(void)
   struct firedns_result *res, new_result;
   static struct pollfd *ufds = NULL;
   unsigned int size = 0;
-  time_t timenow;
+  uintmax_t timenow;
 
   if (LIST_SIZE(&CONNECTIONS) == 0)
     return;

@@ -52,7 +52,7 @@ struct Command
    * When it was added, because we might need to remove it if it does
    * not get executed.
    */
-  time_t added;
+  uintmax_t added;
 };
 
 extern void command_init(void);

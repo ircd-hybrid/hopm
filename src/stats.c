@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/resource.h> /* getrlimit */
 #include <errno.h>
@@ -37,7 +37,7 @@
 #include "opm_types.h"
 #include "opm_gettime.h"
 
-static time_t STATS_UPTIME;
+static uintmax_t STATS_UPTIME;
 static unsigned int STATS_CONNECTIONS;
 static unsigned int STATS_DNSBLSENT;
 
@@ -148,7 +148,7 @@ stats_dnsblsend(void)
 void
 stats_output(const char *target)
 {
-  time_t uptime = opm_gettime() - STATS_UPTIME;
+  uintmax_t uptime = opm_gettime() - STATS_UPTIME;
   node_t *p;
 
   irc_send("PRIVMSG %s :Uptime: %s", target, time_dissect(uptime));

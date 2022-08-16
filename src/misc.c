@@ -21,6 +21,7 @@
 #include "setup.h"
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include <time.h>
 
@@ -28,10 +29,10 @@
 
 
 const char *
-date_iso8601(time_t lclock)
+date_iso8601(uintmax_t lclock)
 {
   static char buf[32];
-  static time_t lclock_last;
+  static uintmax_t lclock_last;
 
   if (lclock == 0)
     lclock = time(0);
@@ -39,18 +40,18 @@ date_iso8601(time_t lclock)
   if (lclock_last != lclock)
   {
     lclock_last = lclock;
-    strftime(buf, sizeof(buf), "%FT%T%z", localtime(&lclock));
+    strftime(buf, sizeof(buf), "%FT%T%z", localtime((time_t *)&lclock));
   }
 
   return buf;
 }
 
 /*
- * Split a time_t into an English-language explanation of how
+ * Split a uintmax_t into an English-language explanation of how
  * much time it represents, e.g. "2 hours 45 minutes 8 seconds"
  */
 const char *
-time_dissect(time_t duration)
+time_dissect(uintmax_t duration)
 {
   static char buf[32];  /* 32 = sizeof("9999999999999999 days, 23:59:59") */
   unsigned int days = 0, hours = 0, minutes = 0, seconds = 0;

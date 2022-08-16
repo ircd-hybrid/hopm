@@ -20,8 +20,6 @@
 #ifndef OPM_GETTIME_H
 #define OPM_GETTIME_H
 
-#include <time.h>
-
-extern time_t opm_gettime(void);
+extern uintmax_t opm_gettime(void);
 #endif
 

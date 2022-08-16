@@ -22,7 +22,7 @@
 #define CONFIG_H
 
 #include <stdio.h>
-#include <time.h>
+#include <stdint.h>
 
 #include "list.h"
 
@@ -43,8 +43,8 @@ struct IRCConf
   int tls_disable_certificate_verification;
   char *rsa_private_key_file;
   char *tls_certificate_file;
-  time_t readtimeout;
-  time_t reconnectinterval;
+  uintmax_t readtimeout;
+  uintmax_t reconnectinterval;
   char *password;
   char *bind;
   char *nickserv;
@@ -69,12 +69,12 @@ struct ChannelConf
 struct OptionsConf
 {
   unsigned int command_queue_size;
-  time_t command_interval;
-  time_t command_timeout;
-  time_t negcache;
-  time_t negcache_rebuild;
+  uintmax_t command_interval;
+  uintmax_t command_timeout;
+  uintmax_t negcache;
+  uintmax_t negcache_rebuild;
   unsigned int dns_fdlimit;
-  time_t dns_timeout;
+  uintmax_t dns_timeout;
   char *pidfile;
   char *scanlog;
 };

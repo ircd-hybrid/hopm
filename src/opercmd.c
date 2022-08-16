@@ -23,7 +23,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <time.h>
+#include <stdint.h>
 
 #include "list.h"
 #include "options.h"
@@ -226,7 +226,7 @@ command_timer(void)
 {
   static unsigned int interval;
   node_t *node, *node_next;
-  time_t present = opm_gettime();
+  uintmax_t present = opm_gettime();
 
   /* Only perform command removal every OptionsItem.command_interval seconds */
   if (interval++ < OptionsItem.command_interval)
