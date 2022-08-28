@@ -3,11 +3,10 @@ HOPM
 [![Latest Github release](https://img.shields.io/github/v/tag/ircd-hybrid/hopm?color=425158&style=flat-square)](https://github.com/ircd-hybrid/hopm/tags)
 [![Build status](https://img.shields.io/github/workflow/status/ircd-hybrid/hopm/CI/1.1.x?color=425158&style=flat-square)](https://github.com/ircd-hybrid/ircd-hybrid/actions/workflows/ci.yml)
 [![Coverity scan](https://img.shields.io/coverity/scan/ircd-hybrid-hopm?color=425158&style=flat-square)](https://scan.coverity.com/projects/ircd-hybrid-hopm)
-[![License](https://img.shields.io/github/license/ircd-hybrid/hopm?color=425158&style=flat-square)](COPYING.md)
 =====
 HOPM (Hybrid Open Proxy Monitor) is an open-proxy monitoring bot designed to
 monitor an individual server (all servers on the network have to run their own
-bot if the IRCD does not support the "far connect" user mode) with a local
+bot if the IRCd does not support the "far connect" user mode) with a local
 operator {} block and monitor connections. When a client connects to a server,
 HOPM will scan the connection for insecure proxies. Insecure proxies are
 determined by attempting to connect the proxy back to another host (usually the
@@ -21,7 +20,7 @@ simultaneously), better layout (scalability) and DNSBL support.
 
 ## Requirements
 
-* An IRCD, which presents connection notices in a format, which HOPM recognizes;
+* An IRCd, which presents connection notices in a format, which HOPM recognizes;
 
 * A host with full connectivity for all the ports you wish to scan. i.e. is NOT
 transparently proxied -- many domestic internet connections have port 80
@@ -45,8 +44,8 @@ sometimes as severe as 100% of clients being K:lined;
 * ngIRCd 25
 * UnrealIRCd 5.0.x
 
-HOPM is easily suitable for any other IRCD with little modification (`connregex`
-in `hopm.conf`). However, if an IRCD does not send IP addresses in a connection
+HOPM is easily suitable for any other IRCd with little modification (`connregex`
+in `hopm.conf`). However, if an IRCd does not send IP addresses in a connection
 notice, HOPM will not work.
 
 
