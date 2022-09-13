@@ -1,0 +1,33 @@
+# Autotools
+/autom4te.cache
+*.la
+*.lo
+.deps
+.dirstamp
+.libs
+Makefile
+config.cache
+config.log
+config.status
+config.status.lineno
+configure.lineno
+libtool
+setup.h
+stamp-h*
+
+# C object files
+*.o
+
+# Editor droppings
+*.swo
+*.swp
+*~
+.#*
+\#*\#
+
+# Diff droppings
+*.orig
+*.rej
+
+# Executables
+/src/hopm
