@@ -1,7 +1,7 @@
 HOPM
 &middot;
 [![Latest Github release](https://img.shields.io/github/v/tag/ircd-hybrid/hopm?color=425158&style=flat-square)](https://github.com/ircd-hybrid/hopm/tags)
-[![Build status](https://img.shields.io/github/workflow/status/ircd-hybrid/hopm/CI/1.1.x?color=425158&style=flat-square)](https://github.com/ircd-hybrid/ircd-hybrid/actions/workflows/ci.yml)
+[![Build status](https://img.shields.io/github/actions/workflow/status/ircd-hybrid/hopm/ci.yml?branch=1.1.x&color=425158&style=flat-square)](https://github.com/ircd-hybrid/ircd-hybrid/actions/workflows/ci.yml)
 [![Coverity scan](https://img.shields.io/coverity/scan/ircd-hybrid-hopm?color=425158&style=flat-square)](https://scan.coverity.com/projects/ircd-hybrid-hopm)
 =====
 HOPM (Hybrid Open Proxy Monitor) is an open-proxy monitoring bot designed to
