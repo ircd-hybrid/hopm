@@ -1,4 +1,6 @@
 -- Noteworthy changes in version 1.1.11 (2021-??-??)
+* HOPM now rejects incomplete client certificate configuration instead of
+  silently skipping certificate authentication.
 * The `irc::tls_disable_certificate_verification` configuration option
   has been implemented. Setting this to `yes` turns off verification of
   the remote peer's certificate.
