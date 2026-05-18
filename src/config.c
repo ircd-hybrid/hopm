@@ -73,6 +73,29 @@ config_setup(void)
   OptionsItem.dns_timeout = 5;
 }
 
+static void
+config_validate(void)
+{
+  const int has_rsa_private_key_file = IRCItem.rsa_private_key_file &&
+                                       IRCItem.rsa_private_key_file[0];
+  const int has_tls_certificate_file = IRCItem.tls_certificate_file &&
+                                       IRCItem.tls_certificate_file[0];
+
+  if (has_rsa_private_key_file != has_tls_certificate_file)
+  {
+    log_printf("CONFIG -> irc::rsa_private_key_file and irc::tls_certificate_file "
+               "must both be set for client certificate authentication");
+    exit(EXIT_FAILURE);
+  }
+
+  if (has_rsa_private_key_file && IRCItem.tls == 0)
+  {
+    log_printf("CONFIG -> irc::tls must be enabled when client certificate files "
+               "are configured");
+    exit(EXIT_FAILURE);
+  }
+}
+
 /* Load configuration from filename, via flex/bison parser */
 void
 config_load(const char *filename)
@@ -92,6 +115,7 @@ config_load(const char *filename)
 
   yyparse();
   fclose(conf_file);
+  config_validate();
 
   scan_init();  /* Initialize the scanners once we have the configuration */
   stats_init(); /* Initialize stats (UPTIME) */

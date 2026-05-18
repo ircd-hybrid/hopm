@@ -19,6 +19,8 @@ stamp-h*
 *.o
 
 # Editor droppings
+.DS_Store
+.cursor/
 *.swo
 *.swp
 *~
@@ -26,6 +28,7 @@ stamp-h*
 \#*\#
 
 # Diff droppings
+/hopm-cert-auth.patch
 *.orig
 *.rej
 
