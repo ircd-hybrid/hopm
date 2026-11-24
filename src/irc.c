@@ -917,6 +917,20 @@ irc_cycle(void)
     return;  /* In case connect() immediately failed */
   }
 
+#ifdef HAVE_LIBCRYPTO
+  /*
+   * irc_read() consumes the connection one byte at a time. OpenSSL decrypts a whole
+   * TLS record at once, so any further complete lines (e.g. a PING that arrived in the
+   * same record) stay in OpenSSL's internal buffer, where poll() on the raw socket can
+   * never see them. Drain that buffer before waiting on the socket again.
+   */
+  if (ssl_handle && SSL_pending(ssl_handle) > 0)
+  {
+    irc_read();
+    return;
+  }
+#endif
+
   pfd.fd = IRC_FD;
   pfd.events = POLLIN;
 
